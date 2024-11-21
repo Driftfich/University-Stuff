@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
 
 typedef struct
 {
@@ -11,6 +12,9 @@ typedef struct
     double sell_price;
 } currency;
 
+// Deklaration der Funktion _comp_cols
+void _comp_cols(currency *c[], int i, int j, int offset);
+
 void print_currency(currency c)
 {
     printf("%-30s\t|", c.country_name);
@@ -20,15 +24,17 @@ void print_currency(currency c)
     printf("%14.5f |\n", c.sell_price);
 }
 
-void sort(currency *c[], int length, void (*f)(currency *c[], int i, int j))
+void sort(currency *c[], int length, int offset)
 // sort by country name
 {
     int i, j;
+    
     for (i=0; i<length-1; i++)
     {
+        
         for (j=i+1; j<length; j++)
         {
-            (*f)(c, i,j);
+            _comp_cols(c, i,j, offset);
         }
     }
 }
@@ -41,19 +47,10 @@ void _switch_vars(currency *c[], int i, int j)
     c[j] = temp;
 }
 
-void comp_country_name(currency *c[], int i, int j)
+void _comp_cols(currency *c[], int i, int j, int offset)
 // sort by country name
 {
-    if (strcmp(c[i]->country_name, c[j]->country_name) > 0)
-    {
-        _switch_vars(c, i, j);
-    }
-}
-
-void comp_currency_code(currency *c[], int i, int j)
-// sort by country name
-{
-    if (strcmp(c[i]->country_code, c[j]->country_code) > 0)
+    if (strcmp((char *)((char *)c[i] + offset), (char *)((char *)c[j] + offset)) > 0)
     {
         _switch_vars(c, i, j);
     }
@@ -66,25 +63,34 @@ void _set_sell_price(currency *c)
 
 int main()
 {
+    // currency values import
     currency vWrg[] = {
         #include "waehrung.dat"
     };
+    // define vars
     int head_length, head_length_cp, i;
     int size = sizeof(vWrg)/sizeof(currency);
+    // creating pointer array on the currency array for sorting purposes
     currency *vWrg_ptr[size];
     for (i = 0; i < size; i++) {
         vWrg_ptr[i] = &vWrg[i];
+        // set sell price
+        _set_sell_price(vWrg_ptr[i]);
     }
-    sort(vWrg_ptr, size, comp_country_name);
+    // sort by the given attribute in offset
+    sort(vWrg_ptr, size, offsetof(currency, currency_code));
+    // table header
     head_length = printf("%-14sLand%-14s| Landescode | Waehrungscode | Ankaufspreis | Verkaufspreis |\n", "", "") - 1;
     head_length_cp = head_length;
     while(head_length_cp--) printf("-");
     printf("\n");
+    // print the sorted array
     for (i=0; i<size; i++)
     {
-        _set_sell_price(vWrg_ptr[i]);
+        // print the currency
         print_currency(*vWrg_ptr[i]);
     }
+    // table footer
     head_length_cp = head_length;
     while(head_length--) printf("-");
     printf("\n");
