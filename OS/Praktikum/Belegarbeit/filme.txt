@@ -1,0 +1,2267 @@
+/mm/video/movies/1925:
+insgesamt 1429532
+-rw-r--r-- 1 nobody nobody 1463837786 13. Feb 2021  Panzerkreuzer Potemkin (1925).avi
+
+/mm/video/movies/1927:
+insgesamt 1163900
+-rw-r--r-- 1 nobody nobody 1191829962 13. Feb 2021  Metropolis (1927).avi
+
+/mm/video/movies/1930:
+insgesamt 3580876
+-rw-r--r-- 1 nobody nobody 3666816920 11. Aug 2020  Im Westen nichts Neues (1930).mkv
+
+/mm/video/movies/1931:
+insgesamt 1506336
+-rw-r--r-- 1 nobody nobody 1542487576 20. Mai 2021  M - Eine Stadt sucht einen Mörder (restauriert 2011)(1931).mp4
+
+/mm/video/movies/1938:
+insgesamt 1431384
+-rw-r--r-- 1 nobody nobody 1465737058 13. Feb 2021  Alexander Newski (1938).avi
+
+/mm/video/movies/1939:
+insgesamt 1116820
+-rw-r--r-- 1 nobody nobody 1143622401 13. Feb 2021  Hotel Sacher (1939).mkv
+drwxr-xr-x 1 nobody nobody        128 13. Feb 2021  Vom Winde verweht (1939)
+
+/mm/video/movies/1942:
+insgesamt 1533672
+-rw-r--r-- 1 nobody nobody 1570478080 13. Feb 2021  Casablanca (1942).avi
+
+/mm/video/movies/1944:
+insgesamt 1214944
+-rw-r--r-- 1 nobody nobody 1244102192 13. Feb 2021  Die Feuerzangenbowle (1944).mkv
+
+/mm/video/movies/1945:
+insgesamt 1723380
+-rw-r--r-- 1 nobody nobody 1764737129 30. Aug 09:17 Rom, offene Stadt (1945).mkv
+
+/mm/video/movies/1947:
+insgesamt 2154584
+-rw-r--r-- 1 nobody nobody 1131768490 13. Feb 2021  Wozzeck (1947).m4v
+-rw-r--r-- 1 nobody nobody 1074523469 13. Feb 2021  Zwei in Paris (1947).mkv
+
+/mm/video/movies/1951:
+insgesamt 6571172
+-rw-r--r-- 1 nobody nobody 2750187554 19. Nov 2022  Charles Dickens - Eine Weihnachtsgeschichte (1951).mkv
+-rw-r--r-- 1 nobody nobody 2513082213 22. Mai 2020  Der Tag, an dem die Erde stillstand (1951).mkv
+-rw-r--r-- 1 nobody nobody 1465602788 13. Feb 2021  Der Untertan (1951).avi
+drwxr-xr-x 1 nobody nobody         96  3. Okt 2021  Quo Vadis (1951)
+
+/mm/video/movies/1952:
+insgesamt 1687540
+-rw-r--r-- 1 nobody nobody 1728039179 11. Okt 2020  Don Camillo und Peppone (1952).mkv
+
+/mm/video/movies/1953:
+insgesamt 1750060
+-rw-r--r-- 1 nobody nobody 1792057789 11. Okt 2020  Don Camillos Rückkehr (1953).mkv
+drwxr-xr-x 1 nobody nobody        116 13. Feb 2021  Lohn der Angst (1953)
+
+/mm/video/movies/1954:
+insgesamt 7981916
+-rw-r--r-- 1 nobody nobody 2541776443 25. Nov 2023  Die Knallschote (1954).mkv
+-rw-r--r-- 1 nobody nobody 1465438394 12. Feb 2021  Ernst Thälmann - Sohn seiner Klasse (1954).avi
+drwxr-xr-x 1 nobody nobody        218  4. Mai 2024  Godzilla (1954)
+-rw-r--r-- 1 nobody nobody 2608710919  7. Mai 2021  La Strada - Das Lied der Straße (1954).mkv
+-rw-r--r-- 1 nobody nobody 1557545256 12. Feb 2021  Sehnsucht (1954).m4v
+drwxr-xr-x 1 nobody nobody        384 12. Feb 2021  Seven Samurai (1954)
+
+/mm/video/movies/1955:
+insgesamt 9181440
+-rw-r--r-- 1 nobody nobody 1637505965 11. Okt 2020  Die große Schlacht des Don Camillo (1955).mkv
+-rw-r--r-- 1 nobody nobody 1464804914 13. Feb 2021  Ernst Thälmann - Führer seiner Klasse (1955).avi
+-rw-r--r-- 1 nobody nobody 1163116267 13. Feb 2021  Godzilla kehrt zurück (1955).mkv
+-rw-r--r-- 1 nobody nobody 2462709675  4. Feb 2024  Reise in die Urwelt (1955).mkv
+-rw-r--r-- 1 nobody nobody 2673651191 30. Jan 2023  Richard III. (1955).mkv
+
+/mm/video/movies/1956:
+insgesamt 6242608
+-rw-r--r-- 1 nobody nobody 2512183194 17. Jul 2020  Alarm im Weltall (1956).mkv
+-rw-r--r-- 1 nobody nobody 1392833561 20. Jan 2020  Die Dämonischen (1956).mkv
+-rw-r--r-- 1 nobody nobody 1465994208 13. Feb 2021  Wilhem Tell (1956).avi
+-rw-r--r-- 1 nobody nobody 1021411387 13. Feb 2021  Zwei Mann, ein Schwein und die Nacht von Paris (1956).mkv
+
+/mm/video/movies/1957:
+insgesamt 10742492
+-rw-r--r-- 1 nobody nobody 1464867986 13. Feb 2021  Der stille Don, Teil 1 (1957).avi
+-rw-r--r-- 1 nobody nobody 1465123694 13. Feb 2021  Der stille Don, Teil 2 (1957).avi
+-rw-r--r-- 1 nobody nobody 5035754893 13. Jun 2020  Die Brücke am Kwai (1957).mkv
+-rw-r--r-- 1 nobody nobody 1401169810 13. Feb 2021  Wege zum Ruhm (1957).avi
+-rw-r--r-- 1 nobody nobody 1633382901 26. Nov 2023  Woll'n Sie nicht mein Mörder sein? (1957).mkv
+
+/mm/video/movies/1958:
+insgesamt 9352132
+-rw-r--r-- 1 nobody nobody 1872624052 18. Dez 2023  Das Raubtier (1958).mkv
+-rw-r--r-- 1 nobody nobody 1465450484 13. Feb 2021  Der Stille Don, Teil 3 (1958).avi
+-rw-r--r-- 1 nobody nobody 2438197452  7. Dez 2023  Fisch oder Fleisch (1958).mkv
+-rw-r--r-- 1 nobody nobody 3067872927 13. Feb 2021  Sonnensucher (1958).mkv
+-rw-r--r-- 1 nobody nobody  732430336 13. Feb 2021  Wenn Louis eine Reise tut (1958).avi
+
+/mm/video/movies/1959:
+insgesamt 7346160
+drwxr-xr-x 1 nobody nobody         88 12. Feb 2021  Ben Hur (1959)
+-rw-r--r-- 1 nobody nobody 2394273498 24. Feb 2021  Der Tiger von Eschnapur (1959).mp4
+-rw-r--r-- 1 nobody nobody 1339172625 12. Feb 2021  Die Brücke (1959).mp4
+drwxr-xr-x 1 nobody nobody        156  4. Mai 2024  Die letzten Tage von Pompeji (1959)
+-rw-r--r-- 1 nobody nobody 2598474930 17. Jun 09:58 Hannibal (1959).mkv
+drwxr-xr-x 1 nobody nobody        144  4. Mai 2024  Manche mögen's heiß (1959)
+-rw-r--r-- 1 nobody nobody 1190536400 12. Feb 2021  Sie küssten und sie schlugen ihn (1959).mkv
+
+/mm/video/movies/1960:
+insgesamt 11896948
+-rw-r--r-- 1 nobody nobody 4251740025 25. Apr 2020  Außer Atem (1960).mkv
+drwxr-xr-x 1 nobody nobody        148 12. Feb 2021  Die glorreichen Sieben (1960)
+-rw-r--r-- 1 nobody nobody 1464249272 12. Feb 2021  Die Kreuzritter (1960).avi
+-rw-r--r-- 1 nobody nobody 1374078073  9. Mai 2023  La Dolce Vita (1960).mkv
+-rw-r--r-- 1 nobody nobody 2982668183 16. Aug 2023  Rocco und seine Brüder (1960).mp4
+drwxr-xr-x 1 nobody nobody         96 12. Feb 2021  Spartacus (1960)
+-rw-r--r-- 1 nobody nobody 2109727485 12. Nov 2023  Wilhelm Tell - Burgen in Flammen (1960).mp4
+
+/mm/video/movies/1961:
+insgesamt 3810060
+-rw-r--r-- 1 nobody nobody 2441588732  7. Mär 2021  Misfits - nicht gesellschaftsfähig (1961).mkv
+-rw-r--r-- 1 nobody nobody 1459911352 13. Feb 2021  Yojimbo (1961).avi
+
+/mm/video/movies/1962:
+insgesamt 9006608
+-rw-r--r-- 1 nobody nobody 3593184355 11. Jun 10:23 Boccaccio 70 (1962).mkv
+-rw-r--r-- 1 nobody nobody 1470660608 12. Feb 2021  Der Schatz im Silbersee (1962).avi
+drwxr-xr-x 1 nobody nobody        200 12. Feb 2021  Die Einsamkeit des Langstreckenläufers (1962)
+-rw-r--r-- 1 nobody nobody  734005248 12. Feb 2021  Die Rückkehr des King Kong (1962).avi
+-rw-r--r-- 1 nobody nobody  733456384 12. Feb 2021  Iwans Kindheit (1962).avi
+-rw-r--r-- 1 nobody nobody 1465546752 12. Feb 2021  James Bond - 007 jagt Dr. No (1962).avi
+-rw-r--r-- 1 nobody nobody 1225900386 12. Feb 2021  Lolita (1962).avi
+
+/mm/video/movies/1963:
+insgesamt 27627500
+-rw-r--r-- 1 nobody nobody 4262443502 30. Jun 2020  Achteinhalb (1963).mkv
+-rw-r--r-- 1 nobody nobody 5274017329 25. Apr 2020  Cleopatra (1963).mkv
+-rw-r--r-- 1 nobody nobody 1467929092 12. Feb 2021  Das Schweigen (1963).avi
+-rw-r--r-- 1 nobody nobody 1853583964 12. Feb 2021  Der Leopard (1963).m4v
+-rw-r--r-- 1 nobody nobody 2188047269 27. Feb 2020  Der rosarote Panther (1963).mkv
+drwxr-xr-x 1 nobody nobody        156 12. Feb 2021  Der verrückte Professor (1963)
+-rw-r--r-- 1 nobody nobody 2705244317 16. Sep 2022  Die Verachtung (1963).mp4
+-rw-r--r-- 1 nobody nobody 1418367498 12. Feb 2021  Die Vögel (1963).avi
+-rw-r--r-- 1 nobody nobody 1210016737 12. Feb 2021  Fünf Glückspilze (1963).mkv
+-rw-r--r-- 1 nobody nobody  732907520 12. Feb 2021  Karambolage (1963).avi
+-rw-r--r-- 1 nobody nobody 1467750400 12. Feb 2021  Liebesgruesse aus Moskau (1963).avi
+drwxr-xr-x 1 nobody nobody        136 12. Feb 2021  Nackt unter Wölfen (1963)
+-rw-r--r-- 1 nobody nobody 3363952438  6. Dez 2023  Quietsch... Quietsch... wer bohrt denn da nach Öl? (1963).mkv
+drwxr-xr-x 1 nobody nobody        180 12. Feb 2021  Was diese Frau so alles treibt (1963)
+-rw-r--r-- 1 nobody nobody 2346270720 12. Feb 2021  Winnetou I (1963).avi
+
+/mm/video/movies/1964:
+insgesamt 37113936
+-rw-r--r-- 1 nobody nobody 3676832556  7. Jun 2021  Abenteuer in Rio (1964).mkv
+-rw-r--r-- 1 nobody nobody 4184121236  3. Feb 2021  Alexis Sorbas (1964).mkv
+-rw-r--r-- 1 nobody nobody 1077316068 12. Feb 2021  Balduin, der Geldschrankknacker (1964).avi
+-rw-r--r-- 1 nobody nobody  936802304 12. Feb 2021  Der Gendarm von Saint Tropez (1964).avi
+-rw-r--r-- 1 nobody nobody 1467742208 12. Feb 2021  Der geteilte Himmel (1964).avi
+-rw-r--r-- 1 nobody nobody 1602273561  6. Jun 2021  Der Schut (1964).mp4
+-rw-r--r-- 1 nobody nobody 1330912050 12. Feb 2021  Dr. Seltsam oder wie ich lernte, die Bombe zu lieben (1964).avi
+-rw-r--r-- 1 nobody nobody  734181376 12. Feb 2021  Egon und das achte Weltwunder (1964).avi
+-rw-r--r-- 1 nobody nobody 1577361203 16. Sep 2022  Eine verheiratete Frau (1964).mp4
+-rw-r--r-- 1 nobody nobody 1734213991 21. Feb 2021  Ein Schuss im Dunkeln (1964).mkv
+drwxr-xr-x 1 nobody nobody        600 19. Jan 2024  Fail-Safe (1964)
+-rw-r--r-- 1 nobody nobody  938958848 12. Feb 2021  Fantomas (1964).avi
+-rw-r--r-- 1 nobody nobody 1589756122 12. Feb 2021  Für eine Handvoll Dollar (1964).mkv
+-rw-r--r-- 1 nobody nobody 1221627630 12. Feb 2021  Godzilla - Frankensteins Monster im Kampf gegen Ghidorah (1964).avi
+-rw-r--r-- 1 nobody nobody 1378874318 12. Feb 2021  Godzilla und die Urweltraupen (1964).avi
+-rw-r--r-- 1 nobody nobody 1463222272 12. Feb 2021  Goldfinger (1964).avi
+-rw-r--r-- 1 nobody nobody  733558784 12. Feb 2021  Ist ja irre - Cäsar liebt Cleopatra (1964).avi
+-rw-r--r-- 1 nobody nobody 1467797504 12. Feb 2021  Old Shatterhand (1964).avi
+-rw-r--r-- 1 nobody nobody 1634474285  6. Jun 2021  Old Shatterhand (1964).mp4
+-rw-r--r-- 1 nobody nobody 1029649470 12. Feb 2021  Verdammt zur Sünde (1964).mkv
+-rw-r--r-- 1 nobody nobody 2346723328 12. Feb 2021  Winnetou II (1964).avi
+-rw-r--r-- 1 nobody nobody 5878233512 12. Feb 2021  Zorba the Greek (1964).mkv
+
+/mm/video/movies/1965:
+insgesamt 31205328
+-rw-r--r-- 1 nobody nobody 1665754436 12. Feb 2021  Das große Rennen rund um die Welt (1965).avi
+-rw-r--r-- 1 nobody nobody  805810394 12. Feb 2021  Das Kaninchen bin ich (1965).m4v
+-rw-r--r-- 1 nobody nobody  938348544 12. Feb 2021  Der Gendarm vom Broadway (1965).avi
+-rw-r--r-- 1 nobody nobody 1395791170  6. Jun 2021  Der Schatz der Azteken (1965).mp4
+-rw-r--r-- 1 nobody nobody 1701613828 12. Feb 2021  Die Abenteuer des Werner Holt (1965).avi
+drwxr-xr-x 1 nobody nobody        354 12. Feb 2021  Die Damen lassen bitten (1965)
+-rw-r--r-- 1 nobody nobody 1373287287  6. Jun 2021  Die Pyramide des Sonnengottes (1965).mp4
+-rw-r--r-- 1 nobody nobody 1401764426 12. Feb 2021  Die tollkühnen Männer in ihren fliegenden Kisten (1965).avi
+drwxr-xr-x 1 nobody nobody        120 12. Feb 2021  Doktor Schiwago (1965)
+-rw-r--r-- 1 nobody nobody 1312507092 12. Feb 2021  Durchs wilde Kurdistan (1965).mp4
+-rw-r--r-- 1 nobody nobody  939286528 12. Feb 2021  Fantomas gegen Interpol (1965).avi
+-rw-r--r-- 1 nobody nobody 1461037056 12. Feb 2021  Feuerball (1965).avi
+-rw-r--r-- 1 nobody nobody 1981589504 12. Feb 2021  Für ein paar Dollar mehr (1965).avi
+-rw-r--r-- 1 nobody nobody 2196296816 20. Mai 2021  Für ein paar Dollar mehr (1965).mp4
+-rw-r--r-- 1 nobody nobody 1779277944 11. Okt 2020  Genosse Don Camillo (1965).mkv
+-rw-r--r-- 1 nobody nobody  707242064 12. Feb 2021  Godzilla - Befehl aus dem Dunkeln (1965).avi
+drwxr-xr-x 1 nobody nobody        336 12. Feb 2021  Louis, das Schlitzohr (1965)
+-rw-r--r-- 1 nobody nobody 1467424768 12. Feb 2021  Old Surehand (1965).avi
+-rw-r--r-- 1 nobody nobody 4168632096 25. Dez 2019  Sierra Chariba (1965).mkv
+-rw-r--r-- 1 nobody nobody 3577759671 16. Feb 2020  Wie bringt man seine Frau um? (1965).mkv
+-rw-r--r-- 1 nobody nobody 2346379264 12. Feb 2021  Winnetou III (1965).avi
+
+/mm/video/movies/1966:
+insgesamt 32268780
+drwxr-xr-x 1 nobody nobody        108 12. Feb 2021  Der Gehetzte der Sierra Madre (1966)
+drwxr-xr-x 1 nobody nobody        114 12. Feb 2021  Der Stadtstreicher (1966)
+-rw-r--r-- 1 nobody nobody 3525992666  4. Jun 2022  Die Bibel (1966).mkv
+drwxr-xr-x 1 nobody nobody        770 12. Feb 2021  Die große Sause (1966)
+-rw-r--r-- 1 nobody nobody 1817765172 12. Nov 2023  Django (1966).mp4
+-rw-r--r-- 1 nobody nobody 1102410676 12. Feb 2021  Django, der Rächer (1966).avi
+-rw-r--r-- 1 nobody nobody 1468454912 12. Feb 2021  Django - Sein Gesangbuch war der Colt (1966).avi
+-rw-r--r-- 1 nobody nobody 2587166143 29. Mai 2023  Drei Fremdenlegionäre (1966).mkv
+-rw-r--r-- 1 nobody nobody 1688765812 20. Feb 2021  Eine Flut von Dollars (1966).mkv
+-rw-r--r-- 1 nobody nobody 3106439693  3. Nov 2023  Eine Million Jahre vor unserer Zeit (1966).mkv
+-rw-r--r-- 1 nobody nobody 1438343376 12. Feb 2021  Frankenstein und die Ungeheuer aus dem Meer (1966).avi
+-rw-r--r-- 1 nobody nobody 6181908116  9. Nov 2019  Kanonenboot am Yangtse-Kiang (1966).mkv
+-rw-r--r-- 1 nobody nobody 2308346426 28. Feb 2023  Mögen sie in Frieden ruhn (1966).mkv
+drwxr-xr-x 1 nobody nobody        158 12. Feb 2021  Navajo Joe (1966)
+-rw-r--r-- 1 nobody nobody  734191616 12. Feb 2021  Persona (1966).avi
+-rw-r--r-- 1 nobody nobody 3535759972  6. Jun 2022  Rififi in Paris (1966).mkv
+-rw-r--r-- 1 nobody nobody  729587712 12. Feb 2021  Scharfe Kurven für Madame (1966).avi
+-rw-r--r-- 1 nobody nobody 1465408916 12. Feb 2021  Spur der Steine (1966).avi
+-rw-r--r-- 1 nobody nobody 1352658202 12. Feb 2021  Zwei glorreiche Halunken (1966).avi
+
+/mm/video/movies/1967:
+insgesamt 22435244
+-rw-r--r-- 1 nobody nobody 1517817883 20. Sep 10:46 10.000 blutige Dollar (1967).mkv
+-rw-r--r-- 1 nobody nobody 1413507536 13. Feb 2020  Asterix der Gallier (1967).mkv
+-rw-r--r-- 1 nobody nobody 1088610725 12. Feb 2021  Balduin, der Ferienschreck (1967).mkv
+-rw-r--r-- 1 nobody nobody  732895232 12. Feb 2021  Blaue Bohnen fuer ein Halleluja (1967).avi
+-rw-r--r-- 1 nobody nobody 1309256765  6. Jun 2021  Chingachgook, die Große Schlange (1967).mp4
+-rw-r--r-- 1 nobody nobody 1562275840 12. Feb 2021  Das Dschungelbuch (1967).avi
+-rw-r--r-- 1 nobody nobody  938905600 12. Feb 2021  Fantomas bedroht die Welt (1967).avi
+-rw-r--r-- 1 nobody nobody 1466028032 12. Feb 2021  Frankensteins Monster jagen Godzillas Sohn (1967).avi
+drwxr-xr-x 1 nobody nobody         72 12. Feb 2021  Frühling für Hitler (1967)
+-rw-r--r-- 1 nobody nobody 2020045501 15. Jun 2023  Glut der Sonne (1967).mkv
+-rw-r--r-- 1 nobody nobody 1850390230 12. Feb 2021  Gott vergibt ... Django nie - Langfassung (1967).mkv
+-rw-r--r-- 1 nobody nobody  732380160 12. Feb 2021  Gott vergibt ... wir beide nie (1967).avi
+-rw-r--r-- 1 nobody nobody 2918039153  5. Dez 2023  In der Hitze der Nacht (1967).mkv
+-rw-r--r-- 1 nobody nobody  579163424 12. Feb 2021  Joe, der Galgenvogel (1967).avi
+-rw-r--r-- 1 nobody nobody 1461628928 12. Feb 2021  Man lebt nur zweimal (1967).avi
+-rw-r--r-- 1 nobody nobody  733964288 12. Feb 2021  Mit Django kam der Tod (1967).avi
+-rw-r--r-- 1 nobody nobody  730730496 12. Feb 2021  Oscar (1967).avi
+-rw-r--r-- 1 nobody nobody 1918024882 13. Aug 2020  Tanz der Vampire (1967).mkv
+drwxr-xr-x 1 nobody nobody        222 12. Feb 2021  Von Angesicht zu Angesicht (1967)
+
+/mm/video/movies/1968:
+insgesamt 50046532
+-rw-r--r-- 1 nobody nobody 1424735834 12. Feb 2021  2001 - Odyssee im Weltraum (1968).avi
+-rw-r--r-- 1 nobody nobody 2468303850 29. Jul 2021  Asterix und Kleopatra (1968).mkv
+-rw-r--r-- 1 nobody nobody 2008237552  9. Jan 2023  Auf die Knie, Django (1968).mkv
+-rw-r--r-- 1 nobody nobody 1099605285 12. Feb 2021  Balduin, das Nachtgespenst (1968).mkv
+-rw-r--r-- 1 nobody nobody  939407360 12. Feb 2021  Balduin, der Heiratsmuffel (1968).avi
+drwxr-xr-x 1 nobody nobody        572 12. Feb 2021  Balduin, der Trockenschwimmer (1968)
+-rw-r--r-- 1 nobody nobody 1861380729 15. Feb 2021  Coogans großer Bluff (1968).mkv
+-rw-r--r-- 1 nobody nobody 2486300712 15. Jun 10:18 Die Braut trug schwarz (1968).mkv
+-rw-r--r-- 1 nobody nobody 1635972619 17. Mär 2021  Die letzte Rechnung zahlst du selbst (1968).mkv
+-rw-r--r-- 1 nobody nobody  733995008 12. Feb 2021  Die Nacht der lebenden Toten (1968).avi
+-rw-r--r-- 1 nobody nobody 1407538574 12. Feb 2021  Die Olsenbande (1968).mkv
+-rw-r--r-- 1 nobody nobody 1463201792 12. Feb 2021  Django - Ich will ihn tot (1968).avi
+-rw-r--r-- 1 nobody nobody 2428862800 12. Mai 2024  Django - Unbarmherzig wie die Sonne (1968).mkv
+drwxr-xr-x 1 nobody nobody         80 12. Feb 2021  Ecce Homo (1968)
+-rw-r--r-- 1 nobody nobody  923029504 12. Feb 2021  Frankenstein und die Monster aus dem All (1968).avi
+-rw-r--r-- 1 nobody nobody 1360977570 12. Feb 2021  Hängt ihn höher (1968).mkv
+-rw-r--r-- 1 nobody nobody 3248784156  7. Okt 2022  Ich war neunzehn (1968).mp4
+-rw-r--r-- 1 nobody nobody 2587960598  1. Feb 2021  Krakatoa - Das größte Abenteuer des letzten Jahrhunderts (1968).mkv
+-rw-r--r-- 1 nobody nobody 1453756158 12. Feb 2021  Leichen pflastern seinen Weg (1968).avi
+-rw-r--r-- 1 nobody nobody 2986395844  1. Jun 2022  Mercenario - Der Gefürchtete (1968).mkv
+drwxr-xr-x 1 nobody nobody        124 12. Feb 2021  Planet der Affen (1968)
+-rw-r--r-- 1 nobody nobody 2338630397  6. Jan 2022  Romeo und Julia (1968).mp4
+-rw-r--r-- 1 nobody nobody 5112822025 12. Feb 2021  Rosemaries Baby (1968).mkv
+-rw-r--r-- 1 nobody nobody 1328376890 12. Feb 2021  Spiel mir das Lied vom Tod (1968).avi
+-rw-r--r-- 1 nobody nobody 4235666330 15. Aug 2023  Spur des Falken (1968).mp4
+-rw-r--r-- 1 nobody nobody  733048260 12. Feb 2021  The Bounty Killer (1968).avi
+-rw-r--r-- 1 nobody nobody 2196716779 12. Feb 2021  The Bride wore Black (1968).mkv
+-rw-r--r-- 1 nobody nobody 1496555726 12. Feb 2021  Vier für ein Ave Maria (1968).mkv
+-rw-r--r-- 1 nobody nobody 1287340032 12. Feb 2021  Winnetou und Shatterhand im Tal der Toten (1968).avi
+
+/mm/video/movies/1969:
+insgesamt 38137348
+-rw-r--r-- 1 nobody nobody  733517824 12. Feb 2021  Auch ein Sheriff braucht mal Hilfe (1969).avi
+-rw-r--r-- 1 nobody nobody 2211517251 21. Sep 2021  Das Banner des Samurai (1969).mp4
+-rw-r--r-- 1 nobody nobody 1363475663 20. Mai 2023  Der Clan der Sizilianer (1969).mp4
+-rw-r--r-- 1 nobody nobody 3377121042 24. Jul 09:01 Die fünf Gefürchteten (1969).mkv
+-rw-r--r-- 1 nobody nobody 2978698454 10. Jan 2023  Die Kaktusblüte (1969).mkv
+-rw-r--r-- 1 nobody nobody 1914578125 12. Feb 2021  Die Olsenbande in der Klemme (1969).mkv
+-rw-r--r-- 1 nobody nobody  694868992 12. Feb 2021  Easy Rider (1969).avi
+-rw-r--r-- 1 nobody nobody 1404918924 12. Feb 2021  Godzilla - Attack All Monsters (1969).avi
+-rw-r--r-- 1 nobody nobody 1875307650 12. Feb 2021  Hügel der blutigen Stiefel (1969).avi
+-rw-r--r-- 1 nobody nobody 1467955200 12. Feb 2021  Im Geheimdienst ihrer Majestaet (1969).avi
+-rw-r--r-- 1 nobody nobody  731080704 12. Feb 2021  Katzelmacher (1969).avi
+-rw-r--r-- 1 nobody nobody  732923904 12. Feb 2021  Liebe ist kälter als der Tod (1969).avi
+-rw-r--r-- 1 nobody nobody 6988267520 12. Feb 2021  Medea (1969).iso
+-rw-r--r-- 1 nobody nobody 2566592061 21. Jan 2024  Mörder GmbH (1969).mkv
+-rw-r--r-- 1 nobody nobody  730345472 12. Feb 2021  Onkel Paul, die große Pflaume (1969).avi
+-rw-r--r-- 1 nobody nobody 1468520448 12. Feb 2021  Sabata (1969).avi
+-rw-r--r-- 1 nobody nobody 1468411904 12. Feb 2021  Sartana - Töten war sein täglich Brot (1969).avi
+-rw-r--r-- 1 nobody nobody 1044529152 12. Feb 2021  The Wild Bunch (1969).avi
+-rw-r--r-- 1 nobody nobody 2764060513 15. Aug 2023  Weiße Wölfe (1969).mp4
+-rw-r--r-- 1 nobody nobody 2535923537 25. Jan 2024  Woody, der Unglücksrabe (1969).mkv
+
+/mm/video/movies/1970:
+insgesamt 57923352
+-rw-r--r-- 1 nobody nobody 1462745896 12. Feb 2021  Abgerechnet wird zum Schluss (1970).avi
+-rw-r--r-- 1 nobody nobody  731066368 12. Feb 2021  Alles tanzt nach meiner Pfeife (1970).avi
+-rw-r--r-- 1 nobody nobody  937652224 12. Feb 2021  Balduin, der Schrecken von Saint-Tropez (1970).avi
+drwxr-xr-x 1 nobody nobody        372 12. Feb 2021  Balduin, der Sonntagsfahrer (1970)
+-rw-r--r-- 1 nobody nobody 4055642182  4. Aug 2021  Catch-22 - Der böse Trick (1970).mkv
+-rw-r--r-- 1 nobody nobody 2920461298 30. Jul 2021  Das Geheimnis der schwarzen Handschuhe (1970).mkv
+-rw-r--r-- 1 nobody nobody 4749015608  2. Mär 2021  Das Wiegenlied vom Totschlag (1970).mkv
+-rw-r--r-- 1 nobody nobody  737415168 12. Feb 2021  Der Zerstreute (1970).avi
+-rw-r--r-- 1 nobody nobody 3366627861 11. Apr 2021  Die Dinge des Lebens (1970).mkv
+-rw-r--r-- 1 nobody nobody 3803787047  1. Jan 2020  Die rechte und die linke Hand des Teufels (1970).mkv
+-rw-r--r-- 1 nobody nobody 1009897811 12. Feb 2021  Die zwölf Stühle (1970).mp4
+-rw-r--r-- 1 nobody nobody 1593590301 21. Okt 2021  Ein Bulle sieht rot (1970).mp4
+-rw-r--r-- 1 nobody nobody 1422441818 12. Feb 2021  Ein Fressen für die Geier (1970).avi
+-rw-r--r-- 1 nobody nobody 2577671355 11. Apr 2020  El Topo (1970).mkv
+-rw-r--r-- 1 nobody nobody 1842546069 29. Jan 2021  Kalter Schweiss (1970).mkv
+-rw-r--r-- 1 nobody nobody 1888356889 26. Jul 2021  Lasst uns töten, Companeros (1970).mkv
+drwxr-xr-x 1 nobody nobody        116 12. Feb 2021  Little Big Man (1970)
+-rw-r--r-- 1 nobody nobody 2509504131 16. Feb 2019  MASH (1970).mkv
+-rw-r--r-- 1 nobody nobody 4036981426  2. Mär 2021  Patton - Rebell in Uniform (1970).mkv
+-rw-r--r-- 1 nobody nobody 1963360202 21. Sep 10:49 Recht und Leidenschaft (1970).mkv
+-rw-r--r-- 1 nobody nobody  730068480 12. Feb 2021  Rückkehr zum Planet der Affen (1970).avi
+-rw-r--r-- 1 nobody nobody 1841995203 28. Sep 2021  Sartana kommt ... (1970).mkv
+-rw-r--r-- 1 nobody nobody 3967164143 20. Feb 2020  Stosstrupp Gold (1970).mkv
+-rw-r--r-- 1 nobody nobody 2012441374 12. Feb 2021  The Twelve Chairs (1970).mkv
+-rw-r--r-- 1 nobody nobody 4394519872  9. Aug 2020  Tora.Tora.Tora. (1970).mkv
+-rw-r--r-- 1 nobody nobody 3570106709  4. Jan 2022  Vier im roten Kreis (1970).mkv
+-rw-r--r-- 1 nobody nobody 1188412102 12. Feb 2021  Was ist denn bloß mit Willi los? (1970).mkv
+
+/mm/video/movies/1971:
+insgesamt 64024264
+-rw-r--r-- 1 nobody nobody 1468635136 12. Feb 2021  Andromeda - Toedlicher Staub aus dem All (1971).avi
+-rw-r--r-- 1 nobody nobody 1536196914 22. Feb 2021  Bananas (1971).mkv
+-rw-r--r-- 1 nobody nobody 4696064871 12. Feb 2021  Brennpunkt Brooklyn (1971).mkv
+-rw-r--r-- 1 nobody nobody 1634291946 12. Feb 2021  Bruce Lee - Die Todesfaust des Cheng Li (1971).avi
+-rw-r--r-- 1 nobody nobody 3235078654 15. Jan 2021  Der Clan, der seine Feinde lebendig einmauert (1971).mkv
+-rw-r--r-- 1 nobody nobody 1505315733 12. Feb 2021  Der Omega-Mann (1971).mp4
+-rw-r--r-- 1 nobody nobody 1467975680 12. Feb 2021  Diamantenfieber (1971).avi
+-rw-r--r-- 1 nobody nobody  732680192 12. Feb 2021  Die Nacht der reitenden Leichen (1971).avi
+-rw-r--r-- 1 nobody nobody 1754914203 12. Feb 2021  Die Olsenbande fährt nach Jütland (1971).mkv
+-rw-r--r-- 1 nobody nobody 1255702836 12. Feb 2021  Dirty Harry (1971).avi
+-rw-r--r-- 1 nobody nobody  852014604 12. Feb 2021  Duell (1971).mp4
+-rw-r--r-- 1 nobody nobody  734007296 12. Feb 2021  Frankensteins Kampf gegen die Teufelsmonster (1971).avi
+-rw-r--r-- 1 nobody nobody 5311698257 16. Jun 2020  Freibeuter der Meere (1971).mkv
+-rw-r--r-- 1 nobody nobody 2547499047 16. Jun 2020  Harold and Maude (1971).mkv
+-rw-r--r-- 1 nobody nobody  724267008 12. Feb 2021  Hasch mich - Ich bin der Mörder (1971).avi
+-rw-r--r-- 1 nobody nobody  943745024 12. Feb 2021  Johnny zieht in den Krieg (1971).avi
+-rw-r--r-- 1 nobody nobody 8523162088 12. Feb 2021  Le Mans (1971).mkv
+-rw-r--r-- 1 nobody nobody 3157608623 21. Aug 10:46 Missouri (1971).mkv
+-rw-r--r-- 1 nobody nobody  729481216 12. Feb 2021  Monty Pythons wunderbare Welt der Schwerkraft (1971).avi
+-rw-r--r-- 1 nobody nobody 2483133609  5. Mai 2020  Osceola (1971).mkv
+-rw-r--r-- 1 nobody nobody 1468526592 12. Feb 2021  Sabata kehrt zurück (1971).avi
+-rw-r--r-- 1 nobody nobody 3160635178 23. Jan 2020  Shaft (1971).mkv
+-rw-r--r-- 1 nobody nobody 1569716224 12. Feb 2021  THX 1138 (1971).avi
+-rw-r--r-- 1 nobody nobody 1426536518 12. Feb 2021  Todesmelodie (1971).avi
+-rw-r--r-- 1 nobody nobody 4872012898 19. Okt 2022  Tod in Venedig (1971).mkv
+-rw-r--r-- 1 nobody nobody 1249654218 12. Feb 2021  Uhrwerk Orange (1971).avi
+-rw-r--r-- 1 nobody nobody  733357568 12. Feb 2021  Vier Fäuste für ein Halleluja (1971).avi
+-rw-r--r-- 1 nobody nobody 3043050843  2. Jan 2020  Vier Fäuste für ein Halleluja (1971).mkv
+-rw-r--r-- 1 nobody nobody 2743821718  7. Apr 2021  Wer Gewalt sät (1971).mkv
+
+/mm/video/movies/1972:
+insgesamt 45955384
+-rw-r--r-- 1 nobody nobody 1467721374 12. Feb 2021  Aguirre, der Zorn Gottes (1972).avi
+-rw-r--r-- 1 nobody nobody  728780800 12. Feb 2021  Alfred, die Knallerbse (1972).avi
+-rw-r--r-- 1 nobody nobody 2968695509 29. Nov 2020  Beim Sterben ist jeder der Erste (1972).mkv
+-rw-r--r-- 1 nobody nobody 1717045720 24. Feb 2021  Blacula (1972).mkv
+-rw-r--r-- 1 nobody nobody 2233192581  6. Apr 2024  Das Geheimnis der blutigen Lilie (1972).mkv
+-rw-r--r-- 1 nobody nobody 1612381457 12. Feb 2021  Der Dicke in Mexico (1972).mp4
+-rw-r--r-- 1 nobody nobody 2255039447  6. Jul 2022  Der diskrete Charme der Bourgoisie (1972).mkv
+-rw-r--r-- 1 nobody nobody  732968960 12. Feb 2021  Der große Blonde mit dem schwarzen Schuh (1972).avi
+-rw-r--r-- 1 nobody nobody 1469218816 12. Feb 2021  Der letzte Tango in Paris (1972).avi
+-rw-r--r-- 1 nobody nobody 1433839960 12. Feb 2021  Der Pate (1972).avi
+-rw-r--r-- 1 nobody nobody  940576768 12. Feb 2021  Die Faust der Rebellen (1972).avi
+-rw-r--r-- 1 nobody nobody 1733660731 12. Feb 2021  Die Olsenbande und ihr großer Coup (1972).mkv
+-rw-r--r-- 1 nobody nobody 1230438260 12. Feb 2021  Die Rache des Sizilianers (1972).mkv
+-rw-r--r-- 1 nobody nobody 2208419568 25. Apr 2021  Die Todeskralle schlägt wieder zu (1972).mkv
+-rw-r--r-- 1 nobody nobody 1593896699 18. Feb 2024  Eolomea (1972).mkv
+-rw-r--r-- 1 nobody nobody 1730575547  9. Mai 2023  Fellinis Roma (1972).mkv
+-rw-r--r-- 1 nobody nobody 1183744362 12. Feb 2021  Frankensteins Höllenbrut (1972).avi
+-rw-r--r-- 1 nobody nobody 2350283512 16. Jun 09:34 Fritz the Cat (1972).mkv
+-rw-r--r-- 1 nobody nobody 1465229312 12. Feb 2021  Getaway (1972).avi
+-rw-r--r-- 1 nobody nobody 3979333945 12. Feb 2021  Is was, Doc (1972).mkv
+-rw-r--r-- 1 nobody nobody 2564071076 10. Jul 2021  Junior Bonner (1972).mkv
+-rw-r--r-- 1 nobody nobody 1923076890 24. Aug 09:55 Sie verkaufen den Tod (1972).mkv
+-rw-r--r-- 1 nobody nobody 1550678864 12. Feb 2021  Slaughterhouse Five (1972).mkv
+drwxr-xr-x 1 nobody nobody         88 12. Feb 2021  Solaris (1972)
+-rw-r--r-- 1 nobody nobody  732211200 12. Feb 2021  Verflucht, verdammt und Halleluja (1972).avi
+-rw-r--r-- 1 nobody nobody 1974312101 13. Aug 2021  Was Sie schon immer über Sex wissen wollten (1972).mkv
+-rw-r--r-- 1 nobody nobody 1991680046 12. Feb 2021  Weekend eines Champions (1972).flv
+-rw-r--r-- 1 nobody nobody 1287196672 12. Feb 2021  Zwei Himmelhunde auf dem Weg zur Hölle (1972).avi
+
+/mm/video/movies/1973:
+insgesamt 74882576
+drwxr-xr-x 1 nobody nobody        168 12. Feb 2021  American Graffiti (1973)
+-rw-r--r-- 1 nobody nobody 2755254172  8. Jan 2023  Asphaltblüten (1973).mkv
+-rw-r--r-- 1 nobody nobody  387683843 12. Feb 2021  Auch die Engel essen Bohnen (1973).mp4
+-rw-r--r-- 1 nobody nobody 1063174760  5. Jun 2013  Aus dem Leben eines Taugenichts (1973).avi
+-rw-r--r-- 1 nobody nobody 2609745054 29. Apr 2020  Badlands - Zerschossene Träume (1973).mkv
+-rw-r--r-- 1 nobody nobody 2889465382 19. Mai 2020  Calahan (1973).mkv
+-rw-r--r-- 1 nobody nobody 2371116234 27. Aug 2021  Coffy - Die Raubkatze (1973).mkv
+drwxr-xr-x 1 nobody nobody         92 27. Feb 2023  Der Clou (1973)
+-rw-r--r-- 1 nobody nobody 1801992192 12. Feb 2021  Der Exorzist (1973).avi
+-rw-r--r-- 1 nobody nobody 2447042502 27. Feb 2024  Der Schakal (1973).mkv
+-rw-r--r-- 1 nobody nobody 1314660346 14. Apr 2021  Der wilde Planet (1973).mkv
+-rw-r--r-- 1 nobody nobody 1163153945 12. Feb 2021  Die Abenteuer des Rabbi Jacob (1973).mkv
+-rw-r--r-- 1 nobody nobody 1055699132 12. Feb 2021  Die drei Musketiere (1973).avi
+-rw-r--r-- 1 nobody nobody 2102671919 29. Jan 2024  Die Klette (1973).mkv
+-rw-r--r-- 1 nobody nobody  943478784 12. Feb 2021  Die Legende von Paul und Paula (1973).avi
+-rw-r--r-- 1 nobody nobody 2977747995 25. Jan 2024  Die Nonne von Verona (1973).mkv
+-rw-r--r-- 1 nobody nobody 1774059323 12. Feb 2021  Die Olsenbande läuft Amok (1973).mkv
+-rw-r--r-- 1 nobody nobody 6653729521 23. Dez 2019  Die perfekte Erpressung (1973).mkv
+-rw-r--r-- 1 nobody nobody 2012663944 12. Feb 2021  Enter the Dragon (1973).mkv
+drwxr-xr-x 1 nobody nobody       1554 19. Jan 2024  High Plains Drifter (1973)
+-rw-r--r-- 1 nobody nobody 1045171168 12. Feb 2021  King Kong - Dämonen aus dem Weltall (1973).avi
+-rw-r--r-- 1 nobody nobody 1463660544 12. Feb 2021  Leben und sterben lassen (1973).avi
+-rw-r--r-- 1 nobody nobody 3168851480 25. Mär 2021  Ludwig II. (1973).mkv
+-rw-r--r-- 1 nobody nobody  734212096 12. Feb 2021  Mein Name Ist Nobody (1973).avi
+-rw-r--r-- 1 nobody nobody 5775092492  6. Aug 2022  Paper Moon (1973).mkv
+-rw-r--r-- 1 nobody nobody  732899328 12. Feb 2021  Pat Garrett jagt Billy the Kid (1973)-cd1.avi
+-rw-r--r-- 1 nobody nobody  734662656 12. Feb 2021  Pat Garrett jagt Billy the Kid (1973)-cd2.avi
+-rw-r--r-- 1 nobody nobody 1989640484 12. Feb 2021  Serpico (1973).mkv
+-rw-r--r-- 1 nobody nobody 2468082363 25. Jan 2021  So wie wir waren (1973).mkv
+-rw-r--r-- 1 nobody nobody 1203172230 12. Feb 2021  Soylent Green (1973).avi
+-rw-r--r-- 1 nobody nobody 2817325032 24. Feb 2021  Szenen einer Ehe (1973).mp4
+drwxr-xr-x 1 nobody nobody        112 12. Feb 2021  Welt am Draht (1973)
+-rw-r--r-- 1 nobody nobody 7858380800 12. Feb 2021  Welt am Draht (1973)-dvd1.iso
+-rw-r--r-- 1 nobody nobody 7609468928 12. Feb 2021  Welt am Draht (1973)-dvd2.iso
+-rw-r--r-- 1 nobody nobody 1499563053 12. Feb 2021  Wenn die Gondeln Trauer tragen (1973).mkv
+-rw-r--r-- 1 nobody nobody 1256177664 12. Feb 2021  Westworld (1973).avi
+
+/mm/video/movies/1974:
+insgesamt 38302948
+-rw-r--r-- 1 nobody nobody  734228480 12. Feb 2021  Angst essen Seele auf (1974).avi
+drwxr-xr-x 1 nobody nobody        104 21. Dez 2021  Bring mir den Kopf von Alfredo Garcia (1974)
+-rw-r--r-- 1 nobody nobody 1424086857 17. Sep 11:04 California Kid (1974).mkv
+-rw-r--r-- 1 nobody nobody  733325313 12. Feb 2021  Chinatown (1974).avi
+-rw-r--r-- 1 nobody nobody  930481257 12. Feb 2021  Daisy Miller (1974).mkv
+-rw-r--r-- 1 nobody nobody 2783781015 11. Jan 2024  Das Parfüm der Dame in Schwarz (1974).mkv
+-rw-r--r-- 1 nobody nobody 2543636049  7. Jun 2022  Das Phantom im Paradies (1974).mkv
+-rw-r--r-- 1 nobody nobody  732964864 12. Feb 2021  Der große Blonde kehrt zurück (1974).avi
+-rw-r--r-- 1 nobody nobody  734175232 12. Feb 2021  Der lange Blonde mit den roten Haaren (1974).avi
+-rw-r--r-- 1 nobody nobody 1463535616 12. Feb 2021  Der Mann mit dem goldenen Colt (1974).avi
+drwxr-xr-x 1 nobody nobody        132 12. Feb 2021  Der Pate - Teil II (1974)
+-rw-r--r-- 1 nobody nobody 1621534026 12. Feb 2021  Der voraussichtlich letzte Streich der Olsenbande (1974).mkv
+-rw-r--r-- 1 nobody nobody  733943808 12. Feb 2021  Der wilde wilde Westen (1974).avi
+-rw-r--r-- 1 nobody nobody 1055831818 12. Feb 2021  Die Vier Musketiere - Die Rache der Mylady (1974).avi
+-rw-r--r-- 1 nobody nobody 2654897275 10. Jan 2024  Ein Mann schlägt zurück (1974).mkv
+-rw-r--r-- 1 nobody nobody  664727552 12. Feb 2021  Ein Mann sieht rot (1974).avi
+-rw-r--r-- 1 nobody nobody 2301947359 12. Feb 2021  Erdbeben (1974).mkv
+-rw-r--r-- 1 nobody nobody 3111081377 24. Feb 2021  Fontane Effi Briest (1974).mp4
+-rw-r--r-- 1 nobody nobody 1774680099 16. Jun 11:51 Gewalt und Leidenschaft (1974).mp4
+drwxr-xr-x 1 nobody nobody         16 12. Feb 2021  Hilfe, mein Degen klemmt (1974)
+-rw-r--r-- 1 nobody nobody  733978624 12. Feb 2021  King Kong gegen Godzilla (1974).avi
+-rw-r--r-- 1 nobody nobody  566213880 12. Feb 2021  Lancelot, Ritter der Königin (1974).avi
+-rw-r--r-- 1 nobody nobody 1431697924 12. Feb 2021  Mord im Orient-Express (1974).avi
+-rw-r--r-- 1 nobody nobody  732239360 12. Feb 2021  Sie nannten ihn Plattfuss (1974).avi
+-rw-r--r-- 1 nobody nobody 2672054060 21. Jan 2024  Supermarkt (1974).mkv
+-rw-r--r-- 1 nobody nobody  995955821 12. Feb 2021  The Man with the Golden Gun (1974).mp4
+-rw-r--r-- 1 nobody nobody 1757032920 12. Feb 2021  The Texas Chainsaw Massacre (1974).mkv
+-rw-r--r-- 1 nobody nobody 1486024661 12. Feb 2021  Weltkatastrophe 1999 (1974).mkv
+drwxr-xr-x 1 nobody nobody         16 12. Feb 2021  Wir Viere sind die Musketiere (1974)
+-rw-r--r-- 1 nobody nobody  732081664 12. Feb 2021  Zwei Missionare (1974).avi
+-rw-r--r-- 1 nobody nobody 2116036733 12. Feb 2021  Zwei wie Pech und Schwefel (1974).avi
+
+/mm/video/movies/1975:
+insgesamt 55009116
+-rw-r--r-- 1 nobody nobody 3380260420 28. Feb 2021  700 Meilen westwärts (1975).mkv
+-rw-r--r-- 1 nobody nobody 2404913878 23. Jun 12:50 Abenteurer auf der Lucky Lady (1975).mkv
+-rw-r--r-- 1 nobody nobody 2874040032 24. Apr 2020  Adieu, Bulle (1975).mkv
+-rw-r--r-- 1 nobody nobody 2745289257 14. Mai 2023  Angst über der Stadt (1975).mkv
+-rw-r--r-- 1 nobody nobody 1385179558 12. Feb 2021  Barry Lyndon (1975).avi
+-rw-r--r-- 1 nobody nobody 1783869706  5. Mai 2020  Blutsbrüder (1975).mkv
+-rw-r--r-- 1 nobody nobody  729948160 12. Feb 2021  Der Junge und sein Hund (1975).avi
+-rw-r--r-- 1 nobody nobody 2709916233  1. Mai 2021  Der Richter und sein Henker (1975).mkv
+-rw-r--r-- 1 nobody nobody 1990452596  2. Sep 2020  Der rosarote Panther kehrt zurück (1975).mkv
+-rw-r--r-- 1 nobody nobody  728522752 12. Feb 2021  Der Tollpatsch mit dem sechsten Sinn (1975).avi
+drwxr-xr-x 1 nobody nobody        116 12. Feb 2021  Der weiße Hai (1975)
+-rw-r--r-- 1 nobody nobody 1045148562 12. Feb 2021  Die Brut des Teufels, Konga, Godzilla, King Kong (1975).avi
+-rw-r--r-- 1 nobody nobody  726637754 12. Feb 2021  Die drei Tage des Condor (1975).avi
+-rw-r--r-- 1 nobody nobody 1423520290 12. Feb 2021  Die Killer-Elite (1975).mkv
+-rw-r--r-- 1 nobody nobody  782258176 12. Feb 2021  Die letzte Nacht des Boris Gruschenko (1975).avi
+-rw-r--r-- 1 nobody nobody 1848261581 12. Feb 2021  Die Olsenbande stellt die Weichen (1975).mkv
+-rw-r--r-- 1 nobody nobody 1672150399 12. Feb 2021  Die Ritter der Kokosnuss (1975).mkv
+-rw-r--r-- 1 nobody nobody  732012544 12. Feb 2021  Die verlorene Ehe der Katharina Blum (1975).avi
+drwxr-xr-x 1 nobody nobody        192 12. Feb 2021  Einer flog ueber das Kuckucksnest (1975)
+-rw-r--r-- 1 nobody nobody 2894746222 26. Dez 2023  Friday Foster - Im Netz der schwarzen Spinne (1975).mkv
+-rw-r--r-- 1 nobody nobody 2889710006 16. Jun 2020  Hundstage (1975).mkv
+-rw-r--r-- 1 nobody nobody 1420612508  8. Feb 2024  Lina Braake (1975).mkv
+-rw-r--r-- 1 nobody nobody 3945262419  9. Jan 2022  Mandingo (1975).mkv
+-rw-r--r-- 1 nobody nobody  734550528 12. Feb 2021  Nobody ist der Größte (1975).avi
+drwxr-xr-x 1 nobody nobody        124 12. Feb 2021  Per le antiche scale (1975)
+-rw-r--r-- 1 nobody nobody 2119412170 12. Feb 2021  Plattfuß räumt auf (1975).mkv
+-rw-r--r-- 1 nobody nobody 3081135254  3. Mai 2020  Rollerball (1975).mkv
+-rw-r--r-- 1 nobody nobody 4732201868 10. Feb 2020  Verdammt zu leben - verdammt zu sterben (1975).mkv
+-rw-r--r-- 1 nobody nobody 2833320364 11. Okt 2021  Winterhawk (1975).mkv
+-rw-r--r-- 1 nobody nobody 1981690136 29. Dez 2020  Zwei irre Typen mit ihrem tollen Brummi (1975).mkv
+-rw-r--r-- 1 nobody nobody  734263198 12. Feb 2021  Zwiebel-Jack räumt auf (1975).avi
+
+/mm/video/movies/1976:
+insgesamt 52807552
+drwxr-xr-x 1 nobody nobody        114 12. Feb 2021  1900 (1976)
+-rw-r--r-- 1 nobody nobody 2590666341  7. Jun 2020  Asterix erobert Rom (1976).mkv
+-rw-r--r-- 1 nobody nobody  981996804 12. Feb 2021  Bluff (1976).mp4
+-rw-r--r-- 1 nobody nobody 1213636552 12. Feb 2021  Bruce Lee - Die Pranke des Leoparden (1976).mkv
+-rw-r--r-- 1 nobody nobody  939153408 12. Feb 2021  Brust oder Keule (1976).avi
+-rw-r--r-- 1 nobody nobody  733413376 12. Feb 2021  Carrie - Des Satans jüngste Tochter (1976).avi
+-rw-r--r-- 1 nobody nobody  833310720 12. Feb 2021  Das Spielzeug (1976).avi
+-rw-r--r-- 1 nobody nobody 2789322564  5. Jun 2020  Der Mieter (1976).mkv
+drwxr-xr-x 1 nobody nobody        132 12. Feb 2021  Der Texaner (1976)
+-rw-r--r-- 1 nobody nobody 1952739626 19. Mai 2020  Der Unerbittliche (1976).mkv
+-rw-r--r-- 1 nobody nobody 1482769270 12. Feb 2021  Die 21 Stunden von München (1976).mkv
+-rw-r--r-- 1 nobody nobody 2245539266 16. Jul 2020  Die Insel der Ungeheuer (1976).mkv
+-rw-r--r-- 1 nobody nobody 1857918455 12. Feb 2021  Die Olsenbande sieht rot (1976).mkv
+-rw-r--r-- 1 nobody nobody 1988784128 12. Feb 2021  Die Unbestechlichen (1976).avi
+-rw-r--r-- 1 nobody nobody 2141474601 12. Feb 2024  Die verrückteste Rallye der Welt (1976).mkv
+-rw-r--r-- 1 nobody nobody 2589753157 28. Sep 2021  Ein Elefant irrt sich gewaltig (1976).mkv
+-rw-r--r-- 1 nobody nobody  730572800 12. Feb 2021  Ein Tolpatsch auf Abwegen (1976).avi
+-rw-r--r-- 1 nobody nobody 3363067253 11. Mai 2020  Fellinis Casanova (1976).mkv
+-rw-r--r-- 1 nobody nobody 2255729413 11. Mai 2020  Hector, der Ritter ohne Furcht und Tadel (1976).mkv
+-rw-r--r-- 1 nobody nobody  733782016 12. Feb 2021  Herz aus Glas (1976).avi
+-rw-r--r-- 1 nobody nobody  732233728 12. Feb 2021  Keoma - Melodie des Sterbens (1976).avi
+drwxr-xr-x 1 nobody nobody        140 12. Feb 2021  L'Eredita Ferramonti (1976)
+-rw-r--r-- 1 nobody nobody 2873854595  6. Apr 2020  Logans Run - Flucht ins 23. Jahrhundert (1976).mkv
+-rw-r--r-- 1 nobody nobody 4897528477 12. Feb 2021  Network (1976).avi
+-rw-r--r-- 1 nobody nobody 1772098084 12. Feb 2021  Rocky (1976).avi
+-rw-r--r-- 1 nobody nobody 1663954909 12. Feb 2021  Salas u Malom Ritu (1976).mkv
+-rw-r--r-- 1 nobody nobody 2465598325 26. Jan 2021  Schlacht in den Wolken (1976).mkv
+-rw-r--r-- 1 nobody nobody 2977203714 23. Jun 2022  Schwarzer Engel (1976).mkv
+-rw-r--r-- 1 nobody nobody  735608970 12. Feb 2021  Silent Movie (1976).avi
+-rw-r--r-- 1 nobody nobody 1743041409 15. Jun 10:16 Sternsteinhof (1976).mkv
+-rw-r--r-- 1 nobody nobody 1322946658 12. Feb 2021  Taxi Driver (1976).avi
+drwxr-xr-x 1 nobody nobody        140 12. Feb 2021  The Ritz (1976)
+-rw-r--r-- 1 nobody nobody 1467183726 12. Feb 2021  Zwei scheinheilige Brüder (1976).avi
+
+/mm/video/movies/1977:
+insgesamt 45917844
+-rw-r--r-- 1 nobody nobody 3238751298 29. Jun 2021  Charleston - Zwei Fäuste räumen auf (1977).mkv
+-rw-r--r-- 1 nobody nobody 2569916466 12. Feb 2021  Close Encounters of the Third Kind (1977).mkv
+-rw-r--r-- 1 nobody nobody 1220838065 26. Mär 2021  Das Domino-Komplott (1977).mkv
+-rw-r--r-- 1 nobody nobody 1926710769 18. Sep 2021  Das Domino-Prinzip (1977).mkv
+-rw-r--r-- 1 nobody nobody  733654585 12. Feb 2021  Der Stadtneurotiker (1977).avi
+-rw-r--r-- 1 nobody nobody 2040321626 12. Feb 2021  Die Bruecke von Arnheim (1977).avi
+-rw-r--r-- 1 nobody nobody 2503000184  9. Jan 2022  Die Duellisten (1977).mkv
+-rw-r--r-- 1 nobody nobody 2729028616 22. Apr 2024  Die Gewalt bin ich (1977).mkv
+-rw-r--r-- 1 nobody nobody 1786729404 12. Feb 2021  Die Olsenbande schlägt wieder zu (1977).mkv
+-rw-r--r-- 1 nobody nobody  839331840 12. Feb 2021  Ein ausgekochtes Schlitzohr (1977).avi
+-rw-r--r-- 1 nobody nobody 1749369680  8. Dez 2020  Ein irrer Typ (1977).mkv
+-rw-r--r-- 1 nobody nobody 1249790432 21. Mär 2021  Eraserhead (1977).mkv
+-rw-r--r-- 1 nobody nobody  734015488 12. Feb 2021  Jabberwocky (1977).avi
+-rw-r--r-- 1 nobody nobody 1467967488 12. Feb 2021  James Bond 007 - Der Spion, der mich liebte (1977).avi
+-rw-r--r-- 1 nobody nobody  733612032 12. Feb 2021  Kentucky Fried Movie (1977).avi
+-rw-r--r-- 1 nobody nobody 7180096592 12. Feb 2021  Mel Brooks' Höhenkoller (1977).mkv
+-rw-r--r-- 1 nobody nobody 2763202100 16. Mai 2024  Operation Ganymed (1977).mkv
+-rw-r--r-- 1 nobody nobody 2260132235 24. Mär 2021  Sindbad und das Auge des Tigers (1977).mkv
+-rw-r--r-- 1 nobody nobody 1572545516 12. Feb 2021  Steiner - Das Eiserne Kreuz (1977).avi
+-rw-r--r-- 1 nobody nobody 1874741283 12. Feb 2021  Straße der Verdammnis (1977).mp4
+-rw-r--r-- 1 nobody nobody 1327526359 12. Feb 2021  The Fatal Flying Guillotine (1977).mkv
+-rw-r--r-- 1 nobody nobody  732653568 12. Feb 2021  The Last Remake of Beau Geste (1977).avi
+-rw-r--r-- 1 nobody nobody 2583262779  4. Feb 2021  Unternehmen Capricorn (1977).mkv
+-rw-r--r-- 1 nobody nobody 1202619384 12. Feb 2021  Zwei außer Rand und Band (1977).avi
+
+/mm/video/movies/1978:
+insgesamt 38955404
+-rw-r--r-- 1 nobody nobody 2452346475 14. Jan 2024  Black Tiger (1978).mkv
+-rw-r--r-- 1 nobody nobody 4692942551 12. Feb 2021  Convoy (1978).mkv
+-rw-r--r-- 1 nobody nobody 1468639232 12. Feb 2021  Der Herr der Ringe (1978).avi
+-rw-r--r-- 1 nobody nobody 1992780862 30. Dez 2021  Der Himmel soll warten (1978).mkv
+-rw-r--r-- 1 nobody nobody  730308608 12. Feb 2021  Der Querkopf (1978).avi
+-rw-r--r-- 1 nobody nobody  732958720 12. Feb 2021  Der Sanfte mit den schnellen Beinen (1978).avi
+-rw-r--r-- 1 nobody nobody 1464953588 12. Feb 2021  Deutschland im Herbst (1978).avi
+-rw-r--r-- 1 nobody nobody 1782450176 12. Feb 2021  Die 36 Kammern der Shaolin (1978).avi
+drwxr-xr-x 1 nobody nobody        164 12. Feb 2021  Die durch die Hölle gehen (1978)
+-rw-r--r-- 1 nobody nobody 2656825571  3. Apr 2021  Die Körperfresser kommen (1978).mkv
+-rw-r--r-- 1 nobody nobody 1886774525 12. Feb 2021  Die Olsenbande steigt aufs Dach (1978).mkv
+-rw-r--r-- 1 nobody nobody 1468954624 12. Feb 2021  Ein Haufen verwegener Hunde (1978).avi
+-rw-r--r-- 1 nobody nobody 2208661508 22. Jul 2021  Ein Käfig voller Narren (1978).mkv
+-rw-r--r-- 1 nobody nobody  583670838 12. Feb 2021  Ein Kolumbus auf der Havel (1978).avi
+-rw-r--r-- 1 nobody nobody  722561024 12. Feb 2021  Ich bin schüchtern, aber in Behandlung (1978).avi
+-rw-r--r-- 1 nobody nobody 2902524621 17. Jun 2020  In der Glut des Südens (1978).mkv
+-rw-r--r-- 1 nobody nobody 1009216091 12. Feb 2021  Inspektor Clouseau - Der irre Flic mit dem heissen Blick (1978).mkv
+-rw-r--r-- 1 nobody nobody  731250688 12. Feb 2021  Plattfuss in Afrika (1978).avi
+-rw-r--r-- 1 nobody nobody 1570281472 12. Feb 2021  Sie nannten ihn Mücke (1978).avi
+-rw-r--r-- 1 nobody nobody 1805401489 10. Jul 2020  Teufelskreis Alpha (1978).mkv
+-rw-r--r-- 1 nobody nobody 1052268544 12. Feb 2021  Ursula (1978).avi
+-rw-r--r-- 1 nobody nobody 4415082898 27. Aug 2020  Watership Down (1978).mkv
+drwxr-xr-x 1 nobody nobody        160 12. Feb 2021  Zombie - Dawn of the Dead (1978)
+-rw-r--r-- 1 nobody nobody 1559439360 12. Feb 2021  Zwei sind nicht zu bremsen (1978).avi
+
+/mm/video/movies/1979:
+insgesamt 52370544
+-rw-r--r-- 1 nobody nobody  614794684 12. Feb 2021  1941 - Wo bitte gehts nach Hollywood (1979).avi
+-rw-r--r-- 1 nobody nobody 1422286090 12. Feb 2021  Alien - Das unheimliche Wesen aus einer fremden Welt (1979).avi
+drwxr-xr-x 1 nobody nobody        248 12. Feb 2021  Apocalypse Now Redux (1979)
+-rw-r--r-- 1 nobody nobody 1480273920 12. Feb 2021  Das China-Syndrom (1979).avi
+-rw-r--r-- 1 nobody nobody 1758601906 12. Feb 2021  Das Concorde-Inferno (1979).mkv
+-rw-r--r-- 1 nobody nobody 1257374947 12. Feb 2021  Das Krokodil und sein Nilpferd (1979).mkv
+-rw-r--r-- 1 nobody nobody 2431625397 28. Jul 2023  Das Leben des Brian (1979).mp4
+-rw-r--r-- 1 nobody nobody  758337532 12. Feb 2021  Die 5 Kampfmaschinen der Shaolin (1979).mkv
+drwxr-xr-x 1 nobody nobody        124 12. Feb 2021  Die Blechtrommel (1979)
+-rw-r--r-- 1 nobody nobody  968548056 12. Feb 2021  Die Ehe der Maria Braun (1979).avi
+-rw-r--r-- 1 nobody nobody 1940848692 12. Feb 2021  Die Olsenbande ergibt sich nie (1979).mkv
+-rw-r--r-- 1 nobody nobody 1474408578 12. Feb 2021  Fleisch (1979).avi
+-rw-r--r-- 1 nobody nobody 1804925629 12. Feb 2021  Hände wie Samt (1979).mp4
+-rw-r--r-- 1 nobody nobody 6126771771 17. Jul 2020  Heldern der Nacht (1979).mkv
+-rw-r--r-- 1 nobody nobody 3128460877  2. Nov 2022  Im Westen nichts Neues (1979).mkv
+-rw-r--r-- 1 nobody nobody 2995759194 11. Aug 2021  Kramer gegen Kramer (1979).mkv
+-rw-r--r-- 1 nobody nobody 1125370756 12. Feb 2021  Louis' unheimliche Begegnung mit den Außerirdischen (1979).mkv
+-rw-r--r-- 1 nobody nobody  728633344 12. Feb 2021  Mad Max (1979).avi
+-rw-r--r-- 1 nobody nobody 1753795249 29. Okt 2023  Manaos - Die Sklaventreiber vom Amazonas (1979).mkv
+-rw-r--r-- 1 nobody nobody  730488833 12. Feb 2021  Manhattan (1979).avi
+-rw-r--r-- 1 nobody nobody 1985597494 12. Feb 2021  Mission Galactica: Angriff der Zylonen (1979).mkv
+-rw-r--r-- 1 nobody nobody 1463494656 12. Feb 2021  Moonraker - Streng geheim (1979).avi
+-rw-r--r-- 1 nobody nobody 5715359039 12. Feb 2021  Nosferatu - Phantom der Nacht (1979).mkv
+-rw-r--r-- 1 nobody nobody 1779662486 12. Feb 2021  Rocky II (1979).avi
+-rw-r--r-- 1 nobody nobody 1465314106 12. Feb 2021  Stalker (1979).avi
+-rw-r--r-- 1 nobody nobody 1687433584 12. Feb 2021  Star Trek - Der Film (1979).mkv
+-rw-r--r-- 1 nobody nobody 1982819782 12. Feb 2021  Steiner - Das eiserne Kreuz 2 (1979).mp4
+-rw-r--r-- 1 nobody nobody 1046036630 12. Feb 2021  The Warriors (1979).avi
+-rw-r--r-- 1 nobody nobody 1465181772 12. Feb 2021  Woyzeck (1979).avi
+-rw-r--r-- 1 nobody nobody 1785150435 24. Apr 2020  Zehn - Die Traumfrau (1979).mkv
+-rw-r--r-- 1 nobody nobody  750024464 12. Feb 2021  Zwei Kamele auf einem Pferd (1979).avi
+
+/mm/video/movies/1980:
+insgesamt 44267448
+-rw-r--r-- 1 nobody nobody 1042870498 12. Feb 2021  Buddy haut den Lukas (1980).avi
+-rw-r--r-- 1 nobody nobody 1847796451  9. Apr 2020  Der Elefantenmensch (1980).mkv
+-rw-r--r-- 1 nobody nobody  690509824 12. Feb 2021  Der gezähmte Widerspenstige (1980).avi
+-rw-r--r-- 1 nobody nobody 3252228743 20. Jan 2024  Der kleine Lord (1980).mp4
+-rw-r--r-- 1 nobody nobody 2260437583  2. Mär 2024  Der Puppenspieler (1980).mkv
+-rw-r--r-- 1 nobody nobody  737247232 12. Feb 2021  Der Regenschirmmörder (1980).avi
+-rw-r--r-- 1 nobody nobody 2658126067  6. Okt 2022  Der Schatz von Caboblanco (1980).mkv
+-rw-r--r-- 1 nobody nobody 1043744768 12. Feb 2021  Die Götter müssen verrückt sein (1980).avi
+-rw-r--r-- 1 nobody nobody 2689784542 27. Jan 2024  Die Polizistin (1980).mkv
+-rw-r--r-- 1 nobody nobody 1286115362 12. Feb 2021  Die unglaubliche Reise in einem verrückten Flugzeug (1980).avi
+-rw-r--r-- 1 nobody nobody 3186501644  5. Nov 2020  Dressed to Kill (1980).mkv
+-rw-r--r-- 1 nobody nobody  943990784 12. Feb 2021  Eden no sono (1980).avi
+-rw-r--r-- 1 nobody nobody 2306259680 12. Feb 2021  Heaven's Gate - Das Tor zum Himmel (1980).avi
+-rw-r--r-- 1 nobody nobody 3869560147 23. Jan 2021  Hebt die Titanic (1980).mkv
+-rw-r--r-- 1 nobody nobody 1813409349 10. Mai 2024  Kaltgestellt (1980).mkv
+-rw-r--r-- 1 nobody nobody  731127808 12. Feb 2021  La Boum - Die Fete (1980).avi
+-rw-r--r-- 1 nobody nobody 1484940143 12. Feb 2021  Louis, der Geizkragen (1980).mkv
+-rw-r--r-- 1 nobody nobody  730992640 12. Feb 2021  Mein Gott, Willi (1980).avi
+-rw-r--r-- 1 nobody nobody 1386084847 12. Feb 2021  Oh, Moses (1980).mkv
+-rw-r--r-- 1 nobody nobody 1992868847  1. Aug 2020  Plattfuß am Nil (1980).mkv
+-rw-r--r-- 1 nobody nobody 1394916510 12. Feb 2021  Shining (1980).avi
+-rw-r--r-- 1 nobody nobody 2047080302 12. Feb 2021  The Blues Brothers (1980).avi
+-rw-r--r-- 1 nobody nobody 3206519167 28. Okt 2020  The Fog - Nebel des Grauens (1980).mkv
+-rw-r--r-- 1 nobody nobody 1562679465 12. Feb 2021  Theo gegen den Rest der Welt (1980).mkv
+-rw-r--r-- 1 nobody nobody 1164026268  6. Jun 2021  Und nächstes Jahr am Balaton (1980).mp4
+
+/mm/video/movies/1981:
+insgesamt 87911696
+-rw-r--r-- 1 nobody nobody  1548232516 24. Okt 2020  Ach Du lieber Harry (1981).mkv
+-rw-r--r-- 1 nobody nobody  1927148620 12. Feb 2021  Alles im Eimer (1981).mp4
+-rw-r--r-- 1 nobody nobody  2909145833 22. Jul 2020  Am goldenen See (1981).mkv
+-rw-r--r-- 1 nobody nobody  2521391655 12. Feb 2021  Asso (1981).mkv
+-rw-r--r-- 1 nobody nobody  1749433987 15. Sep 2020  Auf dem Highway ist die Hölle los (1981).mkv
+-rw-r--r-- 1 nobody nobody  1724703494 12. Feb 2021  Banana Joe (1981).mp4
+-rw-r--r-- 1 nobody nobody  1657297137 30. Apr 2020  Blow Out (1981).mkv
+-rw-r--r-- 1 nobody nobody  1682497536 12. Feb 2021  Christiane F. - Wir Kinder vom Bahnhof Zoo (1981).avi
+-rw-r--r-- 1 nobody nobody  2449731049 12. Feb 2021  Conan der Barbar (1981).mkv
+drwxr-xr-x 1 nobody nobody          92 12. Feb 2021  Das Boot (1981)
+-rw-r--r-- 1 nobody nobody  1575235777  2. Feb 2024  Das Verhör (1981).mkv
+-rw-r--r-- 1 nobody nobody  3366189251 18. Jul 2021  Der große Muppet Krimi (1981).mkv
+-rw-r--r-- 1 nobody nobody   721885184 12. Feb 2021  Der Hornochse und sein Zugpferd (1981).avi
+-rw-r--r-- 1 nobody nobody  1996190962 18. Apr 2021  Der Profi (1981).mkv
+-rw-r--r-- 1 nobody nobody  2915506636 14. Sep 2021  Die Hunde des Krieges (1981).mkv
+-rw-r--r-- 1 nobody nobody  2383224386  6. Feb 2021  Die Kadetten von Bunker Hill (1981).mkv
+-rw-r--r-- 1 nobody nobody  1118990628 12. Feb 2021  Die Klapperschlange (1981).mp4
+-rw-r--r-- 1 nobody nobody   783028229 12. Feb 2021  Die letzten Amerikaner (1981).avi
+-rw-r--r-- 1 nobody nobody  1759582203 12. Feb 2021  Die Olsenbande fliegt über alle Berge (1981).mkv
+-rw-r--r-- 1 nobody nobody  1655822250 12. Feb 2021  Die Olsenbande fliegt über die Planke (1981).mkv
+-rw-r--r-- 1 nobody nobody  2967357189 22. Dez 2021  Die Stunde des Siegers (1981).mkv
+-rw-r--r-- 1 nobody nobody  1146571778 12. Feb 2021  Eine Faust geht nach Westen (1981).avi
+-rw-r--r-- 1 nobody nobody  1658804457 12. Feb 2021  Excalibur (1981).mkv
+-rw-r--r-- 1 nobody nobody  1977036143 17. Apr 2021  Fighter Gang (1981).mkv
+-rw-r--r-- 1 nobody nobody  1242677722 12. Feb 2021  Gallipolli (1981).avi
+-rw-r--r-- 1 nobody nobody  1287064308 12. Feb 2021  Gib dem Affen Zucker (1981).avi
+-rw-r--r-- 1 nobody nobody   840124416 12. Feb 2021  History of the World, Part I (1981).avi
+-rw-r--r-- 1 nobody nobody  1884813312 12. Feb 2021  Indiana Jones - Jaeger des verlorenen Schatzes (1981).avi
+-rw-r--r-- 1 nobody nobody  1461362688 12. Feb 2021  In toedlicher Mission (1981).avi
+-rw-r--r-- 1 nobody nobody  6715096606  2. Jan 2021  Kampf der Titanen (1981).mkv
+drwxr-xr-x 1 nobody nobody         216 12. Feb 2021  Lili Marleen (1981)
+-rw-r--r-- 1 nobody nobody  2119982555 28. Jan 2021  Lola (1981).mkv
+-rw-r--r-- 1 nobody nobody   730261504 12. Feb 2021  Louis und seine außerirdischen Kohlköpfe (1981).avi
+-rw-r--r-- 1 nobody nobody  1630248383 12. Feb 2021  Mad Max 2 - Der Vollstrecker (1981).mp4
+-rw-r--r-- 1 nobody nobody   733964288 12. Feb 2021  Mel Brooks - Die verrückte Geschichte der Welt (1981).avi
+-rw-r--r-- 1 nobody nobody  2234293308 12. Jul 2020  Mephisto (1981).mkv
+-rw-r--r-- 1 nobody nobody 10148026089 20. Feb 2021  Ninja, die Killermaschine (1981).mkv
+-rw-r--r-- 1 nobody nobody  1295450402 12. Feb 2021  Outland - Planet der Verdammten (1981).mp4
+-rw-r--r-- 1 nobody nobody   776408655 12. Feb 2021  Tanz der Teufel (1981).mkv
+-rw-r--r-- 1 nobody nobody  2187643038 12. Feb 2021  Time Bandits (1981).mkv
+-rw-r--r-- 1 nobody nobody  3078269849 24. Feb 2021  Unser kurzes Leben (1981).mp4
+-rw-r--r-- 1 nobody nobody  2701236628 23. Jul 2021  Wenn der Postmann zweimal klingelt (1981).mkv
+-rw-r--r-- 1 nobody nobody  1374048256 12. Feb 2021  Zwei Asse trumpfen auf (1981).avi
+-rw-r--r-- 1 nobody nobody  2650419294 28. Apr 2024  Zwei Mädchen und die Doolin-Bande (1981).mkv
+-rw-r--r-- 1 nobody nobody   735098880 12. Feb 2021  Zwei Nasen tanken Super (1981).avi
+
+/mm/video/movies/1982:
+insgesamt 37484440
+-rw-r--r-- 1 nobody nobody 2242231141 30. Apr 2020  Bingo Bongo (1982).mkv
+-rw-r--r-- 1 nobody nobody  959771843 12. Feb 2021  Blade Runner (Final Cut)(1982).mkv
+-rw-r--r-- 1 nobody nobody 2840507435 27. Apr 2020  Das Ding aus dem Sumpf (1982).mkv
+-rw-r--r-- 1 nobody nobody 2259546130 12. Feb 2021  Das Ding aus einer anderen Welt (1982).avi
+-rw-r--r-- 1 nobody nobody 1518543653 12. Feb 2021  Das Söldnerkommando (1982).mkv
+-rw-r--r-- 1 nobody nobody  339464394 12. Feb 2021  Der Bomber (1982).mp4
+-rw-r--r-- 1 nobody nobody 2243631715 15. Okt 2021  Der Kontrakt des Zeichners (1982).mkv
+-rw-r--r-- 1 nobody nobody 1710364277  2. Sep 2020  Der rosarote Panther wird gejagt (1982).mkv
+-rw-r--r-- 1 nobody nobody  733655040 12. Feb 2021  Die Klasse von 1984 (1982).avi
+-rw-r--r-- 1 nobody nobody  733407232 12. Feb 2021  Die Sehnsucht der Veronika Voss (1982).avi
+-rw-r--r-- 1 nobody nobody  730454228 12. Feb 2021  Die verrücktesten 90 Minuten vor Christi Geburt (1982).avi
+-rw-r--r-- 1 nobody nobody 2446508597 28. Mär 2023  Die weiße Rose (1982).mkv
+-rw-r--r-- 1 nobody nobody 3100404040 30. Mai 2020  E.T. - Der Außerirdische (1982).mkv
+drwxr-xr-x 1 nobody nobody        180  4. Mai 2024  Fanny und Alexander (1982)
+-rw-r--r-- 1 nobody nobody 1468816220 12. Feb 2021  Fitzcarraldo (1982).avi
+-rw-r--r-- 1 nobody nobody  733176984 12. Feb 2021  La Boum 2 - Die Fete geht weiter (1982)-cd1.avi
+-rw-r--r-- 1 nobody nobody  734028886 12. Feb 2021  La Boum 2 - Die Fete geht weiter (1982)-cd2.avi
+-rw-r--r-- 1 nobody nobody  734142464 12. Feb 2021  Louis und seine verrückten Politessen (1982).avi
+drwxr-xr-x 1 nobody nobody         78  4. Mai 2024  Macbeth (1982)
+-rw-r--r-- 1 nobody nobody 1114887983 12. Feb 2021  Piratensender Powerplay (1982).mkv
+-rw-r--r-- 1 nobody nobody 1424833120 12. Feb 2021  Poltergeist (1982).avi
+-rw-r--r-- 1 nobody nobody  734361816 12. Feb 2021  Rambo (1982).avi
+-rw-r--r-- 1 nobody nobody 1505998684 12. Feb 2021  Rocky III (1982).avi
+-rw-r--r-- 1 nobody nobody 3093096750  6. Jan 2022  Tootsie (1982).mkv
+-rw-r--r-- 1 nobody nobody  734009344 12. Feb 2021  Tote tragen keine Karos (1982).avi
+-rw-r--r-- 1 nobody nobody 1472370688 12. Feb 2021  Tron (1982).avi
+-rw-r--r-- 1 nobody nobody 2775801588 10. Sep 2021  Vermisst (1982).mkv
+
+/mm/video/movies/1983:
+insgesamt 50378612
+-rw-r--r-- 1 nobody nobody 3792122401 29. Jun 2022  Atemlos (1983).mkv
+-rw-r--r-- 1 nobody nobody 1087127800 12. Feb 2021  Bud, der Ganovenschreck (1983).mkv
+drwxr-xr-x 1 nobody nobody        132 12. Feb 2021  Das fliegende Auge (1983)
+-rw-r--r-- 1 nobody nobody 3152409708 30. Aug 2020  Das Osterman Weekend (1983).mkv
+-rw-r--r-- 1 nobody nobody 1565544448 12. Feb 2021  Das Puppenheim in Pinnow (1983).avi
+-rw-r--r-- 1 nobody nobody 4264047591 29. Jun 2021  Der Außenseiter (1983).mkv
+-rw-r--r-- 1 nobody nobody 1928836431  8. Apr 2021  Der Fluch des rosaroten Panthers (1983).mkv
+-rw-r--r-- 1 nobody nobody 3130199875  8. Jul 2020  Der Sinn des Lebens (1983).mkv
+-rw-r--r-- 1 nobody nobody 2909292173 12. Feb 2021  Der Stoff, aus dem die Helden sind (1983).mkv
+-rw-r--r-- 1 nobody nobody 1712603498 21. Okt 2021  Die Supernasen (1983).mp4
+-rw-r--r-- 1 nobody nobody  734021632 12. Feb 2021  Dotterbart (1983).avi
+-rw-r--r-- 1 nobody nobody 8230862848 15. Dez 2023  Himmel und Hölle (1983).iso
+-rw-r--r-- 1 nobody nobody 2179081276  5. Jan 2023  Himmel und Hölle (1983).mp4
+-rw-r--r-- 1 nobody nobody 1826618905 24. Feb 2021  Kehraus (1983).mp4
+-rw-r--r-- 1 nobody nobody 2195229627  6. Sep 2020  Krull (1983).mkv
+-rw-r--r-- 1 nobody nobody  727048192 12. Feb 2021  Le Dernier Combat (1983).avi
+-rw-r--r-- 1 nobody nobody 1967862819 12. Feb 2021  McQuade - Der Wolf (1983).mkv
+-rw-r--r-- 1 nobody nobody 1472415744 12. Feb 2021  Octopussy (1983).avi
+-rw-r--r-- 1 nobody nobody  848036591 12. Feb 2021  Scarface (1983).mkv
+-rw-r--r-- 1 nobody nobody 2169947604 21. Nov 2021  Suburbia (1983).mkv
+drwxr-xr-x 1 nobody nobody         16 12. Feb 2021  The Day After (1983)
+-rw-r--r-- 1 nobody nobody 1161344018 12. Feb 2021  Under Fire (1983).avi
+drwxr-xr-x 1 nobody nobody        152 12. Feb 2021  Wargames - Kriegsspiele (1983)
+-rw-r--r-- 1 nobody nobody 2661320135  7. Mär 2021  Zeit der Zärtlichkeit (1983).mkv
+-rw-r--r-- 1 nobody nobody 1143109632 12. Feb 2021  Zwei bärenstarke Typen (1983).avi
+-rw-r--r-- 1 nobody nobody  728567808 12. Feb 2021  Zwei irre Spaßvögel (1983).avi
+
+/mm/video/movies/1984:
+insgesamt 92635756
+-rw-r--r-- 1 nobody nobody 1562206208 12. Feb 2021  1984 (1984).avi
+drwxr-xr-x 1 nobody nobody        268 12. Feb 2021  2010: Das Jahr, in dem wir Kontakt aufnehmen (1984)
+-rw-r--r-- 1 nobody nobody 4227781079 21. Sep 2022  Abwärts (1984).mkv
+-rw-r--r-- 1 nobody nobody 4066573401  1. Jan 2020  Amadeus (1984).mkv
+-rw-r--r-- 1 nobody nobody 1755168473 12. Feb 2021  Auf dem Highway ist wieder die Hölle los (1984).mkv
+-rw-r--r-- 1 nobody nobody 2377344125 22. Jul 2020  Auf der Jagd nach dem grünen Diamanten (1984).mkv
+-rw-r--r-- 1 nobody nobody 1982510116 12. Feb 2021  Beat Street (1984).mkv
+-rw-r--r-- 1 nobody nobody 1352460418 12. Feb 2021  Beverly Hills Cop (1984).mkv
+-rw-r--r-- 1 nobody nobody 4018880489 12. Okt 2020  Birdy (1984).mkv
+-rw-r--r-- 1 nobody nobody 3065219068 30. Apr 2020  Blood Simple - Eine mörderische Nacht (1984).mkv
+-rw-r--r-- 1 nobody nobody 1838666898 12. Feb 2021  Conan der Zerstörer (1984).mkv
+-rw-r--r-- 1 nobody nobody 1465721318 12. Feb 2021  Cotton Club (1984).avi
+-rw-r--r-- 1 nobody nobody  941109068 20. Feb 2021  Das Arche Noah Prinzip (1984).mkv
+-rw-r--r-- 1 nobody nobody 2811384097 25. Nov 2023  Das Philadelphia Experiment (1984).mkv
+-rw-r--r-- 1 nobody nobody 3376800942  4. Nov 2021  Der Tank (1984).mkv
+-rw-r--r-- 1 nobody nobody 6533310225  5. Nov 2020  Der Tod kommt zweimal (1984).mkv
+-rw-r--r-- 1 nobody nobody 3931073265 25. Dez 2020  Der Wolf hetzt die Meute (1984).mkv
+-rw-r--r-- 1 nobody nobody 1380194360 12. Feb 2021  Der Wüstenplanet (1984).avi
+-rw-r--r-- 1 nobody nobody  732958720 12. Feb 2021  Der Zwilling (1984).avi
+-rw-r--r-- 1 nobody nobody 2071229418 25. Mai 2020  Didi der Doppelgänger (1984).mkv
+-rw-r--r-- 1 nobody nobody 2085367542 31. Aug 10:02 Die Aufsässigen (1984).mkv
+-rw-r--r-- 1 nobody nobody 3620783630  2. Aug 2021  Die Muppets erobern Manhattan (1984).mkv
+-rw-r--r-- 1 nobody nobody 2262213592 15. Apr 2021  Die rote Flut (1984).mkv
+-rw-r--r-- 1 nobody nobody 2213180110 10. Dez 2019  Die unendliche Geschichte (1984).mkv
+-rw-r--r-- 1 nobody nobody 1905861515 12. Okt 2020  Dirty Harry 4 - Dirty Harry kommt zurück (1984).mkv
+-rw-r--r-- 1 nobody nobody 1421515586 12. Feb 2021  Es war einmal in Amerika (1984)-cd1.avi
+-rw-r--r-- 1 nobody nobody 1406715596 12. Feb 2021  Es war einmal in Amerika (1984)-cd2.avi
+-rw-r--r-- 1 nobody nobody 2730582944 17. Nov 2022  Gegen jede Chance (1984).mkv
+-rw-r--r-- 1 nobody nobody 2185585491 12. Feb 2021  Ghostbusters (1984).mp4
+-rw-r--r-- 1 nobody nobody 1277595334 12. Feb 2021  Godzilla - Die Rückkehr des Monsters (1984).avi
+-rw-r--r-- 1 nobody nobody 1996825196 12. Feb 2021  Gremlins (1984).mkv
+-rw-r--r-- 1 nobody nobody 2093869056 12. Feb 2021  Indiana Jones und der Tempel des Todes (1984).avi
+-rw-r--r-- 1 nobody nobody 2269144701  6. Sep 2020  Keiner haut wie Don Camillo (1984).mkv
+-rw-r--r-- 1 nobody nobody 1244722160 12. Feb 2021  Mama Mia - Nur keine Panik (1984).avi
+-rw-r--r-- 1 nobody nobody  739084682 12. Feb 2021  Missing in Action (1984).avi
+-rw-r--r-- 1 nobody nobody 3090922648 12. Feb 2021  Paris, Texas (1984).mkv
+-rw-r--r-- 1 nobody nobody 2582607172 18. Aug 2021  Splash - Jungfrau am Haken (1984).mkv
+-rw-r--r-- 1 nobody nobody  680595456 12. Feb 2021  Starman (1984)-cd1.avi
+-rw-r--r-- 1 nobody nobody  680271872 12. Feb 2021  Starman (1984)-cd2.avi
+-rw-r--r-- 1 nobody nobody 2962021392 20. Jan 2022  Stranger Than Paradise (1984).mkv
+drwxr-xr-x 1 nobody nobody        338 12. Feb 2021  Straßen in Flammen (1984)
+-rw-r--r-- 1 nobody nobody 2230243905 12. Feb 2021  Terminator (1984).mp4
+drwxr-xr-x 1 nobody nobody        312 12. Feb 2021  The Killing Fields - Schreiendes Land (1984)
+-rw-r--r-- 1 nobody nobody  502276575 12. Feb 2021  The Last Starfighter (1984).mkv
+drwxr-xr-x 1 nobody nobody         16 12. Feb 2021  Threads (1984)
+-rw-r--r-- 1 nobody nobody 1263409152 12. Feb 2021  Top Secret (1984).avi
+-rw-r--r-- 1 nobody nobody 1922939186 21. Aug 2020  Vier Fäuste gegen Rio (1984).mkv
+
+/mm/video/movies/1985:
+insgesamt 66608604
+-rw-r--r-- 1 nobody nobody 1761662913 28. Jun 2020  American Fighter (1985).mkv
+-rw-r--r-- 1 nobody nobody 2221193537 29. Jul 2021  Asterix - Sieg über Caesar (1985).mkv
+-rw-r--r-- 1 nobody nobody 2955315808 12. Feb 2021  Back to the Future (1985).mkv
+-rw-r--r-- 1 nobody nobody  797633002 12. Feb 2021  Barbarian Queen (1985).mkv
+drwxr-xr-x 1 nobody nobody        110 12. Feb 2021  Brazil (1985)
+-rw-r--r-- 1 nobody nobody 2129423435 19. Aug 2020  Cocoon (1985).mkv
+-rw-r--r-- 1 nobody nobody  733925376 12. Feb 2021  Das Phantom-Kommando (1985).avi
+-rw-r--r-- 1 nobody nobody  565860565 31. Mär 2018  Death Wish III - Der Rächer von New York.mp4
+-rw-r--r-- 1 nobody nobody 1126620073 12. Feb 2021  Der Falke und der Schneemann (1985).mkv
+-rw-r--r-- 1 nobody nobody 3001243476  8. Mai 2020  Didi und die Rache der Enterbten (1985).mkv
+-rw-r--r-- 1 nobody nobody 2803562226 16. Mär 2020  Die Farbe Lila (1985).mkv
+-rw-r--r-- 1 nobody nobody  211727984 12. Feb 2021  Die Miami Cops (1985).mp4
+-rw-r--r-- 1 nobody nobody 1651224989 28. Nov 2023  Die Zeit nach Mitternacht (1985).mkv
+-rw-r--r-- 1 nobody nobody 1675429888 12. Feb 2021  Enemy Mine - Geliebter Feind (1985).avi
+-rw-r--r-- 1 nobody nobody 1463888974 12. Feb 2021  Fleisch und Blut (1985).avi
+-rw-r--r-- 1 nobody nobody 1463318528 12. Feb 2021  Im Angesicht des Todes (1985).avi
+-rw-r--r-- 1 nobody nobody 1142905412 12. Feb 2021  Jenseits von Afrika (1985).avi
+-rw-r--r-- 1 nobody nobody 4157039535  3. Dez 2021  Kommando Leopard (1985).mkv
+-rw-r--r-- 1 nobody nobody 4253861866 23. Jun 2021  Komm und sieh (1985).mkv
+-rw-r--r-- 1 nobody nobody 4392274085 20. Nov 2021  Liebe und Gewalt (1985).mkv
+-rw-r--r-- 1 nobody nobody 4248084320 12. Feb 2021  Menu Total (1985).avi
+-rw-r--r-- 1 nobody nobody 1076424704 12. Feb 2021  Otto - Der Film (1985).avi
+-rw-r--r-- 1 nobody nobody  733639640 12. Feb 2021  Rambo II - Der Auftrag (1985).avi
+drwxr-xr-x 1 nobody nobody        184 12. Feb 2021  Ran (1985)
+-rw-r--r-- 1 nobody nobody 3520623244 12. Feb 2021  Red Sonja (1985).mkv
+-rw-r--r-- 1 nobody nobody 3824858601  3. Nov 2021  Revolution (1985).mkv
+-rw-r--r-- 1 nobody nobody 1502264280 12. Feb 2021  Rocky IV - Der Kampf des Jahrhunderts (1985).avi
+-rw-r--r-- 1 nobody nobody 2710455022 19. Nov 2021  Spione wir wir (1985).mkv
+-rw-r--r-- 1 nobody nobody 1465817088 12. Feb 2021  Subway (1985).avi
+-rw-r--r-- 1 nobody nobody 2369852377 12. Feb 2021  The Goonies (1985).mp4
+-rw-r--r-- 1 nobody nobody  872017480 12. Feb 2021  The Quiet Earth (1985).mkv
+-rw-r--r-- 1 nobody nobody  452884763 12. Feb 2021  The Return of the Living Dead (1985).avi
+-rw-r--r-- 1 nobody nobody 2118009129 12. Feb 2021  Witness (1985).mp4
+-rw-r--r-- 1 nobody nobody  583857012  6. Aug 2021  Zahn um Zahn (1985).mp4
+-rw-r--r-- 1 nobody nobody  729882624 12. Feb 2021  Zombie 2 - Das letzte Kapitel (1985).avi
+-rw-r--r-- 1 nobody nobody 3490362686 13. Dez 2018  Zurück in die Zukunft (1985).mkv
+
+/mm/video/movies/1986:
+insgesamt 56800976
+-rw-r--r-- 1 nobody nobody  181244854 12. Feb 2021  Aladin (1986).mp4
+-rw-r--r-- 1 nobody nobody 2043846656 12. Feb 2021  Aliens - Die Rückkehr (1986).avi
+-rw-r--r-- 1 nobody nobody 2012532430 12. Feb 2021  Betty Blue - 37,2 Grad am Morgen (1986).mp4
+-rw-r--r-- 1 nobody nobody 1605358771 12. Feb 2021  Big Trouble in Little China (1986).mkv
+-rw-r--r-- 1 nobody nobody 2499059947  3. Dez 2020  Blue Velvet (1986).mkv
+-rw-r--r-- 1 nobody nobody 2063427500 24. Okt 2023  Briefe eines toten Mannes (1986).mkv
+-rw-r--r-- 1 nobody nobody 6341820416 16. Nov 10:13 Caspar David Friedrich - Grenzen der Zeit (1986).iso
+-rw-r--r-- 1 nobody nobody 1150331374 15. Nov 20:56 Caspar David Friedrich - Grenzen der Zeit (1986).mp4
+-rw-r--r-- 1 nobody nobody 1746696653  5. Jan 2021  City Wolf (1986).mkv
+-rw-r--r-- 1 nobody nobody 1746193012 12. Feb 2021  Club Paradise (1986).mkv
+-rw-r--r-- 1 nobody nobody  734003200 12. Feb 2021  Critters (1986).avi
+-rw-r--r-- 1 nobody nobody 1571364698 12. Feb 2021  Crocodile Dundee (1986).mkv
+-rw-r--r-- 1 nobody nobody 2533907016 15. Jan 2021  Das Buschgespenst - Teil 1 (1986).mkv
+-rw-r--r-- 1 nobody nobody 2238812982 15. Jan 2021  Das Buschgespenst - Teil 2 (1986).mkv
+-rw-r--r-- 1 nobody nobody 2357963284 12. Feb 2021  Delta Force (1986).mkv
+-rw-r--r-- 1 nobody nobody 2249918451 12. Feb 2021  Der Name der Rose (1986).mkv
+-rw-r--r-- 1 nobody nobody 1959976622 12. Apr 2020  Die Farbe des Geldes (1986).mkv
+-rw-r--r-- 1 nobody nobody  728403968 12. Feb 2021  Die Flüchtigen (1986).avi
+-rw-r--r-- 1 nobody nobody 2797722097 19. Feb 2024  Die Nacht ist jung (1986).mkv
+-rw-r--r-- 1 nobody nobody 1646597034 27. Jul 2021  Die unglaubliche Entführung der verrückten Mrs. Stone (1986).mkv
+-rw-r--r-- 1 nobody nobody  573690996 12. Feb 2021  Die Venezianerin (1986).avi
+drwxr-xr-x 1 nobody nobody        190 18. Feb 2022  Down by Law (1986)
+-rw-r--r-- 1 nobody nobody 1844707216 12. Feb 2021  Ferris macht blau (1986).mp4
+-rw-r--r-- 1 nobody nobody 2922710666 11. Dez 2020  FX - Tödliche Tricks (1986).mkv
+-rw-r--r-- 1 nobody nobody 2226694902 10. Feb 2021  Gefährliche Freundin (1986).mkv
+-rw-r--r-- 1 nobody nobody  728539136 12. Feb 2021  Karate Tiger (1986).avi
+-rw-r--r-- 1 nobody nobody 1446738502 12. Feb 2021  Mission (1986).avi
+-rw-r--r-- 1 nobody nobody  710008832 12. Feb 2021  Müllers Büro (1986).avi
+-rw-r--r-- 1 nobody nobody 1251602432 12. Feb 2021  Night Hunter (1986).avi
+-rw-r--r-- 1 nobody nobody  733587456 12. Feb 2021  Rosa Luxemburg (1986).avi
+-rw-r--r-- 1 nobody nobody 1465659986 12. Feb 2021  Stammheim (1986).avi
+-rw-r--r-- 1 nobody nobody 1469452292 12. Feb 2021  Top Gun (1986).avi
+-rw-r--r-- 1 nobody nobody 2581575306 19. Jun 2022  Wise Guys - Zwei Superpflaumen in der Unterwelt (1986).mkv
+
+/mm/video/movies/1987:
+insgesamt 47092280
+-rw-r--r-- 1 nobody nobody 1633098784 14. Mai 2020  American Fighter 2 - Der Auftrag (1987).mkv
+-rw-r--r-- 1 nobody nobody 3330094725 25. Apr 2020  Arizona Junior (1987).mkv
+-rw-r--r-- 1 nobody nobody 4384763904 20. Jan 2024  Babettes Fest (1987).iso
+-rw-r--r-- 1 nobody nobody 1324556392 22. Dez 2023  Babettes Fest (1987).mp4
+-rw-r--r-- 1 nobody nobody 1186414898 12. Feb 2021  Beverly Hills Cop II (1987).mkv
+-rw-r--r-- 1 nobody nobody 1466952190 12. Feb 2021  Cobra Verde (1987).avi
+-rw-r--r-- 1 nobody nobody 3719546421 13. Jan 2023  Cover Hard II (1987).mkv
+-rw-r--r-- 1 nobody nobody  674604626 12. Feb 2021  Der Brummbär (1987).avi
+drwxr-xr-x 1 nobody nobody        360 12. Feb 2021  Der Himmel ueber Berlin (1987)
+-rw-r--r-- 1 nobody nobody 4470526151  8. Jan 2023  Der Joker (1987).mkv
+-rw-r--r-- 1 nobody nobody 1712862707 18. Apr 2021  Der Profi 2 (1987).mkv
+-rw-r--r-- 1 nobody nobody 3568602651 24. Jun 2020  Der Sizilianer (1987).mkv
+-rw-r--r-- 1 nobody nobody 2284265927 13. Feb 2020  Dirty Dancing (1987).mkv
+-rw-r--r-- 1 nobody nobody 1240592928 12. Feb 2021  Djangos Rückkehr (1987).avi
+-rw-r--r-- 1 nobody nobody 1279472478 12. Feb 2021  Full Metal Jacket (1987).avi
+-rw-r--r-- 1 nobody nobody  468299963 12. Feb 2021  Good Morning, Vietnam (1987).mp4
+-rw-r--r-- 1 nobody nobody 1250186019 12. Feb 2021  Gor (1987).mkv
+drwxr-xr-x 1 nobody nobody        116 12. Feb 2021  Hamburger Hill (1987)
+drwxr-xr-x 1 nobody nobody        322 10. Nov 2021  James Bond 007 - Der Hauch des Todes (1987)
+-rw-r--r-- 1 nobody nobody  732928000 12. Feb 2021  Karate Tiger 2 (1987).avi
+-rw-r--r-- 1 nobody nobody 2049860789  7. Jun 2020  Lethal Weapon - Zwei stahlharte Profis (1987).mkv
+-rw-r--r-- 1 nobody nobody 1578876446 29. Aug 2020  Otto - Der neue Film (1987).mkv
+-rw-r--r-- 1 nobody nobody 1561538560 12. Feb 2021  Peng - Du bist tot (1987).avi
+-rw-r--r-- 1 nobody nobody 1566109696 12. Feb 2021  Platoon (1987).avi
+drwxr-xr-x 1 nobody nobody         90 12. Feb 2021  Predator (1987)
+drwxr-xr-x 1 nobody nobody         88 12. Feb 2021  Robocop (1987)
+-rw-r--r-- 1 nobody nobody 1891448552 22. Sep 2020  Running Man (1987).mkv
+-rw-r--r-- 1 nobody nobody  733935616 12. Feb 2021  Spaceballs (1987).avi
+-rw-r--r-- 1 nobody nobody  941066240 12. Feb 2021  The Untouchables - Die Unbestechlichen (1987).avi
+-rw-r--r-- 1 nobody nobody 2437774180 16. Feb 2024  Tödliche Beute (1987).mkv
+-rw-r--r-- 1 nobody nobody  734058496 12. Feb 2021  Und morgen war Krieg (1987).avi
+drwxr-xr-x 1 nobody nobody         16 12. Feb 2021  Wall Street (1987)
+
+/mm/video/movies/1988:
+insgesamt 69361008
+-rw-r--r-- 1 nobody nobody 3445117494 25. Jan 2020  Action Jackson (1988).mkv
+-rw-r--r-- 1 nobody nobody 1736862390 12. Feb 2021  Akira (1988).avi
+-rw-r--r-- 1 nobody nobody 2713753329  6. Jan 2023  As Tears Go By (1988).mkv
+-rw-r--r-- 1 nobody nobody 1944037284 12. Feb 2021  Black Eagle (1988).mkv
+-rw-r--r-- 1 nobody nobody  719712256 12. Feb 2021  Bloodsport (1988).avi
+-rw-r--r-- 1 nobody nobody 1460984214 12. Feb 2021  Cinema Paradiso (1988).avi
+-rw-r--r-- 1 nobody nobody 3029325146 23. Jan 2023  Colors - Farben der Gewalt (1988).mkv
+-rw-r--r-- 1 nobody nobody 2459757231 19. Mai 2020  Das Todesspiel (1988).mkv
+-rw-r--r-- 1 nobody nobody  735365120 12. Feb 2021  Der große Blonde auf Freiersfüßen (1988).avi
+-rw-r--r-- 1 nobody nobody 2381292325 12. Feb 2021  Die Abenteuer des Baron Münchhausen (1988).mkv
+-rw-r--r-- 1 nobody nobody 1467873280 12. Feb 2021  Die letzte Versuchung Christi (1988).avi
+-rw-r--r-- 1 nobody nobody  729835520 12. Feb 2021  Die Rückkehr der drei Musketiere (1988).avi
+drwxr-xr-x 1 nobody nobody        294 12. Feb 2021  Ein Fisch namens Wanda (1988)
+-rw-r--r-- 1 nobody nobody 2519696900 10. Nov 2021  Ein kurzer Film über das Töten (1988).mkv
+-rw-r--r-- 1 nobody nobody 3078517736 24. Apr 2023  Ente gut, alles gut (1988).mkv
+-rw-r--r-- 1 nobody nobody 2080916934  7. Okt 11:17 Frauen am Rande des Nervenzusammenbruchs (1988).mkv
+-rw-r--r-- 1 nobody nobody 2732971564 23. Sep 2021  Gefährliche Liebschaften (1988).mkv
+drwxr-xr-x 1 nobody nobody        204 12. Feb 2021  Im Rausch der Tiefe (1988)
+-rw-r--r-- 1 nobody nobody  732811264 12. Feb 2021  Man spricht deutsh (1988).avi
+-rw-r--r-- 1 nobody nobody 2506764608 22. Apr 2021  Midnight Run (1988).mkv
+-rw-r--r-- 1 nobody nobody 4689386024 14. Feb 2020  Milagro - Der Krieg im Bohnenfeld (1988).mkv
+-rw-r--r-- 1 nobody nobody 2038190564 12. Feb 2021  Mississippi Burning - Die Wurzel des Hasses (1988).mkv
+-rw-r--r-- 1 nobody nobody 1465507840 12. Feb 2021  Nico (1988).avi
+-rw-r--r-- 1 nobody nobody  990115708 12. Feb 2021  Nosferatu in Venedig (1988,engl.).mkv
+-rw-r--r-- 1 nobody nobody 4698124437 12. Feb 2021  Ödipussi (1988).mkv
+-rw-r--r-- 1 nobody nobody 1431644990 12. Feb 2021  Ödipussi [small] (1988).mkv
+-rw-r--r-- 1 nobody nobody 2499324605 26. Feb 2020  Presidio (1988).mkv
+-rw-r--r-- 1 nobody nobody 2685789293 30. Jul 2021  Rain Man (1988).mkv
+-rw-r--r-- 1 nobody nobody  733647998 12. Feb 2021  Rambo III (1988).avi
+-rw-r--r-- 1 nobody nobody 1956970413 30. Aug 2020  Red Heat (1988).mkv
+-rw-r--r-- 1 nobody nobody 2099139855 15. Mär 2021  Red Scorpion (1988).mkv
+-rw-r--r-- 1 nobody nobody 1727205445 24. Jul 2020  Sie leben (1988).mkv
+-rw-r--r-- 1 nobody nobody  734005248 12. Feb 2021  Sie töten aus Lust (1988).avi
+-rw-r--r-- 1 nobody nobody 2468025825 29. Jul 2018  Stirb langsam (1988).mkv
+-rw-r--r-- 1 nobody nobody 2615248928 10. Okt 2020  Tequila Sunrise (1988).mkv
+-rw-r--r-- 1 nobody nobody 1717677442 23. Feb 2020  Zärtliche Chaoten 2 (1988).mkv
+
+/mm/video/movies/1989:
+insgesamt 80047224
+-rw-r--r-- 1 nobody nobody 2405394904 12. Feb 2021  100 Jahre Adolf Hitler - Die letzte Stunde im Führerbunker (1989).avi
+-rw-r--r-- 1 nobody nobody  733972480 12. Feb 2021  84 Charlie Mopic (1989).avi
+-rw-r--r-- 1 nobody nobody 2805157577 12. Feb 2021  Abyss - Abgrund des Todes (1989).mkv
+-rw-r--r-- 1 nobody nobody 1631235368 14. Mai 2020  American Fighter 3 - Die blutige Jagd (1989).mkv
+-rw-r--r-- 1 nobody nobody 2834993906 29. Jul 2021  Asterix - Operation Hinkelstein (1989).mkv
+-rw-r--r-- 1 nobody nobody 1983531534 29. Apr 2020  Bill und Teds verrückte Reise durch die Zeit (1989).mkv
+-rw-r--r-- 1 nobody nobody 2015560268 12. Feb 2021  Black Rain (1989).mkv
+-rw-r--r-- 1 nobody nobody  733595648 12. Feb 2021  Blinde Wut (1989).avi
+-rw-r--r-- 1 nobody nobody 1594849661 20. Mai 2021  Coming Out (1989).mp4
+-rw-r--r-- 1 nobody nobody  677206016 12. Feb 2021  Cyborg (1989).avi
+-rw-r--r-- 1 nobody nobody 2415123767  8. Apr 2020  Der Club der toten Dichter (1989).mkv
+-rw-r--r-- 1 nobody nobody 1475391488 12. Feb 2021  Der Koch, der Dieb, seine Frau und ihr Liebhaber (1989).avi
+-rw-r--r-- 1 nobody nobody 1679412239 12. Feb 2021  Die Jugger (1989).mkv
+-rw-r--r-- 1 nobody nobody  734005248 12. Feb 2021  Die nackte Kanone (1989).avi
+-rw-r--r-- 1 nobody nobody 1421209500 12. Feb 2021  Die Verdammten des Krieges (1989).mkv
+-rw-r--r-- 1 nobody nobody  730286080 12. Feb 2021  Erik der Wikinger (1989).avi
+-rw-r--r-- 1 nobody nobody 2432104046 12. Feb 2021  Es ist nicht leicht ein Gott zu sein (1989).mkv
+-rw-r--r-- 1 nobody nobody 2696421915 12. Feb 2021  Geboren am 4. Juli (1989).mkv
+-rw-r--r-- 1 nobody nobody 4172656484 29. Dez 2023  Ghostbusters II (1989).mkv
+-rw-r--r-- 1 nobody nobody 1288204150 12. Feb 2021  Godzilla, der Urgigant (1989).avi
+-rw-r--r-- 1 nobody nobody 2340035756 21. Mär 2021  Harlem Nights (1989).mkv
+-rw-r--r-- 1 nobody nobody 1466796220 12. Feb 2021  Henry V. (1989).avi
+-rw-r--r-- 1 nobody nobody 1954551393 12. Feb 2021  Indiana Jones und der letzte Kreuzzug (1989).mkv
+-rw-rw-r-- 1 nobody nobody 3227560992  3. Nov 2020  James Bond 007 - Lizenz zum Töten (1989).mkv
+-rw-r--r-- 1 nobody nobody 1468471822 12. Feb 2021  Karate Tiger 3 - Der Kickboxer (1989).avi
+-rw-r--r-- 1 nobody nobody  735737856 12. Feb 2021  Karate Tiger IV - Best of the Best (1989).avi
+drwxr-xr-x 1 nobody nobody        156 12. Feb 2021  Leningrad Cowboys Go America (1989)
+-rw-r--r-- 1 nobody nobody 2145894246  7. Jun 2020  Lethal Weapon 2 - Brennpunkt L.A. (1989).mkv
+-rw-r--r-- 1 nobody nobody 3534219412 16. Okt 2020  Magnolien aus Stahl (1989).mkv
+-rw-r--r-- 1 nobody nobody 2331435185 27. Apr 2021  Meine Nächte sind schöner als deine Tage (1989).mkv
+-rw-r--r-- 1 nobody nobody 1707395802 12. Feb 2021  Otto - Der Außerfriesische (1989).mkv
+-rw-r--r-- 1 nobody nobody  693798328 12. Feb 2021  Parrot Sketch Not Included - 20 Years of Monty Python (1989).mkv
+-rw-r--r-- 1 nobody nobody 1777684820 19. Jun 2020  Sea of Love - Melodie des Todes (1989).mkv
+-rw-r--r-- 1 nobody nobody 2862360691  3. Okt 10:51 Sex, Lügen und Video (1989).mkv
+-rw-r--r-- 1 nobody nobody 3763162138  9. Nov 2021  Sukkubus - Den Teufel im Leib (1989).mkv
+-rw-r--r-- 1 nobody nobody 1941018054 12. Feb 2021  Tango and Cash (1989).mkv
+-rw-r--r-- 1 nobody nobody 1420960328 12. Feb 2021  The Fighter (1989).mkv
+-rw-r--r-- 1 nobody nobody 2385655879 14. Nov 2021  The Killer (1989).mkv
+-rw-r--r-- 1 nobody nobody 2878147236 27. Feb 2024  Valmont (1989).mkv
+-rw-r--r-- 1 nobody nobody 2483104812 17. Nov 2019  Warlock - Satans Sohn (1989).mkv
+-rw-r--r-- 1 nobody nobody 1984571352 12. Feb 2021  Winterkrieg (1989).avi
+-rw-r--r-- 1 nobody nobody 2405410606 13. Dez 2018  Zurück in die Zukunft II (1989).mkv
+
+/mm/video/movies/1990:
+insgesamt 78186864
+-rw-r--r-- 1 nobody nobody 1819004003 14. Mai 2020  American Fighter 4 - Die Vernichtung (1990).mkv
+-rw-r--r-- 1 nobody nobody 1370924982 12. Feb 2021  Angel Town (1990).mp4
+-rw-r--r-- 1 nobody nobody 4115011548 16. Okt 2020  Cyrano de Bergerac (1990).mkv
+-rw-r--r-- 1 nobody nobody 3090035260 12. Feb 2021  Das deutsche Kettensägenmassaker (1990).avi
+-rw-r--r-- 1 nobody nobody 2225484102 26. Apr 2020  Das Russland-Haus (1990).mkv
+-rw-r--r-- 1 nobody nobody 1498552147 12. Feb 2021  Delta Force 2 - The Colombian Connection (1990).avi
+-rw-r--r-- 1 nobody nobody 2594981904 12. Feb 2021  Der mit dem Wolf tanzt (1990).mkv
+-rw-r--r-- 1 nobody nobody 1433730154 12. Feb 2021  Der Pate III (1990).avi
+-rw-r--r-- 1 nobody nobody 1439093540 12. Feb 2021  Die Architekten (1990).avi
+drwxr-xr-x 1 nobody nobody        168 12. Feb 2021  Die Geschichte der Dienerin (1990)
+-rw-r--r-- 1 nobody nobody  728739840 12. Feb 2021  Die Rückkehr der Untoten (1990).avi
+-rw-r--r-- 1 nobody nobody 2695292256 13. Aug 2021  Fegefeuer der Eitelkeiten (1990).mkv
+-rw-r--r-- 1 nobody nobody 2878825480  5. Mai 2023  Filofax - Ich bin du und du bist nichts (1990).mkv
+-rw-r--r-- 1 nobody nobody 1465124864 12. Feb 2021  Ghost - Nachricht von Sam (1990).avi
+-rw-r--r-- 1 nobody nobody 2656416977 12. Feb 2021  Goodfellas - Drei Jahrzehnte in der Mafia (1990).mkv
+drwxr-xr-x 1 nobody nobody         84 12. Feb 2021  Hamlet (1990)
+-rw-r--r-- 1 nobody nobody  734098340 12. Feb 2021  Hard to Kill (1990).avi
+-rw-r--r-- 1 nobody nobody 2720773879  2. Sep 2021  Havanna (1990).mkv
+-rw-r--r-- 1 nobody nobody 1605137060 12. Feb 2021  Henry & June (1990).mp4
+-rw-r--r-- 1 nobody nobody 2940612134  6. Jul 2023  Hitlerjunge Salomon (1990).mkv
+-rw-r--r-- 1 nobody nobody 1272280755 12. Feb 2021  Jagd auf Roter Oktober (1990).mkv
+-rw-r--r-- 1 nobody nobody 3940068230 29. Dez 2019  Karate Tiger 5 - König der Kickboxer (1990).mkv
+-rw-r--r-- 1 nobody nobody  733343744 12. Feb 2021  Leon (1990).avi
+-rw-r--r-- 1 nobody nobody 1473470906 12. Feb 2021  Letztes aus der DaDaeR (1990).avi
+-rw-r--r-- 1 nobody nobody 2375524686  3. Apr 2021  Miller's Crossing (1990).mkv
+-rw-r--r-- 1 nobody nobody 1625810061 12. Feb 2021  Mit stählerner Faust (1990).mkv
+-rw-r--r-- 1 nobody nobody 2248483174 24. Jan 2021  Moon 44 (1990).mkv
+-rw-r--r-- 1 nobody nobody 3254714293 27. Aug 2021  Navy Seals - Die härteste Elitetruppe der Welt (1990).mkv
+drwxr-xr-x 1 nobody nobody         42 12. Feb 2021  Nikita (1990)
+-rw-r--r-- 1 nobody nobody 2198034446 27. Sep 2020  Powerplay (1990).mkv
+-rw-r--r-- 1 nobody nobody 4720705867 14. Nov 2020  Robocop 2 (1990).mkv
+-rw-r--r-- 1 nobody nobody 1541180272 12. Feb 2021  Rocky V (1990).avi
+-rw-r--r-- 1 nobody nobody 1467429112 12. Feb 2021  Rosenkranz & Güldenstern (1990).avi
+-rw-r--r-- 1 nobody nobody 1471803392 12. Feb 2021  Stirb langsam 2 (1990).avi
+drwxr-xr-x 1 nobody nobody        108 12. Feb 2021  Total Recall (1990)
+-rw-r--r-- 1 nobody nobody 3613964546 20. Dez 2020  Tremors - Im Land der Raketenwürmer (1990).mkv
+-rw-r--r-- 1 nobody nobody  729583432 12. Feb 2021  Verbotene Liebe (1990).avi
+-rw-r--r-- 1 nobody nobody  733886466 12. Feb 2021  Werner - Beinhart (1990).avi
+-rw-r--r-- 1 nobody nobody 1778092350 12. Feb 2021  Wild at Heart (1999).mkv
+-rw-r--r-- 1 nobody nobody 3147340272 21. Jun 2020  Zeit des Erwachens (1990).mkv
+-rw-r--r-- 1 nobody nobody  734015488 12. Feb 2021  Zum Töten freigegeben (1990).avi
+-rw-r--r-- 1 nobody nobody 2991698200 31. Jan 2020  Zurück in die Zukunft 3 (1990).mkv
+
+/mm/video/movies/1991:
+insgesamt 71226024
+-rw-r--r-- 1 nobody nobody 1045829632 12. Feb 2021  American Shaolin (1991).avi
+-rw-r--r-- 1 nobody nobody 3758839104 25. Apr 2021  Barton Fink (1991).mkv
+-rw-r--r-- 1 nobody nobody 2376758017 15. Aug 2020  Bill und Teds verrückte Reise in die Zukunft (1991).mkv
+-rw-r--r-- 1 nobody nobody 5689009282 30. Dez 2019  Bis ans Ende der Welt (1991).mkv
+-rw-r--r-- 1 nobody nobody 2602711089 27. Apr 2024  Bugsy (1991).mkv
+-rw-r--r-- 1 nobody nobody 2070027761 23. Mär 2020  City Slickers - Die Großstadt-Helden (1991).mkv
+-rw-r--r-- 1 nobody nobody 1467245888 12. Feb 2021  Das Leben stinkt (1991).avi
+drwxr-xr-x 1 nobody nobody        160 12. Feb 2021  Das Schweigen der Lämmer (1991)
+-rw-r--r-- 1 nobody nobody 2202013369 18. Mär 2021  Das Wunderkind Tate (1991).mkv
+-rw-r--r-- 1 nobody nobody 1430719515 12. Feb 2021  Deadly Revence - Das Brooklyn-Massaker (1991).mkv
+-rw-r--r-- 1 nobody nobody  736260096 12. Feb 2021  Delicatessen (1991).avi
+-rw-r--r-- 1 nobody nobody 2260006403 18. Okt 2022  Die Addams Family (1991).mkv
+-rw-r--r-- 1 nobody nobody  733247488 12. Feb 2021  Die nackte Kanone 2.5 (1991).avi
+drwxr-xr-x 1 nobody nobody        210 12. Feb 2021  Eine perfekte Waffe (1991)
+-rw-r--r-- 1 nobody nobody 3779767014 26. Jul 2021  Flug durch die Hölle (1991).mkv
+-rw-r--r-- 1 nobody nobody 1968805719 12. Feb 2021  Geballte Ladung (1991).mkv
+-rw-r--r-- 1 nobody nobody 1305047180 12. Feb 2021  Godzilla - Duell der Megasaurier (1991).avi
+-rw-r--r-- 1 nobody nobody  662917120 12. Feb 2021  Go Trabi Go - Die Sachsen kommen (1991).avi
+-rw-r--r-- 1 nobody nobody 1018954212 12. Feb 2021  Herr Ober (1991).avi
+-rw-r--r-- 1 nobody nobody 2464760547 26. Sep 11:12 High Heels (1991).mkv
+drwxr-xr-x 1 nobody nobody        100 12. Feb 2021  Homo Faber (1991)
+-rw-r--r-- 1 nobody nobody 1293040827 12. Feb 2021  Hot Shots - Die Mutter aller Filme (1991).mkv
+-rw-r--r-- 1 nobody nobody 4576905329 12. Feb 2021  Jugend ohne Gott (1991).mkv
+-rw-r--r-- 1 nobody nobody  799717376 12. Feb 2021  Karate Tiger 5 - König der Kickboxer (1991).avi
+-rw-r--r-- 1 nobody nobody 1047537664 12. Feb 2021  Karniggels (1991).avi
+-rw-r--r-- 1 nobody nobody 3231405283 29. Dez 2020  King Ralph (1991).mkv
+-rw-r--r-- 1 nobody nobody 2507704535 12. Feb 2021  König der Fischer (1991).mkv
+-rw-r--r-- 1 nobody nobody  928611886 12. Feb 2021  Madame Bovary (1991).avi
+-rw-r--r-- 1 nobody nobody 1333438161 10. Mai 2021  Malizia 2 (1991).mkv
+-rw-r--r-- 1 nobody nobody 1029697072 12. Feb 2021  Manta, Manta (1991).mkv
+-rw-r--r-- 1 nobody nobody 1452660564 12. Feb 2021  My Private Idaho - Das Ende der Unschuld (1991).mkv
+-rw-r--r-- 1 nobody nobody 2365445974 22. Jun 2023  Naked Lunch (1991).mkv
+-rw-r--r-- 1 nobody nobody 1175011328 12. Feb 2021  Night on Earth (1991).avi
+-rw-r--r-- 1 nobody nobody 1219470247 12. Feb 2021  Pappa ante Portas (1991).mkv
+drwxr-xr-x 1 nobody nobody         78  4. Mai 2024  Paprika (1991)
+-rw-r--r-- 1 nobody nobody 1211453664 12. Feb 2021  Prosperos Bücher (1991).avi
+-rw-r--r-- 1 nobody nobody 2904432968 12. Feb 2021  Robin Hood - König der Diebe (1991).mkv
+-rw-r--r-- 1 nobody nobody 2531956116 17. Nov 2019  Showdown in Little Tokyo (1991).mkv
+-rw-r--r-- 1 nobody nobody  733414364 12. Feb 2021  Superstau (1991).avi
+drwxr-xr-x 1 nobody nobody        192 12. Feb 2021  Terminator 2 - Tag der Abrechnung (1991)
+-rw-r--r-- 1 nobody nobody 3458121375  2. Mär 2020  The Doors (1991).mkv
+-rw-r--r-- 1 nobody nobody 1562429440 12. Feb 2021  Thelma und Louise (1991).avi
+
+/mm/video/movies/1992:
+insgesamt 55881088
+-rw-r--r-- 1 nobody nobody 1464719092 12. Feb 2021  1492 - Die Eroberung des Paradieses (1992).avi
+drwxr-xr-x 1 nobody nobody        120 12. Feb 2021  Alarmstufe: Rot (1992)
+-rw-r--r-- 1 nobody nobody 1247881216 12. Feb 2021  Alien 3 (1992).avi
+-rw-r--r-- 1 nobody nobody 4124569600  1. Mär 2020  Aus der Mitte entspringt ein Fluss (1992).mkv
+-rw-r--r-- 1 nobody nobody 1682464802 18. Dez 2023  Bad Lieutenant (1992).mkv
+-rw-r--r-- 1 nobody nobody 1564681157 12. Feb 2021  Braindead (1992).mkv
+-rw-r--r-- 1 nobody nobody 3602084487  8. Aug 2021  Bram Stokers Dracula (1992).mkv
+-rw-r--r-- 1 nobody nobody 1772410832 21. Sep 2020  Der letzte Mohikaner (1992).mkv
+-rw-r--r-- 1 nobody nobody 3191924758 19. Jan 2022  Der Liebhaber (1992).mkv
+-rw-r--r-- 1 nobody nobody 1464688102 12. Feb 2021  Der Rasenmähermann (1992).avi
+-rw-r--r-- 1 nobody nobody 2208146824  1. Nov 2021  Die Muppets Weihnachtsgeschichte (1992).mkv
+drwxr-xr-x 1 nobody nobody        136 12. Feb 2021  Eine Frage der Ehre (1992)
+-rw-r--r-- 1 nobody nobody 5410442900 18. Jan 2020  El Mariachi (1992).mkv
+-rw-r--r-- 1 nobody nobody 1464477592 12. Feb 2021  Erbarmungslos (1992).avi
+-rw-r--r-- 1 nobody nobody 1374912778 12. Feb 2021  Godzilla - Kampf der Saurier-Mutanten (1992).avi
+-rw-r--r-- 1 nobody nobody 1125127919 12. Feb 2021  Go Trabi Go 2 - Das war der wilde Osten (1992).mkv
+-rw-r--r-- 1 nobody nobody 1865718382 12. Feb 2021  Hard Boiled (1992).mkv
+-rw-r--r-- 1 nobody nobody  723884932 12. Feb 2021  Karate Tiger 6 - Entscheidung in Rio (1992).avi
+-rw-r--r-- 1 nobody nobody  840173568 12. Feb 2021  Kleine Haie (1992).avi
+-rw-r--r-- 1 nobody nobody 2222465268  7. Jun 2020  Lethal Weapon 3 - Die Profis sind zurück (1992).mkv
+-rw-r--r-- 1 nobody nobody 4155344593 14. Jan 2021  Malcolm X (1992).mkv
+-rw-r--r-- 1 nobody nobody 2216276027 30. Jun 2021  Medicine Man - Die letzten Tage von Eden (1992).mkv
+-rw-r--r-- 1 nobody nobody 1853054231 28. Jan 2021  Rapid Fire - unbewaffnet und extrem gefährlich (1992).mkv
+-rw-r--r-- 1 nobody nobody  950293084 12. Feb 2021  Reservoir Dogs - Wilde Hunde (1992).avi
+-rw-r--r-- 1 nobody nobody 1835623027 13. Jan 2022  Schtonk (1992).mkv
+-rw-r--r-- 1 nobody nobody  736686080 12. Feb 2021  Sneakers - Die Lautlosen (1992).avi
+-rw-r--r-- 1 nobody nobody 1458080140 12. Feb 2021  Stilles Land (1992).avi
+-rw-r--r-- 1 nobody nobody 1810120445 30. Mai 09:59 Stop! Oder meine Mami schießt! (1992).mkv
+-rw-r--r-- 1 nobody nobody 2920134508  3. Mai 2020  Twin Peaks - Der Film (1992).mkv
+-rw-r--r-- 1 nobody nobody 1935788635 17. Aug 2020  Universal Soldier (1992).mkv
+
+/mm/video/movies/1993:
+insgesamt 49993640
+-rw-r--r-- 1 nobody nobody  733937664 12. Feb 2021  American Fighter 5 (1993).avi
+-rw-r--r-- 1 nobody nobody 2011194063 28. Jan 2021  Best of the Best 2 - Der Unbesiegbare (1993).mkv
+-rw-r--r-- 1 nobody nobody 1562308671 28. Nov 2023  Body Snatchers - Angriff der Körperfresser (1993).mkv
+drwxr-xr-x 1 nobody nobody        108 12. Feb 2021  Carlitos Way (1993)
+-rw-r--r-- 1 nobody nobody 2600605999  6. Nov 2023  Das Hochzeitsbankett (1993).mkv
+-rw-r--r-- 1 nobody nobody 2396877486  3. Mär 2021  Das Piano (1993).mkv
+-rw-r--r-- 1 nobody nobody 2000531236 12. Feb 2021  Dave (1993).mkv
+-rw-r--r-- 1 nobody nobody 1967906370 13. Jun 10:18 Der Kinoerzähler (1993).mkv
+-rw-r--r-- 1 nobody nobody 2324021826 23. Dez 2022  Die Addams Family in verrückter Tradition (1993).mkv
+-rw-r--r-- 1 nobody nobody 2485717146 18. Nov 2022  Die drei Musketiere (1993).mkv
+-rw-r--r-- 1 nobody nobody 3671079569  6. Feb 2020  Die Firma (1993).mkv
+-rw-r--r-- 1 nobody nobody  839520256 12. Feb 2021  Godzilla vs. Mechagodzilla II (1993).avi
+-rw-r--r-- 1 nobody nobody 1872536637 12. Feb 2021  Hard Target (1993).mkv
+-rw-r--r-- 1 nobody nobody 1509505016 12. Feb 2021  Hot Shots - Der zweite Versuch (1993).mkv
+-rw-r--r-- 1 nobody nobody 1428001420 12. Feb 2021  Im Namen des Vaters (1993).mp4
+-rw-r--r-- 1 nobody nobody 1465837312 12. Feb 2021  In den Straßen der Bronx (1993).avi
+drwxr-xr-x 1 nobody nobody        454 12. Feb 2021  In weiter Ferne so nah (1993)
+-rw-r--r-- 1 nobody nobody 2235772928 12. Feb 2021  Jurassic Park (1993).avi
+-rw-r--r-- 1 nobody nobody  844984320 12. Feb 2021  Karate Tiger 7 (1993).avi
+-rw-r--r-- 1 nobody nobody 2458986041 12. Feb 2021  Last Action Hero (1993).mkv
+-rw-r--r-- 1 nobody nobody  733712387 12. Feb 2021  Loaded Weapon (1993).avi
+-rw-r--r-- 1 nobody nobody 1420942617 12. Feb 2021  Nightmare before Christmas (1993).mkv
+-rw-r--r-- 1 nobody nobody 2288080254 12. Feb 2021  Philadelphia (1993).mkv
+drwxr-xr-x 1 nobody nobody        200 12. Feb 2021  Robin Hood - Helden in Strumpfhosen (1993)
+drwxr-xr-x 1 nobody nobody        186 12. Feb 2021  Schindlers Liste (1993)
+drwxr-xr-x 1 nobody nobody        100 12. Feb 2021  Short Cuts (1993)
+drwxr-xr-x 1 nobody nobody        100 12. Feb 2021  Stalingrad (1993)
+-rw-r--r-- 1 nobody nobody 2891632335  7. Apr 2021  Tombstone (1993).mkv
+-rw-r--r-- 1 nobody nobody 2585289577 14. Jan 2023  Und ewig schleichen die Erben (1993).mkv
+drwxr-xr-x 1 nobody nobody        140 12. Feb 2021  Viel Lärm um nichts (1993)
+-rw-r--r-- 1 nobody nobody 1445322004 12. Feb 2021  Vier Hochzeiten und ein Todesfall (1993).avi
+-rw-r--r-- 1 nobody nobody 1228732408 12. Feb 2021  Was vom Tage übrigblieb (1993).avi
+-rw-r--r-- 1 nobody nobody 4190403495 12. Feb 2021  Wir können auch anders (1993).mkv
+
+/mm/video/movies/1994:
+insgesamt 43184416
+-rw-r--r-- 1 nobody nobody 1209439487 12. Feb 2021  Auf brennendem Eis (1994).mkv
+-rw-r--r-- 1 nobody nobody 2902388261 20. Jan 2023  Das Kartell (1994).mkv
+-rw-r--r-- 1 nobody nobody  726112248 12. Feb 2021  Das wahre Sexualleben der Belgier (1994).avi
+-rw-r--r-- 1 nobody nobody 1028031528 21. Mai 2022  Der König der Löwen (1994).mp4
+-rw-r--r-- 1 nobody nobody  738531328 12. Feb 2021  Die nackte Kanone 33 1-3 (1994).avi
+-rw-r--r-- 1 nobody nobody  732854272 12. Feb 2021  Die Troublemaker (1994).avi
+-rw-r--r-- 1 nobody nobody 1465269432 12. Feb 2021  Die Verurteilten (1994).avi
+-rw-r--r-- 1 nobody nobody 1573351424 12. Feb 2021  Dumm und Dümmer (1994).avi
+-rw-r--r-- 1 nobody nobody 2568117559  9. Jul 2021  Eat Drink Man Woman (1994).mkv
+-rw-r--r-- 1 nobody nobody 3504139513 23. Feb 2024  Ed Wood (1994).mkv
+-rw-r--r-- 1 nobody nobody 3907776411 12. Feb 2021  Enthüllung (1994).mkv
+drwxr-xr-x 1 nobody nobody        206 12. Feb 2021  Forrest Gump (1994)
+-rw-r--r-- 1 nobody nobody  839464960 12. Feb 2021  Godzilla vs. Spacegodzilla (1994).avi
+-rw-r--r-- 1 nobody nobody 1078889572 12. Feb 2021  High Crusade - Frikassee im Weltraum (1994).avi
+-rw-r--r-- 1 nobody nobody 1922795361 21. Sep 2020  Hudsucker - Der große Sprung (1994).mkv
+-rw-r--r-- 1 nobody nobody 1675821529 12. Feb 2021  Interview mit einem Vampir (1994).mkv
+-rw-r--r-- 1 nobody nobody  740993456 12. Feb 2021  Karate Tiger 8 (1994).mpg
+drwxr-xr-x 1 nobody nobody        124 12. Feb 2021  Leon - Der Profi (1994)
+-rw-r--r-- 1 nobody nobody 1581469755 12. Feb 2021  Mary Shelley's Frankenstein (1994).m4v
+-rw-r--r-- 1 nobody nobody 2297504921 12. Jan 2024  Maverick (1994).mkv
+-rw-r--r-- 1 nobody nobody 1674940416 12. Feb 2021  Natural Born Killers (1994).avi
+drwxr-xr-x 1 nobody nobody        254  4. Mai 2024  Pulp Fiction (1994)
+-rw-r--r-- 1 nobody nobody 1425521972 12. Feb 2021  Pulp Fiction (1994).avi
+drwxr-xr-x 1 nobody nobody        114 12. Feb 2021  Stargate (1994)
+-rw-r--r-- 1 nobody nobody 4060045244 12. Feb 2021  Terror 2000 - Intensivstation Deutschland (1994).avi
+-rw-r--r-- 1 nobody nobody 1834708315 12. Feb 2021  Timecop (1994).mkv
+-rw-r--r-- 1 nobody nobody 2417806676 12. Feb 2021  True Lies - Wahre Lügen (1994).mkv
+-rw-r--r-- 1 nobody nobody 2314832777  6. Nov 2023  Vaterland (1994).mkv
+
+/mm/video/movies/1995:
+insgesamt 50949420
+-rw-r--r-- 1 nobody nobody 2604353155  5. Jan 2020  12 Monkeys (1995).mkv
+-rw-r--r-- 1 nobody nobody 1885700096 12. Feb 2021  Alarmstufe Rot 2 (1995).avi
+drwxr-xr-x 1 nobody nobody        132 12. Feb 2021  Apollo 13 (1995)
+-rw-r--r-- 1 nobody nobody  734601216 12. Feb 2021  Assassins - Die Killer (1995).avi
+-rw-r--r-- 1 nobody nobody 3697114725 12. Feb 2021  Braveheart (1995).mp4
+-rw-r--r-- 1 nobody nobody 2845988488 12. Feb 2021  Casino (1995).mkv
+drwxr-xr-x 1 nobody nobody        116 12. Feb 2021  Crying Freeman (1995)
+-rw-r--r-- 1 nobody nobody 2483335220 12. Feb 2021  Der 1. Ritter (1995).mkv
+-rw-r--r-- 1 nobody nobody 2932772650 18. Jan 2020  Desperado (1995).mkv
+drwxr-xr-x 1 nobody nobody        184 12. Feb 2021  Die Stadt der verlorenen Kinder (1995)
+-rw-r--r-- 1 nobody nobody 1045383938 12. Feb 2021  Dracula - Tot aber glücklich (1995).avi
+-rw-r--r-- 1 nobody nobody  612749312 12. Feb 2021  Hackers - Im Netz des FBI (1995).avi
+-rw-r--r-- 1 nobody nobody 3152024820 11. Dez 2019  Heat (1995).mkv
+-rw-r--r-- 1 nobody nobody 1462358016 12. Feb 2021  James Bond 007 - Goldeneye (1995).avi
+-rw-r--r-- 1 nobody nobody  586708992 12. Feb 2021  Karate Tiger 9 (1995).avi
+-rw-r--r-- 1 nobody nobody 1287403513  2. Mär 2023  Nikolaikirche (2) (1995).mkv
+-rw-r--r-- 1 nobody nobody 1347717668 12. Feb 2021  Othello (1995).avi
+-rw-r--r-- 1 nobody nobody 2404663495 29. Sep 2020  Outbreak (1995).mkv
+-rw-r--r-- 1 nobody nobody 1466595810 12. Feb 2021  Richard III. (1995).avi
+-rw-r--r-- 1 nobody nobody 2777734439 16. Dez 2019  Schlafes Bruder (1995).mkv
+-rw-r--r-- 1 nobody nobody 1046247844 12. Feb 2021  Schneller als der Tod (1995).avi
+-rw-r--r-- 1 nobody nobody 1705472603 12. Feb 2021  Screamers - Tödliche Schreie (1995).mkv
+-rw-r--r-- 1 nobody nobody 1853889062 12. Feb 2021  Sieben (1995).mkv
+-rw-r--r-- 1 nobody nobody 2769858927 30. Apr 2021  Sinn und Sinnlichkeit (1995).mkv
+-rw-r--r-- 1 nobody nobody  734090020 12. Feb 2021  Species (1995).avi
+-rw-r--r-- 1 nobody nobody 1471946752 12. Feb 2021  Stirb langsam: Jetzt erst recht (1995).avi
+-rw-r--r-- 1 nobody nobody 1553846872 12. Feb 2021  Sudden Death (1995).mkv
+-rw-r--r-- 1 nobody nobody 1310513152 12. Feb 2021  Toy Story (1995).avi
+-rw-r--r-- 1 nobody nobody  733626368 12. Feb 2021  Vernetzt - Johnny Mnemonic (1995).avi
+-rw-r--r-- 1 nobody nobody 4931720984  4. Mär 2020  Waterworld (1995).mkv
+-rw-r--r-- 1 nobody nobody  733741056 12. Feb 2021  Willkommen im Tollhaus (1995).avi
+
+/mm/video/movies/1996:
+insgesamt 36294616
+-rw-r--r-- 1 nobody nobody  496179335 12. Feb 2021  Black Mask (1996).mkv
+-rw-r--r-- 1 nobody nobody 1264216290 12. Feb 2021  Blood & Wine (1996).avi
+drwxr-xr-x 1 nobody nobody        212 12. Feb 2021  Brassed Off - Mit Pauken und Trompeten (1996)
+-rw-r--r-- 1 nobody nobody 1468116992 12. Feb 2021  Breaking the Waves (1996).avi
+-rw-r--r-- 1 nobody nobody 3036045696 12. Feb 2021  Der englische Patient (1996).mkv
+-rw-r--r-- 1 nobody nobody  735039653 12. Feb 2021  Die Bettlektüre (1996).mp4
+-rw-r--r-- 1 nobody nobody 2973825113 31. Dez 2022  Die Kammer (1996).mkv
+-rw-r--r-- 1 nobody nobody 1499673746 12. Feb 2021  Einsame Entscheidung (1996).mp4
+-rw-r--r-- 1 nobody nobody 1977682666 30. Jun 2021  Eraser (1996).mkv
+-rw-r--r-- 1 nobody nobody 1803666407 12. Feb 2021  Fargo (Remastered Edition) (1996).mkv
+-rw-r--r-- 1 nobody nobody 1137533416 12. Feb 2021  Flucht aus L.A. (1996).avi
+-rw-r--r-- 1 nobody nobody  744644608 12. Feb 2021  From Dusk Till Dawn (1996).avi
+-rw-r--r-- 1 nobody nobody  737075200 12. Feb 2021  Glimmer Man (1996).avi
+-rw-r--r-- 1 nobody nobody 2737567996 21. Dez 2023  Hexenjagd (1996).mkv
+drwxr-xr-x 1 nobody nobody        124 12. Feb 2021  Independence Day (1996)
+-rw-r--r-- 1 nobody nobody 2093761973 22. Mär 2020  Jenseits der Stille (1996).mkv
+-rw-r--r-- 1 nobody nobody  419760404 12. Feb 2021  Kama Sutra: A Tale of Love (1996).mkv
+-rw-r--r-- 1 nobody nobody 1236109932 12. Feb 2021  Kolya (1996).avi
+-rw-r--r-- 1 nobody nobody 2068672261  3. Jun 2020  Mission Impossible (1996).mkv
+-rw-r--r-- 1 nobody nobody 3435980540 12. Feb 2021  Mut zur Wahrheit (1996).mkv
+-rw-r--r-- 1 nobody nobody 2065118102  9. Nov 2021  Nach eigenen Regeln (1996).mkv
+-rw-r--r-- 1 nobody nobody 1465780244 12. Feb 2021  The Arrival - Die Ankunft (1996).avi
+-rw-r--r-- 1 nobody nobody 1465749674 12. Feb 2021  The Fan (1996).avi
+-rw-r--r-- 1 nobody nobody  733693952 12. Feb 2021  Trainspotting (1996).avi
+-rw-r--r-- 1 nobody nobody 1569746382 12. Feb 2021  William Shakespeares Romeo + Julia (1996).mkv
+
+/mm/video/movies/1997:
+insgesamt 50030940
+-rw-r--r-- 1 nobody nobody 1478592512 12. Feb 2021  Alien - Die Wiedergeburt (1997).avi
+drwxr-xr-x 1 nobody nobody        132 12. Feb 2021  Am Ende der Gewalt (1997)
+-rw-r--r-- 1 nobody nobody 1768122785 18. Nov 2019  Anaconda (1997).mkv
+-rw-r--r-- 1 nobody nobody 1559734272 12. Feb 2021  Austin Powers - Das schärfste, was Ihre Majestät zu bieten hat (1997).avi
+drwxr-xr-x 1 nobody nobody        136 12. Feb 2021  Besser geht's nicht (1997)
+-rw-r--r-- 1 nobody nobody 1360523088 12. Feb 2021  Chechenia Warrior (1997).avi
+-rw-r--r-- 1 nobody nobody 1852055510 12. Feb 2021  Contact (1997).avi
+drwxr-xr-x 1 nobody nobody        108 12. Feb 2021  Dante's Peak (1997)
+drwxr-xr-x 1 nobody nobody        136 12. Feb 2021  Das fünfte Element (1997)
+-rw-r--r-- 1 nobody nobody 1468608512 12. Feb 2021  Das Leben ist schön (1997).avi
+-rw-r--r-- 1 nobody nobody  848168978 12. Feb 2021  Das Relikt (1997).avi
+-rw-r--r-- 1 nobody nobody 1619939151 24. Nov 2022  Der Campus (1997).mp4
+-rw-r--r-- 1 nobody nobody 1468557312 12. Feb 2021  Der Eissturm (1997).avi
+-rw-r--r-- 1 nobody nobody 2932369264 12. Feb 2021  Die 120 Tage von Bottrop (1997).avi
+-rw-r--r-- 1 nobody nobody 1642225298 12. Feb 2021  Die Akte Jane (1997).mkv
+-rw-r--r-- 1 nobody nobody 1901897656 19. Mär 2021  Double Team (1997).mkv
+-rw-r--r-- 1 nobody nobody 1314813577 12. Feb 2021  Event Horizon (1997).mp4
+-rw-r--r-- 1 nobody nobody  729839618 12. Feb 2021  Fire Down Below (1997).avi
+drwxr-xr-x 1 nobody nobody        208 12. Feb 2021  Fräulein Smillas Gespür für Schnee (1997)
+-rw-r--r-- 1 nobody nobody  943167488 12. Feb 2021  Gattaca (1997).avi
+-rw-r--r-- 1 nobody nobody 2699400719 24. Jan 2020  Jackie Brown (1997).mkv
+drwxr-xr-x 1 nobody nobody        350  9. Nov 2021  James Bond 007 - Der Morgen stirbt nie (1997)
+-rw-r--r-- 1 nobody nobody 2274043904 12. Feb 2021  Jurassic Park 2 (1997).avi
+-rw-r--r-- 1 nobody nobody 1500908214 12. Feb 2021  Knockin' on Heavens Door (1997).avi
+-rw-r--r-- 1 nobody nobody 1453236244 12. Feb 2021  L.A. Confidential (1997).avi
+drwxr-xr-x 1 nobody nobody        108 12. Feb 2021  Lost Highway (1997)
+-rw-r--r-- 1 nobody nobody  822529154 12. Feb 2021  Marie Baies des Anges (1997).avi
+-rw-r--r-- 1 nobody nobody  733952000 12. Feb 2021  Men in Black (1997).avi
+-rw-r--r-- 1 nobody nobody 3865245731  5. Apr 2021  Postman (1997).mkv
+-rw-r--r-- 1 nobody nobody 1348618554 12. Feb 2021  Prinzessin Mononoke (1997).avi
+drwxr-xr-x 1 nobody nobody        128 12. Feb 2021  Starship Troopers (1997)
+-rw-r--r-- 1 nobody nobody 1562349568 12. Feb 2021  Star Wars Episode IV - Eine neue Hoffnung (1997).avi
+-rw-r--r-- 1 nobody nobody 1562320896 12. Feb 2021  Star Wars Episode V - Das Imperium schlägt zurück (1997).avi
+-rw-r--r-- 1 nobody nobody 1561827328 12. Feb 2021  Star Wars Episode VI - Die Rückkehr der Jedi-Ritter (1997).avi
+-rw-r--r-- 1 nobody nobody 1627711803 12. Feb 2021  Suicide Kings (1997).avi
+-rw-r--r-- 1 nobody nobody 3042052466 12. Feb 2021  Titanic (1997).mkv
+-rw-r--r-- 1 nobody nobody 1925547029 21. Aug 2020  Volcano (1997).mkv
+-rw-r--r-- 1 nobody nobody  895201224 12. Feb 2021  Wag the Dog (1997).mp4
+-rw-r--r-- 1 nobody nobody  733913088 12. Feb 2021  Welcome to Sarajevo (1997).avi
+-rw-r--r-- 1 nobody nobody  734160896 12. Feb 2021  Zugvoegel - Einmal nach Inari (1997).avi
+
+/mm/video/movies/1998:
+insgesamt 46827328
+-rw-r--r-- 1 nobody nobody  732780544 12. Feb 2021  23 - Nichts ist so, wie es scheint (1998).avi
+-rw-r--r-- 1 nobody nobody 1465598896 12. Feb 2021  American History X (1998).avi
+-rw-r--r-- 1 nobody nobody 5585522255 10. Feb 2020  Bube, Dame, König, grAS (1998).mkv
+-rw-r--r-- 1 nobody nobody  837626003 12. Feb 2021  Dark City (1998,eng).mkv
+-rw-r--r-- 1 nobody nobody 1881851135  2. Aug 2020  Dark City (1998).mkv
+-rw-r--r-- 1 nobody nobody 2380832258 11. Feb 2020  Deep Impact (1998).mkv
+-rw-r--r-- 1 nobody nobody 1464632050 12. Feb 2021  Der Kaiser und sein Attentäter (1998).avi
+-rw-r--r-- 1 nobody nobody 2349637632 12. Feb 2021  Der Pferdeflüsterer (1998).avi
+-rw-r--r-- 1 nobody nobody 1447519852 12. Feb 2021  Der schmale Grat (1998).avi
+drwxr-xr-x 1 nobody nobody        216 12. Feb 2021  Der Soldat James Ryan (1998)
+-rw-r--r-- 1 nobody nobody 2475054466  2. Sep 2020  Der Staatsfeind Nr. 1 (1998).mkv
+-rw-r--r-- 1 nobody nobody  735193088 12. Feb 2021  Die Legende vom Ozeanpianisten (1998).avi
+drwxr-xr-x 1 nobody nobody        120 12. Feb 2021  Die Truman Show (1998)
+-rw-r--r-- 1 nobody nobody 2389738323 15. Aug 2020  Ein einfacher Plan (1998).mkv
+drwxr-xr-x 1 nobody nobody        180 12. Feb 2021  Fear and Loathing in Las Vegas (1998)
+-rw-r--r-- 1 nobody nobody 2449975296 12. Feb 2021  Godzilla (1998).avi
+-rw-r--r-- 1 nobody nobody 1048309760 12. Feb 2021  Idioten (1998).avi
+-rw-r--r-- 1 nobody nobody 1052018398 12. Feb 2021  Karate Tiger 10 - The Champions (1998).avi
+-rw-r--r-- 1 nobody nobody  732248064 12. Feb 2021  Leslie Nielsen ist sehr verdächtig (1998).avi
+-rw-r--r-- 1 nobody nobody 2410401466  7. Jun 2020  Lethal Weapon 4 - Zwei Profis räumen auf (1998).mkv
+-rw-r--r-- 1 nobody nobody 1288544624 12. Feb 2021  Lola rennt (1998).avi
+-rw-r--r-- 1 nobody nobody  730236928 12. Feb 2021  Pi (1998).avi
+-rw-r--r-- 1 nobody nobody 1438071202 12. Feb 2021  Ronin (1998).mkv
+-rw-r--r-- 1 nobody nobody 1466150260 12. Feb 2021  Savior (1998).avi
+drwxr-xr-x 1 nobody nobody        176 12. Feb 2021  Schwarze Katze, weißer Kater (1998)
+-rw-r--r-- 1 nobody nobody 1785945086 27. Feb 2020  Spiel auf Zeit (1998).mkv
+-rw-r--r-- 1 nobody nobody 2235185727 19. Jan 2023  Stadt der Engel (1998).mkv
+-rw-r--r-- 1 nobody nobody 1810493646 12. Feb 2021  Star Force Soldier (1998).mkv
+-rw-r--r-- 1 nobody nobody 1669474496 27. Apr 2020  Taxi (1998).mkv
+-rw-r--r-- 1 nobody nobody 1559937024 12. Feb 2021  The Big Lebowski (1998).avi
+-rw-r--r-- 1 nobody nobody  869385868 12. Feb 2021  The Patriot - Kampf ums Überleben (1998).avi
+-rw-r--r-- 1 nobody nobody 1658769312 23. Aug 2020  The Sound of War (1998).mkv
+
+/mm/video/movies/1999:
+insgesamt 42308360
+-rw-r--r-- 1 nobody nobody 1037717132 12. Feb 2021  Absolute Giganten (1999).avi
+drwxr-xr-x 1 nobody nobody        132 12. Feb 2021  Achteinhalb Frauen (1999)
+-rw-r--r-- 1 nobody nobody 3966518062 12. Feb 2021  Alles Routine (1999).mkv
+-rw-r--r-- 1 nobody nobody 1834504192 12. Feb 2021  American Beauty (1999).avi
+-rw-r--r-- 1 nobody nobody 1559824384 12. Feb 2021  Austin Powers - Spion in geheimer Missionarsstellung (1999).avi
+-rw-r--r-- 1 nobody nobody 2284212379  3. Nov 2021  Bang Boom Bang - Ein todsicheres Ding (1999).mkv
+-rw-r--r-- 1 nobody nobody  733233152 12. Feb 2021  Blair Witch Project (1999).avi
+-rw-r--r-- 1 nobody nobody  734003204 12. Feb 2021  Bloodsport IV - The Dark Kumite (1999).avi
+-rw-r--r-- 1 nobody nobody 2639507058 19. Jan 2023  Bringing Out The Dead - Nächte der Erinnerung (1999).mkv
+-rw-r--r-- 1 nobody nobody  733931520 12. Feb 2021  Der 13te Krieger (1999).avi
+drwxr-xr-x 1 nobody nobody        456 12. Feb 2021  Ein Lied von Liebe und Tod - Gloomy Sunday (1999)
+-rw-r--r-- 1 nobody nobody 1429078462 12. Feb 2021  Ein Sommernachtstraum (1999).avi
+-rw-r--r-- 1 nobody nobody 1405652684 12. Feb 2021  Eyes Wide Shut (1999).avi
+-rw-r--r-- 1 nobody nobody 1489426432 12. Feb 2021  Fight Club (1999).avi
+-rw-r--r-- 1 nobody nobody 1501622448 12. Feb 2021  Galaxy Quest - Planlos durchs Weltall (1999).avi
+-rw-r--r-- 1 nobody nobody 1666160156 12. Feb 2021  Ghost Dog - Der Weg des Samurai (1999).avi
+drwxr-xr-x 1 nobody nobody        380 12. Nov 2021  James Bond - Die Welt ist nicht genug (1999)
+drwxr-xr-x 1 nobody nobody        136 12. Feb 2021  Johanna von Orleans (1999)
+-rw-r--r-- 1 nobody nobody 1453625282 12. Feb 2021  Käpt'n Blaubär - Der Film (1999).avi
+-rw-r--r-- 1 nobody nobody 1463322624 12. Feb 2021  Magnolia (1999).avi
+drwxr-xr-x 1 nobody nobody        154 12. Feb 2021  Matrix (1999)
+-rw-r--r-- 1 nobody nobody 1212633198 12. Feb 2021  Running Out of Time (1999).avi
+-rw-r--r-- 1 nobody nobody 2190551829 12. Feb 2021  Sleepy Hollow (1999).mp4
+-rw-r--r-- 1 nobody nobody  733321216 12. Feb 2021  Sonnenallee (1999).avi
+-rw-r--r-- 1 nobody nobody 1718648381 12. Feb 2021  Star Wars Episode I - Die dunkle Bedrohung (1999).mkv
+-rw-r--r-- 1 nobody nobody 2204173936 12. Feb 2021  Tee mit Mussolini (1999).mkv
+-rw-r--r-- 1 nobody nobody 1988026652 12. Feb 2021  The Green Mile (1999).avi
+-rw-r--r-- 1 nobody nobody 2333006930  3. Dez 2019  The Straight Story - Eine wahre Geschichte (1999).mkv
+-rw-r--r-- 1 nobody nobody 1782300672 12. Feb 2021  Three Kings (1999).avi
+drwxr-xr-x 1 nobody nobody        176 12. Feb 2021  Warriors - Einsatz in Bosnien (1999)
+-rw-r--r-- 1 nobody nobody  732964864 12. Feb 2021  Wege in die Nacht (1999).avi
+-rw-r--r-- 1 nobody nobody 2495745051 13. Okt 2020  Wer mit dem Teufel reitet (1999).mkv
+
+/mm/video/movies/2000:
+insgesamt 50083132
+-rw-r--r-- 1 nobody nobody 2138666484 12. Feb 2021  Battle Royale (2000).mkv
+-rw-r--r-- 1 nobody nobody 1988575232 12. Feb 2021  Cast Away - Verschollen (2000).avi
+-rw-r--r-- 1 nobody nobody 5347259825 19. Feb 2020  Der Patriot (2000).mkv
+-rw-r--r-- 1 nobody nobody 2888702202  4. Nov 2021  Der Zauber von Malena (2000).mkv
+-rw-r--r-- 1 nobody nobody 4324239123 12. Feb 2021  Die purpurnen Flüsse (2000).mkv
+-rw-r--r-- 1 nobody nobody 1469226984 12. Feb 2021  Die Stille nach dem Schuss (2000).avi
+-rw-r--r-- 1 nobody nobody 1421347194 12. Feb 2021  Gladiator (2000).avi
+-rw-r--r-- 1 nobody nobody  729671680 12. Feb 2021  Godzilla vs. Megaguirus (2000).avi
+-rw-r--r-- 1 nobody nobody  733896704 12. Feb 2021  Memento (2000).avi
+-rw-r--r-- 1 nobody nobody 2055212426 17. Jun 2020  Mission to Mars (2000).mkv
+-rw-r--r-- 1 nobody nobody 2308089627  2. Feb 2022  O Brother, Where Art Thou (2000).mkv
+-rw-r--r-- 1 nobody nobody  718090240 12. Feb 2021  Oi!Warning (2000).avi
+-rw-r--r-- 1 nobody nobody 1046470656 12. Feb 2021  Otto - Der Katastrofenfilm (2000).avi
+-rw-r--r-- 1 nobody nobody 2317874326 12. Mai 2021  Pitch Black - Planet der Finsternis (2000).mkv
+drwxr-xr-x 1 nobody nobody        138 12. Feb 2021  Red Planet (2000)
+-rw-r--r-- 1 nobody nobody  736061440 12. Feb 2021  Requiem For A Dream (2000).avi
+-rw-r--r-- 1 nobody nobody 2156141828 18. Mär 2020  Romeo must die (2000).mkv
+-rw-r--r-- 1 nobody nobody 1562572800 12. Feb 2021  Scary Movie (2000).avi
+-rw-r--r-- 1 nobody nobody  733321216 12. Feb 2021  Sonnenallee (2000).avi
+-rw-r--r-- 1 nobody nobody 2455237928  7. Okt 2020  Space Cowboys (2000).mkv
+-rw-r--r-- 1 nobody nobody 1632189133 31. Jul 2020  Taxi Taxi (2000).mkv
+-rw-r--r-- 1 nobody nobody 1839920653 12. Feb 2021  The Beach (2000).mkv
+-rw-r--r-- 1 nobody nobody 4099191027 13. Jan 2021  Thirteen Days (2000).mkv
+-rw-r--r-- 1 nobody nobody 2660178706 12. Feb 2021  Tiger and Dragon (2000).mkv
+-rw-r--r-- 1 nobody nobody 2879890428 12. Feb 2021  Traffic - Macht des Kartells (2000).mkv
+-rw-r--r-- 1 nobody nobody 1043054751 12. Feb 2021  Y a-t-il un Flic pour sauver l'Humanite (2000).mkv
+
+/mm/video/movies/2001:
+insgesamt 62909032
+-rw-r--r-- 1 nobody nobody 2515148800 12. Feb 2021  A Beautiful Mind (2001).avi
+-rw-r--r-- 1 nobody nobody 1410389076 12. Feb 2021  Black Hawk Down (2001).avi
+-rw-r--r-- 1 nobody nobody 5367222183 12. Nov 2023  Black Hawk Down (2001).mp4
+-rw-r--r-- 1 nobody nobody 1465485552 12. Feb 2021  Das Experiment (2001).avi
+-rw-r--r-- 1 nobody nobody 1441522140 12. Feb 2021  Der Herr der Ringe - Die Gefährten (2001).avi
+-rw-r--r-- 1 nobody nobody 1113259890 12. Feb 2021  Der schöne Tag (2001).mkv
+-rw-r--r-- 1 nobody nobody 1415022592 12. Feb 2021  Der Schuh des Manitu (2001).avi
+-rw-r--r-- 1 nobody nobody  788873216 12. Feb 2021  Der Zimmerspringbrunnen (2001).avi
+-rw-r--r-- 1 nobody nobody 1315979532 12. Feb 2021  Die fabelhafte Welt der Amelie (2001).avi
+-rw-r--r-- 1 nobody nobody 4070846388 11. Aug 2021  Die Klavierspielerin (2001).mkv
+-rw-r--r-- 1 nobody nobody 2544607303  3. Sep 2022  Die Wasserfälle von Slunj (2001).mp4
+-rw-r--r-- 1 nobody nobody 1023642278 12. Feb 2021  Donnie Darko (2001).avi
+-rw-r--r-- 1 nobody nobody 1154205430 12. Feb 2021  Duell - Enemy at the Gates (2001).avi
+-rw-r--r-- 1 nobody nobody 3756319359 12. Feb 2021  Enigma - Das Geheimnis (2001).mkv
+drwxr-xr-x 1 nobody nobody       1512 12. Feb 2021  Fat Girl (2001)
+-rw-r--r-- 1 nobody nobody 1254814864 12. Feb 2021  Godzilla, Mothra and King Ghidorah (2001).avi
+-rw-r--r-- 1 nobody nobody 2287225912  1. Aug 2020  Hannibal (2001).mkv
+drwxr-xr-x 1 nobody nobody        610 19. Jan 2024  Harry Potter und der Stein der Weisen (2001)
+-rw-r--r-- 1 nobody nobody 1604688189 12. Feb 2021  Hundstage (2001).mkv
+-rw-r--r-- 1 nobody nobody 1571623538 12. Feb 2021  Im Fadenkreuz - Allein gegen alle (2001).mp4
+drwxr-xr-x 1 nobody nobody         92 12. Feb 2021  Intimacy (2001)
+-rw-r--r-- 1 nobody nobody 1629200384 12. Feb 2021  Jurassic Park III (2001).avi
+-rw-r--r-- 1 nobody nobody  733984768 12. Feb 2021  Kiss of the Dragon (2001).avi
+-rw-r--r-- 1 nobody nobody 1895291214 12. Feb 2021  K-PAX (2001).mp4
+-rw-r--r-- 1 nobody nobody 2748310849 12. Feb 2021  Mulholland Drive (2001).mkv
+-rw-r--r-- 1 nobody nobody 2650299441 28. Aug 2021  Nirgendwo in Afrika (2001).mkv
+-rw-r--r-- 1 nobody nobody 2138771496 16. Dez 2019  No Man's Land (2001).mkv
+drwxr-xr-x 1 nobody nobody        116 12. Feb 2021  Ocean's Eleven (2001)
+-rw-r--r-- 1 nobody nobody 1439959818 12. Feb 2021  Pakt der Wölfe (2001).avi
+-rw-r--r-- 1 nobody nobody 3431079530 31. Mai 2023  Pakt der Wölfe (remastered) (2001).mkv
+-rw-r--r-- 1 nobody nobody 1457317888 12. Feb 2021  Scary Movie 2 (2001).avi
+-rw-r--r-- 1 nobody nobody 2020632769  3. Jun 2020  The Fast and the Furious (2001).mkv
+-rw-r--r-- 1 nobody nobody  998798174 12. Feb 2021  The Hole (2001).avi
+-rw-r--r-- 1 nobody nobody 1821300854 22. Jul 2021  The Man Who Wasn't There (2001).mkv
+-rw-r--r-- 1 nobody nobody 3534388593  1. Feb 2022  To End All Wars - Die wahre Hölle (2001).mkv
+-rw-r--r-- 1 nobody nobody 1818574961 11. Feb 2021  Was tun, wenn's brennt? (2001).mkv
+
+/mm/video/movies/2002:
+insgesamt 50405456
+-rw-r--r-- 1 nobody nobody  734416896 12. Feb 2021  28 Days Later (2002).avi
+-rw-r--r-- 1 nobody nobody 1559877632 12. Feb 2021  Austin Powers in Goldständer (2002).avi
+drwxr-xr-x 1 nobody nobody        236 12. Feb 2021  Below - Da unten hört dich niemand schreien (2002)
+-rw-r--r-- 1 nobody nobody 1860164744 18. Nov 2019  Cabin Fever (2002).mkv
+-rw-r--r-- 1 nobody nobody 1465266604 12. Feb 2021  City of God (2002).avi
+-rw-r--r-- 1 nobody nobody 2891205121 28. Jan 2022  Dark Blue (2002).mkv
+-rw-r--r-- 1 nobody nobody 1328074820 12. Feb 2021  Der Anschlag (2002).avi
+-rw-r--r-- 1 nobody nobody 1724795667 12. Feb 2021  Der Herr der Ringe - Die zwei Türme - Extended Edition (2002)-cd1.mp4
+-rw-r--r-- 1 nobody nobody 2036392629 12. Feb 2021  Der Herr der Ringe - Die zwei Türme - Extended Edition (2002)-cd2.mp4
+-rw-r--r-- 1 nobody nobody 2743188181 12. Feb 2021  Der Pianist (2002).mkv
+-rw-r--r-- 1 nobody nobody  727238656 12. Feb 2021  Eine Schwalbe macht den Sommer (2002).avi
+-rw-r--r-- 1 nobody nobody 2237248357 12. Feb 2021  Equilibrium (2002).mp4
+-rw-r--r-- 1 nobody nobody 2175021705  9. Jan 2022  Führer Ex (2002).mkv
+-rw-r--r-- 1 nobody nobody 1314153612 12. Feb 2021  Gangs of New York (2002).avi
+-rw-r--r-- 1 nobody nobody  839237632 12. Feb 2021  Godzilla against Mechagodzilla (2002).avi
+-rw-r--r-- 1 nobody nobody  731312128 12. Feb 2021  Halbe Treppe (2002).avi
+-rw-r--r-- 1 nobody nobody 2618175488 12. Feb 2021  Harry Potter und die Kammer des Schreckens (2002).avi
+-rw-r--r-- 1 nobody nobody 5499800412 19. Jan 2021  Hero (2002).mkv
+-rw-r--r-- 1 nobody nobody  733679616 12. Feb 2021  Ken Park (2002).avi
+-rw-r--r-- 1 nobody nobody  729993216 12. Feb 2021  Men in Black 2 (2002).avi
+-rw-r--r-- 1 nobody nobody 2254075904 12. Feb 2021  Minority Report (2002).avi
+-rw-r--r-- 1 nobody nobody 1150853120 12. Feb 2021  Resident Evil (2002).avi
+-rw-r--r-- 1 nobody nobody 1068990360  2. Mär 2023  Riverworld - Welt ohne Ende (2002).mkv
+-rw-r--r-- 1 nobody nobody 2213266635 16. Jul 2021  Road to Perdition (2002).mkv
+-rw-r--r-- 1 nobody nobody 1468660932 12. Feb 2021  Solaris (2002).avi
+-rw-r--r-- 1 nobody nobody 1709198577 12. Feb 2021  Star Wars Episode II - Angriff der Klonkrieger (2002).mkv
+-rw-r--r-- 1 nobody nobody 1462775808 12. Feb 2021  Stirb an einem anderen Tag (2002).avi
+-rw-r--r-- 1 nobody nobody 1334313902 12. Feb 2021  The Bourne Identity (2002).mkv
+drwxr-xr-x 1 nobody nobody        120 12. Feb 2021  The Transporter (2002)
+-rw-r--r-- 1 nobody nobody 3688362262  4. Nov 2021  Was nicht passt wird passend gemacht (2002).mkv
+-rw-r--r-- 1 nobody nobody 1315401594 12. Feb 2021  Windtalkers (2002).avi
+
+/mm/video/movies/2003:
+insgesamt 42296428
+-rw-r--r-- 1 nobody nobody 2884023820  1. Aug 2018  2 Fast 2 Furious (2003).mkv
+-rw-r--r-- 1 nobody nobody 1893411635 12. Feb 2021  Bruce Allmächtig (2003).mkv
+-rw-r--r-- 1 nobody nobody  734015488 12. Feb 2021  Dark Walker (2003).avi
+-rw-r--r-- 1 nobody nobody 1852447344  2. Jun 2022  Das Johannesevangelium - Der Film - Teil 1 (2003).mp4
+-rw-r--r-- 1 nobody nobody 1096563559  2. Jun 2022  Das Johannesevangelium - Der Film - Teil 2 (2003).mp4
+-rw-r--r-- 1 nobody nobody 1813363624 12. Feb 2021  Der Herr der Ringe - Die Rückkehr des Königs - Special Extended Edition (2003)-cd1.mp4
+-rw-r--r-- 1 nobody nobody 2063515984 12. Feb 2021  Der Herr der Ringe - Die Rückkehr des Königs - Special Extended Edition (2003)-cd2.mp4
+-rw-r--r-- 1 nobody nobody  733913088 12. Feb 2021  Der Wald vor lauter Bäumen (2003).avi
+-rw-r--r-- 1 nobody nobody 2253807329 12. Feb 2021  Fluch der Karibik (2003).mkv
+-rw-r--r-- 1 nobody nobody 1254531710 12. Feb 2021  Godzilla: Tokyo SOS (2003).avi
+drwxr-xr-x 1 nobody nobody        120 12. Feb 2021  Good Bye, Lenin (2003)
+-rw-r--r-- 1 nobody nobody 2470775494 26. Okt 2019  Gothika (2003).mkv
+-rw-r--r-- 1 nobody nobody 2604337422 12. Feb 2021  Hulk (2003).mkv
+-rw-r--r-- 1 nobody nobody  733968822 12. Feb 2021  In Hell (2003).avi
+-rw-r--r-- 1 nobody nobody 2477004510 18. Jan 2020  Irgendwann in Mexico (2003).mkv
+-rw-r--r-- 1 nobody nobody 1299381103 12. Feb 2021  Johnny English - Der Spion, der es versiebte (2003).mkv
+drwxr-xr-x 1 nobody nobody        140 12. Feb 2021  Kill Bill - Volume 1 (2003)
+-rw-r--r-- 1 nobody nobody  734138368 12. Feb 2021  Lichter (2003).avi
+-rw-r--r-- 1 nobody nobody 2232012800 12. Feb 2021  Master and Commander (2003).avi
+drwxr-xr-x 1 nobody nobody        120 12. Feb 2021  Matrix Reloaded (2003)
+drwxr-xr-x 1 nobody nobody        132 12. Feb 2021  Matrix Revolutions (2003)
+-rw-r--r-- 1 nobody nobody 1663027200 12. Feb 2021  Michael Bays's Texas Chain Saw Massacre (2003).avi
+drwxr-xr-x 1 nobody nobody        136 12. Feb 2021  Ong-Bak - Wächter des Tempels (2003)
+-rw-r--r-- 1 nobody nobody 1511419904 12. Feb 2021  Scary Movie 3 (2003).avi
+-rw-r--r-- 1 nobody nobody  733566976 12. Feb 2021  Schultze gets the blues (2003).avi
+-rw-r--r-- 1 nobody nobody  844821070 12. Feb 2021  Shade (2003).avi
+-rw-r--r-- 1 nobody nobody 1438221024 12. Feb 2021  Sie haben Knut (2003).avi
+-rw-r--r-- 1 nobody nobody 1609914490 31. Jul 2020  Taxi 3 (2003).mkv
+-rw-r--r-- 1 nobody nobody  676883744 12. Feb 2021  Terminator 3 - Rebellion der Maschinen (2003).avi
+drwxr-xr-x 1 nobody nobody        124 12. Feb 2021  The Last Samurai (2003)
+-rw-r--r-- 1 nobody nobody 1135527160 12. Feb 2021  Tränen der Sonne (2003).avi
+-rw-r--r-- 1 nobody nobody 2028940139 19. Jan 2022  Tricks (2003).mkv
+-rw-r--r-- 1 nobody nobody 2537966946  5. Feb 2024  Wolfzeit (2003).mkv
+
+/mm/video/movies/2004:
+insgesamt 48086812
+-rw-r--r-- 1 nobody nobody 2968498361 21. Sep 2021  Alexander (2004).mp4
+-rw-r--r-- 1 nobody nobody 3110869003 15. Mai 2020  Aviator (2004).mkv
+-rw-r--r-- 1 nobody nobody  831294800 12. Feb 2021  Born to fight (2004).mpg
+-rw-r--r-- 1 nobody nobody  731615232 12. Feb 2021  Dawn of the Dead (2004).avi
+-rw-r--r-- 1 nobody nobody  779909514 12. Feb 2021  Delphinsommer (2004).avi
+-rw-r--r-- 1 nobody nobody 1224966894 12. Feb 2021  Der Hals der Giraffe (2004).avi
+-rw-r--r-- 1 nobody nobody  730503168 12. Feb 2021  Der neunte Tag (2004).avi
+-rw-r--r-- 1 nobody nobody 2608787727 12. Feb 2021  Der Untergang (2004).mkv
+-rw-r--r-- 1 nobody nobody  692077393 12. Feb 2021  Der Wixxer (2004).mkv
+-rw-r--r-- 1 nobody nobody 1799417173 12. Feb 2021  Die fetten Jahre sind vorbei (2004).mkv
+-rw-r--r-- 1 nobody nobody 4202778700 12. Feb 2021  Die purpurnen Flüsse 2 - Die Engel der Apocalypse (2004).mkv
+-rw-r--r-- 1 nobody nobody  733980672 12. Feb 2021  Gegen die Wand (2004).avi
+-rw-r--r-- 1 nobody nobody  839393280 12. Feb 2021  Godzilla: Final Wars (2004).avi
+-rw-r--r-- 1 nobody nobody 2141728768 12. Feb 2021  Harry Potter und der Gefangene von Azkaban (2004).avi
+drwxr-xr-x 1 nobody nobody        108 12. Feb 2021  Hotel Ruanda (2004)
+-rw-r--r-- 1 nobody nobody  730689536 12. Feb 2021  Hunger auf Leben (2004).avi
+drwxr-xr-x 1 nobody nobody         92 12. Feb 2021  Immortal (2004)
+-rw-r--r-- 1 nobody nobody 2023954432 12. Feb 2021  I, Robot (2004).avi
+-rw-r--r-- 1 nobody nobody 1467618022 12. Feb 2021  Kick it like Beckham (2004).avi
+-rw-r--r-- 1 nobody nobody 1779613696 12. Feb 2021  Kill Bill - Volume 2 (2004).avi
+-rw-rw-r-- 1 nobody nobody 4082893489 16. Jul 2021  King Arthur (2004).mkv
+-rw-r--r-- 1 nobody nobody 1458885968 12. Feb 2021  Kleinruppin forever (2004).avi
+-rw-r--r-- 1 nobody nobody 2213810255 10. Mär 2021  Ladykillers (2004).mkv
+-rw-r--r-- 1 nobody nobody 1368226058 12. Feb 2021  Mathilde - Eine große Liebe (2004).avi
+-rw-r--r-- 1 nobody nobody 3806053631 12. Feb 2021  Pearl Harbor (2001).mp4
+-rw-r--r-- 1 nobody nobody 1157963776 12. Feb 2021  Resident Evil 2 - Apocalypse (2004).avi
+-rw-r--r-- 1 nobody nobody 1386952704 12. Feb 2021  The Passion of the Christ (2004).avi
+-rw-r--r-- 1 nobody nobody 2200625788 29. Apr 2021  The Village - Das Dorf (2004).mkv
+-rw-r--r-- 1 nobody nobody  730613760 12. Feb 2021  (T)Raumschiff Surprise - Periode 1 (2004).avi
+-rw-r--r-- 1 nobody nobody 1437114584 12. Feb 2021  Troja (2004).avi
+
+/mm/video/movies/2005:
+insgesamt 55079112
+-rw-r--r-- 1 nobody nobody  833744296 12. Feb 2021  14 Hours (2005).mpg
+-rw-r--r-- 1 nobody nobody  852340387 20. Okt 10:45 Adams Äpfel (2005).mp4
+-rw-r--r-- 1 nobody nobody 1183312426 12. Feb 2021  A History of Violence (2005).mkv
+-rw-r--r-- 1 nobody nobody 1455531198 12. Feb 2021  Am Tag als Bobby Ewing starb (2005).avi
+-rw-r--r-- 1 nobody nobody 1656090283 12. Feb 2021  Batman Begins (2005).mkv
+-rw-r--r-- 1 nobody nobody  650629690 12. Feb 2021  Beowulf und Grendel (2005).avi
+-rw-r--r-- 1 nobody nobody  732272640 12. Feb 2021  Brick (2005).avi
+-rw-r--r-- 1 nobody nobody 2285127977 13. Feb 2020  Brokeback Mountain (2005).mkv
+-rw-r--r-- 1 nobody nobody 2231895542 12. Feb 2021  Brothers Grimm (2005).mkv
+drwxr-xr-x 1 nobody nobody         80 12. Feb 2021  Chaos (2005)
+-rw-r--r-- 1 nobody nobody 1071954775 12. Feb 2021  Das Ende - Assault on Precinct 13 (2005).mkv
+-rw-r--r-- 1 nobody nobody 1685078188 22. Mai 2022  Die Chroniken von Narnia - Der König von Narnia (2005).mp4
+drwxr-xr-x 1 nobody nobody        408  4. Mai 2024  Die neunte Kompanie (2005)
+drwxr-xr-x 1 nobody nobody        336  4. Mai 2024  Harry Potter und der Feuerkelch (2005)
+-rw-r--r-- 1 nobody nobody 2411024384 12. Feb 2021  Harry Potter und der Feuerkelch (2005).avi
+-rw-r--r-- 1 nobody nobody  734007297 12. Feb 2021  Hide and Seek - Du kannst dich nicht verstecken (2005).avi
+drwxr-xr-x 1 nobody nobody         88 12. Feb 2021  Jarhead (2005)
+-rw-r--r-- 1 nobody nobody 4707895685 25. Dez 2023  Karol  - A Man Who Became Pope (2005).mp4
+-rw-r--r-- 1 nobody nobody 2343904124 12. Feb 2021  Königreich der Himmel (2005).mp4
+drwxr-xr-x 1 nobody nobody         92 12. Feb 2021  München (2005)
+-rw-r--r-- 1 nobody nobody  234310358 12. Feb 2021  Netto (2005).avi
+-rw-r--r-- 1 nobody nobody 1630821065 23. Mär 2024  Next Door - Manche Türen sollten nie geöffnet werden (2005).mkv
+-rw-r--r-- 1 nobody nobody 1339948962 21. Okt 2021  NVA (2005).mp4
+-rw-r--r-- 1 nobody nobody 1140775093 30. Mai 2022  Robots (2005).mp4
+-rw-r--r-- 1 nobody nobody 2129296331 12. Feb 2021  Serenity - Flucht in neue Welten (2005).mkv
+drwxr-xr-x 1 nobody nobody         92 12. Feb 2021  Sin City (2005)
+-rw-r--r-- 1 nobody nobody 2840776393  7. Okt 2022  Sommer vorm Balkon (2005).mp4
+-rw-r--r-- 1 nobody nobody 5698734163 12. Feb 2021  Sophie Scholl - Die letzten Tage (2005).mkv
+-rw-r--r-- 1 nobody nobody 1805257214 12. Feb 2021  Star Wars Episode III - Die Rache der Sith (2005).mkv
+-rw-r--r-- 1 nobody nobody 2091864064 12. Feb 2021  Stealth - Unter dem Radar (2005).avi
+-rw-r--r-- 1 nobody nobody 2357102585 12. Feb 2021  Syriana (2005).mkv
+-rw-r--r-- 1 nobody nobody 1652745852 12. Feb 2021  Thank You for Smoking (2005).mkv
+-rw-r--r-- 1 nobody nobody  993018352 12. Feb 2021  The Greatest Game Ever Played (2005).mp4
+-rw-r--r-- 1 nobody nobody  764692066 12. Feb 2021  The Tiger Blade (2005).avi
+-rw-r--r-- 1 nobody nobody  597517677 12. Feb 2021  Tideland (2005).mkv
+-rw-r--r-- 1 nobody nobody 2345968822 12. Jun 2020  Transporter - The Mission (2005).mkv
+-rw-r--r-- 1 nobody nobody 2490921612 17. Mai 2020  V wie Vendetta (2005).mkv
+drwxr-xr-x 1 nobody nobody        168 12. Feb 2021  War of the Worlds (2005)
+-rw-r--r-- 1 nobody nobody 1452389964 12. Feb 2021  Willenbrock (2005).avi
+
+/mm/video/movies/2006:
+insgesamt 71452392
+-rw-r--r-- 1 nobody nobody 2181875385 12. Feb 2021  300 (deutsch) (2006).mkv
+-rw-r--r-- 1 nobody nobody  736859868 12. Feb 2021  300 (englisch)(2006).avi
+-rw-r--r-- 1 nobody nobody  735111168 12. Feb 2021  Alien Incursion (2006).avi
+drwxr-xr-x 1 nobody nobody        100 12. Feb 2021  Apocalypto (2006)
+-rw-r--r-- 1 nobody nobody 2118234987 13. Feb 2020  A Scanner Darkly - Der dunkle Schirm (2006).mkv
+-rw-r--r-- 1 nobody nobody  789125820 12. Feb 2021  Baerenbrueder 2 (2006).mpg
+-rw-r--r-- 1 nobody nobody  821580480 12. Feb 2021  Bandidas (2006).mpg
+-rw-r--r-- 1 nobody nobody  734007296 12. Feb 2021  Blame - Die Wiege des Todes (2006).avi
+-rw-r--r-- 1 nobody nobody 1883621892 12. Feb 2021  Blood Diamond (2006).avi
+drwxr-xr-x 1 nobody nobody         80 12. Feb 2021  Borat (2006)
+-rw-r--r-- 1 nobody nobody  459122812 12. Feb 2021  Butterfly Effect 2 (2006).mkv
+-rw-r--r-- 1 nobody nobody  771565676 12. Feb 2021  Cars (2006).mpg
+-rw-r--r-- 1 nobody nobody 1885026410 12. Feb 2021  Children of Men (2006).avi
+-rw-r--r-- 1 nobody nobody 2715009864 14. Sep 2020  Crank (2006).mkv
+drwxr-xr-x 1 nobody nobody        144 12. Feb 2021  Das Leben der Anderen (2006)
+-rw-r--r-- 1 nobody nobody  726501376 12. Feb 2021  Das Maedchen aus dem Wasser (2006).avi
+-rw-r--r-- 1 nobody nobody  804938316 12. Feb 2021  Das Netz 2.0 (2006).mpg
+-rw-r--r-- 1 nobody nobody 2268816041 12. Feb 2021  Departed - Unter Feinden (2006).mkv
+-rw-r--r-- 1 nobody nobody 1280746804 12. Feb 2021  Der gute Hirte (2006).avi
+drwxr-xr-x 1 nobody nobody        152 12. Feb 2021  Der Teufel traegt Prada (2006)
+-rw-r--r-- 1 nobody nobody 2032269606  8. Apr 2020  Der Teufel trägt Prada (2006).mkv
+-rw-r--r-- 1 nobody nobody  733286400 12. Feb 2021  Die wilden Hühner (2006).avi
+-rw-r--r-- 1 nobody nobody  734042112 12. Feb 2021  Die Wolke (2006).avi
+-rw-r--r-- 1 nobody nobody 2367797347 26. Mai 2021  Ein gutes Jahr (2006).mkv
+-rw-r--r-- 1 nobody nobody  722420734 12. Feb 2021  Elementarteilchen (2006).avi
+-rw-r--r-- 1 nobody nobody  445866736 12. Feb 2021  Elephants Dream (2006).avi
+-rw-r--r-- 1 nobody nobody  731656192 12. Feb 2021  Fido - Gute Tote sind schwer zu finden (2006).avi
+-rw-r--r-- 1 nobody nobody  676528020 12. Feb 2021  Final Destination 3 (2006).mpg
+-rw-r--r-- 1 nobody nobody  735809536 12. Feb 2021  Flags of Our Fathers (2006).avi
+-rw-r--r-- 1 nobody nobody 2453549609 12. Feb 2021  Flags of our Fathers (2006).mkv
+drwxr-xr-x 1 nobody nobody        240 12. Feb 2021  Fluch der Karibik 2 (2006)
+-rw-r--r-- 1 nobody nobody 1108407605 12. Feb 2021  Hui Bui, das Schlossgespenst (2006).mkv
+-rw-r--r-- 1 nobody nobody 3870330192 26. Jun 2020  Inland Empire (2006).mkv
+-rw-r--r-- 1 nobody nobody 2254571520 12. Feb 2021  James Bond 007: Casino Royale (2006).avi
+-rw-r--r-- 1 nobody nobody 1456380012 12. Feb 2021  Knallhart (2006).avi
+drwxr-xr-x 1 nobody nobody        120 12. Feb 2021  Lady Chatterley (2006)
+-rw-r--r-- 1 nobody nobody  838971392 12. Feb 2021  Letters from Iwo Jima (2006).avi
+-rw-r--r-- 1 nobody nobody 2619003469 12. Feb 2021  Letters from Iwo Jima (2006).mkv
+-rw-r--r-- 1 nobody nobody  736561152 12. Feb 2021  Living High - Was für ein Trip (2006).avi
+-rw-r--r-- 1 nobody nobody  727744512 12. Feb 2021  Miami Vice (2006).avi
+-rw-r--r-- 1 nobody nobody  719172468 12. Feb 2021  Mission: Impossible - Phantom Protokoll (2006).avi
+-rw-r--r-- 1 nobody nobody 2308448918 29. Mai 2023  Neger, Neger, Schornsteinfeger! (2006).mkv
+-rw-r--r-- 1 nobody nobody 1438922172 12. Feb 2021  Once (2006).avi
+drwxr-xr-x 1 nobody nobody        108 12. Feb 2021  Open Water 2 (2006)
+drwxr-xr-x 1 nobody nobody        116 12. Feb 2021  Pans Labyrinth (2006)
+-rw-r--r-- 1 nobody nobody 2986676040 12. Okt 2020  Paris, je't aime (2006).mkv
+-rw-r--r-- 1 nobody nobody 2371567972 12. Feb 2021  Pirates of the Caribbean - Fluch der Karibik 2 (2006).mkv
+-rw-r--r-- 1 nobody nobody  488963723 12. Feb 2021  Poseidon (2006).mkv
+-rw-r--r-- 1 nobody nobody  734488576 12. Feb 2021  Requiem (2006).avi
+drwxr-xr-x 1 nobody nobody        104 12. Feb 2021  Rescue Dawn (2006)
+-rw-r--r-- 1 nobody nobody 1502138028 12. Feb 2021  Rocky Balboa (2006).avi
+-rw-r--r-- 1 nobody nobody 1579730944 12. Feb 2021  Scary Movie 4 (2006).avi
+-rw-r--r-- 1 nobody nobody  734560256 12. Feb 2021  Silent Hill (2006).avi
+-rw-r--r-- 1 nobody nobody  736911360 12. Feb 2021  Snakes on a Plane (2006).avi
+-rw-r--r-- 1 nobody nobody  734005248 12. Feb 2021  Spectre (2006).avi
+-rw-r--r-- 1 nobody nobody  729997312 12. Feb 2021  The Baby's Room (2006).avi
+-rw-r--r-- 1 nobody nobody 2228912979  9. Sep 2021  The Black Dahlia (2006).mkv
+-rw-r--r-- 1 nobody nobody 2064201304 19. Jun 2020  The Fast and the Furious - Tokyo Drift (2006).mkv
+-rw-r--r-- 1 nobody nobody  733941760 12. Feb 2021  The Fountain (2006).avi
+-rw-r--r-- 1 nobody nobody  541465055 12. Feb 2021  The Hills have Eyes (2006).mkv
+-rw-r--r-- 1 nobody nobody 3543304377 16. Okt 2020  This is England (2006).mkv
+drwxr-xr-x 1 nobody nobody        140 12. Feb 2021  Underworld: Evolution (2006)
+drwxr-xr-x 1 nobody nobody        120 12. Feb 2021  Unwiderstehlich (2006)
+-rw-r--r-- 1 nobody nobody  832403348 12. Feb 2021  Velvet Revolution (2006).mpg
+drwxr-xr-x 1 nobody nobody        132 12. Feb 2021  World Trade Center (2006)
+
+/mm/video/movies/2007:
+insgesamt 46678056
+-rw-r--r-- 1 nobody nobody 1826460698 15. Aug 2023  12 heißt - Ich liebe dich (2007).mp4
+-rw-r--r-- 1 nobody nobody  733938920 12. Feb 2021  28 Wochen spaeter (2007).avi
+-rw-r--r-- 1 nobody nobody 1047934450 12. Feb 2021  Alien Teacher (2007).mkv
+-rw-r--r-- 1 nobody nobody 2955227835 20. Okt 2020  American Gangster (2007).mkv
+drwxr-xr-x 1 nobody nobody         58 12. Feb 2021  Assembly (2007)
+-rw-r--r-- 1 nobody nobody 2743420723 31. Okt 2023  Begrabt mein Herz am Wounded Knee (2007).mkv
+drwxr-xr-x 1 nobody nobody        246 12. Feb 2021  Blade Runner - The Final Cut (2007)
+-rw-r--r-- 1 nobody nobody 2021106406 12. Feb 2021  Das Haus der Lerchen (2007).avi
+-rw-r--r-- 1 nobody nobody  779152956 12. Feb 2021  Das jüngste Gewitter (2007).mkv
+-rw-r--r-- 1 nobody nobody 1465497362 12. Feb 2021  Death Proof - Todsicher (2007).avi
+-rw-r--r-- 1 nobody nobody 1353093083  1. Okt 10:55 Der eisige Tod (2007).mkv
+drwxr-xr-x 1 nobody nobody         60 12. Feb 2021  Fallen Heroes (2007)
+-rw-r--r-- 1 nobody nobody 1465962496 12. Feb 2021  Ferien (2007).avi
+drwxr-xr-x 1 nobody nobody         84 12. Feb 2021  Frontiere(s) (2007)
+-rw-r--r-- 1 nobody nobody  576581164 12. Feb 2021  Harry Potter and the Order of the Phoenix (2007).mkv
+-rw-r--r-- 1 nobody nobody 2082912256 12. Feb 2021  Harry Potter und der Orden des Phoenix (2007).avi
+-rw-r--r-- 1 nobody nobody  733800448 12. Feb 2021  I am Legend (2007).avi
+-rw-r--r-- 1 nobody nobody 3688197127 28. Feb 2020  Into the Wild (2007).mkv
+-rw-r--r-- 1 nobody nobody 1858132484 12. Apr 2021  Jane Austen's Northanger Abbey (2007).mkv
+drwxr-xr-x 1 nobody nobody         96 12. Feb 2021  Lust, Caution (2007)
+-rw-r--r-- 1 nobody nobody  710783247 12. Feb 2021  Neues vom Wixxer (2007).mkv
+-rw-r--r-- 1 nobody nobody 1566085120 12. Feb 2021  No Country for Old Men (2007).avi
+-rw-r--r-- 1 nobody nobody 2652776597 12. Feb 2021  Pirates of the Caribbean - Am Ende der Welt (2007).mkv
+-rw-r--r-- 1 nobody nobody 1568706560 12. Feb 2021  Planet Terror (2007).avi
+-rw-r--r-- 1 nobody nobody 1465878444 12. Feb 2021  Prey (2007).avi
+-rw-r--r-- 1 nobody nobody 2083528016 13. Nov 2019  Ratatouille (2997).mkv
+-rw-r--r-- 1 nobody nobody 1258858496 12. Feb 2021  Resident Evil: Extinction (2007).avi
+-rw-r--r-- 1 nobody nobody 1467977728 12. Feb 2021  Sex and Death 101 (2007).avi
+drwxr-xr-x 1 nobody nobody        328 12. Feb 2021  Shake Hands with the Devil (2007)
+-rw-r--r-- 1 nobody nobody 1471967232 12. Feb 2021  Stirb langsam 4.0 (2007).avi
+-rw-r--r-- 1 nobody nobody 2042888973 31. Aug 2020  Sunshine (2007).mkv
+-rw-r--r-- 1 nobody nobody 1798713182 31. Jul 2020  T4xi (2007).mkv
+-rw-r--r-- 1 nobody nobody 2306134016 12. Feb 2021  There will be Blood (2007).avi
+-rw-r--r-- 1 nobody nobody 1338618646 22. Okt 2021  Von Löwen und Lämmern (2007).mkv
+-rw-r--r-- 1 nobody nobody  733947904 12. Feb 2021  Yella (2007).avi
+
+/mm/video/movies/2008:
+insgesamt 67743164
+-rw-r--r-- 1 nobody nobody 5098894391 14. Mär 2023  20 Years After (2008).mkv
+-rw-r--r-- 1 nobody nobody 3501446796 31. Mär 2021  Asterix bei den Olympischen Spielen (2008).mkv
+-rw-r--r-- 1 nobody nobody 1311116161 12. Feb 2021  Babylon A.D. (2008).mkv
+-rw-r--r-- 1 nobody nobody 2741502199  7. Jun 2020  Berlin Calling (2008).mkv
+-rw-r--r-- 1 nobody nobody 3152397236 19. Jul 2021  Burn After Reading (2008).mkv
+-rw-r--r-- 1 nobody nobody 2251492827 13. Dez 2020  Dark Planet - The Inhabited Island (2008).mkv
+-rw-r--r-- 1 nobody nobody 2513201057 12. Feb 2021  Das Kabinett des Doktor Parnassus (2008).mkv
+-rw-r--r-- 1 nobody nobody  731160576 12. Feb 2021  Day of the Dead (2008).avi
+-rw-r--r-- 1 nobody nobody 2617624225 31. Mär 2020  Der Baader Meinhof Komplex (2008).mkv
+-rw-r--r-- 1 nobody nobody 2169678467 15. Aug 2023  Der Besuch der alten Dame (2008).mp4
+-rw-r--r-- 1 nobody nobody 1310416060 12. Feb 2021  Der Junge im gestreiften Pyjama (2008).mp4
+-rw-r--r-- 1 nobody nobody 2119151616 12. Feb 2021  Der Mann, der niemals lebte (2008).avi
+-rw-r--r-- 1 nobody nobody  734656512 12. Feb 2021  Der Tag, an dem die Erde stillstand (2008).avi
+-rw-r--r-- 1 nobody nobody 2281122561 15. Nov 2020  Der unglaubliche Hulk (2008).mkv
+-rw-r--r-- 1 nobody nobody  733389626 12. Feb 2021  Die Hitzewelle - Keiner kann entkommen (2008).avi
+drwxr-xr-x 1 nobody nobody        100 12. Feb 2021  Die Klasse (2008)
+-rw-r--r-- 1 nobody nobody 2211941161  3. Nov 2020  Die Stadt der Blinden (2008).mkv
+-rw-r--r-- 1 nobody nobody 2076413433 12. Jun 2020  Doomsday (2008).mkv
+-rw-r--r-- 1 nobody nobody 1771964416 12. Feb 2021  Gangster's Paradise: Jerusalema (2008).avi
+drwxr-xr-x 1 nobody nobody         80 12. Feb 2021  In Bruges (2008)
+-rw-r--r-- 1 nobody nobody 2101803008 12. Feb 2021  Indiana Jones und das Königreich des Kristallschädels (2008).avi
+-rw-r--r-- 1 nobody nobody 3081521938 29. Apr 2020  Iron Man (2008).mkv
+drwxr-xr-x 1 nobody nobody        192 12. Feb 2021  James Bond 007: Ein Quantum Trost (2008)
+drwxr-xr-x 1 nobody nobody        100 12. Feb 2021  John Rambo (2008)
+-rw-r--r-- 1 nobody nobody 2097288244 12. Feb 2021  Krabat (2008).avi
+-rw-r--r-- 1 nobody nobody 1090454222 12. Feb 2021  Ohne Schuld (2008).avi
+-rw-r--r-- 1 nobody nobody  488116289 12. Feb 2021  Ong Bak 2: The Beginning (2008).mkv
+-rw-r--r-- 1 nobody nobody 5195468848 12. Feb 2021  Palermo Shooting (2008).mp4
+-rw-r--r-- 1 nobody nobody 1661466304 24. Jul 2020  Quarantäne (2008).mkv
+-rw-r--r-- 1 nobody nobody 1693365811 12. Feb 2021  Slumdog Millionaer (2008).m4v
+-rw-r--r-- 1 nobody nobody  741169496 12. Feb 2021  Star Wars - The Clone Wars (2008).mp4
+-rw-r--r-- 1 nobody nobody  733937664 12. Feb 2021  Stiletto (2008).avi
+-rw-r--r-- 1 nobody nobody 2815973753  8. Nov 2021  Superhero Movie (2008).mkv
+-rw-r--r-- 1 nobody nobody 2488029823 12. Feb 2021  The Dark Knight (2008).mkv
+drwxr-xr-x 1 nobody nobody        108 12. Feb 2021  The Wrestler (2008)
+-rw-r--r-- 1 nobody nobody 2806239243 12. Jun 2020  Transporter 3 (2008).mkv
+-rw-r--r-- 1 nobody nobody 2023017112  7. Nov 2019  Wall-E - Der Letzte räumt die Erde auf (2008).mkv
+drwxr-xr-x 1 nobody nobody        168  4. Mai 2024  Waltz with Bashir (2008)
+-rw-r--r-- 1 nobody nobody 1023508718 12. Feb 2021  Willkommen bei den Sch'tis (2008).avi
+
+/mm/video/movies/2009:
+insgesamt 57082772
+drwxr-xr-x 1 nobody nobody        106 12. Feb 2021  2012 (2009)
+-rw-r--r-- 1 nobody nobody 3385671680 12. Feb 2021  Avatar - Aufbruch nach Pandora (2009).avi
+-rw-r--r-- 1 nobody nobody 1255633222 12. Feb 2021  Brothers - Zwei Brüder, eine Liebe (2009).avi
+-rw-r--r-- 1 nobody nobody 1889827689 29. Apr 2021  Coraline (2009).mkv
+-rw-r--r-- 1 nobody nobody 1455420010 12. Feb 2021  Das weiße Band (2009).avi
+-rw-r--r-- 1 nobody nobody 3261394944 12. Feb 2021  Der Baer ist los. Die Geschichte von Bruno (2009).avi
+-rw-r--r-- 1 nobody nobody 5194190560 12. Feb 2021  De Storm (2009).mkv
+-rw-r--r-- 1 nobody nobody 4695423010 12. Feb 2021  Die Beschissenheit der Dinge (2009).mkv
+-rw-r--r-- 1 nobody nobody 2185200406  1. Sep 2021  Die letzten Tage der Menschheit (2009).mp4
+drwxr-xr-x 1 nobody nobody        100 12. Feb 2021  District 9 (2009)
+-rw-r--r-- 1 nobody nobody 2242764983 23. Mai 2022  Ein Mann, ein Fjord (2009).mp4
+-rw-r--r-- 1 nobody nobody 1446084954 12. Feb 2021  Ein Russischer Sommer (2009).avi
+-rw-r--r-- 1 nobody nobody 1843629140 15. Feb 2020  Fast and Furious - Neues Modell. Originalteile. (2009).mkv
+-rw-r--r-- 1 nobody nobody  730257408 12. Feb 2021  Fast Zombies with Guns (2009).avi
+-rw-r--r-- 1 nobody nobody 1562378240 12. Feb 2021  Gamer (2009).avi
+-rw-r--r-- 1 nobody nobody  682790506 12. Feb 2021  Harry Potter and the Half Blood Prince (2009).mkv
+-rw-r--r-- 1 nobody nobody 2310758400 12. Feb 2021  Harry Potter und der Halbblutprinz (2009).avi
+drwxr-xr-x 1 nobody nobody        136 12. Feb 2021  Inglorious Basterds (2009)
+-rw-r--r-- 1 nobody nobody  733935616 12. Feb 2021  Jerichow (2009).avi
+-rw-r--r-- 1 nobody nobody 1496488264 17. Okt 10:53 Kopfgeld - Perrier's Bounty (2009).mkv
+-rw-r--r-- 1 nobody nobody  850921735  2. Mär 2023  Lenz (2009, unvollst.).mkv
+-rw-r--r-- 1 nobody nobody 1465655296 12. Feb 2021  Micmacs - Uns gehört Paris (2009).avi
+-rw-r--r-- 1 nobody nobody 1360932643 12. Feb 2021  Moon (2009).mkv
+-rw-r--r-- 1 nobody nobody 1703234062 14. Feb 2020  Oben (2009).mkv
+-rw-r--r-- 1 nobody nobody 1613507986 12. Feb 2021  Shoppen (2009).avi
+-rw-r--r-- 1 nobody nobody 1848216414 15. Aug 2023  Tannöd (2009).mp4
+drwxr-xr-x 1 nobody nobody        124 12. Feb 2021  Terminator Salvation (2009)
+drwxr-xr-x 1 nobody nobody        112 12. Feb 2021  The Army of Crime (2009)
+-rw-r--r-- 1 nobody nobody  826119356 12. Feb 2021  The Hangover (2009).avi
+-rw-r--r-- 1 nobody nobody 1562744832 12. Feb 2021  The Hurt Locker - Toedliches Kommando (2009).avi
+-rw-r--r-- 1 nobody nobody 1048293376 12. Feb 2021  The Messenger - Die letzte Nachricht (2009).avi
+-rw-r--r-- 1 nobody nobody 1569880064 12. Feb 2021  The Road (2009).avi
+-rw-r--r-- 1 nobody nobody 1665809508 12. Feb 2021  Verblendung (2009).avi
+-rw-r--r-- 1 nobody nobody 1957227506 12. Feb 2021  Verdammnis (2009).avi
+-rw-r--r-- 1 nobody nobody 1881908910 12. Feb 2021  Vergebung (2009).avi
+-rw-r--r-- 1 nobody nobody 1362610176 12. Feb 2021  Walhalla Rising (2009).avi
+-rw-r--r-- 1 nobody nobody 1363799604 12. Feb 2021  Zombieland (2009).avi
+
+/mm/video/movies/2010:
+insgesamt 51037540
+drwxr-xr-x 1 nobody nobody        132 12. Feb 2021  127 Hours (2010)
+drwxr-xr-x 1 nobody nobody         76 12. Feb 2021  2012 (2010)
+-rw-r--r-- 1 nobody nobody  734035968 12. Feb 2021  380000 Volt - Der große Stromausfall (2010).avi
+-rw-r--r-- 1 nobody nobody 1562335232 12. Feb 2021  Black Swan (2010).avi
+-rw-r--r-- 1 nobody nobody 1198985216 12. Feb 2021  Boxhagener Platz (2010).avi
+-rw-r--r-- 1 nobody nobody 1458960798 12. Feb 2021  Dein Weg (2010).avi
+-rw-r--r-- 1 nobody nobody 1825197042 22. Mai 2022  Die Chroniken von Narnia - Die Reise auf der Morgenröte (2010).mp4
+-rw-r--r-- 1 nobody nobody 1453655392 12. Feb 2021  Die Olsenbande in feiner Gesellschaft (2010).mkv
+-rw-r--r-- 1 nobody nobody 1184272384 12. Feb 2021  Downstream (2010).avi
+drwxr-xr-x 1 nobody nobody        100 12. Feb 2021  Green Zone (2010)
+-rw-r--r-- 1 nobody nobody 2172997632 12. Feb 2021  Harry Potter und die Heiligtümer des Todes - Teil 1 (2010).avi
+-rw-r--r-- 1 nobody nobody 1818440525 12. Feb 2021  Harry Potter und die Heiligtümer des Todes - Teil 1 (2010).mkv
+-rw-r--r-- 1 nobody nobody 1562288128 12. Feb 2021  Inception (2010).avi
+-rw-r--r-- 1 nobody nobody 2422000918 27. Apr 2021  Iron Man 2 (2010).mkv
+drwxr-xr-x 1 nobody nobody        128 12. Feb 2021  Kampf der Titanen (2010)
+-rw-r--r-- 1 nobody nobody 2332074259 18. Dez 2020  Kampf der Titanen (2010).mkv
+-rw-r--r-- 1 nobody nobody 1512470528 12. Feb 2021  Machete (2010).avi
+-rw-r--r-- 1 nobody nobody 2472808155  6. Nov 2020  Mr. Nice (2010).mkv
+-rw-r--r-- 1 nobody nobody 1112417097 12. Feb 2021  Neue Vahr Süd (2010).mp4
+-rw-r--r-- 1 nobody nobody 2401212148 25. Nov 2020  Nichts zu verzollen (2010).mkv
+-rw-r--r-- 1 nobody nobody 1459050646 12. Feb 2021  Off Limits - Wir sind das Gesetz (2010).avi
+-rw-r--r-- 1 nobody nobody  491397942 12. Feb 2021  Ong-Bak 3 (2010).mkv
+-rw-r--r-- 1 nobody nobody 1465602048 12. Feb 2021  Ong Bak - The New Generation (2010).avi
+-rw-r--r-- 1 nobody nobody 2412318565 12. Feb 2021  Predators (2010).mkv
+-rw-r--r-- 1 nobody nobody 1469393852 12. Feb 2021  Robin Hood (2010).mkv
+-rw-r--r-- 1 nobody nobody 5685497117 29. Jun 2021  Senna (2010).mkv
+-rw-r--r-- 1 nobody nobody  931382437 12. Feb 2021  The Book of Eli (2010).mkv
+-rw-r--r-- 1 nobody nobody 1465339904 12. Feb 2021  The Dead (2010).avi
+-rw-r--r-- 1 nobody nobody 1465751552 12. Feb 2021  The Expendables (2010).avi
+-rw-r--r-- 1 nobody nobody 1176964162 12. Feb 2021  The Killing Strain (2010).avi
+-rw-r--r-- 1 nobody nobody 1257631744 12. Feb 2021  The King's Speech - Die Rede des Königs (2010).avi
+-rw-r--r-- 1 nobody nobody 1371092992 12. Feb 2021  The Tourist (2010).avi
+-rw-r--r-- 1 nobody nobody  770013184 12. Feb 2021  The Ward (2010).avi
+-rw-r--r-- 1 nobody nobody 2151735296 12. Feb 2021  The Warrior's Way (2010).avi
+-rw-r--r-- 1 nobody nobody 1465077760 12. Feb 2021  True Grit (2010).avi
+
+/mm/video/movies/2011:
+insgesamt 53137264
+-rw-r--r-- 1 nobody nobody 1844791296 12. Feb 2021  Anonymous (2011).avi
+-rw-r--r-- 1 nobody nobody  917637192 12. Feb 2021  A Separation (2011).mkv
+-rw-r--r-- 1 nobody nobody 3135984361  1. Feb 2020  Captain America - The First Avenger (2011).mkv
+-rw-r--r-- 1 nobody nobody 1999215556 19. Aug 2020  Cars 2 (2011).mkv
+-rw-r--r-- 1 nobody nobody 1840510264 11. Jan 2021  Contagion (2011).mkv
+-rw-r--r-- 1 nobody nobody 8123074560 12. Feb 2021  Der ganz große Traum (2011).iso
+-rw-r--r-- 1 nobody nobody 1679442356 29. Okt 2020  Der Gott des Gemetzels (2011).mkv
+-rw-r--r-- 1 nobody nobody 2663884322 12. Feb 2021  Der Uranberg (2011).mkv
+-rw-r--r-- 1 nobody nobody 1464301568 12. Feb 2021  Der Zoowaerter (2011).avi
+-rw-r--r-- 1 nobody nobody 2761432465  8. Aug 2021  Fast & Furious Five (2011).mkv
+drwxr-xr-x 1 nobody nobody         16  4. Mai 2024  Habemus Papam (2011)
+-rw-r--r-- 1 nobody nobody 1927614464 12. Feb 2021  Harry Potter und die Heiligtümer des Todes - Teil 2 (2011).avi
+-rw-r--r-- 1 nobody nobody 2044023087 20. Jan 2020  In Time - Deine Zeit läuft ab (2011).mkv
+-rw-r--r-- 1 nobody nobody 1448202444 12. Feb 2021  Jane Eyre (2011).avi
+-rw-r--r-- 1 nobody nobody 1604121964 12. Feb 2021  Johnny English - Jetzt erst recht! (2011).mkv
+-rw-r--r-- 1 nobody nobody 1565315072 12. Feb 2021  Krieg der Götter (2011).avi
+-rw-r--r-- 1 nobody nobody 2147225908 12. Feb 2021  Pirates of the Caribbean - Fremde Gezeiten (2011).mkv
+drwxr-xr-x 1 nobody nobody        180 12. Feb 2021  Real Steel - Stahlharte Gegner (2011)
+-rw-r--r-- 1 nobody nobody 1101064477 29. Mai 2022  Rio (2011).mp4
+-rw-r--r-- 1 nobody nobody 2369418377  6. Jan 2023  Rubbeldiekatz (2011).mkv
+drwxr-xr-x 1 nobody nobody        288  4. Mai 2024  The Eagle (2011)
+-rw-r--r-- 1 nobody nobody 1231390720 12. Feb 2021  The Thing (2011).avi
+-rw-r--r-- 1 nobody nobody 3580646854 15. Nov 2020  Thor (2011).mkv
+-rw-r--r-- 1 nobody nobody 3109970340 12. Feb 2021  Verblendung (2011).mkv
+-rw-r--r-- 1 nobody nobody 2577876972  2. Jan 2021  Warrior (2011).mkv
+-rw-r--r-- 1 nobody nobody 1468094003 12. Feb 2021  Wuthering Heights (2011).mkv
+-rw-r--r-- 1 nobody nobody  526017282 12. Feb 2021  Your Highness (2011).mkv
+-rw-r--r-- 1 nobody nobody 1281245184 12. Feb 2021  Ziemlich beste Freunde (2011).avi
+
+/mm/video/movies/2012:
+insgesamt 62611604
+-rw-r--r-- 1 nobody nobody 5657698304 13. Feb 2021  7 Psychos (2012).iso
+-rw-r--r-- 1 nobody nobody 1476669440 13. Feb 2021  American Pie: Das Klassentreffen (2012).avi
+drwxr-xr-x 1 nobody nobody        216 13. Feb 2021  Apostel Petrus und das letzte Abendmahl (2012)
+-rw-r--r-- 1 nobody nobody 2152025758 13. Feb 2021  Argo (2012).mkv
+-rw-r--r-- 1 nobody nobody 1257464434 13. Feb 2021  Barbara (2012).avi
+-rw-r--r-- 1 nobody nobody  438373048 13. Feb 2021  Chernobyl Diaries (2012).mkv
+drwxr-xr-x 1 nobody nobody        296 13. Feb 2021  Children of Sarajevo (2012)
+-rw-r--r-- 1 nobody nobody 3115140718 13. Feb 2021  Der Hobbit - Eine unerwartete Reise (2012).mkv
+-rw-r--r-- 1 nobody nobody  802317558  2. Mär 2023  Der Turm (1) (2012).mkv
+-rw-r--r-- 1 nobody nobody  889752958  2. Mär 2023  Der Turm (2) (2012).mkv
+-rw-r--r-- 1 nobody nobody 2075186029 13. Feb 2021  Die Jagd (2012).mp4
+-rw-r--r-- 1 nobody nobody 1091725312 13. Feb 2021  Django Unchained (2012).avi
+-rw-r--r-- 1 nobody nobody 1278304654 13. Feb 2021  Dredd (2012).mkv
+-rw-r--r-- 1 nobody nobody  583389940 13. Feb 2021  Im Banne der Rouladenkönigin (2012).avi
+-rw-r--r-- 1 nobody nobody 4591484673 13. Feb 2021  Iron Sky (2012).mkv
+-rw-r--r-- 1 nobody nobody 1317364356 13. Feb 2021  Kon-Tiki (2012).mkv
+-rw-r--r-- 1 nobody nobody 1884311552 13. Feb 2021  Life of Pi: Schiffbruch mit Tiger (2012).avi
+-rw-r--r-- 1 nobody nobody 5350664218 13. Feb 2021  Madagascar 3 - Flucht durch Europa (2012).mkv
+-rw-r--r-- 1 nobody nobody 3267369749 18. Dez 2018  Marvel's The Avengers (2012).mkv
+-rw-r--r-- 1 nobody nobody 3942470833 16. Aug 2023  Men in Black 3 (2012).mp4
+-rw-r--r-- 1 nobody nobody 1464003112 16. Dez 2021  Obendrüber, da schneit es (2012).mp4
+-rw-r--r-- 1 nobody nobody  939563008 13. Feb 2021  Prometheus - Dunkle Zeichen (2012).avi
+-rw-r--r-- 1 nobody nobody 1785882624 13. Feb 2021  Ralph reichts (2012).avi
+-rw-r--r-- 1 nobody nobody 3076617160  4. Mär 2024  Rise of the Zombies (2012).mkv
+-rw-r--r-- 1 nobody nobody 1292595141 13. Feb 2021  Shootout - Keine Gnade (2012).mkv
+-rw-r--r-- 1 nobody nobody 1570721072 13. Feb 2021  Skyfall (2012).avi
+-rw-r--r-- 1 nobody nobody 1663468436 13. Feb 2021  Starship Troopers: Invasion (2012).mkv
+-rw-r--r-- 1 nobody nobody 2077023569 13. Feb 2021  The Dark Knight Rises (2012).mkv
+-rw-r--r-- 1 nobody nobody 1035997313 13. Feb 2021  The King of the Streets (2012).mkv
+-rw-r--r-- 1 nobody nobody 1271542674  5. Mai 2023  To Rome with Love (2012).mp4
+-rw-r--r-- 1 nobody nobody 1573048320 13. Feb 2021  Wir wollten aufs Meer (2012).avi
+-rw-r--r-- 1 nobody nobody 1569884424 13. Feb 2021  Zero Dark Thirty (2012).avi
+-rw-r--r-- 1 nobody nobody 3622165735 25. Jun 2020  Zorn der Titanen (2012).mkv
+
+/mm/video/movies/2013:
+insgesamt 83415960
+-rw-r--r-- 1 nobody nobody 1442699905 13. Feb 2021  47 Ronin (2013).mkv
+-rw-r--r-- 1 nobody nobody 1698378034 12. Feb 2021  A Single Shot - Tödlicher Fehler (2013).avi
+-rw-r--r-- 1 nobody nobody 1487899097 13. Feb 2021  Battlestar Galactica - Blood and Chrome (2013).mkv
+-rw-r--r-- 1 nobody nobody  739790024 13. Feb 2021  Bewaffneter Widerstand - Armed Response (2013).mkv
+-rw-r--r-- 1 nobody nobody  945917450 12. Feb 2021  Blood Shot - Willkommen im Krieg gegen den Terror (2013).mkv
+-rw-r--r-- 1 nobody nobody 2700926744 16. Mai 2021  Captain Phillips (2013).mkv
+-rw-r--r-- 1 nobody nobody  961220797 12. Feb 2021  Con Game - Kenne deine Feinde (2013).mkv
+-rw-r--r-- 1 nobody nobody  560173737 12. Feb 2021  Crook - Tödliche Konsequenzen (2013).mkv
+-rw-r--r-- 1 nobody nobody 1258799568 13. Feb 2021  Dampfnudelblues (2013).avi
+-rw-r--r-- 1 nobody nobody 1787821905  9. Mär 2021  Das erstaunliche Leben des Walter Mitty (2013).mkv
+drwxr-xr-x 1 nobody nobody        168 13. Feb 2021  Der Hobbit: Smaugs Einöde (2013)
+-rw-r--r-- 1 nobody nobody 1571578609 13. Feb 2021  Der Hundertjährige, der aus dem Fenster stieg und verschwand (2013).mkv
+-rw-r--r-- 1 nobody nobody 1150717952 13. Feb 2021  Der Minister (2013).avi
+-rw-r--r-- 1 nobody nobody 2126049898 13. Feb 2021  Die Eiskönigin (2013).mp4
+-rw-r--r-- 1 nobody nobody 1472811366 13. Feb 2021  Die Olsenbande auf hoher See (2013).mkv
+-rw-r--r-- 1 nobody nobody 1063224499 12. Feb 2021  Einmal Hans mit scharfer Soße (2013).mkv
+-rw-r--r-- 1 nobody nobody 2057286042 13. Feb 2021  Elysium (2013).mkv
+-rw-r--r-- 1 nobody nobody 1211091512 13. Feb 2021  Ender's Game - Das große Spiel (2013).avi
+-rw-r--r-- 1 nobody nobody 1940723346 13. Feb 2021  Fack ju Göthe (2013).avi
+-rw-r--r-- 1 nobody nobody  990286383 12. Feb 2021  Free Birds - Esst uns an einem anderen Tag (2013).mkv
+-rw-r--r-- 1 nobody nobody 1224722432 13. Feb 2021  Gravity (2013).avi
+-rw-r--r-- 1 nobody nobody  488697208 13. Feb 2021  Hansel & Gretel: Witch Hunters (2013).mkv
+-rw-r--r-- 1 nobody nobody 1883406336 12. Feb 2021  Iron Man 3 (2013).avi
+-rw-r--r-- 1 nobody nobody 2007330749 27. Apr 2021  Iron Man 3 (2013).mkv
+-rw-r--r-- 1 nobody nobody  830829546 12. Feb 2021  Jack und das Kuckucksuhrherz (2013).mkv
+-rw-r--r-- 1 nobody nobody 1587466347 12. Feb 2021  Justin - Völlig verrittert (2013).mkv
+-rw-r--r-- 1 nobody nobody 1911907648 22. Okt 11:01 King Ping - Tippen Tappen Tödchen (2013).mkv
+-rw-r--r-- 1 nobody nobody 2151464960 13. Feb 2021  Lone Survivor (2013).avi
+-rw-r--r-- 1 nobody nobody 1466338270 13. Feb 2021  Machete Kills (2013).avi
+-rw-r--r-- 1 nobody nobody 1305373800 12. Feb 2021  Mauern der Gewalt (2013).mkv
+-rw-r--r-- 1 nobody nobody 1082237248 13. Feb 2021  Minuscule - Kleine Helden (2013).mkv
+-rw-r--r-- 1 nobody nobody  934990808 13. Feb 2021  Night Moves (2013).mkv
+-rw-r--r-- 1 nobody nobody 1573908480 13. Feb 2021  Nix wie weg vom Planeten Erde (2013).avi
+-rw-r--r-- 1 nobody nobody 1403772928 13. Feb 2021  Nurse (2013).avi
+drwxr-xr-x 1 nobody nobody        108 13. Feb 2021  Nymphomaniac (2013)
+-rw-r--r-- 1 nobody nobody 3150287641 13. Feb 2021  Pacific Rim (2013).mkv
+-rw-r--r-- 1 nobody nobody 1467283456 13. Feb 2021  Planes (2013).avi
+-rw-r--r-- 1 nobody nobody  758962622 12. Feb 2021  Rigor Mortis - Leichenstarre (2013).mkv
+-rw-r--r-- 1 nobody nobody 1423085846 13. Feb 2021  Rush - Alles für den Sieg (2013).mkv
+-rw-r--r-- 1 nobody nobody 1483761664 13. Feb 2021  Scary Movie 5 (2013).avi
+-rw-r--r-- 1 nobody nobody 2524886808  6. Aug 2020  Snowpiercer (2013).mkv
+-rw-r--r-- 1 nobody nobody 1368514560 12. Feb 2021  Stirb langsam - Ein guter Tag zum Sterben (2013).avi
+-rw-r--r-- 1 nobody nobody 1098938078 13. Feb 2021  Sushi in Suhl (2013).avi
+-rw-r--r-- 1 nobody nobody 2200506269 12. Okt 2020  The Best Offer - Das höchste Gebot (2013).mkv
+-rw-r--r-- 1 nobody nobody 1625790862 11. Apr 2020  The Counselor (2013).mkv
+-rw-r--r-- 1 nobody nobody 2411331993  7. Dez 2023  The Grandmaster (2013).mkv
+-rw-r--r-- 1 nobody nobody  472385818 13. Feb 2021  The Hunted (2013).mkv
+-rw-r--r-- 1 nobody nobody 1760516830 12. Feb 2021  The Last Stand (2013).avi
+-rw-r--r-- 1 nobody nobody 1694599168 13. Feb 2021  The Patrol (2013).avi
+-rw-r--r-- 1 nobody nobody 4552204288 12. Feb 2021  The World's End (2013).iso
+-rw-r--r-- 1 nobody nobody 2268129784 13. Feb 2021  The World's End (2013).mp4
+-rw-r--r-- 1 nobody nobody 1323558715 13. Feb 2021  The Zero Theorem (2013).mkv
+-rw-r--r-- 1 nobody nobody 1655660134 14. Nov 2020  Thor - The Dark Kingdom (2013).mkv
+-rw-r--r-- 1 nobody nobody 1676147000 13. Feb 2021  Wara No Tate - Die Gejagten (2013).avi
+-rw-r--r-- 1 nobody nobody 1628233652 13. Feb 2021  Way of the Warrior (2013).mkv
+-rw-r--r-- 1 nobody nobody 1853211734 13. Feb 2021  World War Z (2013).avi
+
+/mm/video/movies/2014:
+insgesamt 131538540
+-rw-r--r-- 1 nobody nobody 1333350400 13. Feb 2021  22 Jump Street (2014).avi
+-rw-r--r-- 1 nobody nobody 1499460980 13. Feb 2021  300: Rise of an Empire (2014).avi
+-rw-r--r-- 1 nobody nobody 1777286068 13. Feb 2021  3 Days to Kill (2014).avi
+-rw-r--r-- 1 nobody nobody 1385984000 13. Feb 2021  5 Zimmer Küche Sarg (2014).avi
+-rw-r--r-- 1 nobody nobody 2556380692  8. Sep 2021  '71 (2014).mkv
+-rw-r--r-- 1 nobody nobody 1305171968 13. Feb 2021  American Muscle (2014).avi
+-rw-r--r-- 1 nobody nobody 1692687842 13. Feb 2021  American Sniper (2014).avi
+-rw-r--r-- 1 nobody nobody 6592327680 13. Feb 2021  Am Sonntag bist Du tot (2014).iso
+-rw-r--r-- 1 nobody nobody  811711540 13. Feb 2021  Anomaly - Jede Minute zählt (2014).mkv
+-rw-r--r-- 1 nobody nobody  864835102 13. Feb 2021  Automata (2014).mkv
+-rw-r--r-- 1 nobody nobody 1360973824 13. Feb 2021  Bad Ass 2: Bad Asses (2014).avi
+-rw-r--r-- 1 nobody nobody  943843328 13. Feb 2021  Batman - Assault on Arkham (2014).avi
+-rw-r--r-- 1 nobody nobody 1750759424 13. Feb 2021  Birdman oder (Die unverhoffte Macht der Ahnungslosigkeit) (2014).avi
+-rw-r--r-- 1 nobody nobody  999914040 13. Feb 2021  Birnenkuchen mit Lavendel (2014).avi
+-rw-r--r-- 1 nobody nobody 1387518074 13. Feb 2021  Bullet (2014).avi
+-rw-r--r-- 1 nobody nobody 1242431389 30. Aug 2021  Das finstere Tal (2014).mkv
+-rw-r--r-- 1 nobody nobody  646310948 13. Feb 2021  Dawn of the Planet of the Apes (2014).mkv
+-rw-r--r-- 1 nobody nobody 1050041982 13. Feb 2021  Debug - Feindliches System (2014).mkv
+-rw-r--r-- 1 nobody nobody 2652807551 13. Feb 2021  Der Hobbit: Die Schlacht der Fünf Heere (2014).mkv
+-rw-r--r-- 1 nobody nobody  984248320 13. Feb 2021  Die Abenteuer von Mr. Peabody & Sherman (2014).mkv
+drwxr-xr-x 1 nobody nobody        332 13. Feb 2021  Die Gärtnerin von Versailles (2014)
+-rw-r--r-- 1 nobody nobody 1451771734 13. Feb 2021  Die geliebten Schwestern (2014).avi
+-rw-r--r-- 1 nobody nobody  859892946 13. Feb 2021  Die Pinguine von Madagascar (2014).avi
+-rw-r--r-- 1 nobody nobody 1145242933 13. Feb 2021  Drachenzähmen leicht gemacht 2 (2014).mkv
+-rw-r--r-- 1 nobody nobody 1096136728 13. Feb 2021  Dracula Untold (2014).mkv
+-rw-r--r-- 1 nobody nobody 1511974624 13. Feb 2021  Drive Hard (2014).mkv
+-rw-r--r-- 1 nobody nobody 1515606696 13. Feb 2021  Dumm und Dümmehr (2014).avi
+-rw-r--r-- 1 nobody nobody 2084790041 13. Feb 2021  Edge of Tomorrow (2014).mkv
+-rw-r--r-- 1 nobody nobody 1415982150 13. Feb 2021  Ein Schotte macht noch keinen Sommer (2014).avi
+-rw-r--r-- 1 nobody nobody 6743873052 13. Feb 2021  Es war einmal in Amerika - Extended Cut (2014).mp4
+-rw-r--r-- 1 nobody nobody 3017813494 29. Feb 2020  Exodus - Götter und Könige (2014).mkv
+-rw-r--r-- 1 nobody nobody 1870928965 25. Nov 2020  Eyjafjallajökull (2014).mkv
+-rw-r--r-- 1 nobody nobody 2027865954 13. Feb 2021  Foxcatcher (2014).avi
+-rw-r--r-- 1 nobody nobody  653925088 13. Feb 2021  Frau Müller muss weg (2014).mkv
+-rw-r--r-- 1 nobody nobody 2054677038 13. Feb 2021  Fury - Herz aus Stahl (2014).avi
+-rw-r--r-- 1 nobody nobody 1454438710 13. Feb 2021  Germanikus (2014).avi
+-rw-r--r-- 1 nobody nobody 2312558592 13. Feb 2021  Godzilla (2014).avi
+-rw-r--r-- 1 nobody nobody 1626438602 13. Feb 2021  Götz von Berlichingen (2014).avi
+-rw-r--r-- 1 nobody nobody 6362830848 13. Feb 2021  Grand Budapest Hotel (2014).iso
+-rw-r--r-- 1 nobody nobody 2395880564  3. Dez 2019  Guardians of the Galaxy (2014).mkv
+-rw-r--r-- 1 nobody nobody 1303644160 13. Feb 2021  Gutshot Straight - Gnadenloses Spiel (2014).avi
+-rw-r--r-- 1 nobody nobody 1381084632 13. Feb 2021  Hercules (2014).avi
+-rw-r--r-- 1 nobody nobody 1073986309 13. Feb 2021  I am Soldier (2014).mkv
+-rw-r--r-- 1 nobody nobody 1386215852 13. Feb 2021  Ich und mein Ding (2014).avi
+-rw-r--r-- 1 nobody nobody 1873000448 13. Feb 2021  Interstellar (2014).avi
+drwxr-xr-x 1 nobody nobody        102  4. Mai 2024  Kajaki (2014)
+-rw-r--r-- 1 nobody nobody 1950314496 13. Feb 2021  Kingsman: The Secret Service (2014).avi
+-rw-r--r-- 1 nobody nobody  555499552 13. Feb 2021  Kite - Engel der Rache (2014).avi
+-rw-r--r-- 1 nobody nobody 1255677952 13. Feb 2021  Lucy (2014).avi
+-rw-r--r-- 1 nobody nobody 1824021819 26. Jun 2020  Monsieur Claude und seine Töchter (2014).mkv
+-rw-r--r-- 1 nobody nobody  899877803 13. Feb 2021  Montana - Rache hat einen neuen Namen (2014).mkv
+-rw-r--r-- 1 nobody nobody 1998350336 13. Feb 2021  Monuments Men - Ungewöhnliche Helden (2014).avi
+-rw-r--r-- 1 nobody nobody 1964915584 13. Feb 2021  Noah (2014).avi
+-rw-r--r-- 1 nobody nobody 2612076740 13. Feb 2021  Pawn Sacrifice (2014).mkv
+-rw-r--r-- 1 nobody nobody 1500354502 13. Feb 2021  Planes 2 - Immer im Einsatz (2014).avi
+-rw-r--r-- 1 nobody nobody 2067635804 26. Mai 2021  Pompeii (2014).mkv
+-rw-r--r-- 1 nobody nobody 1088688333 13. Feb 2021  Rampage: Capital Punishment (2014).mkv
+-rw-r--r-- 1 nobody nobody 1464497208 13. Feb 2021  Seventh Son (2014).avi
+-rw-r--r-- 1 nobody nobody 1351314256 13. Feb 2021  Sex Tape (2014).avi
+-rw-r--r-- 1 nobody nobody 1708114934 13. Feb 2021  Sin City 2: A Dame to Kill For (2014).mkv
+-rw-r--r-- 1 nobody nobody 1506615296 13. Feb 2021  Sniper: Legacy (2014).avi
+-rw-r--r-- 1 nobody nobody 2178756608 13. Feb 2021  Stromberg - Der Film (2014).avi
+-rw-r--r-- 1 nobody nobody 1466424888  4. Aug 2021  Super-Hypochonder (2014).mp4
+-rw-r--r-- 1 nobody nobody 1408858312 13. Feb 2021  Teenage Mutant Ninja Turtles (2014).avi
+-rw-r--r-- 1 nobody nobody 1498064782 13. Feb 2021  The Equalizer (2014).avi
+-rw-r--r-- 1 nobody nobody 2284254496 13. Feb 2021  The Expendables 3 (2014).avi
+-rw-r--r-- 1 nobody nobody 1570404352 13. Feb 2021  The Imitation Game - Ein streng geheimes Leben (2014).avi
+-rw-r--r-- 1 nobody nobody 1344362516 13. Feb 2021  The Prince - Only God Forgives (2014).avi
+-rw-r--r-- 1 nobody nobody 2146247260 13. Jul 2020  The Return of the First Avenger (2014).mkv
+-rw-r--r-- 1 nobody nobody 1284423034 26. Jan 2022  Till Eulenspiegel (2014) Teil 1.mp4
+-rw-r--r-- 1 nobody nobody 1162277169 26. Jan 2022  Till Eulenspiegel (2014) Teil 2.mp4
+-rw-r--r-- 1 nobody nobody 1255543284 13. Feb 2021  und Äktschn (2014).avi
+-rw-r--r-- 1 nobody nobody 1875811953 13. Okt 2020  Verstehen Sie die Beliers? (2014).mkv
+-rw-r--r-- 1 nobody nobody 1955581562 19. Apr 2021  Verstehen Sie die Beliers? (2014).mp4
+-rw-r--r-- 1 nobody nobody 1965433754 13. Feb 2021  Whiplash (2014).mkv
+-rw-r--r-- 1 nobody nobody  825542028 13. Feb 2021  Who Am I - Kein System ist sicher (2014).mkv
+-rw-r--r-- 1 nobody nobody 1330315378 13. Feb 2021  Winterkartoffelknödel (2014).avi
+-rw-r--r-- 1 nobody nobody 1236744784 13. Feb 2021  Wir waren Könige (2014).avi
+-rw-r--r-- 1 nobody nobody 1766537819 13. Feb 2021  Zeit der Kannibalen (2014).mkv
+-rw-r--r-- 1 nobody nobody  933191414 13. Feb 2021  #Zeitgeist (2014).mkv
+
+/mm/video/movies/2015:
+insgesamt 64578444
+-rw-r--r-- 1 nobody nobody 3088927488  7. Okt 2022  Als wir träumten (2015).mp4
+-rw-r--r-- 1 nobody nobody 1324956156 13. Feb 2021  Antigang (2015).avi
+-rw-r--r-- 1 nobody nobody 2643415482 21. Jan 2020  Ant-Man (2015).mkv
+-rw-r--r-- 1 nobody nobody 2708940849 26. Jun 2021  Avengers - Age of Ultron (2015).mkv
+-rw-r--r-- 1 nobody nobody 1895001398 20. Mai 2021  A War (2015).mp4
+-rw-r--r-- 1 nobody nobody 1851538606 13. Feb 2021  Blackhat (2015).avi
+-rw-r--r-- 1 nobody nobody 1138927607 13. Feb 2021  Bone Tomahawk (2015).mkv
+-rw-r--r-- 1 nobody nobody 1560875008 13. Feb 2021  Das brandneue Testament (2015).avi
+-rw-r--r-- 1 nobody nobody 1489509146 13. Feb 2021  Der Marsianer - Rettet Mark Watney (2015).mkv
+-rw-r--r-- 1 nobody nobody 4400669952 13. Feb 2021  Er ist wieder da (2015).mkv
+-rw-r--r-- 1 nobody nobody 2140488636 13. Feb 2021  Everest (2015).avi
+-rw-r--r-- 1 nobody nobody 1717865244 13. Feb 2021  Fack ju Goethe 2 (2015).avi
+-rw-r--r-- 1 nobody nobody  589524297 13. Feb 2021  Fifty Shades of Grey (2015).mkv
+-rw-r--r-- 1 nobody nobody 1350712445 13. Feb 2021  Focus (2015).mkv
+drwxr-xr-x 1 nobody nobody        396 13. Feb 2021  Heidi (2015)
+-rw-r--r-- 1 nobody nobody 1426603566 13. Feb 2021  James Bond - Spectre (2015).mkv
+-rw-r--r-- 1 nobody nobody 2962529778 13. Feb 2021  Jupiter Ascending (2015).avi
+-rw-r--r-- 1 nobody nobody 1610004162 13. Feb 2021  Macbeth (2015).mp4
+-rw-r--r-- 1 nobody nobody 1414113244 13. Feb 2021  Mad Max: Fury Road (2015).mkv
+-rw-r--r-- 1 nobody nobody 1089121577 13. Feb 2021  Mr. Hoppys Geheimnis (2015).mkv
+-rw-r--r-- 1 nobody nobody 1674673125 13. Feb 2021  Nackt unter Woelfen (2015).mp4
+-rw-r--r-- 1 nobody nobody 2520754906 23. Aug 11:04 Picknick mit Bären (2015).mkv
+-rw-r--r-- 1 nobody nobody 1399846912 13. Feb 2021  Shaun das Schaf - Der Film (2015).avi
+-rw-r--r-- 1 nobody nobody 1922678835 29. Jan 2020  Sicario (2015).mkv
+-rw-r--r-- 1 nobody nobody 1090729241 13. Feb 2021  Star Wars Episode VII - Das Erwachen der Macht (2015).mkv
+-rw-r--r-- 1 nobody nobody 2080376832 13. Feb 2021  Terminator: Genisys (2015).avi
+-rw-r--r-- 1 nobody nobody 2070661646 14. Feb 2020  Thank You for Bombing (2015).mkv
+-rw-r--r-- 1 nobody nobody 1730676736 13. Feb 2021  The Gunman (2015).avi
+-rw-r--r-- 1 nobody nobody 2360072240 13. Feb 2021  The Hateful Eight (2015).avi
+-rw-r--r-- 1 nobody nobody 1271523328 13. Feb 2021  The Last Witch Hunter (2015).avi
+-rw-r--r-- 1 nobody nobody 1484766742 13. Feb 2021  The Lobster (2015).avi
+-rw-r--r-- 1 nobody nobody 2324894838  1. Dez 2019  Unter dem Sand - Das Versprechen der Freiheit (2015).mkv
+-rw-r--r-- 1 nobody nobody 3788624727 13. Feb 2021  Victoria (2015).mkv
+-rw-r--r-- 1 nobody nobody 1999195868  2. Aug 2021  Wild Card (2015).mkv
+-rw-r--r-- 1 nobody nobody 2005067205  4. Nov 2023  Z for Zachariah (2015).mkv
+
+/mm/video/movies/2016:
+insgesamt 80186496
+-rw-r--r-- 1 nobody nobody 1449128010 13. Feb 2021  Angry Birds - Der Film (2016).avi
+-rw-r--r-- 1 nobody nobody 1995869050 13. Feb 2021  Arrival (2016).avi
+-rw-r--r-- 1 nobody nobody 1658613363 13. Feb 2021  Assassins Creed (2016).mkv
+-rw-r--r-- 1 nobody nobody 1354797056 13. Feb 2021  Crouching Tiger, Hidden Dragon: Sword of Destiny (2016).avi
+-rw-r--r-- 1 nobody nobody 1469751298 13. Feb 2021  Das Duell (2016).avi
+-rw-r--r-- 1 nobody nobody 2219522010 24. Feb 2021  Das Geheimnis der Hebamme 1 (2016).mp4
+-rw-r--r-- 1 nobody nobody 2209441490 24. Feb 2021  Das Geheimnis der Hebamme 2 (2016).mp4
+-rw-r--r-- 1 nobody nobody 1794361986 11. Okt 2020  Das Jerico Projekt (2016).mkv
+-rw-r--r-- 1 nobody nobody  914780475 13. Feb 2021  Deadpool (2016).mkv
+-rw-r--r-- 1 nobody nobody 2202947740 12. Jun 2020  Die Besucher - Sturm auf die Bastille (2016).mkv
+-rw-r--r-- 1 nobody nobody 2091084169 13. Feb 2021  Die glorreichen Sieben (2016).mkv
+-rw-r--r-- 1 nobody nobody 2528272823 17. Feb 2024  Die irre Heldentour des Billy Lynn (2016).mkv
+-rw-r--r-- 1 nobody nobody 5561806768 13. Feb 2021  Die Kommune (2016).mkv
+-rw-r--r-- 1 nobody nobody 1797968139  3. Mär 2020  Doctor Strange (2016).mkv
+-rw-r--r-- 1 nobody nobody  814972048 13. Feb 2021  Ferien (2016).mkv
+-rw-r--r-- 1 nobody nobody 2702209003  2. Jan 2020  Hacksaw Ridge - Die Entscheidung (2016).mkv
+-rw-r--r-- 1 nobody nobody 1439465023 13. Feb 2021  Hail, Cesar (2016).mkv
+-rw-r--r-- 1 nobody nobody 2124805788 13. Feb 2021  Hell or High Water (2016).mp4
+-rw-r--r-- 1 nobody nobody 3979389547 13. Feb 2021  Independence Day - Resurgence (2016).mkv
+-rw-r--r-- 1 nobody nobody 1041910634 13. Feb 2021  Lou Andreas-Salome (2016).mkv
+-rw-r--r-- 1 nobody nobody 1538310896 13. Feb 2021  Nacktbaden - manche bräunen, andere brennen (2016).avi
+-rw-r--r-- 1 nobody nobody 3826562480 29. Jul 2021  Operation Anthropoid (2016).mkv
+-rw-r--r-- 1 nobody nobody 2142645750 13. Feb 2021  Passengers (2016).mkv
+-rw-r--r-- 1 nobody nobody 2487318245 22. Mai 2020  Phantastische Tierwesen und wo Sie zu finden sind (2016).mkv
+-rw-r--r-- 1 nobody nobody 2300546552  1. Mär 2020  Plötzlich Papa (2016).mkv
+-rw-r--r-- 1 nobody nobody 2165608448 13. Feb 2021  Rogue One - A Star Wars Story (2016).avi
+-rw-r--r-- 1 nobody nobody 1301495346 13. Feb 2021  Schweinskopf al dente (2016).avi
+-rw-r--r-- 1 nobody nobody  958576390 13. Feb 2021  Shin Godzilla (2016).mkv
+-rw-r--r-- 1 nobody nobody 2265747456 13. Feb 2021  Sommer 1943 - Das Ende der Unschuld (2016).avi
+-rw-r--r-- 1 nobody nobody 2083414744 13. Feb 2021  Stolz und Vorurteil und Zombies (2016).avi
+-rw-r--r-- 1 nobody nobody 2227109668 26. Jun 2020  The First Avenger - Civil War (2016).mkv
+-rw-r--r-- 1 nobody nobody 1531322902 13. Feb 2021  The Revenant - Der Rückkehrer (2016).mkv
+-rw-r--r-- 1 nobody nobody 2469231628  3. Mär 2020  Toni Erdmann (2016).mkv
+-rw-r--r-- 1 nobody nobody 1416026242 13. Feb 2021  Tschick (2016).avi
+-rw-r--r-- 1 nobody nobody 2634399916 13. Feb 2021  Tschiller - Off Duty (2016).mkv
+-rw-r--r-- 1 nobody nobody 1205822418 13. Feb 2021  USS Indianapolis - Men of Courage (2016).mkv
+-rw-r--r-- 1 nobody nobody 1400496966 13. Feb 2021  Vor der Morgenröte (2016).mp4
+-rw-r--r-- 1 nobody nobody 1656602688 13. Feb 2021  Winnetou - Der Mythos lebt - Teil 1 (2016).avi
+-rw-r--r-- 1 nobody nobody 1473486848 13. Feb 2021  Winnetou - Der Mythos lebt - Teil 2 (2016).avi
+-rw-r--r-- 1 nobody nobody 1887074916 13. Feb 2021  Winnetou - Der Mythos lebt - Teil 3 (2016).avi
+-rw-r--r-- 1 nobody nobody 1787995122 13. Feb 2021  Zootopia (2016).avi
+
+/mm/video/movies/2017:
+insgesamt 88395500
+-rw-r--r-- 1 nobody nobody 1555476534 20. Mai 2021  Adam und Evelyn (2017).mp4
+-rw-r--r-- 1 nobody nobody 2456291167 22. Apr 2020  Alien - Covenant (2017).mkv
+-rw-r--r-- 1 nobody nobody 3848053743 12. Feb 2020  Alles Geld der Welt (2017).mkv
+-rw-r--r-- 1 nobody nobody 1317976536 13. Feb 2021  Aufbruch ins Ungewisse (2017).mp4
+-rw-r--r-- 1 nobody nobody 1035130780 13. Feb 2021  Blade Runner 2049 (2017).mkv
+-rw-r--r-- 1 nobody nobody 1895793240 19. Aug 2020  Cars 3 - Evolution (2017).mkv
+-rw-r--r-- 1 nobody nobody  880885501 13. Feb 2021  Der dunkle Turm (2017).mkv
+-rw-r--r-- 1 nobody nobody 1663427138 13. Feb 2021  Der Hauptmann (2017).avi
+-rw-r--r-- 1 nobody nobody 1851070956 13. Feb 2021  Der junge Karl Marx (2017).avi
+-rw-r--r-- 1 nobody nobody 1655391736 27. Jan 2021  Der Meisterdieb und seine Schätze (2017).mkv
+-rw-r--r-- 1 nobody nobody 1143432142 13. Feb 2021  Die brillante Mademoiselle Neila (2017).avi
+-rw-r--r-- 1 nobody nobody 1019681154 20. Okt 10:06 Die göttliche Ordnung (2017).mp4
+-rw-r--r-- 1 nobody nobody 1777962954 13. Feb 2021  Dunkirk (2017).avi
+-rw-r--r-- 1 nobody nobody 1881303633 20. Feb 2021  Eine bretonische Liebe (2017).mkv
+-rw-r--r-- 1 nobody nobody 1849894912 13. Feb 2021  Es (2017).avi
+-rw-r--r-- 1 nobody nobody 2140476214 13. Feb 2021  Fack you, Göthe 3 (2017).mp4
+-rw-r--r-- 1 nobody nobody 1584009216 13. Feb 2021  Ghost in the Shell (2017).avi
+-rw-r--r-- 1 nobody nobody 1127012822 13. Feb 2021  Griessnockerlaffäre (2017).avi
+-rw-r--r-- 1 nobody nobody 2675255266  3. Dez 2019  Guardians of the Galaxy Vol. 2 (2017).mkv
+-rw-r--r-- 1 nobody nobody 5082754748 13. Feb 2021  Jugend ohne Gott (2017).mkv
+-rw-r--r-- 1 nobody nobody 2349396115  6. Sep 2020  King Arthur - Legend of the Sword (2017).mkv
+-rw-r--r-- 1 nobody nobody 2373530714 20. Jan 2024  Landgericht - Geschichte einer Familie - Teil 1 (2017).mp4
+-rw-r--r-- 1 nobody nobody 2632822144 20. Jan 2024  Landgericht - Geschichte einer Familie - Teil 2 (2017).mp4
+-rw-r--r-- 1 nobody nobody 1457297902 13. Feb 2021  Loving Vincent (2017).avi
+-rw-r--r-- 1 nobody nobody 8108832768  9. Jul 2022  Mary Shelley (2017).iso
+-rw-r--r-- 1 nobody nobody 5904926932 13. Feb 2021  Mary Shelley (2017).mkv
+-rw-r--r-- 1 nobody nobody 1165284116 13. Feb 2021  Mord im Orient-Express (2017).avi
+-rw-r--r-- 1 nobody nobody  864375459 13. Feb 2021  Mord im Orient-Express (2017).mkv
+-rw-r--r-- 1 nobody nobody 1972648089 20. Jun 2021  Mother (2017).mkv
+-rw-r--r-- 1 nobody nobody 2032515945 13. Feb 2021  Pirates of the Caribbean 5 - Salazars Rache (2017).mkv
+-rw-r--r-- 1 nobody nobody 1403087472 13. Feb 2021  Singularity (2017).avi
+-rw-r--r-- 1 nobody nobody 2199995075 29. Jan 2020  Spiderman - Homecoming (2017).mkv
+-rw-r--r-- 1 nobody nobody 5026210772 13. Feb 2021  Star Wars - Battlefront 2 (2017).mp4
+-rw-r--r-- 1 nobody nobody 2713194804 13. Feb 2021  Star Wars Episode VIII - Die letzten Jedi (2017).mkv
+-rw-r--r-- 1 nobody nobody 1356471679 13. Feb 2021  T2 Trainspotting (2017).mkv
+-rw-r--r-- 1 nobody nobody 1651584395 11. Nov 2021  The Death of Stalin (2017).mkv
+-rw-r--r-- 1 nobody nobody 3339312863 14. Nov 2020  Thor - Tag der Entscheidung (2017).mkv
+-rw-r--r-- 1 nobody nobody 2062767646 13. Feb 2021  Valerian - Die Stadt der tausend Planeten (2017).avi
+-rw-r--r-- 1 nobody nobody 1072252720 13. Feb 2021  Victoria & Abdul (2017).avi
+-rw-r--r-- 1 nobody nobody 1545005932 13. Feb 2021  Vorwärts immer (2017).avi
+-rw-r--r-- 1 nobody nobody  844115653 13. Feb 2021  What the Waters left behind (2017).mkv
+
+/mm/video/movies/2018:
+insgesamt 51219948
+-rw-r--r-- 1 nobody nobody 1576327805  3. Mai 2023  7 Tage in Entebbe (2018).mkv
+-rw-r--r-- 1 nobody nobody 1664651811  3. Sep 2021  Anon (2018).mkv
+-rw-r--r-- 1 nobody nobody 1755889327 21. Mai 2021  Attrition - Gnadenlose Jagd (2018).mkv
+-rw-r--r-- 1 nobody nobody 2392681872 13. Feb 2021  Auslöschung (2018).mp4
+-rw-r--r-- 1 nobody nobody 3411166485 22. Apr 2020  Avengers - Infinity War (2018).mkv
+-rw-r--r-- 1 nobody nobody 1981230326 13. Feb 2021  Capernaum - Stadt der Hoffnung (2018).avi
+-rw-r--r-- 1 nobody nobody 2070683206 13. Feb 2021  Deadpool 2 - Super Duper Cut (2018).avi
+-rw-r--r-- 1 nobody nobody  958637205 15. Aug 2023  Der Trafikant (2018).mp4
+-rw-r--r-- 1 nobody nobody  788242212 13. Feb 2021  Die sagenhaften Vier (2018).mkv
+-rw-r--r-- 1 nobody nobody 2363899352 29. Sep 2021  Die Sch'tis in Paris - Eine Familie auf Abwegen (2018).mkv
+-rw-r--r-- 1 nobody nobody 1472733256 13. Feb 2021  Escape Plan 2: Hades (2018).avi
+-rw-r--r-- 1 nobody nobody 1879036997 21. Okt 2021  Gundermann (2018).mp4
+-rw-r--r-- 1 nobody nobody 1841956323 13. Feb 2021  Johnny English - Man lebt nur dreimal (2018).mp4
+-rw-r--r-- 1 nobody nobody 1708953548 13. Feb 2021  Kickboxer - Die Abrechnung (2018).avi
+-rw-r--r-- 1 nobody nobody 2934256060 13. Feb 2021  Kruso (2018).ts
+-rw-r--r-- 1 nobody nobody 1770274214 13. Feb 2021  Kursk - Niemand hat eine Ewigkeit (2018).avi
+-rw-r--r-- 1 nobody nobody  845298930 13. Feb 2021  Maria Magdalena (2018).mkv
+-rw-r--r-- 1 nobody nobody  691422846 13. Feb 2021  Mile 22 (2018).mkv
+-rw-r--r-- 1 nobody nobody 2733994972 13. Feb 2020  Operation 12 Strong (2018).mkv
+-rw-r--r-- 1 nobody nobody 1133491456 13. Feb 2021  Phantastische Tierwesen: Grindelwalds Verbrechen (2018).mkv
+-rw-r--r-- 1 nobody nobody 3124393247  9. Jul 2022  Ready Player One (2018).mkv
+-rw-r--r-- 1 nobody nobody 1456240348 13. Feb 2021  Sauerkrautkoma (2018).avi
+-rw-r--r-- 1 nobody nobody 1382046184 13. Feb 2021  Skyscraper (2018).avi
+-rw-r--r-- 1 nobody nobody 1913779975 31. Jul 2020  Taxi 5 (2018).mkv
+-rw-r--r-- 1 nobody nobody 2668218765 11. Nov 2020  The Ballad of Buster Scruggs (2018).mkv
+-rw-r--r-- 1 nobody nobody 1697190228 13. Feb 2021  The Mule (2018).avi
+-rw-r--r-- 1 nobody nobody 1002015373 13. Feb 2021  Ulysses - A Dark Odyssey (2018).mkv
+-rw-r--r-- 1 nobody nobody  923175694 13. Feb 2021  Unzerstörbar - Die Panzerschlacht von Rostow (2018).mkv
+-rw-r--r-- 1 nobody nobody 2307281592 16. Aug 2023  Wackersdorf (2018).mp4
+
+/mm/video/movies/2019:
+insgesamt 48818764
+-rw-r--r-- 1 nobody nobody 1224033418 13. Feb 2021  15 Minutes of War (2019).mkv
+-rw-r--r-- 1 nobody nobody 1243247709 13. Feb 2021  1917 (2019).mkv
+-rw-r--r-- 1 nobody nobody  888816054 13. Feb 2021  Ad Astra - Zu den Sternen (2019).mkv
+-rw-r--r-- 1 nobody nobody 1755617280 13. Feb 2021  Alita: Battle Angel (2019).avi
+-rw-r--r-- 1 nobody nobody 3235788312 28. Jan 2020  Avengers - Endgame (2019).mkv
+-rw-r--r-- 1 nobody nobody 1561431398 13. Feb 2021  Bataillon der Verdammten - Die Schlacht um Jangsari (2019).avi
+-rw-r--r-- 1 nobody nobody 1854527295  4. Jan 2023  Close - Dem Feind zu nah (2019).mkv
+-rw-r--r-- 1 nobody nobody  834197230 13. Feb 2021  Die Addams Family (2019).mkv
+-rw-r--r-- 1 nobody nobody  863082963 13. Feb 2021  Die Eiskönigin II (2019).mkv
+-rw-r--r-- 1 nobody nobody 2339335332  8. Okt 2020  Die zwei Päpste (2019).mkv
+-rw-r--r-- 1 nobody nobody  684030759 13. Feb 2021  Downton Abbey (2019).mp4
+-rw-r--r-- 1 nobody nobody 1716347721 13. Feb 2021  Erzgebirgskrimi - Der Tote im Stollen (2019).flv
+-rw-r--r-- 1 nobody nobody 1472342998 13. Feb 2021  Fast and Furious - Hobbs and Shaw (2019).mkv
+-rw-r--r-- 1 nobody nobody 1642731104 13. Feb 2021  Gemini Man (2019).avi
+-rw-r--r-- 1 nobody nobody  897717874 21. Okt 2021  Goethes Faust (2019).mp4
+-rw-r--r-- 1 nobody nobody 1483504785 20. Jul 2022  Helden der Wahrscheinlichkeit (2019).mkv
+-rw-r--r-- 1 nobody nobody 1464664842 13. Feb 2021  Leberkäsjunkie (2019).avi
+-rw-r--r-- 1 nobody nobody 1337928056 13. Feb 2021  Le Mans 66 - Gegen jede Chance (2019).mkv
+-rw-r--r-- 1 nobody nobody 1849206939  7. Sep 2023  Meine geistreiche Familie (2019).mkv
+-rw-r--r-- 1 nobody nobody 1731895632 13. Feb 2021  Men in Black - International (2019).avi
+-rw-r--r-- 1 nobody nobody   42482829 13. Feb 2021  Minion Scouts (2019).mkv
+-rw-r--r-- 1 nobody nobody 1849927866 26. Jun 2020  Monsieur Claude 2 (2019).mkv
+-rw-r--r-- 1 nobody nobody 1725264176 13. Feb 2021  Once Upon A Time In Hollywood (2019).avi
+-rw-r--r-- 1 nobody nobody 1387538694 13. Feb 2021  Rambo - Last Blood (2019).mkv
+-rw-r--r-- 1 nobody nobody 3652172165 13. Feb 2021  Star Wars Episode IX - Der Aufstieg Skywalkers (2019).mkv
+-rw-r--r-- 1 nobody nobody  666624484 13. Feb 2021  Terra Willy (2019).avi
+-rw-r--r-- 1 nobody nobody 1029752591 13. Feb 2021  The Art of Self-Defence (2019).mkv
+-rw-r--r-- 1 nobody nobody 2660940484 13. Feb 2021  The Irishman (2019).mkv
+-rw-r--r-- 1 nobody nobody  798318898 13. Feb 2021  Tolkien (2019).mkv
+-rw-r--r-- 1 nobody nobody 1216914040 13. Feb 2021  Vom Giessen des Zitronenbaums (2019).avi
+-rw-r--r-- 1 nobody nobody 2458666745 22. Apr 2021  Yamato - Schlacht um Japan (2019).mkv
+-rw-r--r-- 1 nobody nobody 1045611924 23. Mai 2022  Yesterday (2019).mp4
+-rw-r--r-- 1 nobody nobody 1375674490 13. Feb 2021  Zombieland - Doppelt hält besser (2019).avi
+
+/mm/video/movies/2020:
+insgesamt 15820048
+-rw-r--r-- 1 nobody nobody  772421929 22. Jun 2023  Als Hitler das rosa Kaninchen stahl (2020).mkv
+-rw-r--r-- 1 nobody nobody 1206620773 22. Jun 2023  Als Hitler das rosa Kaninchen stahl (2020).mp4
+-rw-r--r-- 1 nobody nobody  835244665 13. Feb 2021  Altes Land - Teil 1 - Ankommen (2020).mp4
+-rw-r--r-- 1 nobody nobody  887010453 13. Feb 2021  Altes Land - Teil 2 - Bleiben (2020).mp4
+-rw-r--r-- 1 nobody nobody 1415409662 13. Feb 2021  American Fighter (2020).avi
+-rw-r--r-- 1 nobody nobody 1733829407 13. Feb 2021  Erzgebirgskrimi - Tödlicher Akkord (2020).flv
+-rw-r--r-- 1 nobody nobody 1711911868 28. Jan 2021  Lotti oder der etwas andere Heimatfilm (2020).mkv
+-rw-r--r-- 1 nobody nobody  615870728 26. Mai 2021  Love Sarah (2020).mp4
+-rw-r--r-- 1 nobody nobody 1970408324 13. Dez 2021  Quo vadis, Aida? (2020).mkv
+-rw-r--r-- 1 nobody nobody 2823940557 13. Feb 2021  Tenet (2020).mkv
+-rw-r--r-- 1 nobody nobody 2227032418 27. Okt 2020  The Outpost - Überleben ist alles (2020).mkv
+
+/mm/video/movies/2021:
+insgesamt 46626952
+-rw-r--r-- 1 nobody nobody 1466253370 23. Jul 2021  A Classic Horror Story (2021).mkv
+-rw-r--r-- 1 nobody nobody 1875739566 31. Mai 2022  Belfast (2021).mkv
+-rw-r--r-- 1 nobody nobody 2054804873  4. Jan 2023  Benedetta (2021).mkv
+-rw-r--r-- 1 nobody nobody 1547978145 10. Feb 2024  Der Biber (2011).mkv
+-rw-r--r-- 1 nobody nobody 2003630573 13. Aug 2021  Der Mauretanier (2021).mkv
+-rw-r--r-- 1 nobody nobody 3196862933 22. Okt 2021  Dune (2021).mkv
+-rw-r--r-- 1 nobody nobody 1732210468 21. Okt 2021  Erzgebirgskrimi - Der letzte Bissen (2021).mp4
+-rw-r--r-- 1 nobody nobody 1733134860 18. Apr 2021  Erzgebirgskrimi - Der Tote im Burggraben (2021).mp4
+-rw-r--r-- 1 nobody nobody 4517690451 24. Jan 2022  Fabian oder der Gang vor die Hunde (2021).mkv
+-rw-r--r-- 1 nobody nobody 3253900409 10. Nov 2021  James Bond 007 - Keine Zeit zu sterben (2021).mkv
+-rw-r--r-- 1 nobody nobody 1715209852 20. Dez 2021  Kaiserschmarrndrama (2021).mkv
+-rw-r--r-- 1 nobody nobody 1433339157 10. Okt 2022  Last Survivors (2021).mkv
+-rw-r--r-- 1 nobody nobody 1306181955 18. Feb 2023  Martha Liebermann - Ein gestohlenes Leben (2021).mp4
+-rw-r--r-- 1 nobody nobody 2360104778  7. Jan 2022  Matrix Resurrections (2021).mkv
+-rw-r--r-- 1 nobody nobody  601118208 15. Jan 2024  Monte Verita - Der Rausch der Freiheit (2021).mkv
+-rw-r--r-- 1 nobody nobody 2446498334 20. Jun 2021  Nobody (2021).mkv
+-rw-r--r-- 1 nobody nobody 1801155971 25. Mai 2022  Old Henry - True Legends Never Die (2021).mkv
+-rw-r--r-- 1 nobody nobody 1062161919 23. Okt 2023  Schachnovelle (2021).mkv
+-rw-r--r-- 1 nobody nobody 2647656640  8. Dez 2021  The Last Duel (2021).mkv
+-rw-r--r-- 1 nobody nobody 2822869569  2. Jul 2021  The Tomorrow War (2021).mkv
+-rw-r--r-- 1 nobody nobody 1550913550 14. Jan 2022  The Tragedy of Macbeth (2021).mkv
+-rw-r--r-- 1 nobody nobody 1939709639 30. Mai 2022  Tides (2021).mkv
+-rw-r--r-- 1 nobody nobody 1640937766 25. Jan 2022  Weißbier im Blut (2021).mkv
+-rw-r--r-- 1 nobody nobody 1035881468 26. Aug 2023  Willkommen in Siegheilskirchen (2021).mkv
+
+/mm/video/movies/2022:
+insgesamt 37924676
+-rw-r--r-- 1 nobody nobody 6196011532 21. Jun 2023  Avatar - The Way of the Water (2022).mkv
+-rw-r--r-- 1 nobody nobody 1712579976  7. Mär 2024  Die Kairo Verschwörung (2022).mkv
+-rw-r--r-- 1 nobody nobody 2617704282  6. Apr 2023  Ein Mann namens Otto (2022).mkv
+-rw-r--r-- 1 nobody nobody 2452469908 30. Apr 2020  Equilibrium (2022).mkv
+-rw-r--r-- 1 nobody nobody 1803318195 19. Dez 2022  Erzgebirgskrimi - Ein Mord zu Weihnachten (2022).mkv
+-rw-r--r-- 1 nobody nobody 1785825967 27. Feb 2022  Erzgebirgskrimi - Verhängnisvolle Recherche (2022).mp4
+-rw-r--r-- 1 nobody nobody 1746582779 30. Dez 2022  Guglhupfgeschwader (2022).mkv
+-rw-r--r-- 1 nobody nobody 5149818635 28. Okt 2022  Im Westen nichts neues (2022).mp4
+-rw-r--r-- 1 nobody nobody 2212791798 29. Okt 2023  Into the Abyss (2022).mkv
+-rw-r--r-- 1 nobody nobody 2590729775 26. Mai 2022  Moonfall (2022).mkv
+-rw-r--r-- 1 nobody nobody 2063719693 30. Jun 2022  Phantastische Tierwesen - Dumbledores Geheimnisse (2022).mkv
+-rw-r--r-- 1 nobody nobody 2257484814 23. Mär 2024  Return to Seoul (2022).mkv
+-rw-r--r-- 1 nobody nobody 2224946471 21. Okt 2022  Top Gun - Maverick (2022).mkv
+-rw-r--r-- 1 nobody nobody 1494315910 18. Jan 2024  Wild wie das Meer (2022).mkv
+-rw-r--r-- 1 nobody nobody 2526542882  8. Mai 2023  Wir sind dann wohl die Angehörigen (2022).mkv

@@ -1,0 +1,109 @@
+#!/bin/bash
+
+### size methods ###
+size()
+{
+    # grep -o ".*\s[0-9]\s[a-z]\+\s[a-z]\+\s[0-9]\+\s" filme.txt | grep -o "[0-9]*\s*$"
+    #
+    size=0
+    for num in $(tr -s ' ' < filme.txt | cut -s -d " " -f5 | grep -o "^[0-9]*$");
+    do
+        size=$((size+num))
+    done
+    echo $size
+}
+
+byteToGiB()
+{
+    echo $(($1/1024/1024/1024))
+}
+
+showSize()
+{
+    size=$(size)
+    echo "Gesamtgröße aller Filme (Byte): $size Byte"
+    echo "Gesamtgröße aller Filme (GiB): $(byteToGiB $size) GiB"
+}
+
+### hist method ###
+
+hist()
+{
+    echo "Anzahl der Filme:Jahr"
+    tr -s ' ' < filme.txt | cut -s -d " " -f8 | grep -o "^[0-9]*$" | sort | uniq -c | sort -nr | tr -s " " | grep -o "[0-9]*\s[0-9]*$" | tr " " ":"
+}
+
+### search methods ###
+search()
+{
+    tr -s ' ' < filme.txt | cut -s -d " " -f9- | cut -d "." -f1 | grep ".*$1.*"
+}
+
+ext()
+{
+    echo "Anzahl der Dateinamenerweiterungen:Erweiterung"
+    grep -o "([0-9]\{4\})\..\+" filme.txt | cut -d "." -f2 | sort | uniq -c | tr -s " " | grep -o "[0-9]*\s\w*$" | tr " " ":"
+}
+
+imdb()
+{
+    ssh ilux150 grep -P "tt[0-9]{7}\t[0-9]*\t.*$1.*\t" /user/profile/active/robge/bs1-tools/title.akas.tsv | cut -f1
+}
+
+syntax()
+{
+    tr -s ' ' < filme.txt | cut -s -d " " -f9- | grep -v "^$" | grep -E -v ".*\s\((20[0-2][0-9]|19[5-9][0-9])\)(\..*$|-cd[1-3]\..*$|$)"
+}  
+
+missing()
+{
+    for top in $(grep -o ".*" top100.txt)
+    do
+        if test $(search "$top" | wc -w) -eq 0
+        then
+            echo $(grep -o "^.*$top.*$" top100.txt)
+        fi
+    done
+}
+
+if test $# -lt 1
+then
+    echo "Usage: $0 [search <string> | hist | size | ext | imdb | syntax | missing]"
+    exit 1
+fi
+
+if test $1 = "search"
+then
+    if test $# -lt 2
+    then
+        echo "Usage: $0 search <search string>"
+        exit 1
+    fi
+    search $2
+elif test $1 = "hist"
+then
+    hist
+elif test $1 = "size"
+then
+    showSize
+elif test $1 = "ext"
+then
+    ext
+elif test $1 = "imdb"
+then
+    if test $# -lt 2
+    then
+        echo "Usage: $0 imdb <search string>"
+        exit 1
+    fi
+    imdb $2
+elif test $1 = "syntax"
+then
+    syntax
+elif test $1 = "missing"
+then
+    missing
+else
+    echo "Usage: $0 [search <string> | hist | size | ext | imdb | syntax | missing]"
+    exit 1
+fi
