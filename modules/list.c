@@ -3,17 +3,16 @@
 #include <malloc.h>
 
 #include "list.h"
-#include "list.c"
 
 typedef struct tConnector {
     struct tConnector *nxt;
     struct tConnector *prv;
     void *data;
-} tConct;
+} tNode;
 
 typedef struct tList {
-    tConct *head;
-    tConct *curpos;
+    tNode *head;
+    tNode *curpos;
     int length;
 } tList;
 
@@ -21,7 +20,7 @@ tList* list_create() {
     tList *list = (tList*) malloc(sizeof(tList));
     if (!list) return NULL;
     
-    tConct *head = (tConct*) malloc(sizeof(tConct));
+    tNode *head = (tNode*) malloc(sizeof(tNode));
     if (!head) {
         free(list);
         return NULL;
@@ -37,8 +36,57 @@ tList* list_create() {
     return list;
 }
 
+int _check_null(tList *list){
+    if (!list) {
+        printf("Error: List is NULL.\n");
+        return 0;
+    } else if (!list->head) {
+        printf("Error: List head is NULL.\n");
+        return 0;
+    } else if (!list->curpos) {
+        printf("Error: No current position set in the list");
+        return 0;
+    }
+    else return 1;
+}
+
+
+// ABSTRACT CURRENT POSITION POINTER METHODS
+// abstract forward move of the position pointer in the list
+int _mov_nxt_idx(tList *list) {
+    if (!list || !list->curpos) return 0;
+    list->curpos = list->curpos->nxt;
+    return 1;
+}
+
+// abstract backward move of the position pointer in the list
+int _mov_prv_idx(tList *list) {
+    if (!list || !list->curpos) return 0;
+    list->curpos = list->curpos->prv;
+    return 1;
+}
+
+// get current selected data index
+int _get_idx(tList *list) {
+    if (!list || !list->head) return 0;
+    tNode *tmp_sel = list->head->nxt;
+    int idx=0;
+    while ((tmp_sel != list->head) && (tmp_sel != list->curpos)) {
+        idx++;
+    }
+    return idx;
+}
+
+// move the position pointer to a specific index
 int _move_index(tList *list, int index) {
-    if (!list || !list->head || index < 0 || index >= list->length) {
+    if (_check_null(list) == 0){
+        return 0;
+    }
+    else if (index < 0) {
+        printf("Error: Index is negative.\n");
+        return 0;
+    } else if (index >= list->length) {
+        printf("Error: Index is out of bounds.\n");
         return 0;
     }
     if (index < list->length / 2) {
@@ -55,22 +103,13 @@ int _move_index(tList *list, int index) {
     return 1;
 }
 
-int _mov_nxt(tList *list) {
-    if (!list || !list->curpos) return 0;
-    list->curpos = list->curpos->nxt;
-    return 1;
-}
 
-int _mov_prv(tList *list) {
-    if (!list || !list->curpos) return 0;
-    list->curpos = list->curpos->prv;
-    return 1;
-}
-
+// INSERTION METHODS
+// insert new data element behind the current position pointer
 int insert_behind(tList *list, void *data) {
     if (!list || !list->curpos) return 0;
     
-    tConct *new = (tConct*) malloc(sizeof(tConct));
+    tNode *new = (tNode*) malloc(sizeof(tNode));
     if (!new) return 0;
     
     new->data = data;
@@ -82,20 +121,41 @@ int insert_behind(tList *list, void *data) {
     return 1;
 }
 
+// insert data at the bottom of the list
 int insert_tail(tList *list, void *data) {
     list->curpos = list->head->prv;
     return insert_behind(list, data);
 }
 
+// insert data at the head of the list
 int insert_head(tList *list, void *data) {
     list->curpos = list->head;
     return insert_behind(list, data);
 }
 
+// GET METHODS
+// get data at current position pointer
+int* _get(tList *list) {
+    return list->curpos->data;
+}
+
+// get data at specifc idx
+int* get(tList *list, int idx) {
+    _move_index(list, idx);
+    return _get(list);
+}
+
+// int get_batch(tList *list, int start, int end) {
+
+// }
+
+
+// DELETION METHODS
+// delete the current selected (current position pointer) node (+data)
 int delete_node(tList *list) {
     if (!list || !list->curpos || list->curpos == list->head) return 0;
     
-    tConct *tmp = list->curpos;
+    tNode *tmp = list->curpos;
     tmp->nxt->prv = tmp->prv;
     tmp->prv->nxt = tmp->nxt;
     list->curpos = tmp->nxt;
@@ -103,21 +163,13 @@ int delete_node(tList *list) {
         list->curpos = list->head->nxt;
     }
     
+    free(tmp->data);
     free(tmp);
     list->length--;
     return 1;
 }
 
-void list_print(tList *list) {
-    if (!list || !list->head) return;
-    
-    tConct *tmp = list->head->nxt;
-    while (tmp != list->head) {
-        printf("%p\n", tmp->data);
-        tmp = tmp->nxt;
-    }
-}
-
+// remove the whole list, its nodes with the corresponding data from the memory
 void list_destroy(tList *list) {
     if (!list || !list->head) return;
     
@@ -131,3 +183,16 @@ void list_destroy(tList *list) {
 }
 
 
+// OTHER METHODS
+// print out the whole list
+void list_print(tList *list) {
+    if (!list || !list->head) return;
+    
+    tNode *tmp = list->head->nxt;
+    printf("List([");
+    while (tmp != list->head) {
+        printf("%p,", tmp->data);
+        tmp = tmp->nxt;
+    }
+    printf(")]");
+}
