@@ -14,7 +14,7 @@ int _mov_nxt_idx(tList *list);
 int _mov_prv_idx(tList *list);
 int _get_idx(tList *list);
 int _move_index(tList *list, int index);
-void* _get(tList *list);
+int* _get(tList *list);
 
 // Insertion operations
 int insert_behind(tList *list, void *data);
@@ -22,7 +22,7 @@ int insert_tail(tList *list, void *data);
 int insert_head(tList *list, void *data);
 
 // Getter operations
-void* get(tList *list, int idx);
+int* get(tList *list, int idx);
 
 // Deletion operations
 int delete_node(tList *list);
