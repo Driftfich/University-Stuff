@@ -12,9 +12,9 @@ List* createList() {
     return list;
 }
 
-void insertAfter(List* list, Node* node, int data) {
+void insertAfter(List* list, Node* node, int ar) {
     Node* newNode = (Node*)malloc(sizeof(Node));
-    newNode->data = data;
+    newNode->ar = ar;
     
     if (node == NULL) node = list->header;
     
@@ -35,10 +35,10 @@ void deleteNode(List* list, Node* node) {
     list->size--;
 }
 
-Node* findNode(List* list, int data) {
+Node* findNode(List* list, int ar) {
     Node* current = list->header->next;
     while (current != list->header) {
-        if (current->data == data) return current;
+        if (current->ar == ar) return current;
         current = current->next;
     }
     return NULL;
@@ -48,7 +48,7 @@ void printList(List* list) {
     Node* current = list->header->next;
     printf("Liste: ");
     while (current != list->header) {
-        printf("%d ", current->data);
+        printf("%d ", current->ar);
         current = current->next;
     }
     printf("\n");

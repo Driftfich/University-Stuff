@@ -4,18 +4,6 @@
 
 #include "list.h"
 
-typedef struct tConnector {
-    struct tConnector *nxt;
-    struct tConnector *prv;
-    void *data;
-} tNode;
-
-typedef struct tList {
-    tNode *head;
-    tNode *curpos;
-    int length;
-} tList;
-
 tList* list_create() {
     tList *list = (tList*) malloc(sizeof(tList));
     if (!list) return NULL;
@@ -52,14 +40,14 @@ int _check_null(tList *list){
 
 
 // ABSTRACT CURRENT POSITION POINTER METHODS
-// abstract forward move of the position pointer in the list
+// abstract forwdatad move of the position pointer in the list
 int _mov_nxt_idx(tList *list) {
     if (!list || !list->curpos) return 0;
     list->curpos = list->curpos->nxt;
     return 1;
 }
 
-// abstract backward move of the position pointer in the list
+// abstract backwdatad move of the position pointer in the list
 int _mov_prv_idx(tList *list) {
     if (!list || !list->curpos) return 0;
     list->curpos = list->curpos->prv;
@@ -106,7 +94,7 @@ int _move_index(tList *list, int index) {
 
 // INSERTION METHODS
 // insert new data element behind the current position pointer
-int insert_behind(tList *list, void *data) {
+int _insert_behind(tList *list, void *data) {
     if (!list || !list->curpos) return 0;
     
     tNode *new = (tNode*) malloc(sizeof(tNode));
@@ -115,8 +103,10 @@ int insert_behind(tList *list, void *data) {
     new->data = data;
     new->nxt = list->curpos->nxt;
     new->prv = list->curpos;
-    list->curpos->nxt->prv = new;
+
+    new->nxt->prv = new;
     list->curpos->nxt = new;
+
     list->length++;
     return 1;
 }
@@ -124,14 +114,22 @@ int insert_behind(tList *list, void *data) {
 // insert data at the bottom of the list
 int insert_tail(tList *list, void *data) {
     list->curpos = list->head->prv;
-    return insert_behind(list, data);
+    return _insert_behind(list, data);
 }
 
 // insert data at the head of the list
 int insert_head(tList *list, void *data) {
     list->curpos = list->head;
-    return insert_behind(list, data);
+    return _insert_behind(list, data);
 }
+
+int insert(tList *list, void *data, int idx) {
+    if (_move_index(list, idx-1) == 0) {
+        return 0;
+    }
+    return _insert_behind(list, data);
+}
+
 
 // GET METHODS
 // get data at current position pointer
@@ -145,7 +143,7 @@ int* get(tList *list, int idx) {
     return _get(list);
 }
 
-// int get_batch(tList *list, int start, int end) {
+// int get_batch(tList *list, int stdatat, int end) {
 
 // }
 
@@ -183,16 +181,68 @@ void list_destroy(tList *list) {
 }
 
 
-// OTHER METHODS
+// Utility METHODS
 // print out the whole list
-void list_print(tList *list) {
+void print_list(tList *list, void (*printer) (void *data)) {
     if (!list || !list->head) return;
     
     tNode *tmp = list->head->nxt;
     printf("List([");
     while (tmp != list->head) {
-        printf("%p,", tmp->data);
+        printer(tmp->data);
         tmp = tmp->nxt;
     }
-    printf(")]");
+    printf("])");
 }
+
+void to_dataray(tList *list, void **dataray) {
+    if (!list || !list->head) return;
+    
+    tNode *tmp = list->head->nxt;
+    int i = 0;
+    while (tmp != list->head) {
+        dataray[i] = tmp->data;
+        tmp = tmp->nxt;
+        i++;
+    }
+}
+
+void from_dataray(tList *list, void **dataray, int size) {
+    if (!list || !list->head) return;
+    
+    for (int i = 0; i < size; i++) {
+        insert_tail(list, dataray[i]);
+    }
+}
+
+tList *search(tList *list, int (*cmp) (void*, void*), void *data) {
+    // input list: tList to search in, compare function: int (*cmp) (void*, void*), data: void* to compare with
+    // output: tList with found elements
+    if (!list || !list->head || !cmp) return NULL;
+    
+    tList *found = list_create();
+    if (!found) return NULL;
+
+    tNode *ftmp = list->head->nxt;
+    tNode *ptmp = list->head->prv;
+    for (int i=0; i<(list->length + 1)/2; i++) {
+        if (cmp(ftmp->data, data)) {
+            insert_tail(found, ftmp->data);
+        }
+
+        if ((ftmp != ptmp) && (cmp(ptmp->data, data))) {
+            insert_tail(found, ptmp->data);
+        }
+        ftmp = ftmp->nxt;
+        ptmp = ptmp->prv;
+    }
+
+    return found;
+}
+
+
+
+
+
+
+

@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "list": "c",
         "pooled_list.h": "c"
     }
 }
