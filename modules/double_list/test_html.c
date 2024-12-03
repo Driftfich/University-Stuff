@@ -1,20 +1,20 @@
 #include <stdio.h>
-#include <ctype.h>
-
-int main() {
+#include <stdlib.h>
+#include <string.h>
+int main()
+{
+    char buf[2048];
     FILE *F;
-    F = fopen("test.html", "rt");
+    F = fopen("C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html", "rt");
+    printf("Content-Type: text/html\r\n\r\n");
     if (F == NULL) {
-        printf("Error opening file\n");
+        puts("<html><head><title><p>Dateifehler<p></title></body></html>");
         return 1;
     }
-
-    char c;
-    while ((c = fgetc(F)) != EOF) {
-        if (isprint(c)) {
-            putchar(c);
-        } else {
-            printf("0x%02X ", c);
-        }
+    while (fgets(buf, sizeof(buf), F))
+    {
+        printf("%s", buf);
     }
+    fclose(F);
+    return 0;
 }
