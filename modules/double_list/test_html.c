@@ -5,7 +5,7 @@ int main()
 {
     char buf[2048];
     FILE *F;
-    F = fopen("C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html", "rt");
+    F = fopen("/var/www/html/test.html", "rt");
     printf("Content-Type: text/html\r\n\r\n");
     if (F == NULL) {
         puts("<html><head><title><p>Dateifehler<p></title></body></html>");

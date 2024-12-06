@@ -100,12 +100,44 @@
                 opacity: 1;
             }
 
-            .sort-toggle {
+            .sort-container {
                 position: absolute;
                 right: 450px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                gap: 20px;
+                margin: 20px;
+            }
+
+            /* Custom Dropdown */
+            .sort-select {
+                appearance: none;
+                background-color: #0b3f74;
+                border: 2px solid #e9ecef;
+                border-radius: 8px;
+                padding: 10px 35px 10px 15px;
+                font-size: 16px;
+                /* color: #000000; */
+                cursor: pointer;
+            }
+
+            .sort-select:hover {
+                border-color: #007bff;
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .sort-select:focus {
+                outline: none;
+                border-color: #86b7fe;
+                box-shadow: 0 0 0 3px rgba(13,110,253,.25);
+            }
+
+            /* Label Styling */
+            .sort-label {
+                font-weight: 500;
+                color: #86b7fe;
             }
 
             .delete-button {
@@ -318,11 +350,11 @@
         <p>This is a basic HTML file.</p> -->
         <div class="file-header">
             <button class="file-button">
-                <img src="./images/load.png" alt="Laden">
+                <img src="http://localhost/images/load.png" alt="Laden">
             </button>
 
             <button class="file-button">
-                <img src="./images/save.png" alt="Speichern">
+                <img src="/images/save.png" alt="Speichern">
             </button>
 
             <h1 class="page-title">Bibliotheksverzeichnis</h1>
@@ -334,26 +366,32 @@
                 <input 
                     type="text" 
                     class="search-input"
+                    name="search"
                     placeholder="Suche..."
                     oninput="this.classList.toggle('empty', !this.value)"
+                    hx-post="/cgi-bin/s88216"
                 >
-                <button class="search-button">
+                <!-- <button class="search-button">
                     <img src="./images/search.png" alt="Suchen">
-                </button>
+                </button> -->
             </div>
 
-            <div class="sort-toggle">
-                <label>Sort by</label>
-                <select name="Sort by" hx-indicator=".htmx-indicator">
+            <div class="sort-container">
+                <label class="sort-label" for="sortBy">Sortieren nach:</label>
+                <select name="sort-select" id="sortBy">
                     <option value="Name">Name</option>
                     <option value="Author">Author</option>
                     <option value="Borrower">Borrower</option>
                 </select>
             </div>
 
-            <button class="delete-button" onclick="toggleDelete(this)">
+            <button class="delete-button"
+                onclick="toggleDelete(this)"
+                hx-delete="/cgi-bin/s88216?action=delete-selected"
+                hx-include=".row-selected"
+                hx-target="#table-body"
+                hx-swap="innerHTML">
                 <img src="./images/trashcan_closed.png" 
-    
                      data-normal="./images/trashcan_closed.png"
                      data-active="./images/trashcan_open.png">
             </button>
@@ -384,7 +422,72 @@
                     </div>
                 </form>
             </div>
+
         </div>
+
+        <style>
+            /* Container für Tabelle */
+            .table-container {
+                width: 100%;
+                padding: 20px;
+            }
+
+            /* Tabellen-Styling */
+            .data-table {
+                width: 100%;
+                border-collapse: collapse;
+                table-layout: fixed;
+            }
+
+            /* Spaltenbreiten */
+            .data-table th,
+            .data-table td {
+                padding: 12px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                vertical-align: center;
+            }
+
+            /* Spezifische Spaltenbreiten */
+            .data-table th:nth-child(1) { width: 25%; text-align: left;} /* Name */
+            .data-table th:nth-child(2) { width: 20%; text-align: left;} /* Author */
+            .data-table th:nth-child(3) { width: 20%; text-align: left;} /* Ausleiher */
+            .data-table th:nth-child(4) { width: 20%; text-align: left;} /* Ausgeliehen am */
+            
+            /* Hervorhebung selektierter Zeilen */
+            .row-selected {
+                background-color: #91d3ff;
+                transition: background-color 0.2s ease;
+            }
+
+            /* Hover-Effekt für Zeilen */
+            .clickable-row:hover {
+                background-color: #d3dbe0;
+                cursor: pointer;
+            }
+        </style>
+                    
+        <table class="table-container">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Author</th>
+                    <th>Ausleiher</th>
+                    <th>Ausgeliehen am</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr class="clickable-row" 
+                    onclick="this.classList.toggle('row-selected')"
+                    data-id="${id}">
+                    <td>${name}</td>
+                    <td>${author}</td>
+                    <td>${borrower}</td>
+                    <td>${borrowed_at}</td>
+                </tr>
+            </tbody>
+        </table>
 
         <script>
             function toggleAdd(button) {

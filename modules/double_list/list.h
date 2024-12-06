@@ -13,6 +13,13 @@ typedef struct tList {
     unsigned int length;
 } tList;
 
+typedef struct BorrowedMediaItem {
+    char *name;
+    char *author;
+    char *borrower;
+    unsigned long int bowrrowed_date;
+} tMedia;
+
 // List creation and destruction
 tList* list_create();
 void list_destroy(tList *list);
