@@ -342,6 +342,29 @@
                 box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
             }
 
+            .submit-button {
+                padding: 10px 20px;
+                background-color: #076c00;
+                color: white;
+                border: none;
+                border-radius: 20px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin-top: 10px;
+                width: 100%;
+            }
+
+            .submit-button:hover {
+                background-color: #2e9926;
+                transform: scale(1.02);
+            }
+
+            .submit-button:active {
+                background-color: #a2e29d;
+                transform: scale(0.95);
+            }
+
         </style>
         
     </head>
@@ -350,7 +373,7 @@
         <p>This is a basic HTML file.</p> -->
         <div class="file-header">
             <button class="file-button">
-                <img src="http://localhost/images/load.png" alt="Laden">
+                <img src="/images/load.png" alt="Laden">
             </button>
 
             <button class="file-button">
@@ -372,7 +395,7 @@
                     hx-post="/cgi-bin/s88216"
                 >
                 <!-- <button class="search-button">
-                    <img src="./images/search.png" alt="Suchen">
+                    <img src="/images/search.png" alt="Suchen">
                 </button> -->
             </div>
 
@@ -391,17 +414,20 @@
                 hx-include=".row-selected"
                 hx-target="#table-body"
                 hx-swap="innerHTML">
-                <img src="./images/trashcan_closed.png" 
-                     data-normal="./images/trashcan_closed.png"
-                     data-active="./images/trashcan_open.png">
+                <img src="/images/trashcan_closed.png" 
+                     data-normal="/images/trashcan_closed.png"
+                     data-active="/images/trashcan_open.png">
             </button>
 
             <button class="add-button" onclick="toggleAdd(this)">
-                <img src="./images/add.png">
+                <img src="/images/add.png">
             </button>
 
             <div class="add-overlay">
-                <form class="add-form">
+                <form class="add-form"
+                    hx-post="/add-media" 
+                    hx-target="#media-list"
+                    hx-swap="beforeend">
                     <div class="form-group">
                         <input type="text" 
                                class="form-input" 
@@ -420,6 +446,7 @@
                                placeholder="Borrower"
                                value="">
                     </div>
+                    
                 </form>
             </div>
 

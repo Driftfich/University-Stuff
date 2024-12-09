@@ -32,12 +32,12 @@ int _comp_col(void *media, void *search, int offset, tColumnType type) {
 
 int comp_media(void *media, void *search) {
     int offset = offsetof(tMedia, name);
-    return _comp_cols(media, search, offset, TYPE_CHAR);
+    return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
 int comp_borrower(void *media, void *search) {
     int offset = offsetof(tMedia, borrower);
-    return _comp_cols(media, search, offset, TYPE_CHAR);
+    return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
 void _item_printer(void *data) {
@@ -46,10 +46,15 @@ void _item_printer(void *data) {
     return;
 }
 
-void _initial_page_load() {
+int _initial_page_load() {
     char buf[2048];
     FILE *F;
-    F = fopen("/var/www/html/test.html", "rt");
+    #ifdef _WIN32
+        {F = fopen("C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html", "rt");}
+    #elif __linux__
+        {F = fopen("/var/www/html/test.html", "rt");}
+    #endif
+
     printf("Content-Type: text/html\r\n\r\n");
     if (F == NULL) {
         puts("<html><head><title><p>Dateifehler<p></title></body></html>");
@@ -97,12 +102,15 @@ int main () {
     // printf("\n\n");
     // print_list(list, _item_printer);
 
-    char *query = getenv("QUERY_STRING");
-    char *request_method = getenv("REQUEST_METHOD");
+//     char *query = getenv("QUERY_STRING");
+//     char *request_method = getenv("REQUEST_METHOD");
 
-    if (strcmp(request_method, "GET") == 0) {
-        _initial_page_load();
-    } else if (strcmp(request_method, "POST") == 0) {
-        // parse the query string
-        // if the query string is empty, return the initial page
+//     if (strcmp(request_method, "GET") == 0) {
+//         _initial_page_load();
+//     } else if (strcmp(request_method, "POST") == 0) {
+//         // parse the query string
+//         // if the query string is empty, return the initial page
+// }
+    _initial_page_load();
+    return 0;
 }
