@@ -196,24 +196,30 @@ void print_list(tList *list, void (*printer) (void *data)) {
     printf("])");
 }
 
-void to_dataray(tList *list, void **dataray) {
+int to_dataray(tList *list) {
     if (!list || !list->head) return;
     
+    void **array = malloc(list->length * sizeof(list->head->nxt->data));
+    if (!array) return;
+
     tNode *tmp = list->head->nxt;
-    int i = 0;
-    while (tmp != list->head) {
-        dataray[i] = tmp->data;
+    for (int i = 0; i < list->length; i++) {
+        array[i] = tmp->data;
         tmp = tmp->nxt;
-        i++;
     }
+
+    return array;
 }
 
-void from_dataray(tList *list, void **dataray, int size) {
+tList *from_dataray(void **dataray, int size) {
+    tList *list = list_create();
     if (!list || !list->head) return;
     
     for (int i = 0; i < size; i++) {
         insert_tail(list, dataray[i]);
     }
+
+    return list;
 }
 
 void _create_db_table(sqlite3 *db, char *table) {
@@ -324,6 +330,60 @@ tList *_list_tables(sqlite3 *db) {
     }
 
     sqlite3_finalize(stmt);
+    return list;
+}
+
+int to_file(tList *list, char *filename, char *delimiter, char *mode) {
+    if (!list || !list->head) return 0;
+
+    FILE *file = fopen(filename, mode);
+    if (!file) {
+        fprintf(stderr, "Error opening file %s\n", filename);
+        return 0;
+    }
+
+    tNode *tmp = list->head->nxt;
+    while (tmp != list->head) {
+        tMedia *media = (tMedia*) tmp->data;
+        fprintf(file, "%s%s%s%s%s%lu\n", media->name, delimiter, media->author, delimiter, media->borrower, media->bowrrowed_date);
+        tmp = tmp->nxt;
+    }
+
+    fclose(file);
+    return 1;
+}
+
+tList *from_file(char *filename, char *delimiter) {
+    tList *list = list_create();
+    if (!list) return NULL;
+
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        fprintf(stderr, "Error opening file %s\n", filename);
+        return NULL;
+    }
+
+    char *name = (char*) malloc(256 * sizeof(char));
+    char *author = (char*) malloc(256 * sizeof(char));
+    char *borrower = (char*) malloc(256 * sizeof(char));
+    unsigned long int borrowed_date;
+
+    while (fscanf(file, "%[^delimiter]%[^delimiter]%[^delimiter]%lu\n", name, author, borrower, &borrowed_date) != EOF) {
+        tMedia *media = (tMedia*) malloc(sizeof(tMedia));
+        if (!media) {
+            fprintf(stderr, "Error allocating memory for media\n");
+            return NULL;
+        }
+
+        media->name = name;
+        media->author = author;
+        media->borrower = borrower;
+        media->bowrrowed_date = borrowed_date;
+
+        insert_tail(list, media);
+    }
+
+    fclose(file);
     return list;
 }
 
