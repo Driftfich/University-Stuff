@@ -44,8 +44,16 @@ int* get(tList *list, int idx);
 int delete_node(tList *list);
 
 // Utility functions
+void** to_datarray(tList *list);
+tList *from_datarray(void **dataray, int size);
+
 void print_list(tList *list, void (*printer) (void *data));
 
 tList* search(tList *list, int (*comp)(void*, void*), void *data);
+tList* sort(tList *list, int (*comp)(const void*, const void*));
+
+// FILE I/O
+int to_file(tList *list, char *filename, char *delimiter, char *mode, void (*item_saver)(FILE *file, void *item, char *delimiter));
+tList *from_file(char *filename, char *delimiter, void *(*item_loader)(FILE *file, char *delimiter));
 
 #endif // LIST_H

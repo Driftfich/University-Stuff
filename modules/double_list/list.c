@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
-#include <sqlite3.h>
+#include <string.h>
+// #include <sqlite3.h>
 
 #include "list.h"
 
@@ -193,14 +194,20 @@ void print_list(tList *list, void (*printer) (void *data)) {
         printer(tmp->data);
         tmp = tmp->nxt;
     }
-    printf("])");
+    printf("])\n");
 }
 
-int to_dataray(tList *list) {
-    if (!list || !list->head) return;
+void** to_datarray(tList *list) {
+    if (!list || !list->head) {
+        fprintf(stderr, "Error: List is NULL\n");
+        return NULL;
+    }
     
     void **array = malloc(list->length * sizeof(list->head->nxt->data));
-    if (!array) return;
+    if (!array) {
+        fprintf(stderr, "Error allocating memory for array\n");
+        return NULL;
+    }
 
     tNode *tmp = list->head->nxt;
     for (int i = 0; i < list->length; i++) {
@@ -211,9 +218,12 @@ int to_dataray(tList *list) {
     return array;
 }
 
-tList *from_dataray(void **dataray, int size) {
+tList *from_datarray(void **dataray, int size) {
     tList *list = list_create();
-    if (!list || !list->head) return;
+    if (!list || !list->head) {
+        fprintf(stderr, "Error creating list\n");
+        return NULL;
+    }
     
     for (int i = 0; i < size; i++) {
         insert_tail(list, dataray[i]);
@@ -222,118 +232,118 @@ tList *from_dataray(void **dataray, int size) {
     return list;
 }
 
-void _create_db_table(sqlite3 *db, char *table) {
-    char *sql = "CREATE TABLE IF NOT EXISTS ? ("
-                "id INTEGER PRIMARY KEY AUTOINCREMENT"
-                "name TEXT NOT NULL"
-                "author TEXT NOT NULL"
-                "borrower TEXT"
-                "borrowed_date INTEGER"
-                ");";
-    sqlite3_stmt *stmt;
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        return;
-    }
-    sqlite3_bind_text(stmt, 1, table, -1, SQLITE_STATIC);
-    sqlite3_step(stmt);
+// void _create_db_table(sqlite3 *db, char *table) {
+//     char *sql = "CREATE TABLE IF NOT EXISTS ? ("
+//                 "id INTEGER PRIMARY KEY AUTOINCREMENT"
+//                 "name TEXT NOT NULL"
+//                 "author TEXT NOT NULL"
+//                 "borrower TEXT"
+//                 "borrowed_date INTEGER"
+//                 ");";
+//     sqlite3_stmt *stmt;
+//     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+//         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+//         return;
+//     }
+//     sqlite3_bind_text(stmt, 1, table, -1, SQLITE_STATIC);
+//     sqlite3_step(stmt);
     
-    sqlite3_finalize(stmt);
-}
+//     sqlite3_finalize(stmt);
+// }
 
-void to_db(tList *list, sqlite3 *db, char *table) {
-    if (!list || !list->head) return;
+// void to_db(tList *list, sqlite3 *db, char *table) {
+//     if (!list || !list->head) return;
 
-    _create_db_table(db, table);
+//     _create_db_table(db, table);
     
-    char *sql="INSERT INTO ? (name, author, borrower, borrowed_date) VALUES (?, ?, ?, ?);";
+//     char *sql="INSERT INTO ? (name, author, borrower, borrowed_date) VALUES (?, ?, ?, ?);";
 
-    // Statement vorbereiten
-    sqlite3_stmt *stmt;
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK) {
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        return;
-    }
+//     // Statement vorbereiten
+//     sqlite3_stmt *stmt;
+//     if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK) {
+//         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+//         return;
+//     }
 
-    tNode *tmp = list->head->nxt;
-    while (tmp != list->head) {
-        tMedia *media = (tMedia*) tmp->data;
+//     tNode *tmp = list->head->nxt;
+//     while (tmp != list->head) {
+//         tMedia *media = (tMedia*) tmp->data;
 
-        // bind values into insert statement
-        sqlite3_bind_text(stmt, 1, table, -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 2, media->borrower, -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, media->author, -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 4, media->borrower, -1, SQLITE_STATIC);
-        sqlite3_bind_int(stmt, 5, media->bowrrowed_date);
+//         // bind values into insert statement
+//         sqlite3_bind_text(stmt, 1, table, -1, SQLITE_STATIC);
+//         sqlite3_bind_text(stmt, 2, media->borrower, -1, SQLITE_STATIC);
+//         sqlite3_bind_text(stmt, 3, media->author, -1, SQLITE_STATIC);
+//         sqlite3_bind_text(stmt, 4, media->borrower, -1, SQLITE_STATIC);
+//         sqlite3_bind_int(stmt, 5, media->bowrrowed_date);
 
-        // execute statement
-        if (sqlite3_step(stmt) != SQLITE_DONE) {
-            fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        }
+//         // execute statement
+//         if (sqlite3_step(stmt) != SQLITE_DONE) {
+//             fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+//         }
 
-        // reset statement
-        sqlite3_reset(stmt);
+//         // reset statement
+//         sqlite3_reset(stmt);
 
-        tmp = tmp->nxt;
-    }
+//         tmp = tmp->nxt;
+//     }
 
-    sqlite3_finalize(stmt);
-}
+//     sqlite3_finalize(stmt);
+// }
 
-tList *from_db(sqlite3 *db, char *table) {
-    tList *list = list_create();
-    if (!list) return NULL;
+// tList *from_db(sqlite3 *db, char *table) {
+//     tList *list = list_create();
+//     if (!list) return NULL;
 
-    _create_db_table(db, table);
+//     _create_db_table(db, table);
 
-    char *sql = "SELECT * FROM ?;";
-    sqlite3_stmt *stmt;
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK) {
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        return NULL;
-    }
+//     char *sql = "SELECT * FROM ?;";
+//     sqlite3_stmt *stmt;
+//     if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK) {
+//         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+//         return NULL;
+//     }
 
-    sqlite3_bind_text(stmt, 1, table, -1, SQLITE_STATIC);
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        tMedia *media = (tMedia*) malloc(sizeof(tMedia));
-        if (!media) {
-            fprintf(stderr, "Error allocating memory for media\n");
-            return NULL;
-        }
+//     sqlite3_bind_text(stmt, 1, table, -1, SQLITE_STATIC);
+//     while (sqlite3_step(stmt) == SQLITE_ROW) {
+//         tMedia *media = (tMedia*) malloc(sizeof(tMedia));
+//         if (!media) {
+//             fprintf(stderr, "Error allocating memory for media\n");
+//             return NULL;
+//         }
 
-        media->name = (char*) sqlite3_column_text(stmt, 1);
-        media->author = (char*) sqlite3_column_text(stmt, 2);
-        media->borrower = (char*) sqlite3_column_text(stmt, 3);
-        media->bowrrowed_date = sqlite3_column_int(stmt, 4);
+//         media->name = (char*) sqlite3_column_text(stmt, 1);
+//         media->author = (char*) sqlite3_column_text(stmt, 2);
+//         media->borrower = (char*) sqlite3_column_text(stmt, 3);
+//         media->bowrrowed_date = sqlite3_column_int(stmt, 4);
 
-        insert_tail(list, media);
-    }
+//         insert_tail(list, media);
+//     }
 
-    sqlite3_finalize(stmt);
-    return list;
-}
+//     sqlite3_finalize(stmt);
+//     return list;
+// }
 
-tList *_list_tables(sqlite3 *db) {
-    tList *list = list_create();
-    if (!list) return NULL;
+// tList *_list_tables(sqlite3 *db) {
+//     tList *list = list_create();
+//     if (!list) return NULL;
 
-    char *sql = "SELECT name FROM sqlite_master WHERE type='table';";
-    sqlite3_stmt *stmt;
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK) {
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
-        return NULL;
-    }
+//     char *sql = "SELECT name FROM sqlite_master WHERE type='table';";
+//     sqlite3_stmt *stmt;
+//     if (sqlite3_prepare_v2(db, sql, -1, &stmt, 0) != SQLITE_OK) {
+//         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+//         return NULL;
+//     }
 
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        char *table = (char*) sqlite3_column_text(stmt, 0);
-        insert_tail(list, table);
-    }
+//     while (sqlite3_step(stmt) == SQLITE_ROW) {
+//         char *table = (char*) sqlite3_column_text(stmt, 0);
+//         insert_tail(list, table);
+//     }
 
-    sqlite3_finalize(stmt);
-    return list;
-}
+//     sqlite3_finalize(stmt);
+//     return list;
+// }
 
-int to_file(tList *list, char *filename, char *delimiter, char *mode) {
+int to_file(tList *list, char *filename, char *delimiter, char *mode, void (*item_saver)(FILE *file, void *item, char *delimiter)) {
     if (!list || !list->head) return 0;
 
     FILE *file = fopen(filename, mode);
@@ -344,8 +354,8 @@ int to_file(tList *list, char *filename, char *delimiter, char *mode) {
 
     tNode *tmp = list->head->nxt;
     while (tmp != list->head) {
-        tMedia *media = (tMedia*) tmp->data;
-        fprintf(file, "%s%s%s%s%s%lu\n", media->name, delimiter, media->author, delimiter, media->borrower, media->bowrrowed_date);
+        void *item = tmp->data;
+        item_saver(file, item, delimiter);
         tmp = tmp->nxt;
     }
 
@@ -353,7 +363,7 @@ int to_file(tList *list, char *filename, char *delimiter, char *mode) {
     return 1;
 }
 
-tList *from_file(char *filename, char *delimiter) {
+tList *from_file(char *filename, char *delimiter, void *(*item_loader)(FILE *file, char *delimiter)) {
     tList *list = list_create();
     if (!list) return NULL;
 
@@ -363,24 +373,23 @@ tList *from_file(char *filename, char *delimiter) {
         return NULL;
     }
 
-    char *name = (char*) malloc(256 * sizeof(char));
-    char *author = (char*) malloc(256 * sizeof(char));
-    char *borrower = (char*) malloc(256 * sizeof(char));
-    unsigned long int borrowed_date;
+    // char name[200], author[200], borrower[200];
+    // unsigned long borrowed_date;
+    // int ret = 0;
 
-    while (fscanf(file, "%[^delimiter]%[^delimiter]%[^delimiter]%lu\n", name, author, borrower, &borrowed_date) != EOF) {
-        tMedia *media = (tMedia*) malloc(sizeof(tMedia));
-        if (!media) {
-            fprintf(stderr, "Error allocating memory for media\n");
-            return NULL;
+    // Erste Zuweisung vor der Schleife
+    // char format[256] = {0};
+    // snprintf(format, 256, "%%[^%s]%s%%[^%s]%s%%[^%s]%s%%lu\n", delimiter, delimiter, delimiter, delimiter, delimiter, delimiter);
+    // printf("Format: %s\n", format);
+    // ret = fscanf(file, format,
+    //              name, author, borrower, &borrowed_date);
+    while (!feof(file)) {
+        void *item = item_loader(file, delimiter);
+        if (!item) {
+            fprintf(stderr, "Error loading item from file\n");
+            continue;
         }
-
-        media->name = name;
-        media->author = author;
-        media->borrower = borrower;
-        media->bowrrowed_date = borrowed_date;
-
-        insert_tail(list, media);
+        insert_tail(list, item);
     }
 
     fclose(file);
@@ -412,12 +421,25 @@ tList *search(tList *list, int (*cmp) (void*, void*), void *data) {
     return found;
 }
 
-tList *sort(tList *list, int (*cmp) (void*, void*)) {
+tList *sort(tList *list, int (*cmp) (const void*, const void*)) {
     // input list: tList to sort, compare function: int (*cmp) (void*, void*)
     // output: tList with sorted elements
     if (!list || !list->head || !cmp) return NULL;
     
-    
+    // create a array 
+    void **array = to_datarray(list);
+    if (!array) return NULL;
+
+    // sort the array using qsort
+    qsort(array, list->length, sizeof(void *), cmp);
+
+    // create a new list from the sorted array
+    list = from_datarray(array, list->length);
+
+    // free the array
+    free(array);
+
+    return list;
 }
 
 

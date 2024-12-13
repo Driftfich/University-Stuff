@@ -4,34 +4,81 @@
 #include <stddef.h>
 #include "list.h"
 
+#define debug 0
+
 typedef enum {
     TYPE_CHAR,
-    TYPE_NUMERIC
+    TYPE_INT,
+    TYPE_FLOAT
 } tColumnType;
 
-int _comp_num(void *media, void *search, int offset) {
-    void *media_offset = media + offset;
-    void *search_offset = search + offset;
-
-    if (media_offset < search_offset) {
-        return -1;
-    } else if (media_offset > search_offset) {
-        return 1;
-    } else {
-        return 0;
-    }
+int _comp_int(const void *s1, const void *s2) {
+    // Dynamische Größenbestimmung basierend auf tMedia Struktur
+    size_t field_size = sizeof(((tMedia*)0)->bowrrowed_date);
+    
+    // Binärer Vergleich der Speicherbereiche
+    int result = memcmp(s1, s2, sizeof(long));
+    
+    // Standardisierte Rückgabewerte für Vergleich
+    if (result < 0) return -1;
+    if (result > 0) return 1;
+    return 0;
 }
 
-int _comp_col(void *media, void *search, int offset, tColumnType type) {
-    if (type == TYPE_NUMERIC) {
-        return _comp_num(media, search, offset);
-    } else {
-        return strcmp((media + offset), (search + offset));
-    }
+int _comp_float(const void *s1, const void *s2) {
+    // Dynamische Größenbestimmung basierend auf tMedia Struktur
+    size_t field_size = sizeof(((tMedia*)0)->bowrrowed_date);
+    
+    // Binärer Vergleich der Speicherbereiche
+    int result = memcmp(s1, s2, sizeof(double));
+    
+    // Standardisierte Rückgabewerte für Vergleich
+    if (result < 0) return -1;
+    if (result > 0) return 1;
+    return 0;
 }
 
-int comp_media(void *media, void *search) {
+int _comp_col(const void *s1, const void *s2, int offset, tColumnType type) {
+    // Korrekte Pointer-Handhabung für qsort
+    const void *ds1 = *(const void **)s1;
+    const void *ds2 = *(const void **)s2;
+
+    // Zugriff auf Felder mit Offset
+    const void *att1 = (const void *)ds1 + offset;
+    const void *att2 = (const void *)ds2 + offset;
+
+    int res;
+    if (type == TYPE_INT) {
+        res = _comp_int(att1, att2);
+    } else if (type == TYPE_FLOAT) {
+        res = _comp_float(att1, att2);
+    } else {
+        res = strcmp(*(const char**)att1, *(const char**)att2);
+    }
+    
+    if (debug) {
+        // Debug-Ausgabe
+        if (type == TYPE_INT) {
+            printf("Comparing ints: %d, %d\n", 
+                *(const int*)att1, *(const int*)att2);
+        } else if (type == TYPE_FLOAT) {
+            printf("Comparing floats: %f, %f\n", 
+                *(const float*)att1, *(const float*)att2);
+        } else {
+            printf("Comparing strings: %s, %s\n", 
+                *(const char**)att1, *(const char**)att2);
+        }
+
+        printf("Result: %d\n", res);
+    }
+
+    return res;
+}
+
+int comp_media(const void *media, const void *search) {
     int offset = offsetof(tMedia, name);
+    // media = (tMedia*) media;
+    // search = (tMedia*) search;
     return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
@@ -68,49 +115,53 @@ int _initial_page_load() {
     return 0;
 }
 
+void *read_media(FILE *file, char *delimiter) {
+    char name[200], author[200], borrower[200];
+    unsigned long borrowed_date;
+    char format[256] = {0};
+    int ret;
+    snprintf(format, 256, "%%[^%s]%s%%[^%s]%s%%[^%s]%s%%lu\n", delimiter, delimiter, delimiter, delimiter, delimiter, delimiter);
+    ret = fscanf(file, format,
+                 name, author, borrower, &borrowed_date);
+    if (ret != 4) {
+        return NULL;
+    }
+
+    tMedia *media = malloc(sizeof(tMedia));
+    if (!media) {
+        printf("Error allocating memory for media\n");
+        return NULL;
+    }
+
+    // Strings duplizieren
+    media->name = strdup(name);
+    media->author = strdup(author);
+    media->borrower = strdup(borrower);
+    media->bowrrowed_date = borrowed_date;
+
+    if (!media->name || !media->author || !media->borrower) {
+        free(media);
+        return NULL;
+    }
+
+    return (void *) media;
+}
+
+void write_media(FILE *file, void *item, char *delimiter) {
+    tMedia *media = (tMedia*) item;
+    fprintf(file, "%s%s%s%s%s%s%lu\n", media->name, delimiter, media->author, delimiter, media->borrower, delimiter, media->bowrrowed_date);
+    return;
+}
+
 int main () {
-    // tList *list = list_create();
-    // if (!list) {
-    //     printf("Error creating list\n");
-    //     return 1;
-    // }
-    // tMedia *query = (tMedia*) malloc(sizeof(tMedia));
-    // for (int i=0; i<10; i++) {
-    //     tMedia *media = (tMedia*) malloc(sizeof(tMedia));
-    //     // format i into the string
-    //     media->name = (char*) malloc((strlen("Media") + 3)* sizeof(char));
-    //     media->author = (char*) malloc((strlen("Author") + 3) * sizeof(char));
-    //     media->borrower = (char*) malloc((strlen("Borrower") + 3) * sizeof(char));
-        
-    //     if (!media->name || !media->author || !media->borrower) {
-    //         printf("Error allocating memory for media\n");
-    //         return 1;
-    //     }
-    //     snprintf(media->name, 20, "Media %d", i);
-    //     snprintf(media->author, 20, "Author %d", i);
-    //     snprintf(media->borrower, 20, "Borrower %d", i);
+    // char *delim = ";";
 
-    //     if (i == 5) {
-    //         query = media;
-    //     }
-        
-    //     insert_tail(list, media);
-    // }
-
-    // tList *found = search(list, comp_media, query);
-    // print_list(found, _item_printer);
-    // printf("\n\n");
+    // tList *list = from_file("test.txt", delim, read_media);
+    // list = sort(list, comp_media);
     // print_list(list, _item_printer);
 
-//     char *query = getenv("QUERY_STRING");
-//     char *request_method = getenv("REQUEST_METHOD");
+    printf("%d\n", strcmp("Media 1", "Media 15"));
+    printf("%d\n", strcmp("Media 2", "Media 15"));
 
-//     if (strcmp(request_method, "GET") == 0) {
-//         _initial_page_load();
-//     } else if (strcmp(request_method, "POST") == 0) {
-//         // parse the query string
-//         // if the query string is empty, return the initial page
-// }
-    _initial_page_load();
     return 0;
 }
