@@ -393,6 +393,7 @@
                     placeholder="Suche..."
                     oninput="this.classList.toggle('empty', !this.value)"
                     hx-post="/cgi-bin/s88216"
+                    hx-include="[name='sort_key']"
                 >
                 <!-- <button class="search-button">
                     <img src="/images/search.png" alt="Suchen">
@@ -401,7 +402,7 @@
 
             <div class="sort-container">
                 <label class="sort-label" for="sortBy">Sortieren nach:</label>
-                <select name="sort-select" id="sortBy">
+                <select name="sort_key", hx-post="/cgi-bin/s88216", hx-include="[name='search']">
                     <option value="Name">Name</option>
                     <option value="Author">Author</option>
                     <option value="Borrower">Borrower</option>
@@ -410,10 +411,10 @@
 
             <button class="delete-button"
                 onclick="toggleDelete(this)"
-                hx-delete="/cgi-bin/s88216?action=delete-selected"
+                hx-delete="/cgi-bin/s88216?action=delete"
                 hx-include=".row-selected"
                 hx-target="#table-body"
-                hx-swap="innerHTML">
+                hx-swap="delete">
                 <img src="/images/trashcan_closed.png" 
                      data-normal="/images/trashcan_closed.png"
                      data-active="/images/trashcan_open.png">
@@ -425,8 +426,8 @@
 
             <div class="add-overlay">
                 <form class="add-form"
-                    hx-post="/add-media" 
-                    hx-target="#media-list"
+                    hx-post="/cgi-bin/s88216?action=add" 
+                    hx-target="#table-body"
                     hx-swap="beforeend">
                     <div class="form-group">
                         <input type="text" 
@@ -446,7 +447,9 @@
                                placeholder="Borrower"
                                value="">
                     </div>
-                    
+
+                    <button type="submit" class="submit-button">Hinzufügen</button>
+
                 </form>
             </div>
 

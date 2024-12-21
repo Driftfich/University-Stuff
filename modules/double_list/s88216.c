@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include <ctype.h>
 #include "list.h"
 
 #define debug 0
@@ -13,28 +14,20 @@ typedef enum {
 } tColumnType;
 
 int _comp_int(const void *s1, const void *s2) {
-    // Dynamische Größenbestimmung basierend auf tMedia Struktur
-    size_t field_size = sizeof(((tMedia*)0)->bowrrowed_date);
-    
-    // Binärer Vergleich der Speicherbereiche
-    int result = memcmp(s1, s2, sizeof(long));
-    
-    // Standardisierte Rückgabewerte für Vergleich
-    if (result < 0) return -1;
-    if (result > 0) return 1;
+    float f1 = *(int*)s1;
+    float f2 = *(int*)s2;
+
+    if (f1 < f2) return -1;
+    if (f1 > f2) return 1;
     return 0;
 }
 
 int _comp_float(const void *s1, const void *s2) {
-    // Dynamische Größenbestimmung basierend auf tMedia Struktur
-    size_t field_size = sizeof(((tMedia*)0)->bowrrowed_date);
-    
-    // Binärer Vergleich der Speicherbereiche
-    int result = memcmp(s1, s2, sizeof(double));
-    
-    // Standardisierte Rückgabewerte für Vergleich
-    if (result < 0) return -1;
-    if (result > 0) return 1;
+    float f1 = *(float*)s1;
+    float f2 = *(float*)s2;
+
+    if (f1 < f2) return -1;
+    if (f1 > f2) return 1;
     return 0;
 }
 
@@ -93,7 +86,7 @@ void _item_printer(void *data) {
     return;
 }
 
-int _initial_page_load() {
+int initial_page_load() {
     char buf[2048];
     FILE *F;
     #ifdef _WIN32
@@ -153,15 +146,18 @@ void write_media(FILE *file, void *item, char *delimiter) {
     return;
 }
 
-int main () {
-    // char *delim = ";";
+int main (int argc, char *argv[], char*env[]) {
+    // char **pEnv = env;
 
-    // tList *list = from_file("test.txt", delim, read_media);
-    // list = sort(list, comp_media);
-    // print_list(list, _item_printer);
+    char *request_method = getenv("REQUEST_METHOD");
+    if (request_method == NULL) {
+        puts("No request method found.");
+        return 1;
+    }
 
-    printf("%d\n", strcmp("Media 1", "Media 15"));
-    printf("%d\n", strcmp("Media 2", "Media 15"));
+    if (strcmp(request_method, "GET") == 0) {
+        initial_page_load();
+    }
 
     return 0;
 }
