@@ -158,6 +158,44 @@ int main (int argc, char *argv[], char*env[]) {
     if (strcmp(request_method, "GET") == 0) {
         initial_page_load();
     }
+    else if (strcmp(request_method, "POST") == 0) {
+        // read in query string
+        char *content_length = getenv("CONTENT_LENGTH");
+        if (content_length == NULL) {
+            puts("No content length found.");
+            return 1;
+        }
+
+        int length = atoi(content_length);
+        char *post_data[length];
+
+        if (fgets(post_data, length, stdin) == NULL) {
+            puts("No post data found.");
+            return 1;
+        }
+
+        // lookup for action using strstr
+        if (strstr(post_data, "action=add") != NULL) {
+            // the table gets updated using htmx and just the backend list gets updated
+            puts("Content-Type: text/plain\n");
+            puts("Added item to backend list.");
+        }
+        else if (strstr(post_data, "action=delete") != NULL) {
+            // the table gets updated using htmx and just the backend list gets updated
+            puts("Content-Type: text/plain\n");
+            puts("Deleted item from backend list.");
+        }
+        else {
+            // Handles changed query string and sorting
+            puts("Content-Type: text/plain\n");
+            puts("Changed query string or sorting.");
+        }
+
+    }
+    else {
+        puts("Content-Type: text/plain\n");
+        puts("No valid request method found.");   
+    }
 
     return 0;
 }
