@@ -396,7 +396,7 @@ tList *from_file(char *filename, char *delimiter, void *(*item_loader)(FILE *fil
     return list;
 }
 
-tList *search(tList *list, int (*cmp) (void*, void*), void *data) {
+tList *search(tList *list, int (*cmp) (const void*, const void*), void *data) {
     // input list: tList to search in, compare function: int (*cmp) (void*, void*), data: void* to compare with
     // output: tList with found elements
     if (!list || !list->head || !cmp) return NULL;
@@ -421,14 +421,14 @@ tList *search(tList *list, int (*cmp) (void*, void*), void *data) {
     return found;
 }
 
-tList *sort(tList *list, int (*cmp) (const void*, const void*)) {
+void sort(tList *list, int (*cmp) (const void*, const void*)) {
     // input list: tList to sort, compare function: int (*cmp) (void*, void*)
     // output: tList with sorted elements
-    if (!list || !list->head || !cmp) return NULL;
+    if (!list || !list->head || !cmp) return;
     
     // create a array 
     void **array = to_datarray(list);
-    if (!array) return NULL;
+    if (!array) return;
 
     // sort the array using qsort
     qsort(array, list->length, sizeof(void *), cmp);
@@ -439,7 +439,7 @@ tList *sort(tList *list, int (*cmp) (const void*, const void*)) {
     // free the array
     free(array);
 
-    return list;
+    return;
 }
 
 

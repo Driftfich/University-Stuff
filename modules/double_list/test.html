@@ -392,8 +392,10 @@
                     name="search"
                     placeholder="Suche..."
                     oninput="this.classList.toggle('empty', !this.value)"
-                    hx-post="/cgi-bin/s88216"
+                    hx-trigger="keyup changed delay:500ms"
+                    hx-post="/cgi-bin/test_html.cgi"
                     hx-include="[name='sort_key']"
+                    hx-target="#status-text"
                 >
                 <!-- <button class="search-button">
                     <img src="/images/search.png" alt="Suchen">
@@ -402,10 +404,11 @@
 
             <div class="sort-container">
                 <label class="sort-label" for="sortBy">Sortieren nach:</label>
-                <select name="sort_key", hx-post="/cgi-bin/s88216", hx-include="[name='search']">
+                <select name="sort_key", hx-post="/cgi-bin/test_html.cgi", hx-include="[name='search']", hx-target="#status-text">
                     <option value="Name">Name</option>
                     <option value="Author">Author</option>
                     <option value="Borrower">Borrower</option>
+                    <option value="Borrowed At">Borrowed_at</option>
                 </select>
             </div>
 
@@ -428,23 +431,37 @@
                 <form class="add-form"
                     hx-post="/cgi-bin/s88216?action=add" 
                     hx-target="#table-body"
-                    hx-swap="beforeend">
+                    hx-include="[name='name'], [name='author'], [name='borrower'], [name='date']"
+                    hx-swap="beforeend"
+                    hx-on::after-request="this.reset()">
                     <div class="form-group">
                         <input type="text" 
+                               name="name"
                                class="form-input" 
                                placeholder="Name"
+                               value=""
                                required>
                     </div>
                     <div class="form-group">
                         <input type="text" 
+                                name="author"
                                class="form-input" 
                                placeholder="Author"
+                               value=""
                                required>
                     </div>
                     <div class="form-group">
-                        <input type="text" 
+                        <input type="text"
+                                name="borrower"
                                class="form-input"
-                               placeholder="Borrower"
+                               placeholder="Ausleiher"
+                               value="">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" 
+                                name="date"
+                               class="form-input"
+                               placeholder="Ausgeliehen am"
                                value="">
                     </div>
 
@@ -454,6 +471,68 @@
             </div>
 
         </div>
+
+        <script>
+            document.querySelector('.add-button').addEventListener('click', function(event) {
+                event.stopPropagation();
+                const overlay = document.querySelector('.add-overlay');
+                
+                // Wenn das Overlay geschlossen ist, öffne es
+                if (getComputedStyle(overlay).display === 'none') {
+                    overlay.style.display = 'block';
+                    // Blockiere das Schließen kurzzeitig
+                    canCloseOverlay = false;
+                    setTimeout(() => {
+                        canCloseOverlay = true;
+                    }, 100); // 300ms Verzögerung
+                } 
+                // Wenn das Overlay offen ist und geschlossen werden kann
+                else if (canCloseOverlay) {
+                    overlay.style.display = 'none';
+                }
+            });
+
+
+            // Klick außerhalb des Overlays
+            document.addEventListener('click', function(event) {
+                const overlay = document.querySelector('.add-overlay'); // Annahme: Overlay hat die Klasse 'overlay'
+                const overlayContent = document.querySelector('.add-form'); // Annahme: Innerer Container
+                const add_button = document.querySelector('.add-button');
+                // Prüfen ob Overlay sichtbar ist und Klick außerhalb erfolgte
+                if (overlay && 
+                    // check that the overlay is visible
+                    getComputedStyle(overlay).display !== 'none' &&
+                    !overlayContent.contains(event.target) &&
+                    !add_button.contains(event.target)) {
+                    
+                    // Alle Formularfelder zurücksetzen
+                    const formInputs = document.querySelectorAll('.form-input');
+                    formInputs.forEach(input => {
+                        input.value = '';
+                    });
+            
+                    // Overlay ausblenden
+                    overlay.style.display = 'none';
+                }
+            });
+        </script>
+
+        <div class="status-container">
+            <p id="status-text" class="status-message"></p>
+        </div>
+        
+        <style>
+        .status-container {
+            padding: 10px 20px;
+            margin: 10px 0;
+        }
+        
+        .status-message {
+            color: #0b3f74;
+            font-size: 16px;
+            margin: 0;
+        }
+        </style>
 
         <style>
             /* Container für Tabelle */
@@ -508,14 +587,14 @@
                 </tr>
             </thead>
             <tbody id="table-body">
-                <tr class="clickable-row" 
+                <!-- <tr class="clickable-row" 
                     onclick="this.classList.toggle('row-selected')"
                     data-id="${id}">
                     <td>${name}</td>
                     <td>${author}</td>
                     <td>${borrower}</td>
                     <td>${borrowed_at}</td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
 

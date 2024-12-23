@@ -6,6 +6,7 @@
 #include "list.h"
 
 #define debug 0
+char *path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
 
 typedef enum {
     TYPE_CHAR,
@@ -68,44 +69,60 @@ int _comp_col(const void *s1, const void *s2, int offset, tColumnType type) {
     return res;
 }
 
-int comp_media(const void *media, const void *search) {
+int comp_name(const void *media, const void *search) {
     int offset = offsetof(tMedia, name);
     // media = (tMedia*) media;
     // search = (tMedia*) search;
     return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
-int comp_borrower(void *media, void *search) {
+int comp_author(const void *media, const void *search) {
+    int offset = offsetof(tMedia, author);
+    // media = (tMedia*) media;
+    // search = (tMedia*) search;
+    return _comp_col(media, search, offset, TYPE_CHAR);
+}
+
+int comp_borrower(const void *media, const void *search) {
     int offset = offsetof(tMedia, borrower);
     return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
-void _item_printer(void *data) {
-    tMedia *media = (tMedia*) data;
+int comp_date(const void *media, const void *search) {
+    int offset = offsetof(tMedia, borrowed_date);
+    // media = (tMedia*) media;
+    // search = (tMedia*) search;
+    return _comp_col(media, search, offset, TYPE_INT);
+}
+
+void _media_printer(void *item) {
+    tMedia *media = (tMedia*) item;
     printf("Media: %s, Author: %s, Borrower: %s\n", media->name, media->author, media->borrower);
     return;
 }
 
-int initial_page_load() {
-    char buf[2048];
-    FILE *F;
-    #ifdef _WIN32
-        {F = fopen("C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html", "rt");}
-    #elif __linux__
-        {F = fopen("/var/www/html/test.html", "rt");}
-    #endif
+void _row_printer(void *item, int row_idx) {
+    tMedia *media = (tMedia*) item;
+    // printf("Media: %s, Author: %s, Borrower: %s\n", media->name, media->author, media->borrower);
+    puts("<tr class=clickable-row\n");
+    puts("onclick=\"this.classList.toggle('row-selected')\"\n");
+    printf("data-id=\"%d\">\n", row_idx);
+    printf("<td>%s</td>\n", media->name);
+    printf("<td>%s</td>\n", media->author);
+    printf("<td>%s</td>\n", media->borrower);
+    printf("<td>%lu</td>\n", media->borrowed_date);
+    puts("</tr>\n");
+    return;
+}
 
-    printf("Content-Type: text/html\r\n\r\n");
-    if (F == NULL) {
-        puts("<html><head><title><p>Dateifehler<p></title></body></html>");
-        return 1;
+void _table_printer(tList *list) {
+    tNode *tmp = list->head->nxt;
+    int idx = 0;
+    while (tmp != list->head) {
+        _row_printer(tmp->data, idx);
+        tmp = tmp->nxt;
+        idx++;
     }
-    while (fgets(buf, sizeof(buf), F))
-    {
-        printf("%s", buf);
-    }
-    fclose(F);
-    return 0;
 }
 
 void *read_media(FILE *file, char *delimiter) {
@@ -130,7 +147,7 @@ void *read_media(FILE *file, char *delimiter) {
     media->name = strdup(name);
     media->author = strdup(author);
     media->borrower = strdup(borrower);
-    media->bowrrowed_date = borrowed_date;
+    media->borrowed_date = borrowed_date;
 
     if (!media->name || !media->author || !media->borrower) {
         free(media);
@@ -142,8 +159,37 @@ void *read_media(FILE *file, char *delimiter) {
 
 void write_media(FILE *file, void *item, char *delimiter) {
     tMedia *media = (tMedia*) item;
-    fprintf(file, "%s%s%s%s%s%s%lu\n", media->name, delimiter, media->author, delimiter, media->borrower, delimiter, media->bowrrowed_date);
+    fprintf(file, "%s%s%s%s%s%s%lu\n", media->name, delimiter, media->author, delimiter, media->borrower, delimiter, media->borrowed_date);
     return;
+}
+
+int initial_page_load() {
+    char buf[2048];
+    FILE *F;
+    #ifdef _WIN32
+        {F = fopen("C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html", "rt");}
+    #elif __linux__
+        {F = fopen("/var/www/html/test.html", "rt");}
+    #endif
+
+    printf("Content-Type: text/html\r\n\r\n");
+    if (F == NULL) {
+        puts("<html><head><title><p>Dateifehler<p></title></body></html>");
+        return 1;
+    }
+    while (fgets(buf, sizeof(buf), F))
+    {
+        if (sscanf(buf, "<tbody id=\"table-body\">") == 1) {
+            // Load the list from file
+            tList *list = from_file(path, ";", read_media);
+
+            // Print the list as a table
+            _table_printer(list);
+        }
+        printf("%s", buf);
+    }
+    fclose(F);
+    return 0;
 }
 
 int main (int argc, char *argv[], char*env[]) {
@@ -167,7 +213,7 @@ int main (int argc, char *argv[], char*env[]) {
         }
 
         int length = atoi(content_length);
-        char *post_data[length];
+        char post_data[length];
 
         if (fgets(post_data, length, stdin) == NULL) {
             puts("No post data found.");
@@ -177,21 +223,96 @@ int main (int argc, char *argv[], char*env[]) {
         // lookup for action using strstr
         if (strstr(post_data, "action=add") != NULL) {
             // the table gets updated using htmx and just the backend list gets updated
-            puts("Content-Type: text/plain\n");
-            puts("Added item to backend list.");
+            // printf("Content-Type: text/html\r\n\r\n");
+        
+            char name[200], author[200], borrower[200];
+            unsigned long borrowed_date;
+            char format[256] = {0};
+
+            sscanf(post_data, "name=%s&author=%s&borrower=%s&date=%lu", name, author, borrower, &borrowed_date);
+            
+            tMedia *media = malloc(sizeof(tMedia));
+            if (!media) {
+                printf("Error allocating memory for media\n");
+                return 1;
+            }
+
+            // Strings duplizieren
+            media->name = strdup(name);
+            media->author = strdup(author);
+            media->borrower = strdup(borrower);
+            media->borrowed_date = borrowed_date;
+
+            if (!media->name || !media->author || !media->borrower) {
+                free(media);
+                return 1;
+            }
+
+            // Load the list from file
+            tList *list = from_file(path, ";", read_media);
+            tMedia *custom = malloc(sizeof(tMedia));
+            custom->name = strdup("Custom");
+            custom->author = strdup("Author");
+            custom->borrower = strdup("Borrower");
+            custom->borrowed_date = 0;
+
+            insert_tail(list, custom);
+
+            // Insert the new media item
+            insert_tail(list, media);
+
+            // Save the list to file
+            to_file(list, path, ";", "w", write_media);
+
+            printf("Content-Type: text/html\r\n\r\n");
+            _row_printer(media, list->length - 1);
         }
         else if (strstr(post_data, "action=delete") != NULL) {
             // the table gets updated using htmx and just the backend list gets updated
-            puts("Content-Type: text/plain\n");
-            puts("Deleted item from backend list.");
+            printf("Content-Type: text/html\r\n\r\n");
+            printf("%s", post_data);
         }
         else {
-            // Handles changed query string and sorting
-            puts("Content-Type: text/plain\n");
-            puts("Changed query string or sorting.");
-        }
+            // // Handles changed query string and sorting
+            char search_term[200] = "";
+            char sort_by[20] = "";
+            int sort_key = 0;
+            
+            // Select the search term and sort key with different order
+            char *token = strtok(post_data, "&");
+            while (token != NULL) {
+                if (strstr(token, "search") != NULL) {
+                    sscanf(token, "search=%s", search_term);
+                }
+                else if (strstr(token, "sort") != NULL) {
+                    sscanf(token, "sort=%s", sort_by);
+                }
+            }
 
-    }
+            // Load the list from file
+            tList *list = from_file(path, ";", read_media);
+
+            // Search for the search term
+            list = search(list, comp_name, search_term);
+
+            // Sort the list by the sort key
+            // sort_key = atoi(sort_by);
+            if (sort_by == "Name") {
+                sort(list, comp_name);
+            }
+            else if (sort_by == "Author") {
+                sort(list, comp_author);
+            }
+            else if (sort_by == "Borrower") {
+                sort(list, comp_borrower);
+            }
+            else if (sort_by == "Borrowed Date") {
+                sort(list, comp_date);
+            }
+
+            // Print the list as a table
+            _table_printer(list);
+        }}
     else {
         puts("Content-Type: text/plain\n");
         puts("No valid request method found.");   
