@@ -163,6 +163,14 @@ void write_media(FILE *file, void *item, char *delimiter) {
     return;
 }
 
+void _error_row() {
+    puts("<tr class=clickable-row\n");
+    puts("onclick=\"this.classList.toggle('row-selected')\"\n");
+    for (int i=0; i<4; i++) printf("<td>Error</td>\n");
+    puts("</tr>\n");
+    return;
+}
+
 int initial_page_load() {
     char buf[2048];
     FILE *F;
@@ -172,16 +180,33 @@ int initial_page_load() {
         {F = fopen("/var/www/html/test.html", "rt");}
     #endif
 
-    printf("Content-Type: text/html\r\n\r\n");
+    puts("Content-Type: text/html\r\n\r\n");
     if (F == NULL) {
         puts("<html><head><title><p>Dateifehler<p></title></body></html>");
         return 1;
     }
     while (fgets(buf, sizeof(buf), F))
-    {
-        if (sscanf(buf, "<tbody id=\"table-body\">") == 1) {
+    {   
+        if (strstr(buf, "<tbody id=\"table-body\">") != NULL) {
             // Load the list from file
             tList *list = from_file(path, ";", read_media);
+            
+            if (!list) {
+                _error_row();
+                return 1;
+            }
+
+            tMedia *custom = malloc(sizeof(tMedia));
+            if (custom) {
+                custom->name = strdup("Custom");
+                custom->author = strdup("Author");
+                custom->borrower = strdup("Borrower");
+                custom->borrowed_date = 0;
+
+                insert_tail(list, custom);
+
+                free(custom);
+            }
 
             // Print the list as a table
             _table_printer(list);
@@ -225,51 +250,57 @@ int main (int argc, char *argv[], char*env[]) {
             // the table gets updated using htmx and just the backend list gets updated
             // printf("Content-Type: text/html\r\n\r\n");
         
-            char name[200], author[200], borrower[200];
+            char name[200], author[200], borrower[200], date[200];
             unsigned long borrowed_date;
             char format[256] = {0};
 
-            sscanf(post_data, "name=%s&author=%s&borrower=%s&date=%lu", name, author, borrower, &borrowed_date);
-            
-            tMedia *media = malloc(sizeof(tMedia));
-            if (!media) {
-                printf("Error allocating memory for media\n");
-                return 1;
-            }
+            // sscanf(post_data, "name=%s&author=%s&borrower=%s&date=%s", name, author, borrower, date);
 
-            // Strings duplizieren
-            media->name = strdup(name);
-            media->author = strdup(author);
-            media->borrower = strdup(borrower);
-            media->borrowed_date = borrowed_date;
+            // tMedia *media = malloc(sizeof(tMedia));
+            // if (!media) {
+            //     _error_row();
+            //     return 1;
+            // }
 
-            if (!media->name || !media->author || !media->borrower) {
-                free(media);
-                return 1;
-            }
+            // // Strings duplizieren
+            // media->name = strdup(name);
+            // media->author = strdup(author);
+            // media->borrower = strdup(borrower);
+            // media->borrowed_date = 0;
+            // // media->borrowed_date = borrowed_date; // convert the string to a long int date representation first
 
-            // Load the list from file
-            tList *list = from_file(path, ";", read_media);
+            // if (!media->name || !media->author || !media->borrower) {
+            //     free(media);
+            //     return 1;
+            // }
+
+            // // Load the list from file
+            // tList *list = from_file(path, ";", read_media);
+
+            // // Insert the new media item
+            // insert_tail(list, media);
+
+            // // Save the list to file
+            // to_file(list, path, ";", "w", write_media);
+
+            // // Print the new row at the end of the table
+            puts("Content-Type: text/html\r\n\r\n");
+            // _row_printer(media, list->length - 1);
             tMedia *custom = malloc(sizeof(tMedia));
-            custom->name = strdup("Custom");
-            custom->author = strdup("Author");
-            custom->borrower = strdup("Borrower");
-            custom->borrowed_date = 0;
+            if (custom) {
+                custom->name = strdup("Custom");
+                custom->author = strdup("Author");
+                custom->borrower = strdup("Borrower");
+                custom->borrowed_date = 0;
 
-            insert_tail(list, custom);
+                _row_printer(custom, 3);
 
-            // Insert the new media item
-            insert_tail(list, media);
-
-            // Save the list to file
-            to_file(list, path, ";", "w", write_media);
-
-            printf("Content-Type: text/html\r\n\r\n");
-            _row_printer(media, list->length - 1);
+                free(custom);
+            }
         }
         else if (strstr(post_data, "action=delete") != NULL) {
             // the table gets updated using htmx and just the backend list gets updated
-            printf("Content-Type: text/html\r\n\r\n");
+            puts("Content-Type: text/html\r\n\r\n");
             printf("%s", post_data);
         }
         else {

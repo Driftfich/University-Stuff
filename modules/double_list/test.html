@@ -405,10 +405,10 @@
             <div class="sort-container">
                 <label class="sort-label" for="sortBy">Sortieren nach:</label>
                 <select name="sort_key", hx-post="/cgi-bin/test_html.cgi", hx-include="[name='search']", hx-target="#status-text">
-                    <option value="Name">Name</option>
-                    <option value="Author">Author</option>
-                    <option value="Borrower">Borrower</option>
-                    <option value="Borrowed At">Borrowed_at</option>
+                    <option value="name">Name</option>
+                    <option value="author">Author</option>
+                    <option value="borrower">Borrower</option>
+                    <option value="borrowed_at">Borrowed At</option>
                 </select>
             </div>
 
@@ -587,14 +587,14 @@
                 </tr>
             </thead>
             <tbody id="table-body">
-                <!-- <tr class="clickable-row" 
+                <tr class="clickable-row" 
                     onclick="this.classList.toggle('row-selected')"
                     data-id="${id}">
-                    <td>${name}</td>
-                    <td>${author}</td>
-                    <td>${borrower}</td>
-                    <td>${borrowed_at}</td>
-                </tr> -->
+                    <td>Test</td>
+                    <td>Test</td>
+                    <td>Test</td>
+                    <td>Test</td>
+                </tr>
             </tbody>
         </table>
 
