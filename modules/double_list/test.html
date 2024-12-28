@@ -414,7 +414,7 @@
 
             <button class="delete-button"
                 onclick="toggleDelete(this)"
-                hx-delete="/cgi-bin/s88216?action=delete"
+                hx-delete="/cgi-bin/s88216.cgi?action=delete"
                 hx-include=".row-selected"
                 hx-target="#table-body"
                 hx-swap="delete">
@@ -429,10 +429,11 @@
 
             <div class="add-overlay">
                 <form class="add-form"
-                    hx-post="/cgi-bin/s88216?action=add" 
+                    hx-post="/cgi-bin/s88216.cgi" 
+                    hx-vals='{"action": "add"}'
                     hx-target="#table-body"
                     hx-include="[name='name'], [name='author'], [name='borrower'], [name='date']"
-                    hx-swap="beforeend"
+                    hx-swap="outerHTML"
                     hx-on::after-request="this.reset()">
                     <div class="form-group">
                         <input type="text" 
@@ -476,6 +477,7 @@
             document.querySelector('.add-button').addEventListener('click', function(event) {
                 event.stopPropagation();
                 const overlay = document.querySelector('.add-overlay');
+                const canCloseOverlay = true;
                 
                 // Wenn das Overlay geschlossen ist, öffne es
                 if (getComputedStyle(overlay).display === 'none') {
@@ -587,14 +589,6 @@
                 </tr>
             </thead>
             <tbody id="table-body">
-                <tr class="clickable-row" 
-                    onclick="this.classList.toggle('row-selected')"
-                    data-id="${id}">
-                    <td>Test</td>
-                    <td>Test</td>
-                    <td>Test</td>
-                    <td>Test</td>
-                </tr>
             </tbody>
         </table>
 
