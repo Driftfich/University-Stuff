@@ -17,7 +17,7 @@ typedef struct BorrowedMediaItem {
     char *name;
     char *author;
     char *borrower;
-    unsigned long int borrowed_date;
+    char *borrowed_date;
 } tMedia;
 
 // List creation and destruction

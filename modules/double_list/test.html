@@ -393,9 +393,10 @@
                     placeholder="Suche..."
                     oninput="this.classList.toggle('empty', !this.value)"
                     hx-trigger="keyup changed delay:500ms"
-                    hx-post="/cgi-bin/test_html.cgi"
+                    hx-post="/cgi-bin/s88216.cgi"
                     hx-include="[name='sort_key']"
-                    hx-target="#status-text"
+                    hx-target="#table-body"
+                    hx-swap="innerHTML"
                 >
                 <!-- <button class="search-button">
                     <img src="/images/search.png" alt="Suchen">
@@ -404,17 +405,18 @@
 
             <div class="sort-container">
                 <label class="sort-label" for="sortBy">Sortieren nach:</label>
-                <select name="sort_key", hx-post="/cgi-bin/test_html.cgi", hx-include="[name='search']", hx-target="#status-text">
-                    <option value="name">Name</option>
-                    <option value="author">Author</option>
-                    <option value="borrower">Borrower</option>
-                    <option value="borrowed_at">Borrowed At</option>
+                <select name="sort_key", hx-post="/cgi-bin/s88216.cgi", hx-include="[name='search']", hx-target="#table-body", hx-swap="innerHTML">
+                    <option value="0">Name</option>
+                    <option value="1">Author</option>
+                    <option value="2">Borrower</option>
+                    <option value="3">Borrowed At</option>
                 </select>
             </div>
 
             <button class="delete-button"
                 onclick="toggleDelete(this)"
-                hx-delete="/cgi-bin/s88216.cgi?action=delete"
+                hx-delete="/cgi-bin/s88216.cgi?"
+                hx-vals='{"action": "delete"}'
                 hx-include=".row-selected"
                 hx-target="#table-body"
                 hx-swap="delete">
@@ -432,8 +434,8 @@
                     hx-post="/cgi-bin/s88216.cgi" 
                     hx-vals='{"action": "add"}'
                     hx-target="#table-body"
-                    hx-include="[name='name'], [name='author'], [name='borrower'], [name='date']"
-                    hx-swap="outerHTML"
+                    hx-include="[name='name'], [name='author'], [name='borrower'], [name='date'], [name='search'], [name='sort_key']"
+                    hx-swap="innerHTML"
                     hx-on::after-request="this.reset()">
                     <div class="form-group">
                         <input type="text" 
