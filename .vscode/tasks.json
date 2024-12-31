@@ -1,20 +1,5 @@
 {
-    "version": "2.0.0",
     "tasks": [
-        {
-            "label": "build",
-            "type": "shell",
-            "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
-            "args": [
-                "-Wall",
-                "-g",
-                "main.c",
-                "pooled_list.c",
-                "-o",
-                "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\main.exe"
-            ],
-            "group": "build"
-        },
         {
             "type": "cppbuild",
             "label": "C/C++: gcc.exe Aktive Datei kompilieren",
@@ -38,5 +23,6 @@
             },
             "detail": "Vom Debugger generierte Aufgabe."
         }
-    ]
+    ],
+    "version": "2.0.0"
 }

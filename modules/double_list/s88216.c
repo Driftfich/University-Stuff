@@ -151,7 +151,14 @@ void *read_media(FILE *file, char *delimiter) {
     char name[200], author[200], borrower[200], borrowed_date[200];
     char format[256] = {0};
     int ret;
-    snprintf(format, 256, "%%[^%s]%s%%[^%s]%s%%[^%s]%s%%s\n", delimiter, delimiter, delimiter, delimiter, delimiter, delimiter);
+    snprintf(format, sizeof(format),
+         "%%[^%s]%s"     // Name bis Delimiter
+         "%%[^%s]%s"     // Author bis Delimiter
+         "%%[^%s]%s"     // Borrower bis Delimiter
+         "%%s\n",    // Date bis Zeilenende
+         delimiter, delimiter,
+         delimiter, delimiter,
+         delimiter, delimiter);
     ret = fscanf(file, format,
                  name, author, borrower, &borrowed_date);
     if (ret != 4) {
@@ -171,6 +178,9 @@ void *read_media(FILE *file, char *delimiter) {
     media->borrowed_date = strdup(borrowed_date);
 
     if (!media->name || !media->author || !media->borrower || !media->borrowed_date) {
+        free(media->name);
+        free(media->author);
+        free(media->borrower);
         free(media);
         return NULL;
     }
@@ -202,10 +212,6 @@ int initial_page_load() {
         {F = fopen("/var/www/html/test.html", "rt");}
     #endif
 
-    // Create the file if it does not exist
-    FILE *file = fopen(path, "w");
-    fclose(file);
-
     puts("Content-Type: text/html\r\n\r\n");
     if (F == NULL) {
         puts("<html><head><title><p>Dateifehler<p></title></body></html>");
@@ -214,39 +220,35 @@ int initial_page_load() {
     while (fgets(buf, sizeof(buf), F))
     {   
         if (strstr(buf, "<tbody id=\"table-body\">") != NULL) {
+            printf("%s", buf);
             // Load the list from file
             tList *list = from_file(path, ";", read_media);
             
             if (!list) {
                 _error_row(0);
-                return 1;
             }
-
-            tMedia *custom = malloc(sizeof(tMedia));
-            if (custom) {
-                custom->name = strdup("Custom");
-                custom->author = strdup("Author");
-                custom->borrower = strdup("Borrower");
-                custom->borrowed_date = strdup("Date");
-
-                insert_tail(list, custom);
-
-                free(custom);
+            else {
+                // Print the list as a table
+                _table_printer(list);
             }
-
-            // Print the list as a table
-            _table_printer(list);
+            
         }
-        printf("%s", buf);
+        else printf("%s", buf);
     }
     fclose(F);
     return 0;
 }
 
 int main (int argc, char *argv[], char*env[]) {
-    // char **pEnv = env;
+    // Create the media.csv file if it doesnt exist
+    FILE *file = fopen(path, "r");
+    if (!file) {
+        file = fopen(path, "w");
+    }
+    fclose(file);
 
     char *request_method = getenv("REQUEST_METHOD");
+    // char *request_method = "POST";
     if (request_method == NULL) {
         puts("No request method found.");
         return 1;
@@ -256,22 +258,23 @@ int main (int argc, char *argv[], char*env[]) {
         initial_page_load();
     }
     else if (strcmp(request_method, "POST") == 0) {
-        printf("Content-Type: text/html\r\n\r\n");
+        puts("Content-Type: text/html\r\n\r\n");
 
         // read in query string
-        char *content_length = getenv("CONTENT_LENGTH");
-        if (content_length == NULL) {
-            puts("No content length found.");
-            return 1;
-        }
+        // char *content_length = getenv("CONTENT_LENGTH");
+        // if (content_length == NULL) {
+        //     puts("No content length found.");
+        //     return 1;
+        // }
 
-        int length = atoi(content_length) + 1;
-        char post_data[length];
+        // int length = atoi(content_length) + 1;
+        // char post_data[length];
 
-        if (fgets(post_data, length, stdin) == NULL) {
-            puts("No post data found.");
-            return 1;
-        }
+        // if (fgets(post_data, length, stdin) == NULL) {
+        //     puts("No post data found.");
+        //     return 1;
+        // }
+        char *post_data = strdup("search=fsdg&sort_key=1");
 
         // print out the post data for debugging
         if (debug) {
@@ -281,21 +284,25 @@ int main (int argc, char *argv[], char*env[]) {
             custom->borrowed_date = strdup("");
             custom->name = strdup(post_data);
             _row_printer(custom, -1);
+            free(custom->author);
+            free(custom->borrower);
+            free(custom->borrowed_date);
+            free(custom->name);
             free(custom);
         }
 
         char query[200] = {0}, name[200] = {0}, author[200] = {0};
         char borrower[200] = {0}, date[200] = {0}, action[10] = {0};
         char sort_key[30] = {0};
-
+        
         // Token-Parsing Schleife
         char *token = strtok(post_data, "&");
         while (token != NULL) {
             if (strstr(token, "search")) {
                 sscanf(token, "search=%199s", query);
             }
-            else if (strstr(token, "sort")) {
-                sscanf(token, "sort=%29s", sort_key);
+            else if (strstr(token, "sort_key")) {
+                sscanf(token, "sort_key=%29s", sort_key);
             }
             else if (strstr(token, "name")) {
                 sscanf(token, "name=%199s", name);
@@ -315,8 +322,8 @@ int main (int argc, char *argv[], char*env[]) {
             token = strtok(NULL, "&");
         }
 
-        // tList *list = from_file(path, ";", read_media);
-        tList *list = list_create();
+        tList *list = from_file(path, ";", read_media);
+
         if (!list) {
             _error_row(0);
             return 1;
@@ -338,32 +345,40 @@ int main (int argc, char *argv[], char*env[]) {
         //     // pass
         // }
 
-        // // filter the list by the search term
+
+        // Save the list to file
+        to_file(list, path, ";", "w", write_media);
+
+        // filter the list by the search term
         // tMedia *query_item = malloc(sizeof(tMedia));
-        // if (query_item) {
+        // tList *found = NULL;
+        // if (query_item && strlen(query) > 0) {
         //     query_item->name = strdup(query);
         //     query_item->author = strdup(query);
         //     query_item->borrower = strdup(query);
         //     query_item->borrowed_date = strdup(query);
-        //     list = search(list, comp_name, query);
+
+        //     found = search(list, comp_name, query_item);
         // }
+        
+        // if (!found) found = list;
 
-        // // sort the list by the sort key
-        // char *sort_key_ptr = sort_key;
-        // sort_by(list, sort_key_ptr);
-        // create a array with the different compare methods
-        int (*comp[4])(const void*, const void*) = {comp_name, comp_author, comp_borrower, comp_date};
-        int idx = atoi(sort_key);
-        sort(list, comp[idx]);
-
-        // // Print the list as a table
+        // int (*comp[4])(const void*, const void*) = {comp_name, comp_author, comp_borrower, comp_date};
+        // int idx = atoi(sort_key);
+        // if (idx < 0 || idx > 3) {
+        //     idx = 0;
+        // }
+        tList *new_list = sort(list, comp_name);
+        tNode *tmp = new_list->head->nxt;
+        _row_printer(tmp->data, 0);
+        // list = sort(list, comp_name);
+        // if (!list) list = found;
         _table_printer(list);
-
-        // Save the list to file
-        // to_file(list, path, ";", "w", write_media);
 
         // Free the list
         list_destroy(list);
+        list_destroy(new_list);
+        // list_destroy(found);
         }
     else {
         puts("Content-Type: text/plain\n");
@@ -372,3 +387,9 @@ int main (int argc, char *argv[], char*env[]) {
 
     return 0;
 }
+
+// int main() {
+//     tList *list = from_file(path, ";", read_media);
+//     list = sort(list, comp_name);
+//     free(list);
+// }

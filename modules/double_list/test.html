@@ -393,9 +393,9 @@
                     placeholder="Suche..."
                     oninput="this.classList.toggle('empty', !this.value)"
                     hx-trigger="keyup changed delay:500ms"
-                    hx-post="/cgi-bin/s88216.cgi"
-                    hx-include="[name='sort_key']"
+                    hx-post="/cgi-bin/s88216.cgi" 
                     hx-target="#table-body"
+                    hx-include="[name='search'], [name='sort_key']"
                     hx-swap="innerHTML"
                 >
                 <!-- <button class="search-button">
@@ -591,6 +591,7 @@
                 </tr>
             </thead>
             <tbody id="table-body">
+
             </tbody>
         </table>
 
