@@ -50,7 +50,7 @@ tList *from_datarray(void **dataray, int size);
 void print_list(tList *list, void (*printer) (void *data));
 
 tList* search(tList *list, int (*comp)(const void*, const void*), const void *data);
-tList* sort(tList *list, int (*comp)(const void*, const void*));
+tList* sort(tList *list, int (*comp)(const void *c1, const void*c2)); // 
 
 // FILE I/O
 int to_file(tList *list, char *filename, char *delimiter, char *mode, void (*item_saver)(FILE *file, void *item, char *delimiter));

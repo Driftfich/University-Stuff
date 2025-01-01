@@ -5,7 +5,7 @@
 #include "list.h"
 
 #define debug 0
-char *path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
+char *media_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
 
 typedef enum {
     TYPE_CHAR,
@@ -147,7 +147,7 @@ void _media_printer(void *item) {
 }
 
 int main() {
-    tList *list = from_file(path, ";", read_media);
+    tList *list = from_file(media_path, ";", read_media);
 
     if (!list) {
         return 1;
@@ -162,7 +162,7 @@ int main() {
     _table_printer(list);
 
     // Save the list to file
-    to_file(list, path, ";", "w", write_media);
+    to_file(list, media_path, ";", "w", write_media);
 
     // Free the list
     list_destroy(list);

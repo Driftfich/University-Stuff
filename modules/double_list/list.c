@@ -311,26 +311,47 @@ tList *search(tList *list, int (*cmp)(const void*, const void*), const void *dat
     return found;
 }
 
-tList *sort(tList *list, int (*cmp) (const void*, const void*)) {
-    // input list: tList to sort, compare function: int (*cmp) (void*, void*)
-    // output: tList with sorted elements
+// tList *sort(tList *list, int (*cmp) (const void*, const void*)) {
+//     // input list: tList to sort, compare function: int (*cmp) (void*, void*)
+//     // output: tList with sorted elements
+//     if (!list || !list->head || !cmp) return NULL;
+//     int length = list->length;
+//     // create a array 
+//     void **array = to_datarray(list);
+//     list_destroy(list);
+//     if (!array) return NULL;
+
+//     // sort the array using qsort
+//     qsort(array, length, sizeof(void *), cmp);
+
+//     // create a new list from the sorted array
+//     tList *new_list = from_datarray(array, length);
+
+//     // free the array
+//     free(array);
+
+//     return new_list;
+// }
+
+tList *sort(tList *list, int (*cmp)(const void *c1, const void*c2)) {
+    // bubble sort
     if (!list || !list->head || !cmp) return NULL;
-    int length = list->length;
-    // create a array 
-    void **array = to_datarray(list);
-    list_destroy(list);
-    if (!array) return NULL;
 
-    // sort the array using qsort
-    qsort(array, length, sizeof(void *), cmp);
+    tNode *tmp = list->head->nxt;
+    tNode *tmp2 = list->head->nxt;
 
-    // create a new list from the sorted array
-    tList *new_list = from_datarray(array, length);
-
-    // free the array
-    free(array);
-
-    return new_list;
+    for (int i = 0; i < list->length; i++) {
+        for (int j = 0; j < list->length - i - 1; j++) {
+            if (cmp(tmp->data, tmp2->data) > 0) {
+                void *tmp_data = tmp->data;
+                tmp->data = tmp2->data;
+                tmp2->data = tmp_data;
+            }
+            tmp2 = tmp2->nxt;
+        }
+        tmp = tmp->nxt;
+        tmp2 = list->head->nxt;
+    }    
 }
 
 

@@ -8,9 +8,11 @@
 #define debug 0
 
 #ifdef _WIN32
-    char *path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
+    char *media_path = "C:\\Users\\Franz\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
+    char *html_path = "C:\\Users\\Franz\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html";
 #elif __linux__
-    char *path = "/var/www/html/media.csv";
+    char *media_path = "/var/www/html/media.csv";
+    char *html_path = "/var/www/html/test.html";
 #endif
 
 typedef enum {
@@ -206,11 +208,7 @@ void _error_row(int idx) {
 int initial_page_load() {
     char buf[2048];
     FILE *F;
-    #ifdef _WIN32
-        {F = fopen("C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html", "rt");}
-    #elif __linux__
-        {F = fopen("/var/www/html/test.html", "rt");}
-    #endif
+    F = fopen(html_path, "rt");
 
     puts("Content-Type: text/html\r\n\r\n");
     if (F == NULL) {
@@ -222,7 +220,7 @@ int initial_page_load() {
         if (strstr(buf, "<tbody id=\"table-body\">") != NULL) {
             printf("%s", buf);
             // Load the list from file
-            tList *list = from_file(path, ";", read_media);
+            tList *list = from_file(media_path, ";", read_media);
             
             if (!list) {
                 _error_row(0);
@@ -241,9 +239,9 @@ int initial_page_load() {
 
 int main (int argc, char *argv[], char*env[]) {
     // Create the media.csv file if it doesnt exist
-    FILE *file = fopen(path, "r");
+    FILE *file = fopen(media_path, "r");
     if (!file) {
-        file = fopen(path, "w");
+        file = fopen(media_path, "w");
     }
     fclose(file);
 
@@ -261,20 +259,20 @@ int main (int argc, char *argv[], char*env[]) {
         puts("Content-Type: text/html\r\n\r\n");
 
         // read in query string
-        // char *content_length = getenv("CONTENT_LENGTH");
-        // if (content_length == NULL) {
-        //     puts("No content length found.");
-        //     return 1;
-        // }
+        char *content_length = getenv("CONTENT_LENGTH");
+        if (content_length == NULL) {
+            puts("No content length found.");
+            return 1;
+        }
 
-        // int length = atoi(content_length) + 1;
-        // char post_data[length];
+        int length = atoi(content_length) + 1;
+        char post_data[length];
 
-        // if (fgets(post_data, length, stdin) == NULL) {
-        //     puts("No post data found.");
-        //     return 1;
-        // }
-        char *post_data = strdup("search=fsdg&sort_key=1");
+        if (fgets(post_data, length, stdin) == NULL) {
+            puts("No post data found.");
+            return 1;
+        }
+        // char *post_data = strdup("search=fsdg&sort_key=1");
 
         // print out the post data for debugging
         if (debug) {
@@ -322,7 +320,7 @@ int main (int argc, char *argv[], char*env[]) {
             token = strtok(NULL, "&");
         }
 
-        tList *list = from_file(path, ";", read_media);
+        tList *list = from_file(media_path, ";", read_media);
 
         if (!list) {
             _error_row(0);
@@ -347,37 +345,15 @@ int main (int argc, char *argv[], char*env[]) {
 
 
         // Save the list to file
-        to_file(list, path, ";", "w", write_media);
+        to_file(list, media_path, ";", "w", write_media);
 
-        // filter the list by the search term
-        // tMedia *query_item = malloc(sizeof(tMedia));
-        // tList *found = NULL;
-        // if (query_item && strlen(query) > 0) {
-        //     query_item->name = strdup(query);
-        //     query_item->author = strdup(query);
-        //     query_item->borrower = strdup(query);
-        //     query_item->borrowed_date = strdup(query);
+        list = sort(list, comp_name);
 
-        //     found = search(list, comp_name, query_item);
-        // }
-        
-        // if (!found) found = list;
-
-        // int (*comp[4])(const void*, const void*) = {comp_name, comp_author, comp_borrower, comp_date};
-        // int idx = atoi(sort_key);
-        // if (idx < 0 || idx > 3) {
-        //     idx = 0;
-        // }
-        tList *new_list = sort(list, comp_name);
-        tNode *tmp = new_list->head->nxt;
-        _row_printer(tmp->data, 0);
-        // list = sort(list, comp_name);
-        // if (!list) list = found;
         _table_printer(list);
 
         // Free the list
         list_destroy(list);
-        list_destroy(new_list);
+        // list_destroy(new_list);
         // list_destroy(found);
         }
     else {
@@ -389,7 +365,7 @@ int main (int argc, char *argv[], char*env[]) {
 }
 
 // int main() {
-//     tList *list = from_file(path, ";", read_media);
+//     tList *list = from_file(media_path, ";", read_media);
 //     list = sort(list, comp_name);
 //     free(list);
 // }
