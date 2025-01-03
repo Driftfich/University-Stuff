@@ -41,12 +41,11 @@ int _comp_float(const void *s1, const void *s2) {
 
 int _comp_col(const void *s1, const void *s2, int offset, tColumnType type) {
     // Korrekte Pointer-Handhabung für qsort
-    const void *ds1 = *(const void **)s1;
-    const void *ds2 = *(const void **)s2;
+    const void *att1 = *((const void **)&s1 + offset);
+    const void *att2 = *((const void **)&s2 + offset);
 
-    // Zugriff auf Felder mit Offset
-    const void *att1 = (const void *)ds1 + offset;
-    const void *att2 = (const void *)ds2 + offset;
+    // const char *att1 = (const char *)s1 + offset;
+    // const char *att2 = (const char *)s2 + offset;
 
     int res;
     if (type == TYPE_INT) {
@@ -76,48 +75,60 @@ int _comp_col(const void *s1, const void *s2, int offset, tColumnType type) {
     return res;
 }
 
-int comp_name(const void *media, const void *search) {
+int cmp_name(const void *d1, const void *d2) {
     int offset = offsetof(tMedia, name);
-    // media = (tMedia*) media;
-    // search = (tMedia*) search;
-    return _comp_col(media, search, offset, TYPE_CHAR);
+    return _comp_col(d1, d2, offset, TYPE_CHAR);
 }
 
-int comp_author(const void *media, const void *search) {
+int cmp_author(const void *media, const void *search) {
     int offset = offsetof(tMedia, author);
-    // media = (tMedia*) media;
-    // search = (tMedia*) search;
     return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
-int comp_borrower(const void *media, const void *search) {
+int cmp_borrower(const void *media, const void *search) {
     int offset = offsetof(tMedia, borrower);
     return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
-int comp_date(const void *media, const void *search) {
+int cmp_date(const void *media, const void *search) {
     int offset = offsetof(tMedia, borrowed_date);
     // media = (tMedia*) media;
     // search = (tMedia*) search;
     return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
-// void sort_by(tList *list, char sort_key) {
-//     if (strstr(sort_key, "name") != NULL) {
-//         sort(list, comp_name);
-//     }
-//     else if (strstr(sort_key, "author") != NULL) {
-//         sort(list, comp_author);
-//     }
-//     else if (strstr(sort_key, "borrower") != NULL) {
-//         sort(list, comp_borrower);
-//     }
-//     else if (strstr(sort_key, "borrowed_at") != NULL) {
-//         sort(list, comp_date);
-//     }
+int strcasestr(const char *haystack, const char *needle) {
+    char *haystack_lower = strdup(haystack);
+    char *needle_lower = strdup(needle);
+    if (!haystack_lower || !needle_lower) {
+        free(haystack_lower);
+        free(needle_lower);
+        return 0;
+    }
 
-//     return;
-// }
+    for (int i=0; haystack_lower[i]; i++) {
+        haystack_lower[i] = tolower(haystack_lower[i]);
+    }
+    for (int i=0; needle_lower[i]; i++) {
+        needle_lower[i] = tolower(needle_lower[i]);
+    }
+
+    int ret = strstr(haystack_lower, needle_lower) != NULL;
+    free(haystack_lower);
+    free(needle_lower);
+    return ret;
+}
+
+int _search_media(const void*media_item, const void *search_item) {
+    tMedia *media = (tMedia*) media_item;
+    tMedia *search = (tMedia*) search_item;
+
+    if (strcasestr(media->name, search->name) || strcasestr(media->author, search->author) || strcasestr(media->borrower, search->borrower) || strcasestr(media->borrowed_date, search->borrowed_date)) {
+        return 0;
+    }
+
+    return 1;
+}
 
 void _media_printer(void *item) {
     tMedia *media = (tMedia*) item;
@@ -140,6 +151,10 @@ void _row_printer(void *item, int row_idx) {
 }
 
 void _table_printer(tList *list) {
+    if (!list) {
+        puts("");
+        return;
+    }
     tNode *tmp = list->head->nxt;
     int idx = 0;
     while (tmp != list->head) {
@@ -147,6 +162,8 @@ void _table_printer(tList *list) {
         tmp = tmp->nxt;
         idx++;
     }
+
+    return;
 }
 
 void *read_media(FILE *file, char *delimiter) {
@@ -193,6 +210,12 @@ void *read_media(FILE *file, char *delimiter) {
 void write_media(FILE *file, void *item, char *delimiter) {
     tMedia *media = (tMedia*) item;
     fprintf(file, "%s%s%s%s%s%s%s\n", media->name, delimiter, media->author, delimiter, media->borrower, delimiter, media->borrowed_date);
+    return;
+}
+
+void write_int(FILE *file, void *item, char *delimiter) {
+    int *num = (int*) item;
+    fprintf(file, "%d%s", *num, delimiter);
     return;
 }
 
@@ -272,27 +295,31 @@ int main (int argc, char *argv[], char*env[]) {
             puts("No post data found.");
             return 1;
         }
-        // char *post_data = strdup("search=fsdg&sort_key=1");
-
+        // char *post_data = strdup("action=delete_all&ids=0%2C1");
+        // int length = strlen(post_data);
         // print out the post data for debugging
-        if (debug) {
-            tMedia *custom = malloc(sizeof(tMedia));
-            custom->author = strdup("");
-            custom->borrower = strdup("");
-            custom->borrowed_date = strdup("");
-            custom->name = strdup(post_data);
-            _row_printer(custom, -1);
-            free(custom->author);
-            free(custom->borrower);
-            free(custom->borrowed_date);
-            free(custom->name);
-            free(custom);
-        }
+        
 
         char query[200] = {0}, name[200] = {0}, author[200] = {0};
-        char borrower[200] = {0}, date[200] = {0}, action[10] = {0};
+        char borrower[200] = {0}, date[200] = {0}, action[30] = {0};
         char sort_key[30] = {0};
-        
+        char *post_data_cpy = strdup(post_data);
+
+        // tMedia *custom = malloc(sizeof(tMedia));
+        // if (custom) {
+        //     custom->name = strdup(post_data);
+        //     custom->author = strdup("");
+        //     custom->borrower = strdup("");
+        //     custom->borrowed_date = strdup("");
+        //     _row_printer(custom, 0);
+
+        //     free(custom->name);
+        //     free(custom->author);
+        //     free(custom->borrower);
+        //     free(custom->borrowed_date);
+        //     free(custom);
+        // }
+
         // Token-Parsing Schleife
         char *token = strtok(post_data, "&");
         while (token != NULL) {
@@ -315,7 +342,7 @@ int main (int argc, char *argv[], char*env[]) {
                 sscanf(token, "date=%199s", date);
             }
             else if (strstr(token, "action=")) {
-                sscanf(token, "action=%9s", action);
+                sscanf(token, "action=%29s", action);
             }
             token = strtok(NULL, "&");
         }
@@ -326,6 +353,15 @@ int main (int argc, char *argv[], char*env[]) {
             _error_row(0);
             return 1;
         }
+
+        // tMedia *custom2 = malloc(sizeof(tMedia));
+        //     if (custom2) {
+        //         custom2->name = strdup(action);
+        //         custom2->author = strdup("");
+        //         custom2->borrower = strdup("");
+        //         custom2->borrowed_date = strdup("");
+        //         _row_printer(custom2, 0);
+        //     }
 
         if (strstr(action, "add") != NULL) {
             tMedia *media = malloc(sizeof(tMedia));
@@ -338,16 +374,85 @@ int main (int argc, char *argv[], char*env[]) {
                 insert_tail(list, media);
                 }
         }
-        // else if (strstr(action, "delete") != NULL) {
-        //     // the table gets updated using htmx and just the backend list gets updated
-        //     // pass
-        // }
+        if (strstr(action, "delete") != NULL) {
 
+            char *all_ids_str = strstr(post_data_cpy, "ids=");
+            if (all_ids_str) {
+                // printf("Ids available\n");
+                all_ids_str += 4;
+                // printf("Ids: %s\n", all_ids_str);
+                char *tok = strtok(all_ids_str, "~");
+                int count = 0;
+                while (tok != NULL) {
+                    int id = atoi(tok);
+                    id -= count;
+                    count++;
+                    // printf("Deleting id: %d\n", id);
+                    _move_index(list, id);
+                    delete_node(list);
+                    tok = strtok(NULL, "~");
+                }
+
+            }
+        }
+        if (strstr(action, "delete_all") != NULL) {
+            // _row_printer(custom2, 0);
+            // _row_printer(custom2, 0);
+
+            // free(custom2->name);
+            // free(custom2->author);
+            // free(custom2->borrower);
+            // free(custom2->borrowed_date);
+            // free(custom2);
+            
+            // remove list
+            list_destroy(list);
+            
+            // write empty string to file
+            FILE *file = fopen(media_path, "w");
+            fprintf(file, "");
+            fclose(file);
+
+            puts("");
+
+            return 0;
+        }
 
         // Save the list to file
         to_file(list, media_path, ";", "w", write_media);
 
-        list = sort(list, comp_name);
+        if (strlen(query) > 0) {
+            tMedia *search_query = malloc(sizeof(tMedia));
+            if (search_query) {
+                search_query->name = strdup(query);
+                search_query->author = strdup(query);
+                search_query->borrower = strdup(query);
+                search_query->borrowed_date = strdup(query);
+
+                list = search(list, _search_media, search_query);
+                if (list->length == 0) {
+                    _error_row(0);
+                    return 1;
+                }
+
+                free(search_query->name);
+                free(search_query->author);
+                free(search_query->borrower);
+                free(search_query->borrowed_date);
+                free(search_query);
+            }
+        }
+
+        int (*comp[4])(const void*, const void*) = {cmp_name, cmp_author, cmp_borrower, cmp_date};
+        int idx = atoi(sort_key);
+        if (idx < 0 || idx > 3) {
+            idx = 0;
+        }
+        list = sort(list, cmp_name);
+        if (!list) {
+            _error_row(0);
+            return 1;
+        }
 
         _table_printer(list);
 

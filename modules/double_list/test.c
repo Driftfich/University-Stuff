@@ -70,26 +70,22 @@ int _comp_col(const void *s1, const void *s2, int offset, tColumnType type) {
     return res;
 }
 
-int comp_name(const void *media, const void *search) {
+int cmp_name(const void *media, const void *search) {
     int offset = offsetof(tMedia, name);
-    // media = (tMedia*) media;
-    // search = (tMedia*) search;
     return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
-int comp_author(const void *media, const void *search) {
+int cmp_author(const void *media, const void *search) {
     int offset = offsetof(tMedia, author);
-    // media = (tMedia*) media;
-    // search = (tMedia*) search;
     return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
-int comp_borrower(const void *media, const void *search) {
+int cmp_borrower(const void *media, const void *search) {
     int offset = offsetof(tMedia, borrower);
     return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
-int comp_date(const void *media, const void *search) {
+int cmp_date(const void *media, const void *search) {
     int offset = offsetof(tMedia, borrowed_date);
     // media = (tMedia*) media;
     // search = (tMedia*) search;
@@ -153,12 +149,12 @@ int main() {
         return 1;
     }
 
-    int (*comp[4])(const void*, const void*) = {comp_name, comp_author, comp_borrower, comp_date};
+    int (*comp[4])(const void*, const void*) = {cmp_name, cmp_author, cmp_borrower, cmp_date};
     int idx = atoi("1");
     if (idx < 0 || idx > 3) {
         idx = 0;
     }
-    list = sort(list, comp_name);
+    list = sort(list, cmp_name);
     _table_printer(list);
 
     // Save the list to file

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
+#include <stddef.h>
 // #include <sqlite3.h>
 
 #include "list.h"
@@ -80,7 +81,7 @@ int _move_index(tList *list, int index) {
         return 0;
     }
     if (index < list->length / 2) {
-        list->curpos = list->head;
+        list->curpos = list->head->nxt;
         for (int i = 0; i < index; i++) {
             list->curpos = list->curpos->nxt;
         }
@@ -286,7 +287,7 @@ tList *from_file(char *filename, char *delimiter, void *(*item_loader)(FILE *fil
     return list;
 }
 
-tList *search(tList *list, int (*cmp)(const void*, const void*), const void *data) {
+tList *search(tList *list, int (*cmp)(const void*c1, const void*c2), const void *data) {
     // input list: tList to search in, compare function: int (*cmp) (void*, void*), data: const void* to compare with
     // output: tList with found elements
     if (!list || !list->head || !cmp) return NULL;
@@ -294,64 +295,35 @@ tList *search(tList *list, int (*cmp)(const void*, const void*), const void *dat
     tList *found = list_create();
     if (!found) return NULL;
 
-    tNode *ftmp = list->head->nxt;
-    tNode *ptmp = list->head->prv;
-    for (int i=0; i<(list->length + 1)/2; i++) {
-        if (cmp(&(ftmp->data), &data) == 0) {
-            insert_tail(found, ftmp->data);
+    tNode *tmp = list->head->nxt;
+    while (tmp != list->head) {
+        if (cmp(tmp->data, data) == 0) {
+            insert_tail(found, tmp->data);
         }
-
-        if ((ftmp != ptmp) && (cmp(&(ptmp->data), &data) == 0)) {
-            insert_tail(found, ptmp->data);
-        }
-        ftmp = ftmp->nxt;
-        ptmp = ptmp->prv;
+        tmp = tmp->nxt;
     }
 
     return found;
 }
 
-// tList *sort(tList *list, int (*cmp) (const void*, const void*)) {
-//     // input list: tList to sort, compare function: int (*cmp) (void*, void*)
-//     // output: tList with sorted elements
-//     if (!list || !list->head || !cmp) return NULL;
-//     int length = list->length;
-//     // create a array 
-//     void **array = to_datarray(list);
-//     list_destroy(list);
-//     if (!array) return NULL;
+tList *sort(tList *list, int (*cmp)(const void *c1, const void*c2)) { // 
+    tNode *t1 = list->head->nxt;
+    tNode *t2 = list->head->nxt;
 
-//     // sort the array using qsort
-//     qsort(array, length, sizeof(void *), cmp);
-
-//     // create a new list from the sorted array
-//     tList *new_list = from_datarray(array, length);
-
-//     // free the array
-//     free(array);
-
-//     return new_list;
-// }
-
-tList *sort(tList *list, int (*cmp)(const void *c1, const void*c2)) {
-    // bubble sort
-    if (!list || !list->head || !cmp) return NULL;
-
-    tNode *tmp = list->head->nxt;
-    tNode *tmp2 = list->head->nxt;
-
-    for (int i = 0; i < list->length; i++) {
-        for (int j = 0; j < list->length - i - 1; j++) {
-            if (cmp(tmp->data, tmp2->data) > 0) {
-                void *tmp_data = tmp->data;
-                tmp->data = tmp2->data;
-                tmp2->data = tmp_data;
+    for (int i=0; i < list->length -1; i++) {
+        for (int j=0; j < list->length - 1 - i; j++) {
+            if (cmp(t2->data, t2->nxt->data) > 0) {
+                void *tmp_data = t2->data;
+                t2->data = t2->nxt->data;
+                t2->nxt->data = tmp_data;
             }
-            tmp2 = tmp2->nxt;
+            t2 = t2->nxt;
         }
-        tmp = tmp->nxt;
-        tmp2 = list->head->nxt;
-    }    
+        t1 = t1->nxt;
+        t2 = list->head->nxt;
+    }
+
+    return list;
 }
 
 

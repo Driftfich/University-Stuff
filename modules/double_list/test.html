@@ -383,7 +383,85 @@
             <h1 class="page-title">Bibliotheksverzeichnis</h1>
         </div>
 
-        
+        <dialog id="delete-all-dialog" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="this.closest('dialog').close()">&times;</span>
+                <p>Möchten Sie wirklich alle Einträge löschen?</p>
+                <div class="button-container">
+                    <button id="confirmYes" onclick="this.closest('dialog').close()" 
+                    hx-post="/cgi-bin/s88216.cgi" 
+                    hx-vals='{"action": "delete_all"}' 
+                    hx-target="#table-body"
+                    hx-swap="innerHTML">Ja</button>
+                    <button id="confirmNo" onclick="this.closest('dialog').close()">Nein</button>
+                </div>
+            </div>
+        </dialog>   
+
+        <!-- CSS hinzufügen -->
+        <style>
+            .modal {
+                border: none;
+                border-radius: 8px;
+                padding: 20px;
+                background: white;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            
+            .modal::backdrop {
+                background: rgba(0,0,0,0.5);
+            }
+            
+            .modal-content {
+                position: relative;
+            }
+            
+            .close {
+                position: absolute;
+                right: -10px;
+                top: -15px;
+                font-size: 20px;
+                cursor: pointer;
+            }
+            
+            .button-container {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 20px;
+            }
+            
+            .button-container button {
+                padding: 8px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            
+            #confirmYes { background: #4CAF50; color: white; }
+            #confirmNo { background: #f44336; color: white; }
+        </style>
+            
+        <!-- JavaScript für Dialog -->
+        <!-- <script>
+            const dialog = document.getElementById('delete-all-dialog');
+            const closeBtn = dialog.querySelector('.close');
+            const yesBtn = document.getElementById('confirmYes');
+            const noBtn = document.getElementById('confirmNo');
+
+            function showConfirmDialog(onConfirm) {
+                dialog.showModal();
+                
+                yesBtn.onclick = () => {
+                    dialog.close();
+                    onConfirm();
+                };
+                
+                noBtn.onclick = () => dialog.close();
+                closeBtn.onclick = () => dialog.close();
+            }
+        </script> -->
+
         <div class="toolbar">
             <div class="search-container">
                 <input 
@@ -405,7 +483,11 @@
 
             <div class="sort-container">
                 <label class="sort-label" for="sortBy">Sortieren nach:</label>
-                <select name="sort_key", hx-post="/cgi-bin/s88216.cgi", hx-include="[name='search']", hx-target="#table-body", hx-swap="innerHTML">
+                <select name="sort_key"
+                        hx-post="/cgi-bin/s88216.cgi"
+                        hx-include="[name='search']"
+                        hx-target="#table-body"
+                        hx-swap="innerHTML">
                     <option value="0">Name</option>
                     <option value="1">Author</option>
                     <option value="2">Borrower</option>
@@ -415,11 +497,9 @@
 
             <button class="delete-button"
                 onclick="toggleDelete(this)"
-                hx-delete="/cgi-bin/s88216.cgi?"
-                hx-vals='{"action": "delete"}'
-                hx-include=".row-selected"
-                hx-target="#table-body"
-                hx-swap="delete">
+                hx-post="/cgi-bin/s88216.cgi"
+                hx-swap="innerHTML"
+                hx-target="#table-body">
                 <img src="/images/trashcan_closed.png" 
                      data-normal="/images/trashcan_closed.png"
                      data-active="/images/trashcan_open.png">
@@ -479,7 +559,7 @@
             document.querySelector('.add-button').addEventListener('click', function(event) {
                 event.stopPropagation();
                 const overlay = document.querySelector('.add-overlay');
-                const canCloseOverlay = true;
+                // const canCloseOverlay = true;
                 
                 // Wenn das Overlay geschlossen ist, öffne es
                 if (getComputedStyle(overlay).display === 'none') {
@@ -610,12 +690,39 @@
         </script>
 
         <script>
+
+            function getSelectedIds() {
+                const selectedRows = document.querySelectorAll('.clickable-row.row-selected');
+                return Array.from(selectedRows).map(row => row.getAttribute('data-id'));
+            }
+
             function toggleDelete(button) {
                 const img = button.querySelector('img');
                 button.classList.add('active');
                 
                 // Zum aktiven Bild wechseln
                 img.src = img.getAttribute('data-active');
+                
+                // Selektierte IDs abrufen und zu post hinzufügen
+                const ids = getSelectedIds();
+                if(ids.length > 0) {
+                    button.setAttribute('hx-vals', JSON.stringify({
+                        action: "delete",
+                        ids: ids.join('~'),
+                        search: document.querySelector('[name="search"]').value,
+                        sort_key: document.querySelector('[name="sort_key"]').value
+                    }));
+                } 
+                else {
+                    button.removeAttribute('hx-vals');
+                    // popup message
+                    document.getElementById('delete-all-dialog').showModal();
+                }
+
+                // reset the ids in the button attribute after the request
+                button.addEventListener('hx-after-request', function() {
+                    button.removeAttribute('hx-vals');
+                });
                 
                 // Nach 500ms zurücksetzen
                 setTimeout(() => {
