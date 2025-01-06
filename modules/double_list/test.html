@@ -369,6 +369,64 @@
         
     </head>
     <body>
+
+        <script>
+            function toggleAdd(button) {
+                const overlay = document.querySelector('.add-overlay');
+                overlay.classList.toggle('visible');
+                button.classList.add('active');
+                
+
+                // Nach Animation Klasse entfernen
+                setTimeout(() => {
+                    button.classList.remove('active');
+                }, 500);
+            }
+        </script>
+
+        <script>
+
+            function getSelectedIds() {
+                const selectedRows = document.querySelectorAll('.clickable-row.row-selected');
+                return Array.from(selectedRows).map(row => row.getAttribute('data-id'));
+            }
+
+            function toggleDelete(button) {
+                const img = button.querySelector('img');
+                button.classList.add('active');
+                
+                // Zum aktiven Bild wechseln
+                img.src = img.getAttribute('data-active');
+                
+                // Selektierte IDs abrufen und zu post hinzufügen
+                const ids = getSelectedIds();
+                if(ids.length > 0) {
+                    button.setAttribute('hx-vals', JSON.stringify({
+                        action: "delete",
+                        ids: ids.join('~'),
+                        search: document.querySelector('[name="search"]').value,
+                        sort_key: document.querySelector('[name="sort_key"]').value
+                    }));
+                } 
+                else {
+                    button.removeAttribute('hx-vals');
+                    // popup message
+                    document.getElementById('delete-all-dialog').showModal();
+                }
+
+                // reset the ids in the button attribute after the request
+                button.addEventListener('hx-after-request', function() {
+                    button.removeAttribute('hx-vals');
+                });
+                
+                // Nach 500ms zurücksetzen
+                setTimeout(() => {
+                    button.classList.remove('active');
+                    img.src = img.getAttribute('data-normal');
+                }, 500);
+            }
+        </script>
+        
         <!-- <h1><b>Bibliotheksverzeichnis</b></h1>
         <p>This is a basic HTML file.</p> -->
         <div class="file-header">
@@ -671,62 +729,5 @@
 
             </tbody>
         </table>
-
-        <script>
-            function toggleAdd(button) {
-                const overlay = document.querySelector('.add-overlay');
-                overlay.classList.toggle('visible');
-                button.classList.add('active');
-                
-
-                // Nach Animation Klasse entfernen
-                setTimeout(() => {
-                    button.classList.remove('active');
-                }, 500);
-            }
-        </script>
-
-        <script>
-
-            function getSelectedIds() {
-                const selectedRows = document.querySelectorAll('.clickable-row.row-selected');
-                return Array.from(selectedRows).map(row => row.getAttribute('data-id'));
-            }
-
-            function toggleDelete(button) {
-                const img = button.querySelector('img');
-                button.classList.add('active');
-                
-                // Zum aktiven Bild wechseln
-                img.src = img.getAttribute('data-active');
-                
-                // Selektierte IDs abrufen und zu post hinzufügen
-                const ids = getSelectedIds();
-                if(ids.length > 0) {
-                    button.setAttribute('hx-vals', JSON.stringify({
-                        action: "delete",
-                        ids: ids.join('~'),
-                        search: document.querySelector('[name="search"]').value,
-                        sort_key: document.querySelector('[name="sort_key"]').value
-                    }));
-                } 
-                else {
-                    button.removeAttribute('hx-vals');
-                    // popup message
-                    document.getElementById('delete-all-dialog').showModal();
-                }
-
-                // reset the ids in the button attribute after the request
-                button.addEventListener('hx-after-request', function() {
-                    button.removeAttribute('hx-vals');
-                });
-                
-                // Nach 500ms zurücksetzen
-                setTimeout(() => {
-                    button.classList.remove('active');
-                    img.src = img.getAttribute('data-normal');
-                }, 500);
-            }
-        </script>
     </body>
 </html>

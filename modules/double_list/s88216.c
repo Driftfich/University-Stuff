@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <ctype.h>
+#define _GNU_SOURCE
 #include "list.h"
 
 #define debug 0
@@ -11,8 +12,9 @@
     char *media_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
     char *html_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html";
 #elif __linux__
-    char *media_path = "/var/www/html/media.csv";
-    char *html_path = "/var/www/html/test.html";
+    char *media_path = "./media.csv";
+    char *html_path = "./test.html";
+    // char *html_path = "/home/USER/Dokumente/Github/C-Programming/modules/double_list/test.html";
 #endif
 
 typedef enum {
@@ -112,27 +114,27 @@ int cmp_date(const void *media, const void *search) {
     return strcmp(m1->borrowed_date, m2->borrowed_date);
 }
 
-int strcasestr(const char *haystack, const char *needle) {
-    char *haystack_lower = strdup(haystack);
-    char *needle_lower = strdup(needle);
-    if (!haystack_lower || !needle_lower) {
-        free(haystack_lower);
-        free(needle_lower);
-        return 0;
-    }
+// int strcasestr(const char *haystack, const char *needle) {
+//     char *haystack_lower = strdup(haystack);
+//     char *needle_lower = strdup(needle);
+//     if (!haystack_lower || !needle_lower) {
+//         free(haystack_lower);
+//         free(needle_lower);
+//         return 0;
+//     }
 
-    for (int i=0; haystack_lower[i]; i++) {
-        haystack_lower[i] = tolower(haystack_lower[i]);
-    }
-    for (int i=0; needle_lower[i]; i++) {
-        needle_lower[i] = tolower(needle_lower[i]);
-    }
+//     for (int i=0; haystack_lower[i]; i++) {
+//         haystack_lower[i] = tolower(haystack_lower[i]);
+//     }
+//     for (int i=0; needle_lower[i]; i++) {
+//         needle_lower[i] = tolower(needle_lower[i]);
+//     }
 
-    int ret = strstr(haystack_lower, needle_lower) != NULL;
-    free(haystack_lower);
-    free(needle_lower);
-    return ret;
-}
+//     int ret = strstr(haystack_lower, needle_lower) != NULL;
+//     free(haystack_lower);
+//     free(needle_lower);
+//     return ret;
+// }
 
 int _search_media(const void*media_item, const void *search_item) {
     tMedia *media = (tMedia*) media_item;
@@ -252,7 +254,6 @@ int initial_page_load() {
     FILE *F;
     F = fopen(html_path, "rt");
 
-    puts("Content-Type: text/html\r\n\r\n");
     if (F == NULL) {
         puts("<html><head><title><p>Dateifehler<p></title></body></html>");
         return 1;
@@ -281,12 +282,14 @@ int initial_page_load() {
 }
 
 int main (int argc, char *argv[], char*env[]) {
+    puts("Content-Type: text/html\r\n\r\n");
+
     // Create the media.csv file if it doesnt exist
     FILE *file = fopen(media_path, "r");
     if (!file) {
-        file = fopen(media_path, "w");
+        file = fopen(media_path, "w+");
     }
-    fclose(file);
+    if (file) fclose(file);
 
     char *request_method = getenv("REQUEST_METHOD");
     // char *request_method = "POST";
@@ -299,7 +302,6 @@ int main (int argc, char *argv[], char*env[]) {
         initial_page_load();
     }
     else if (strcmp(request_method, "POST") == 0) {
-        puts("Content-Type: text/html\r\n\r\n");
 
         // read in query string
         char *content_length = getenv("CONTENT_LENGTH");
