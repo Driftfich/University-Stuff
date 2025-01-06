@@ -153,20 +153,24 @@ int* get(tList *list, int idx) {
 
 // DELETION METHODS
 // delete the current selected (current position pointer) node (+data)
-int delete_node(tList *list) {
-    if (!list || !list->curpos || list->curpos == list->head) return 0;
-    
+tNode *_disconnect_node(tList *list) {
     tNode *tmp = list->curpos;
     tmp->nxt->prv = tmp->prv;
     tmp->prv->nxt = tmp->nxt;
-    list->curpos = tmp->nxt;
-    if (list->curpos == list->head) {
-        list->curpos = list->head->nxt;
-    }
+
+    return tmp;
+}
+
+int delete_node(tList *list) {
+    if (!list || !list->curpos || list->curpos == list->head) return 0;
+    
+    tNode *tmp = _disconnect_node(list);
     
     free(tmp->data);
     free(tmp);
     list->length--;
+
+    list->curpos = list->head->nxt;
     return 1;
 }
 
@@ -288,21 +292,31 @@ tList *from_file(char *filename, char *delimiter, void *(*item_loader)(FILE *fil
 }
 
 tList *search(tList *list, int (*cmp)(const void*c1, const void*c2), const void *data) {
-    // input list: tList to search in, compare function: int (*cmp) (void*, void*), data: const void* to compare with
-    // output: tList with found elements
     if (!list || !list->head || !cmp) return NULL;
     
+    // Input list becomes rest list and found list is returned
     tList *found = list_create();
     if (!found) return NULL;
 
-    tNode *tmp = list->head->nxt;
-    while (tmp != list->head) {
-        if (cmp(tmp->data, data) == 0) {
-            insert_tail(found, tmp->data);
+    list->curpos = list->head->nxt;
+    while (list->curpos != list->head) {
+        if (!list->curpos->data) {
+            printf("Error: Data is NULL\n");
+            continue;
         }
-        tmp = tmp->nxt;
+        if (cmp(list->curpos->data, data) == 0) {
+            tNode *tmp = _disconnect_node(list);
+            list->curpos = tmp->nxt;
+            list->length--;
+            insert_tail(found, tmp->data);
+            free(tmp);
+        }
+        else {
+            list->curpos = list->curpos->nxt;
+        }
     }
-
+    list->curpos = list->head->nxt;
+    
     return found;
 }
 
@@ -324,6 +338,38 @@ tList *sort(tList *list, int (*cmp)(const void *c1, const void*c2)) { //
     }
 
     return list;
+}
+
+tList* concat_lists(tList *list1, tList *list2) {
+    if (!list1 || !list2) return NULL;
+    if (!list1->head || !list2->head) return NULL;
+
+    if (list1->length == 0) {
+        list_destroy(list1);
+        return list2;
+    }
+
+    if (list2->length == 0) {
+        list_destroy(list2);
+        return list1;
+    }
+    
+    // Verbinde letztes Element von list1 mit erstem von list2
+    list1->head->prv->nxt = list2->head->nxt;
+    list2->head->nxt->prv = list1->head->prv;
+    
+    // Verbinde letztes Element von list2 mit head von list1
+    list2->head->prv->nxt = list1->head;
+    list1->head->prv = list2->head->prv;
+    
+    // Aktualisiere Länge
+    list1->length += list2->length;
+    
+    // Speicher von list2 head freigeben
+    free(list2->head);
+    free(list2);
+    
+    return list1;
 }
 
 

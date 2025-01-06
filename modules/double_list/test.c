@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include <ctype.h>
 #include "list.h"
 
 #define debug 0
@@ -142,24 +143,76 @@ void _media_printer(void *item) {
     return;
 }
 
+void _row_printer(void *item, int row_idx) {
+    tMedia *media = (tMedia*) item;
+    // printf("Media: %s, Author: %s, Borrower: %s\n", media->name, media->author, media->borrower);
+    puts("<tr class=clickable-row\n");
+    puts("onclick=\"this.classList.toggle('row-selected')\"\n");
+    printf("data-id=\"%d\">\n", row_idx);
+    printf("<td>%s</td>\n", media->name);
+    printf("<td>%s</td>\n", media->author);
+    printf("<td>%s</td>\n", media->borrower);
+    printf("<td>%s</td>\n", media->borrowed_date);
+    puts("</tr>\n");
+    return;
+}
+
+int strcasestr(const char *haystack, const char *needle) {
+    char *haystack_lower = strdup(haystack);
+    char *needle_lower = strdup(needle);
+    if (!haystack_lower || !needle_lower) {
+        free(haystack_lower);
+        free(needle_lower);
+        return 0;
+    }
+
+    for (int i=0; haystack_lower[i]; i++) {
+        haystack_lower[i] = tolower(haystack_lower[i]);
+    }
+    for (int i=0; needle_lower[i]; i++) {
+        needle_lower[i] = tolower(needle_lower[i]);
+    }
+
+    int ret = strstr(haystack_lower, needle_lower) != NULL;
+    free(haystack_lower);
+    free(needle_lower);
+    return ret;
+}
+
+int _search_media(const void*media_item, const void *search_item) {
+    tMedia *media = (tMedia*) media_item;
+    tMedia *search = (tMedia*) search_item;
+
+    if (strcasestr(media->name, search->name) || strcasestr(media->author, search->author) || strcasestr(media->borrower, search->borrower) || strcasestr(media->borrowed_date, search->borrowed_date)) {
+        return 0;
+    }
+
+    return 1;
+}
+
+void _table_printer(tList *list) {
+    if (!list) {
+        puts("");
+        return;
+    }
+    tNode *tmp = list->head->nxt;
+    int idx = 0;
+    while (tmp != list->head) {
+        _row_printer(tmp->data, idx);
+        tmp = tmp->nxt;
+        idx++;
+    }
+
+    return;
+}
+
 int main() {
     tList *list = from_file(media_path, ";", read_media);
+    tList *found = search(list, _search_media, "0");
 
-    if (!list) {
-        return 1;
-    }
+    _table_printer(found);
 
-    int (*comp[4])(const void*, const void*) = {cmp_name, cmp_author, cmp_borrower, cmp_date};
-    int idx = atoi("1");
-    if (idx < 0 || idx > 3) {
-        idx = 0;
-    }
-    list = sort(list, cmp_name);
+    list = concat_lists(list, found);
+
     _table_printer(list);
-
-    // Save the list to file
-    to_file(list, media_path, ";", "w", write_media);
-
-    // Free the list
-    list_destroy(list);
 }

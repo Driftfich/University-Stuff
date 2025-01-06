@@ -41,6 +41,7 @@ int insert_head(tList *list, void *data);
 int* get(tList *list, int idx);
 
 // Deletion operations
+tNode *_disconnect_node(tList *list);
 int delete_node(tList *list);
 
 // Utility functions
@@ -50,7 +51,8 @@ tList *from_datarray(void **dataray, int size);
 void print_list(tList *list, void (*printer) (void *data));
 
 tList* search(tList *list, int (*comp)(const void*c1, const void*c2), const void *data);
-tList* sort(tList *list, int (*comp)(const void *c1, const void*c2)); // 
+tList* sort(tList *list, int (*comp)(const void *c1, const void*c2)); //
+tList* concat_lists(tList *list1, tList *list2);
 
 // FILE I/O
 int to_file(tList *list, char *filename, char *delimiter, char *mode, void (*item_saver)(FILE *file, void *item, char *delimiter));

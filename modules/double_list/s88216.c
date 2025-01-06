@@ -8,8 +8,8 @@
 #define debug 0
 
 #ifdef _WIN32
-    char *media_path = "C:\\Users\\Franz\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
-    char *html_path = "C:\\Users\\Franz\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html";
+    char *media_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
+    char *html_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html";
 #elif __linux__
     char *media_path = "/var/www/html/media.csv";
     char *html_path = "/var/www/html/test.html";
@@ -85,16 +85,31 @@ int cmp_author(const void *media, const void *search) {
     return _comp_col(media, search, offset, TYPE_CHAR);
 }
 
-int cmp_borrower(const void *media, const void *search) {
-    int offset = offsetof(tMedia, borrower);
-    return _comp_col(media, search, offset, TYPE_CHAR);
+int cmp_borrower(const void *s1, const void *s2) {
+    if (!s1 || !s2) return 0;
+    
+    tMedia *m1 = (tMedia*)s1;
+    tMedia *m2 = (tMedia*)s2;
+    
+    // Null-Check für Strings
+    if (!m1->borrower || !m2->borrower) return 0;
+    
+    return strcmp(m1->borrower, m2->borrower);
 }
 
 int cmp_date(const void *media, const void *search) {
-    int offset = offsetof(tMedia, borrowed_date);
-    // media = (tMedia*) media;
-    // search = (tMedia*) search;
-    return _comp_col(media, search, offset, TYPE_CHAR);
+    // int offset = offsetof(tMedia, borrowed_date);
+    // return _comp_col(media, search, offset, TYPE_CHAR);
+
+    if (!media || !search) return 0;
+
+    tMedia *m1 = (tMedia*)media;
+    tMedia *m2 = (tMedia*)search;
+
+    // Null-Check für Strings
+    if (!m1->borrowed_date || !m2->borrowed_date) return 0;
+
+    return strcmp(m1->borrowed_date, m2->borrowed_date);
 }
 
 int strcasestr(const char *haystack, const char *needle) {
@@ -126,6 +141,9 @@ int _search_media(const void*media_item, const void *search_item) {
     if (strcasestr(media->name, search->name) || strcasestr(media->author, search->author) || strcasestr(media->borrower, search->borrower) || strcasestr(media->borrowed_date, search->borrowed_date)) {
         return 0;
     }
+    // if (strstr(media->name, search->name) || strstr(media->author, search->author) || strstr(media->borrower, search->borrower) || strstr(media->borrowed_date, search->borrowed_date)) {
+    //     return 0;
+    // }
 
     return 1;
 }
@@ -138,6 +156,7 @@ void _media_printer(void *item) {
 
 void _row_printer(void *item, int row_idx) {
     tMedia *media = (tMedia*) item;
+
     // printf("Media: %s, Author: %s, Borrower: %s\n", media->name, media->author, media->borrower);
     puts("<tr class=clickable-row\n");
     puts("onclick=\"this.classList.toggle('row-selected')\"\n");
@@ -249,6 +268,7 @@ int initial_page_load() {
                 _error_row(0);
             }
             else {
+                list = sort(list, cmp_name);
                 // Print the list as a table
                 _table_printer(list);
             }
@@ -295,7 +315,7 @@ int main (int argc, char *argv[], char*env[]) {
             puts("No post data found.");
             return 1;
         }
-        // char *post_data = strdup("action=delete_all&ids=0%2C1");
+        // char *post_data = strdup("sort_key=2&search=0");
         // int length = strlen(post_data);
         // print out the post data for debugging
         
@@ -303,7 +323,7 @@ int main (int argc, char *argv[], char*env[]) {
         char query[200] = {0}, name[200] = {0}, author[200] = {0};
         char borrower[200] = {0}, date[200] = {0}, action[30] = {0};
         char sort_key[30] = {0};
-        char *post_data_cpy = strdup(post_data);
+        char *ids = NULL;
 
         // tMedia *custom = malloc(sizeof(tMedia));
         // if (custom) {
@@ -344,11 +364,29 @@ int main (int argc, char *argv[], char*env[]) {
             else if (strstr(token, "action=")) {
                 sscanf(token, "action=%29s", action);
             }
+            else if (strstr(token, "ids=")) {
+                char *start = strstr(token, "ids=");
+                start += 4;
+                char *end = strstr(start, "&");
+                int len;
+                if (end) {
+                    len = end - start;
+                }
+                else {
+                    len = strlen(start);
+                }
+
+                ids = malloc(len + 1);
+                if (ids) {
+                    strncpy(ids, start, len);
+                    ids[len] = '\0';
+                }
+
+            }
             token = strtok(NULL, "&");
         }
 
         tList *list = from_file(media_path, ";", read_media);
-
         if (!list) {
             _error_row(0);
             return 1;
@@ -374,27 +412,6 @@ int main (int argc, char *argv[], char*env[]) {
                 insert_tail(list, media);
                 }
         }
-        if (strstr(action, "delete") != NULL) {
-
-            char *all_ids_str = strstr(post_data_cpy, "ids=");
-            if (all_ids_str) {
-                // printf("Ids available\n");
-                all_ids_str += 4;
-                // printf("Ids: %s\n", all_ids_str);
-                char *tok = strtok(all_ids_str, "~");
-                int count = 0;
-                while (tok != NULL) {
-                    int id = atoi(tok);
-                    id -= count;
-                    count++;
-                    // printf("Deleting id: %d\n", id);
-                    _move_index(list, id);
-                    delete_node(list);
-                    tok = strtok(NULL, "~");
-                }
-
-            }
-        }
         if (strstr(action, "delete_all") != NULL) {
             // _row_printer(custom2, 0);
             // _row_printer(custom2, 0);
@@ -418,46 +435,96 @@ int main (int argc, char *argv[], char*env[]) {
             return 0;
         }
 
-        // Save the list to file
-        to_file(list, media_path, ";", "w", write_media);
+        tList *found = NULL;
+        tMedia *search_query = malloc(sizeof(tMedia));
 
+        if (!search_query) {
+            puts("Search query is NULL.");
+            _error_row(0);
+            return 1;
+        }
+
+        // printf("Query: %s\n", query);
+        // printf("Sort key: %s\n", sort_key);
+
+        search_query->name = strdup(query);
+        search_query->author = strdup(query);
+        search_query->borrower = strdup(query);
+        search_query->borrowed_date = strdup(query);
+        
         if (strlen(query) > 0) {
-            tMedia *search_query = malloc(sizeof(tMedia));
-            if (search_query) {
-                search_query->name = strdup(query);
-                search_query->author = strdup(query);
-                search_query->borrower = strdup(query);
-                search_query->borrowed_date = strdup(query);
-
-                list = search(list, _search_media, search_query);
-                if (list->length == 0) {
-                    _error_row(0);
-                    return 1;
-                }
-
-                free(search_query->name);
-                free(search_query->author);
-                free(search_query->borrower);
-                free(search_query->borrowed_date);
-                free(search_query);
+            found = search(list, _search_media, search_query);
+            if (!found) {
+                puts("Search failed. Found list is NULL.");
+                _error_row(0);
+                return 1;
             }
         }
+        else {
+            found = list;
+        }
+
+        free(search_query->name);
+        free(search_query->author);
+        free(search_query->borrower);
+        free(search_query->borrowed_date);
+        free(search_query);
+
+        // _table_printer(found);
 
         int (*comp[4])(const void*, const void*) = {cmp_name, cmp_author, cmp_borrower, cmp_date};
         int idx = atoi(sort_key);
         if (idx < 0 || idx > 3) {
             idx = 0;
         }
-        list = sort(list, cmp_name);
-        if (!list) {
+        found = sort(found, comp[idx]);
+        if (!found) {
+            puts("Sort failed. List is NULL.");
             _error_row(0);
             return 1;
         }
 
-        _table_printer(list);
+        if (strstr(action, "delete") != NULL && ids) {
+            char *tok = strtok(ids, "~");
+            int count = 0;
+            while (tok != NULL) {
+                int id = atoi(tok);
+                id -= count;
+                count++;
+                // printf("Deleting id: %d\n", id);
+                _move_index(found, id);
+                delete_node(found);
+                tok = strtok(NULL, "~");
+            }
+        }
+        if (ids) {
+            free(ids);
+        }
+
+        // if (!rest && found != NULL) {
+        //     puts("Rest list is NULL.");
+        //     _error_row(0);
+        //     return 1;
+        // }
+        // puts("Found list:");
+        _table_printer(found);
+        // puts("Rest list:");
+        // _table_printer(list);
+
+        // concat the rest and list together to save the whole list
+        if (strlen(query) > 0) {
+            list = concat_lists(list, found);
+        }
+
+        // puts("Complete list:");
+        // _table_printer(list);
+        
+        // // Save the list to file
+        to_file(list, media_path, ";", "w", write_media);
 
         // Free the list
         list_destroy(list);
+        // list_destroy(found);
         // list_destroy(new_list);
         // list_destroy(found);
         }
