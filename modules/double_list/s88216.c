@@ -315,7 +315,7 @@ int main (int argc, char *argv[], char*env[]) {
             puts("No post data found.");
             return 1;
         }
-        // char *post_data = strdup("sort_key=2&search=0");
+        // char *post_data = strdup("sort_key=2&search=100");
         // int length = strlen(post_data);
         // print out the post data for debugging
         
@@ -451,7 +451,6 @@ int main (int argc, char *argv[], char*env[]) {
         search_query->author = strdup(query);
         search_query->borrower = strdup(query);
         search_query->borrowed_date = strdup(query);
-        
         if (strlen(query) > 0) {
             found = search(list, _search_media, search_query);
             if (!found) {
@@ -464,20 +463,22 @@ int main (int argc, char *argv[], char*env[]) {
             found = list;
         }
 
+
         free(search_query->name);
         free(search_query->author);
         free(search_query->borrower);
         free(search_query->borrowed_date);
         free(search_query);
 
-        // _table_printer(found);
-
-        int (*comp[4])(const void*, const void*) = {cmp_name, cmp_author, cmp_borrower, cmp_date};
-        int idx = atoi(sort_key);
-        if (idx < 0 || idx > 3) {
-            idx = 0;
+        if (found->length > 0) {
+            int (*comp[4])(const void*, const void*) = {cmp_name, cmp_author, cmp_borrower, cmp_date};
+            int idx = atoi(sort_key);
+            if (idx < 0 || idx > 3) {
+                idx = 0;
+            }
+            found = sort(found, comp[idx]);
         }
-        found = sort(found, comp[idx]);
+
         if (!found) {
             puts("Sort failed. List is NULL.");
             _error_row(0);
@@ -501,13 +502,13 @@ int main (int argc, char *argv[], char*env[]) {
             free(ids);
         }
 
-        // if (!rest && found != NULL) {
-        //     puts("Rest list is NULL.");
-        //     _error_row(0);
-        //     return 1;
-        // }
         // puts("Found list:");
-        _table_printer(found);
+        if (found->length > 0) {
+            _table_printer(found);
+        }
+        else {
+            puts("No results found.");
+        }
         // puts("Rest list:");
         // _table_printer(list);
 

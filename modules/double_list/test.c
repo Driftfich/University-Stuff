@@ -207,12 +207,15 @@ void _table_printer(tList *list) {
 }
 
 int main() {
-    tList *list = from_file(media_path, ";", read_media);
-    tList *found = search(list, _search_media, "0");
+    // tList *list = from_file(media_path, ";", read_media);
+    // tList *found = search(list, _search_media, "0");
 
-    _table_printer(found);
+    // _table_printer(found);
 
-    list = concat_lists(list, found);
+    // list = concat_lists(list, found);
 
+    // _table_printer(list);
+
+    tList *list = list_create();
     _table_printer(list);
 }
