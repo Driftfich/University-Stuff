@@ -172,7 +172,7 @@ void _row_printer(void *item, int row_idx) {
 }
 
 void _table_printer(tList *list) {
-    if (!list) {
+    if (!list || list->length == 0) {
         puts("");
         return;
     }
@@ -249,6 +249,36 @@ void _error_row(int idx) {
     return;
 }
 
+int normalize_string(const char *input, char *output, size_t outsize) {
+    if (!input || !output || outsize == 0) return -1;
+    
+    size_t i = 0, j = 0;
+    char last = ' ';
+    
+    // Führende Leerzeichen überspringen
+    while (input[i] && isspace(input[i])) i++;
+    
+    while (input[i] && j < outsize - 1) {
+        if (isspace(input[i]) || input[i] == '/') {
+            // Mehrfache Trennzeichen vermeiden
+            if (!isspace(last) && last != '/') {
+                output[j++] = ' ';
+                last = ' ';
+            }
+        } else {
+            output[j++] = input[i];
+            last = input[i];
+        }
+        i++;
+    }
+    
+    // Nachfolgende Leerzeichen entfernen
+    while (j > 0 && isspace(output[j-1])) j--;
+    
+    output[j] = '\0';
+    return 0;
+}
+
 int initial_page_load() {
     char buf[2048];
     FILE *F;
@@ -317,10 +347,8 @@ int main (int argc, char *argv[], char*env[]) {
             puts("No post data found.");
             return 1;
         }
-        // char *post_data = strdup("sort_key=2&search=100");
+        // char *post_data = strdup("action=delete_all");
         // int length = strlen(post_data);
-        // print out the post data for debugging
-        
 
         char query[200] = {0}, name[200] = {0}, author[200] = {0};
         char borrower[200] = {0}, date[200] = {0}, action[30] = {0};
@@ -353,15 +381,19 @@ int main (int argc, char *argv[], char*env[]) {
             }
             else if (strstr(token, "name")) {
                 sscanf(token, "name=%199s", name);
+                // normalize_string(name, name, sizeof(name));
             }
             else if (strstr(token, "author")) {
                 sscanf(token, "author=%199s", author);
+                // normalize_string(author, author, sizeof(author));
             }
             else if (strstr(token, "borrower")) {
                 sscanf(token, "borrower=%199s", borrower);
+                // normalize_string(borrower, borrower, sizeof(borrower));
             }
             else if (strstr(token, "date")) {
                 sscanf(token, "date=%199s", date);
+                // normalize_string(date, date, sizeof(date));
             }
             else if (strstr(token, "action=")) {
                 sscanf(token, "action=%29s", action);
@@ -414,28 +446,6 @@ int main (int argc, char *argv[], char*env[]) {
                 insert_tail(list, media);
                 }
         }
-        if (strstr(action, "delete_all") != NULL) {
-            // _row_printer(custom2, 0);
-            // _row_printer(custom2, 0);
-
-            // free(custom2->name);
-            // free(custom2->author);
-            // free(custom2->borrower);
-            // free(custom2->borrowed_date);
-            // free(custom2);
-            
-            // remove list
-            list_destroy(list);
-            
-            // write empty string to file
-            FILE *file = fopen(media_path, "w");
-            fprintf(file, "");
-            fclose(file);
-
-            puts("");
-
-            return 0;
-        }
 
         tList *found = NULL;
         tMedia *search_query = malloc(sizeof(tMedia));
@@ -465,26 +475,16 @@ int main (int argc, char *argv[], char*env[]) {
             found = list;
         }
 
-
         free(search_query->name);
         free(search_query->author);
         free(search_query->borrower);
         free(search_query->borrowed_date);
         free(search_query);
 
-        if (found->length > 0) {
-            int (*comp[4])(const void*, const void*) = {cmp_name, cmp_author, cmp_borrower, cmp_date};
-            int idx = atoi(sort_key);
-            if (idx < 0 || idx > 3) {
-                idx = 0;
-            }
-            found = sort(found, comp[idx]);
-        }
-
-        if (!found) {
-            puts("Sort failed. List is NULL.");
-            _error_row(0);
-            return 1;
+        if (strstr(action, "delete_all") != NULL) { 
+            // empty found list
+            list_destroy(found);
+            found = list_create();
         }
 
         if (strstr(action, "delete") != NULL && ids) {
@@ -504,6 +504,21 @@ int main (int argc, char *argv[], char*env[]) {
             free(ids);
         }
 
+        if (found->length > 0) {
+            int (*comp[4])(const void*, const void*) = {cmp_name, cmp_author, cmp_borrower, cmp_date};
+            int idx = atoi(sort_key);
+            if (idx < 0 || idx > 3) {
+                idx = 0;
+            }
+            found = sort(found, comp[idx]);
+        }
+
+        if (!found) {
+            puts("Sort failed. List is NULL.");
+            _error_row(0);
+            return 1;
+        }
+
         // puts("Found list:");
         if (found->length > 0) {
             _table_printer(found);
@@ -511,25 +526,17 @@ int main (int argc, char *argv[], char*env[]) {
         else {
             puts("No results found.");
         }
-        // puts("Rest list:");
-        // _table_printer(list);
 
         // concat the rest and list together to save the whole list
         if (strlen(query) > 0) {
-            list = concat_lists(list, found);
+            found = concat_lists(found, list);
         }
-
-        // puts("Complete list:");
-        // _table_printer(list);
         
         // // Save the list to file
-        to_file(list, media_path, ";", "w", write_media);
+        to_file(found, media_path, ";", "w", write_media);
 
         // Free the list
-        list_destroy(list);
-        // list_destroy(found);
-        // list_destroy(new_list);
-        // list_destroy(found);
+        list_destroy(found);
         }
     else {
         puts("Content-Type: text/plain\n");

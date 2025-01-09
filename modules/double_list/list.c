@@ -243,15 +243,20 @@ int to_file(tList *list, char *filename, char *delimiter, char *mode, void (*ite
 
     FILE *file = fopen(filename, mode);
     if (!file) {
-        fprintf(stderr, "Error opening file %s\n", filename);
+        printf("Error opening file %s\n", filename);
         return 0;
     }
 
-    tNode *tmp = list->head->nxt;
-    while (tmp != list->head) {
-        void *item = tmp->data;
-        item_saver(file, item, delimiter);
-        tmp = tmp->nxt;
+    if (list->length == 0) {
+        fprintf(file, "");
+    }
+    else {
+        tNode *tmp = list->head->nxt;
+        while (tmp != list->head) {
+            void *item = tmp->data;
+            item_saver(file, item, delimiter);
+            tmp = tmp->nxt;
+        }
     }
 
     fclose(file);
