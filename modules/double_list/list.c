@@ -3,7 +3,6 @@
 #include <malloc.h>
 #include <string.h>
 #include <stddef.h>
-// #include <sqlite3.h>
 
 #include "list.h"
 
@@ -326,6 +325,8 @@ tList *search(tList *list, int (*cmp)(const void*c1, const void*c2), const void 
 }
 
 tList *sort(tList *list, int (*cmp)(const void *c1, const void*c2)) { // 
+    if (!list || !list->head || !cmp || list->length < 2) return list;
+
     tNode *t1 = list->head->nxt;
     tNode *t2 = list->head->nxt;
 

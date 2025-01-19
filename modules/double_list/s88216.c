@@ -13,8 +13,7 @@
     char *html_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html";
 #elif __linux__
     char *media_path = "./media.csv";
-    char *html_path = "./test.html";
-    // char *html_path = "/home/USER/Dokumente/Github/C-Programming/modules/double_list/test.html";
+    char *html_path = "./index.html";
 #endif
 
 typedef enum {
@@ -22,6 +21,41 @@ typedef enum {
     TYPE_INT,
     TYPE_FLOAT
 } tColumnType;
+
+int hex_to_int(char c) {
+    if (c >= '0' && c <= '9') {
+        return c - '0';
+    } else if (c >= 'A' && c <= 'F') {
+        return c - 'A' + 10;
+    } else if (c >= 'a' && c <= 'f') {
+        return c - 'a' + 10;
+    }
+    return -1;
+}
+
+// method for parsing URL-encoded string into original string
+int url_decode(char* out, const char* in)
+{
+    if (!in) return -1;
+    char c=*in++, v1, v2;
+    while(c != '\0') {
+        if(c == '%') {
+            // v1=tbl[(unsigned char)*in++];
+            // v2=tbl[(unsigned char)*in++];
+            v1 = hex_to_int(*in++);
+            v2 = hex_to_int(*in++);
+            if((v1)<0 || (v2)<0) {
+                *out = '\0';
+                return -1;
+            }
+            c = (v1<<4)|v2;
+        }
+        *out++ = c;
+        c=*in++;
+    }
+    *out = '\0';
+    return 0;
+}
 
 int _comp_int(const void *s1, const void *s2) {
     float f1 = *(int*)s1;
@@ -83,8 +117,15 @@ int cmp_name(const void *d1, const void *d2) {
 }
 
 int cmp_author(const void *media, const void *search) {
-    int offset = offsetof(tMedia, author);
-    return _comp_col(media, search, offset, TYPE_CHAR);
+    if (!media || !search) return 0;
+
+    tMedia *m1 = (tMedia*)media;
+    tMedia *m2 = (tMedia*)search;
+
+    // Null-Check für Strings
+    if (!m1->author || !m2->author) return 0;
+
+    return strcmp(m1->author, m2->author);
 }
 
 int cmp_borrower(const void *s1, const void *s2) {
@@ -249,36 +290,6 @@ void _error_row(int idx) {
     return;
 }
 
-int normalize_string(const char *input, char *output, size_t outsize) {
-    if (!input || !output || outsize == 0) return -1;
-    
-    size_t i = 0, j = 0;
-    char last = ' ';
-    
-    // Führende Leerzeichen überspringen
-    while (input[i] && isspace(input[i])) i++;
-    
-    while (input[i] && j < outsize - 1) {
-        if (isspace(input[i]) || input[i] == '/') {
-            // Mehrfache Trennzeichen vermeiden
-            if (!isspace(last) && last != '/') {
-                output[j++] = ' ';
-                last = ' ';
-            }
-        } else {
-            output[j++] = input[i];
-            last = input[i];
-        }
-        i++;
-    }
-    
-    // Nachfolgende Leerzeichen entfernen
-    while (j > 0 && isspace(output[j-1])) j--;
-    
-    output[j] = '\0';
-    return 0;
-}
-
 int initial_page_load() {
     char buf[2048];
     FILE *F;
@@ -299,9 +310,12 @@ int initial_page_load() {
                 _error_row(0);
             }
             else {
-                list = sort(list, cmp_name);
-                // Print the list as a table
-                _table_printer(list);
+                if (list->length > 0) {
+                    list = sort(list, cmp_name);
+                    // Print the list as a table
+                    _table_printer(list);
+                }
+                else puts("<tr><td>No results found.</td></tr>\n");
             }
             
         }
@@ -322,7 +336,7 @@ int main (int argc, char *argv[], char*env[]) {
     if (file) fclose(file);
 
     char *request_method = getenv("REQUEST_METHOD");
-    // char *request_method = "POST";
+    // char *request_method = "GET";
     if (request_method == NULL) {
         puts("No request method found.");
         return 1;
@@ -349,7 +363,7 @@ int main (int argc, char *argv[], char*env[]) {
         }
         // char *post_data = strdup("action=delete_all");
         // int length = strlen(post_data);
-
+        char tmp[200] = {0};
         char query[200] = {0}, name[200] = {0}, author[200] = {0};
         char borrower[200] = {0}, date[200] = {0}, action[30] = {0};
         char sort_key[30] = {0};
@@ -374,26 +388,33 @@ int main (int argc, char *argv[], char*env[]) {
         char *token = strtok(post_data, "&");
         while (token != NULL) {
             if (strstr(token, "search")) {
-                sscanf(token, "search=%199s", query);
+                sscanf(token, "search=%199s", tmp);
+                // url decode the query
+                url_decode(query, tmp);
+                memset(tmp, 0, sizeof(tmp));
             }
             else if (strstr(token, "sort_key")) {
                 sscanf(token, "sort_key=%29s", sort_key);
             }
             else if (strstr(token, "name")) {
-                sscanf(token, "name=%199s", name);
-                // normalize_string(name, name, sizeof(name));
+                sscanf(token, "name=%199s", tmp);
+                url_decode(name, tmp);
+                memset(tmp, 0, sizeof(tmp));
             }
             else if (strstr(token, "author")) {
-                sscanf(token, "author=%199s", author);
-                // normalize_string(author, author, sizeof(author));
+                sscanf(token, "author=%199s", tmp);
+                url_decode(author, tmp);
+                memset(tmp, 0, sizeof(tmp));
             }
             else if (strstr(token, "borrower")) {
-                sscanf(token, "borrower=%199s", borrower);
-                // normalize_string(borrower, borrower, sizeof(borrower));
+                sscanf(token, "borrower=%199s", tmp);
+                url_decode(borrower, tmp);
+                memset(tmp, 0, sizeof(tmp));
             }
             else if (strstr(token, "date")) {
-                sscanf(token, "date=%199s", date);
-                // normalize_string(date, date, sizeof(date));
+                sscanf(token, "date=%199s", tmp);
+                url_decode(date, tmp);
+                memset(tmp, 0, sizeof(tmp));
             }
             else if (strstr(token, "action=")) {
                 sscanf(token, "action=%29s", action);
@@ -524,7 +545,7 @@ int main (int argc, char *argv[], char*env[]) {
             _table_printer(found);
         }
         else {
-            puts("No results found.");
+            puts("<tr><td>No results found.</td></tr>\n");
         }
 
         // concat the rest and list together to save the whole list

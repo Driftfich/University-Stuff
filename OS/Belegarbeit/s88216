@@ -1,12 +1,9 @@
 #!/bin/bash
 
-### size methods ###
 size()
 {
-    # grep -o ".*\s[0-9]\s[a-z]\+\s[a-z]\+\s[0-9]\+\s" filme.txt | grep -o "[0-9]*\s*$"
-    #
     size=0
-    for num in $(tr -s ' ' < filme.txt | cut -s -d " " -f5 | grep -o "^[0-9]*$");
+    for num in $(grep "^-" filme.txt | tr -s ' ' | cut -s -d " " -f5);
     do
         size=$((size+num))
     done
@@ -21,38 +18,42 @@ byteToGiB()
 showSize()
 {
     size=$(size)
-    echo "Gesamtgröße aller Filme (Byte): $size Byte"
-    echo "Gesamtgröße aller Filme (GiB): $(byteToGiB $size) GiB"
+    echo "Total size of movies (Byte): $size Byte"
+    echo "Total size of movies (GiB): $(byteToGiB $size) GiB"
 }
 
-### hist method ###
+moviecol() {
+    tr -s ' ' < filme.txt | cut -s -d " " -f9-
+}
 
 hist()
 {
-    echo "Anzahl der Filme:Jahr"
-    tr -s ' ' < filme.txt | cut -s -d " " -f9- | grep -o "([1-2][0-9][0-9][0-9])" | tr -d "()" | sort | uniq -c | sort -nr | tr -s " " | grep -o "[0-9]*\s[0-9]*$" | tr " " ":"
+    echo "Movie Count:Year"
+    moviecol | grep -o "([1-2][0-9][0-9][0-9])" | tr -d "()" | sort | uniq -c | sort -nr | tr -s " " | cut -d " " -f2- | tr " " ":"
 }
 
-### search methods ###
 search()
 {
-    tr -s ' ' < filme.txt | cut -s -d " " -f9- | rev | cut -d "." -f2- | rev | grep ".*$1.*"
+    moviecol | rev | cut -d "." -f2- | rev | grep ".*$1.*"
 }
 
 ext()
 {
-    echo "Anzahl der Dateinamenerweiterungen:Erweiterung"
-    grep -o "\.[a-zA-Z0-9]*$" < filme.txt | cut -s -d "." -f2 | sort | uniq -c | tr -s " " | grep -o "[0-9]*\s\w*$" | tr " " ":"
+    echo "Count:Extension"
+    grep -o "\.[a-zA-Z0-9]*$" < filme.txt | cut -s -d "." -f2 | sort | uniq -c | tr -s " " | cut -d " " -f2- | tr " " ":"
+
+    count=$(grep '^d' filme.txt | wc -l)
+    echo "Amount of directories: $count"
 }
 
 imdb()
 {
-    ssh s88216@ilux150.informatik.htw-dresden.de grep -P "tt[0-9]{7}\t[0-9]*\t.*$1.*\t" /user/profile/active/robge/bs1-tools/title.akas.tsv | cut -f1 | uniq
+    ssh ilux150.informatik.htw-dresden.de "grep -P \"\t.*$1.*\t\" /user/profile/active/robge/bs1-tools/title.akas.tsv | cut -f1"
 }
 
 syntax()
 {
-    tr -s ' ' < filme.txt | cut -s -d " " -f9- | grep -v "^$" | grep -E -v ".*\s\(([1-2][0-9][0-9][0-9])\)(\..*$|-cd[1-3]\..*$|$)"
+    moviecol | grep -v "^$" | grep -E -v ".*\s\((20[0-2][0-9]|19[0-9][0-9])\)(\..*$|-cd[1-3]\..*$|$)"
 }  
 
 missing()
@@ -66,9 +67,18 @@ missing()
     done < top100.txt
 }
 
+warning()
+{
+    if test $1 -gt $2
+    then
+        diff=$(($1-$2))
+        echo "Warning: Too many arguments specified. The last $diff argument(s) will be truncated."
+    fi
+}
+
 if test $# -lt 1
 then
-    echo "Usage: $0 [search <string> | hist | size | ext | imdb | syntax | missing]"
+    echo "Error: No Method specified. Usage: ./s88216 [search <string> | hist | size | ext | imdb  <string> | syntax | missing]"
     exit 1
 fi
 
@@ -76,34 +86,41 @@ if test $1 = "search"
 then
     if test $# -lt 2
     then
-        echo "Usage: $0 search <search string>"
+        echo "Error: Search Parameter missing. Usage: ./s88216 search <search string>"
         exit 1
     fi
-    search $2
+    warning $# 2
+    search "$2"
 elif test $1 = "hist"
 then
+    warning $# 1
     hist
 elif test $1 = "size"
 then
+    warning $# 1
     showSize
 elif test $1 = "ext"
 then
+    warning $# 1
     ext
 elif test $1 = "imdb"
 then
     if test $# -lt 2
     then
-        echo "Usage: $0 imdb <search string>"
+        echo "Error: Search Parameter missing. Usage: ./s88216 imdb <search string>"
         exit 1
     fi
-    imdb $2
+    warning $# 2
+    imdb "$2"
 elif test $1 = "syntax"
 then
+    warning $# 1
     syntax
 elif test $1 = "missing"
 then
+    warning $# 1
     missing
 else
-    echo "Usage: $0 [search <string> | hist | size | ext | imdb | syntax | missing]"
+    echo "Error: Method not found. Usage: ./s88216 [search <string> | hist | size | ext | imdb <string> | syntax | missing]"
     exit 1
 fi

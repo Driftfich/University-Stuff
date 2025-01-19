@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <string.h>
+#include <stddef.h>
+
 #ifndef LIST_H
 #define LIST_H
 
