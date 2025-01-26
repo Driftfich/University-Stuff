@@ -5,6 +5,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
         
+        <script>
+            function _get_path() {
+                return "/~s88216/cgi-bin/"
+            }
+
+            function _get_script_path() {
+                return _get_path + "s88216.cgi"
+            }
+
+            function _get_image_path(image) {
+                return _get_path + "/images/" + image
+            }
+        </script>
+
         <style>
             .page-title {
                 position: relative;
@@ -379,7 +393,7 @@
                 <p>Möchten Sie wirklich alle Einträge löschen?</p>
                 <div class="button-container">
                     <button id="confirmYes" onclick="this.closest('dialog').close()" 
-                    hx-post="/~s88216/cgi-bin/s88216.cgi" 
+                    hx-post="_get_script_path()"
                     hx-vals='{"action": "delete_all"}' 
                     hx-target="#table-body"
                     hx-swap="innerHTML">Ja</button>
@@ -441,7 +455,7 @@
                     placeholder="Suche..."
                     oninput="this.classList.toggle('empty', !this.value)"
                     hx-trigger="keyup changed delay:500ms"
-                    hx-post="/~s88216/cgi-bin/s88216.cgi" 
+                    hx-post="_get_script_path()"
                     hx-target="#table-body"
                     hx-include="[name='search'], [name='sort_key']"
                     hx-swap="innerHTML"
@@ -451,7 +465,7 @@
             <div class="sort-container">
                 <label class="sort-label" for="sortBy">Sortieren nach:</label>
                 <select name="sort_key" class="sort-select"
-                        hx-post="/~s88216/cgi-bin/s88216.cgi"
+                        hx-post="_get_script_path()"
                         hx-include="[name='search']"
                         hx-target="#table-body"
                         hx-swap="innerHTML">
@@ -464,7 +478,7 @@
 
             <button class="delete-button"
                 onclick="toggleDelete(this)"
-                hx-post="/~s88216/cgi-bin/s88216.cgi"
+                hx-post="_get_script_path()"
                 hx-swap="innerHTML"
                 hx-target="#table-body">
                 <img src="/~s88216/images/trashcan_closed.png" 
@@ -478,7 +492,7 @@
 
             <div class="add-overlay">
                 <form class="add-form"
-                    hx-post="/~s88216/cgi-bin/s88216.cgi" 
+                    hx-post="_get_script_path()"
                     hx-vals='{"action": "add"}'
                     hx-target="#table-body"
                     hx-include="[name='name'], [name='author'], [name='borrower'], [name='date'], [name='search'], [name='sort_key']"
