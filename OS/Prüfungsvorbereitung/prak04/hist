@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cat ~/.bash_history | cut -d " " -f1 | sort | uniq -c | sort -n -r 
+
+exit 0
