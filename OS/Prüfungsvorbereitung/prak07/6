@@ -1,0 +1,19 @@
+#!/bin/bash
+
+count=0
+for pc in isys{101..121}
+do
+    ping $pc -c 1 -w 1 >/dev/null 2>/dev/null
+    if test $? -eq 2
+    then
+        echo "$pc was not reachable"
+        count=$(($count+1))
+    fi
+done
+
+if test $count -eq 0
+then
+    echo "All pcs were reachable"
+fi
+
+exit 0

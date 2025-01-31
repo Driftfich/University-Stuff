@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if test $# -lt 1
+then
+    echo "Usage: $0 <command>"
+    exit 1
+fi
+
+$*
+echo "$* returns $?"
+exit 0

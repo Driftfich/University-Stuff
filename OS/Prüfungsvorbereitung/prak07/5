@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#ssh s88216@ilux150.informatik.htw-dresden.de "nslookup osg.informatik.tu-chemnitz.de"
+
+# /usr/sbin/traceroute 9.9.9.9
+# /usr/sbin/traceroute 8.8.8.8
+Host=https://www.informatik.htw-dresden.de
+path=/~robge/bs1/prak/
+
+if test $# -lt 1
+then
+    echo "Usage ./5 <directory>"
+    exit 1
+fi
+
+mkdir aufgaben
+wget -P $1 -nd -r -l1 -A bs?-prak??.pdf $Host$path

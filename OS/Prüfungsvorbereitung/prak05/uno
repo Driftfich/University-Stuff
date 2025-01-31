@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "All names beginning with R"
+find "./names" -type f -name "R*"
+echo "OR"
+ls -l ./names/R*
+
+find "./names" -type f -name "*\ *"
+
+find "./names" -type f -name "?o*"
+
+find "./names" -type f -name "*e"
+
+find "./names" -type f -name "[^AEIOU]*"
+
+find "./names" -type f -name "*\ *-*"
