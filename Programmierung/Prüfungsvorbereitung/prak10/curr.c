@@ -16,11 +16,23 @@ void disblay_curr(curr *cr) {
     return;
 }
 
-void sort(curr *pWrg[], int size) {
+int country_cmp(curr *c1, curr*c2) {
+    return strcmp((**((curr **) c1)).country, (**((curr **) c2)).country);
+}
+
+int ccode_cmp(curr *c1, curr*c2) {
+    return strcmp((**((curr **) c1)).ccode, (**((curr **) c2)).ccode);
+}
+
+int cur_cmp(const void *c1, const void *c2) {
+    return strcmp((**((curr **) c1)).cur, (**((curr **) c2)).cur);
+}
+
+void sort(curr *pWrg[], int size, int (*comp)(curr *c1, curr*c2)) {
     for (int i=0; i<size; i++) {
         for (int j=i+1; j<size; j++) {
             // printf("%s | %s, %d\n", ((curr)(*pWrg[i])).country, ((curr)(*pWrg[j])).country, strcmp(((curr)(*pWrg[i])).country, ((curr)(*pWrg[j])).country));
-            if (strcmp(((curr)(*pWrg[i])).country, ((curr)(*pWrg[j])).country) >= 0) {
+            if (comp(pWrg[i], pWrg[j]) >= 0) {
                 curr *tmp=pWrg[i];
                 pWrg[i]=pWrg[j];
                 pWrg[j]=tmp;
@@ -38,7 +50,7 @@ curr calc_sell_price(curr Wrg) {
 int main() {
     curr vWrg[] = {
         #include "waehrung.dat"
-        };
+    };
 
     int size = sizeof(vWrg) / sizeof(curr);
     curr *pWrg[size];
@@ -47,7 +59,8 @@ int main() {
         pWrg[i] = &vWrg[i];
     }
 
-    sort(pWrg, size);
+    // sort(pWrg, size, &cur_cmp);
+    qsort(pWrg, size, sizeof(pWrg[0]), &cur_cmp);
 
     for (int i=0; i<size; i++) {
         disblay_curr(pWrg[i]);
