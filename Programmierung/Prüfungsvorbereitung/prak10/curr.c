@@ -16,11 +16,11 @@ void disblay_curr(curr *cr) {
     return;
 }
 
-int country_cmp(curr *c1, curr*c2) {
+int country_cmp(const void *c1, const void *c2) {
     return strcmp((**((curr **) c1)).country, (**((curr **) c2)).country);
 }
 
-int ccode_cmp(curr *c1, curr*c2) {
+int ccode_cmp(const void *c1, const void *c2) {
     return strcmp((**((curr **) c1)).ccode, (**((curr **) c2)).ccode);
 }
 
@@ -47,7 +47,9 @@ curr calc_sell_price(curr Wrg) {
     return Wrg;
 }
 
-int main() {
+typedef int (*comp)(const void *c1, const void *c2);
+
+int main(int argc, char *argv[]) {
     curr vWrg[] = {
         #include "waehrung.dat"
     };
@@ -59,8 +61,26 @@ int main() {
         pWrg[i] = &vWrg[i];
     }
 
+    int fn_sel = 0;
+    char *conv_err;
+    if (argc >= 2) {
+        fn_sel = strtoul(argv[1], &conv_err, 10);
+        if (*conv_err != '\0') {
+            printf("Couldnt convert argv[1]=%s to an valid integer", conv_err);
+            exit(1);
+        }
+    }
+    else fn_sel = 0;
+
+    if (fn_sel > 2 || fn_sel < 0) {
+        puts("Selected function out of range. First compare method gets used.");
+        fn_sel = 0;
+    }
+
+    comp fn[3] = {&country_cmp, &ccode_cmp, &cur_cmp};
+
     // sort(pWrg, size, &cur_cmp);
-    qsort(pWrg, size, sizeof(pWrg[0]), &cur_cmp);
+    qsort(pWrg, size, sizeof(pWrg[0]), fn[fn_sel]);
 
     for (int i=0; i<size; i++) {
         disblay_curr(pWrg[i]);
