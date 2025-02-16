@@ -5,207 +5,25 @@
 #include <ctype.h>
 #define _GNU_SOURCE
 #include "list.h"
+#include "media.h"
+#include "web.h"
+#include "logger.h"
 
 #ifndef debug
     #define debug 0
 #endif
 
 #ifdef _WIN32
-    char *media_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
-    char *html_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html";
+    char *media_path = ".\\media.csv";
+    char *html_path = ".\\index.html";
 #elif __linux__
     char *media_path = "./media.csv";
     char *html_path = "./index.html";
 #endif
 
+#define DELIMITER ";"
 
-int hex_to_int(char c) {
-    if (c >= '0' && c <= '9') {
-        return c - '0';
-    } else if (c >= 'A' && c <= 'F') {
-        return c - 'A' + 10;
-    } else if (c >= 'a' && c <= 'f') {
-        return c - 'a' + 10;
-    }
-    return -1;
-}
-
-// method for parsing URL-encoded string into original string
-int url_decode(char* out, const char* in)
-{
-    if (!in) return -1;
-    char c=*in++, v1, v2;
-    while(c != '\0') {
-        if(c == '%') {
-            v1 = hex_to_int(*in++);
-            v2 = hex_to_int(*in++);
-            if((v1)<0 || (v2)<0) {
-                *out = '\0';
-                return -1;
-            }
-            c = (v1<<4)|v2;
-        }
-        *out++ = c;
-        c=*in++;
-    }
-    *out = '\0';
-    return 0;
-}
-
-
-//// Compare Methods for sorting 
-int cmp_name(const void *media, const void *search) {
-    if (!media || !search) return 0;
-
-    tMedia *m1 = (tMedia*)media;
-    tMedia *m2 = (tMedia*)search;
-
-    // Null-Check für Strings
-    if (!m1->author || !m2->author) return 0;
-
-    return strcmp(m1->author, m2->author);
-}
-
-int cmp_author(const void *media, const void *search) {
-    if (!media || !search) return 0;
-
-    tMedia *m1 = (tMedia*)media;
-    tMedia *m2 = (tMedia*)search;
-
-    // Null-Check für Strings
-    if (!m1->author || !m2->author) return 0;
-
-    return strcmp(m1->author, m2->author);
-}
-
-int cmp_borrower(const void *s1, const void *s2) {
-    if (!s1 || !s2) return 0;
-    
-    tMedia *m1 = (tMedia*)s1;
-    tMedia *m2 = (tMedia*)s2;
-    
-    // Null-Check für Strings
-    if (!m1->borrower || !m2->borrower) return 0;
-    
-    return strcmp(m1->borrower, m2->borrower);
-}
-
-int cmp_date(const void *media, const void *search) {
-    if (!media || !search) return 0;
-
-    tMedia *m1 = (tMedia*)media;
-    tMedia *m2 = (tMedia*)search;
-
-    // Null-Check für Strings
-    if (!m1->borrowed_date || !m2->borrowed_date) return 0;
-
-    return strcmp(m1->borrowed_date, m2->borrowed_date);
-}
-
-int _search_media(const void*media_item, const void *search_item) {
-    tMedia *media = (tMedia*) media_item;
-    tMedia *search = (tMedia*) search_item;
-
-    if (strcasestr(media->name, search->name) || strcasestr(media->author, search->author) || strcasestr(media->borrower, search->borrower) || strcasestr(media->borrowed_date, search->borrowed_date)) {
-        return 0;
-    }
-
-    return 1;
-}
-
-// Methods for printing the media list to the html table
-void _media_printer(void *item) {
-    tMedia *media = (tMedia*) item;
-    printf("Media: %s, Author: %s, Borrower: %s , Date: %s\n", media->name, media->author, media->borrower, media->borrowed_date);
-    return;
-}
-
-void _error_row(int idx) {
-    puts("<tr class=clickable-row\n");
-    puts("onclick=\"this.classList.toggle('row-selected')\"\n");
-    printf("data-id=\"%d\">\n", idx);
-    for (int i=0; i<4; i++) printf("<td>Error</td>\n");
-    puts("</tr>\n");
-    return;
-}
-
-void _row_printer(void *item, int row_idx) {
-    tMedia *media = (tMedia*) item;
-
-    puts("<tr class=clickable-row\n");
-    puts("onclick=\"this.classList.toggle('row-selected')\"\n");
-    printf("data-id=\"%d\">\n", row_idx);
-    printf("<td>%s</td>\n", media->name);
-    printf("<td>%s</td>\n", media->author);
-    printf("<td>%s</td>\n", media->borrower);
-    printf("<td>%s</td>\n", media->borrowed_date);
-    puts("</tr>\n");
-    return;
-}
-
-void _table_printer(tList *list) {
-    if (!list || list->length == 0) {
-        puts("");
-        return;
-    }
-    tNode *tmp = list->head->nxt;
-    int idx = 0;
-    while (tmp != list->head) {
-        _row_printer(tmp->data, idx);
-        tmp = tmp->nxt;
-        idx++;
-    }
-
-    return;
-}
-
-// Methods for file I/O with media instances
-void *read_media(FILE *file, char *delimiter) {
-    char name[200], author[200], borrower[200], borrowed_date[200];
-    char format[256] = {0};
-    int ret;
-    snprintf(format, sizeof(format),
-         "%%[^%s]%s"     // Name bis Delimiter
-         "%%[^%s]%s"     // Author bis Delimiter
-         "%%[^%s]%s"     // Borrower bis Delimiter
-         "%%s\n",    // Date bis Zeilenende
-         delimiter, delimiter,
-         delimiter, delimiter,
-         delimiter, delimiter);
-    ret = fscanf(file, format,
-                 name, author, borrower, &borrowed_date);
-    if (ret != 4) {
-        return NULL;
-    }
-
-    tMedia *media = malloc(sizeof(tMedia));
-    if (!media) {
-        printf("Error allocating memory for media\n");
-        return NULL;
-    }
-
-    // Strings duplizieren
-    media->name = strdup(name);
-    media->author = strdup(author);
-    media->borrower = strdup(borrower);
-    media->borrowed_date = strdup(borrowed_date);
-
-    if (!media->name || !media->author || !media->borrower || !media->borrowed_date) {
-        free(media->name);
-        free(media->author);
-        free(media->borrower);
-        free(media);
-        return NULL;
-    }
-
-    return (void *) media;
-}
-
-void write_media(FILE *file, void *item, char *delimiter) {
-    tMedia *media = (tMedia*) item;
-    fprintf(file, "%s%s%s%s%s%s%s\n", media->name, delimiter, media->author, delimiter, media->borrower, delimiter, media->borrowed_date);
-    return;
-}
+FILE *ProtFile;
 
 int initial_page_load() {
     char buf[2048];
@@ -220,14 +38,20 @@ int initial_page_load() {
     {   
         if (strstr(buf, "<tbody id=\"table-body\">") != NULL) {
             printf("%s", buf);
-            tList *list = from_file(media_path, ";", read_media);
+            tList *list = from_file(media_path, DELIMITER, read_media);
             
             if (!list) {
-                _error_row(0);
+                DEBUG_STR("Error: Failed to create base list.\n");
             }
             else {
                 if (list->length > 0) {
-                    list = sort(list, cmp_name);
+                    list = qsort_list(list, &cmp_name);
+
+                    if (!list) {
+                        DEBUG_STR("Error: Failed to sort base list.\n");
+                        return 1;
+                    }
+
                     _table_printer(list);
                 }
                 else puts("<tr><td>No results found.</td></tr>\n");
@@ -251,8 +75,10 @@ int main (int argc, char *argv[], char*env[]) {
     if (file) fclose(file);
 
     char *request_method = getenv("REQUEST_METHOD");
-    // char *request_method = "GET";
+    // char *request_method = strdup("POST");
+
     if (request_method == NULL) {
+        DEBUG_STR("Warning: No request method found.\n");
         puts("No request method found.");
         return 1;
     }
@@ -262,20 +88,27 @@ int main (int argc, char *argv[], char*env[]) {
     }
     else if (strcmp(request_method, "POST") == 0) {
 
-        // read in query string
+        // // read in query string
         char *content_length = getenv("CONTENT_LENGTH");
         if (content_length == NULL) {
-            puts("No content length found.");
+            puts("Error: No content length for the post request found.");
+            DEBUG_STR("Error: No content length for the post request found.\n");
             return 1;
         }
 
         int length = atoi(content_length) + 1;
         char post_data[length];
-
+        
         if (fgets(post_data, length, stdin) == NULL) {
             puts("No post data found.");
+            DEBUG_STR("Error: No post data for the post request found.\n");
             return 1;
         }
+
+        // // Fake post data
+        // char *post_data = strdup("sort_key=2&search=");
+        // int length = strlen(post_data);
+
         
         char tmp[200] = {0};
         char query[200] = {0}, name[200] = {0}, author[200] = {0};
@@ -339,10 +172,10 @@ int main (int argc, char *argv[], char*env[]) {
             }
             token = strtok(NULL, "&");
         }
-
-        tList *list = from_file(media_path, ";", read_media);
+        
+        tList *list = from_file(media_path, DELIMITER, read_media);
         if (!list) {
-            _error_row(0);
+            DEBUG_STR("Error: Failed to create list from file.\n");
             return 1;
         }
 
@@ -363,7 +196,7 @@ int main (int argc, char *argv[], char*env[]) {
 
         if (!search_query) {
             puts("Search query is NULL.");
-            _error_row(0);
+            DEBUG_STR("Error: Failed to allocate memory for the search_query item.\n");
             return 1;
         }
 
@@ -376,7 +209,7 @@ int main (int argc, char *argv[], char*env[]) {
             found = search(list, _search_media, search_query);
             if (!found) {
                 puts("Search failed. Found list is NULL.");
-                _error_row(0);
+                DEBUG_STR("Error: Search failed. Found list is NULL.\n");
                 return 1;
             }
         }
@@ -396,12 +229,12 @@ int main (int argc, char *argv[], char*env[]) {
             if (idx < 0 || idx > 3) {
                 idx = 0;
             }
-            found = sort(found, comp[idx]);
+            found = qsort_list(found, comp[idx]);
         }
 
         if (!found) {
             puts("Sort failed. List is NULL.");
-            _error_row(0);
+            DEBUG_STR("Error: Sort failed. List is NULL.\n");
             return 1;
         }
 
@@ -438,10 +271,11 @@ int main (int argc, char *argv[], char*env[]) {
         // concat the rest and list together to save the whole list
         if (strlen(query) > 0) {
             found = concat_lists(found, list);
+            if (!found) DEBUG_STR("Error: Failed concat list and found together.\n");
         }
         
         // Save the list to file
-        to_file(found, media_path, ";", "w", write_media);
+        if (to_file(found, media_path, DELIMITER, "w", &write_media) == 0) DEBUG_STR("Error: Failed saving found list to file\n");
 
         // Free the list
         list_destroy(found);
@@ -449,6 +283,7 @@ int main (int argc, char *argv[], char*env[]) {
     else {
         puts("Content-Type: text/plain\n");
         puts("No valid request method found."); 
+        DEBUG_STR("Error: No valid request method found.\n");
     }
 
     return 0;

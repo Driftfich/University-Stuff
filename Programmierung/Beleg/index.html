@@ -3,22 +3,43 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
         
         <script>
-            function _get_path() {
-                return "/~s88216/cgi-bin/"
+            
+            const POST_URL = "./s88216.cgi";
+            const IMAGE_BASE_URL = "./images";
+            
+            function setHxPostAttributes() {
+                console.log("Starte Platzhalter-Ersetzung...");
+                
+                const hxElems = document.querySelectorAll("[hx-post]");
+                console.log("Gefundene hx-post Elemente: ", hxElems.length);
+                hxElems.forEach((element) => {
+                    const currentValue = element.getAttribute("hx-post");
+                    if (currentValue.includes("POST_URL")) {
+                        element.setAttribute("hx-post", POST_URL);
+                    }
+                });
+                
+                const srcPattern = /^src.*/i;
+                count = 0;
+                const imgElems = document.querySelectorAll("img");
+                imgElems.forEach(img => {
+                    [...img.attributes].forEach(attr => {
+                        count += 1;
+                        if (srcPattern.test(attr.name) && attr.value.includes("IMAGE_URL")) {
+                            img.setAttribute(attr.name, attr.value.replace("IMAGE_URL", IMAGE_BASE_URL));
+                            console.log(`Ersetze ${attr.name}:`, attr.value);
+                        }
+                    });
+                });
+                console.log("Gefunde src Elemente: ", count);
             }
-
-            function _get_script_path() {
-                return _get_path + "s88216.cgi"
-            }
-
-            function _get_image_path(image) {
-                return _get_path + "/images/" + image
-            }
+            document.addEventListener("DOMContentLoaded", setHxPostAttributes);
         </script>
 
+        <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
+        
         <style>
             .page-title {
                 position: relative;
@@ -353,7 +374,7 @@
                 button.classList.add('active');
                 
                 // Zum aktiven Bild wechseln
-                img.src = img.getAttribute('data-active');
+                img.src = img.getAttribute('src-active');
                 
                 // Selektierte IDs abrufen und zu post hinzufügen
                 const ids = getSelectedIds();
@@ -379,7 +400,7 @@
                 // Nach 500ms zurücksetzen
                 setTimeout(() => {
                     button.classList.remove('active');
-                    img.src = img.getAttribute('data-normal');
+                    img.src = img.getAttribute('src-normal');
                 }, 500);
             }
         </script>
@@ -391,9 +412,10 @@
             <div class="modal-content">
                 <span class="close" onclick="this.closest('dialog').close()">&times;</span>
                 <p>Möchten Sie wirklich alle Einträge löschen?</p>
+                <p>Hinweis: Zeilen zum selektieren anklicken.</p>
                 <div class="button-container">
                     <button id="confirmYes" onclick="this.closest('dialog').close()" 
-                    hx-post="_get_script_path()"
+                    hx-post="POST_URL" 
                     hx-vals='{"action": "delete_all"}' 
                     hx-target="#table-body"
                     hx-swap="innerHTML">Ja</button>
@@ -455,7 +477,7 @@
                     placeholder="Suche..."
                     oninput="this.classList.toggle('empty', !this.value)"
                     hx-trigger="keyup changed delay:500ms"
-                    hx-post="_get_script_path()"
+                    hx-post="POST_URL" 
                     hx-target="#table-body"
                     hx-include="[name='search'], [name='sort_key']"
                     hx-swap="innerHTML"
@@ -465,7 +487,7 @@
             <div class="sort-container">
                 <label class="sort-label" for="sortBy">Sortieren nach:</label>
                 <select name="sort_key" class="sort-select"
-                        hx-post="_get_script_path()"
+                        hx-post="POST_URL"
                         hx-include="[name='search']"
                         hx-target="#table-body"
                         hx-swap="innerHTML">
@@ -478,21 +500,21 @@
 
             <button class="delete-button"
                 onclick="toggleDelete(this)"
-                hx-post="_get_script_path()"
+                hx-post="POST_URL"
                 hx-swap="innerHTML"
                 hx-target="#table-body">
-                <img src="/~s88216/images/trashcan_closed.png" 
-                     data-normal="/~s88216/images/trashcan_closed.png"
-                     data-active="/~s88216/images/trashcan_open.png">
+                <img src="IMAGE_URL/trashcan_closed.png" 
+                     src-normal="IMAGE_URL/trashcan_closed.png"
+                     src-active="IMAGE_URL/trashcan_open.png">
             </button>
 
             <button class="add-button" onclick="toggleAdd(this)">
-                <img src="/~s88216/images/add.png">
+                <img src="IMAGE_URL/add.png">
             </button>
 
             <div class="add-overlay">
                 <form class="add-form"
-                    hx-post="_get_script_path()"
+                    hx-post="POST_URL" 
                     hx-vals='{"action": "add"}'
                     hx-target="#table-body"
                     hx-include="[name='name'], [name='author'], [name='borrower'], [name='date'], [name='search'], [name='sort_key']"
