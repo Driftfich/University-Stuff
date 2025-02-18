@@ -85,9 +85,10 @@ void *read_media(FILE *file, char *delimiter) {
     media->borrowed_date = strdup(borrowed_date);
 
     if (!media->name || !media->author || !media->borrower || !media->borrowed_date) {
-        free(media->name);
-        free(media->author);
-        free(media->borrower);
+        if (media->name) free(media->name);
+        if (media->author) free(media->author);
+        if (media->borrower) free(media->borrower);
+        if (media->borrowed_date) free(media->borrowed_date);
         free(media);
         return NULL;
     }

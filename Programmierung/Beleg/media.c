@@ -142,10 +142,10 @@ void *read_media(FILE *file, char *delimiter) {
 
     if (!media->name || !media->author || !media->borrower || !media->borrowed_date) {
         DEBUG_STR("Error: Failed to duplicate media strings.\n");
-        free(media->name);
-        free(media->author);
-        free(media->borrower);
-        free(media->borrowed_date);
+        if (media->name) free(media->name);
+        if (media->author) free(media->author);
+        if (media->borrower) free(media->borrower);
+        if (media->borrowed_date) free(media->borrowed_date);
         free(media);
         return NULL;
     }
