@@ -11,6 +11,8 @@ typedef struct BorrowedMediaItem {
     char *borrowed_date;
 } tMedia;
 
+tMedia *create_search_query(char *query);
+
 int cmp_name(const void *media, const void *search);
 int cmp_author(const void *media, const void *search);
 int cmp_borrower(const void *media, const void *search);

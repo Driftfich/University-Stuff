@@ -6,15 +6,15 @@
 #define _GNU_SOURCE
 #include "list.h"
 
-#define debug 0
+// #define debug 0
 
-#ifdef _WIN32
-    char *media_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
-    char *html_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html";
-#elif __linux__
-    char *media_path = "./media.csv";
-    char *html_path = "./index.html";
-#endif
+// #ifdef _WIN32
+//     char *media_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\media.csv";
+//     char *html_path = "C:\\Users\\fragf\\Documents\\Github\\C-Programming\\modules\\double_list\\test.html";
+// #elif __linux__
+//     char *media_path = "./media.csv";
+//     char *html_path = "./index.html";
+// #endif
 
 typedef enum {
     TYPE_CHAR,

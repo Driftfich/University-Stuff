@@ -20,9 +20,8 @@ typedef struct tList {
     unsigned int curidx;
 } tList;
 
-// List creation and destruction
+// List creation
 tList* list_create();
-void list_destroy(tList *list);
 
 // Internal position management
 int _check_null(tList *list);
@@ -43,6 +42,8 @@ int insert(tList *list, void *data, int idx);
 // Deletion operations
 tNode *_disconnect_node(tList *list);
 int delete_node(tList *list);
+int delete_ids(tList *list, char *ids);
+void list_destroy(tList *list);
 
 // Utility functions
 void** to_arr(tList *list);
@@ -59,4 +60,4 @@ tList* concat_lists(tList *list1, tList *list2);
 int to_file(tList *list, char *filename, char *delimiter, char *mode, int (*item_saver)(FILE *file, void *item, char *delimiter));
 tList *from_file(char *filename, char *delimiter, void *(*item_loader)(FILE *file, char *delimiter));
 
-#endif // LIST_H
+#endif

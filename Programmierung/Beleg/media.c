@@ -7,6 +7,35 @@
 
 #include "media.h"
 #include "logger.h"
+#include "utility.h"
+
+tMedia *create_search_query(char *query) {
+    if (!query) {
+        DEBUG_STR("Warning: No query given.\n");
+        return NULL;
+    }
+
+    tMedia *search_query = malloc(sizeof(tMedia));
+    if (!search_query) {
+        error_msg("Memory allocation failed for search query.\n");
+    }
+    
+    search_query->name = strdup(query);
+    search_query->author = strdup(query);
+    search_query->borrower = strdup(query);
+    search_query->borrowed_date = strdup(query);
+
+    if (!search_query->name || !search_query->author || !search_query->borrower || !search_query->borrowed_date) {
+        if (search_query->name) free(search_query->name);
+        if (search_query->author) free(search_query->author);
+        if (search_query->borrower) free(search_query->borrower);
+        if (search_query->borrowed_date) free(search_query->borrowed_date);
+        free(search_query);
+        error_msg("Memory allocation failed for search query attributes.\n");
+    }
+    
+    return search_query;
+}
 
 //// Compare Methods for sorting 
 int cmp_name(const void *media, const void *search) {

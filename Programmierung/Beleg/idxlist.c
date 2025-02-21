@@ -6,6 +6,7 @@
 
 #include "list.h"
 #include "logger.h"
+#include "utility.h"
 
 tList* list_create() {
     tList *list = (tList*) malloc(sizeof(tList));
@@ -221,6 +222,36 @@ int delete_node(tList *list) {
     return 1;
 }
 
+// Delete nodes with the given ids separated by ~
+int delete_ids(tList *list, char *ids) {
+    if (!list) {
+        error_msg("No list given for deletion.\n");
+    }
+    if (!ids) {
+        DEBUG_STR("Warning: No ids given for deletion. Therefore no items got deleted.\n");
+        return 0;
+    }
+
+    char *tok = strtok(ids, "~");
+    int count = 0;
+    while (tok != NULL) {
+        int id = atoi(tok);
+        // Because deletion begins with smallest id, following ids have to be decremented by the already deleted id count
+        id -= count;
+        count++;
+
+        if (_move_index(list, id) == 0) {
+            error_msg("Failed to move index to the given id.\n");
+        }
+        if (delete_node(list) == 0) {
+            error_msg("Failed to delete node.\n");
+        }
+        tok = strtok(NULL, "~");
+    }
+
+    return 1;
+}
+
 // remove the whole list, its nodes with the corresponding data from the memory
 void list_destroy(tList *list) {
     if (!list || !list->head) {
@@ -312,7 +343,7 @@ int to_file(tList *list, char *filename, char *delimiter, char *mode, int (*item
     }
 
     if (list->length == 0) {
-        fprintf(file, "");
+        fputs("", file);
     }
     else {
         tNode *tmp = list->head->nxt;
