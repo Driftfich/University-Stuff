@@ -290,7 +290,7 @@ void _error_row(int idx) {
     return;
 }
 
-int initial_page_load() {
+int handle_get_request() {
     char buf[2048];
     FILE *F;
     F = fopen(html_path, "rt");
@@ -343,7 +343,7 @@ int main (int argc, char *argv[], char*env[]) {
     }
 
     if (strcmp(request_method, "GET") == 0) {
-        initial_page_load();
+        handle_get_request();
     }
     else if (strcmp(request_method, "POST") == 0) {
 

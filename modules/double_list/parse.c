@@ -196,7 +196,7 @@ int cmp_name(const void *d1, const void *d2) {
     return _comp_col(d1, d2, offset, TYPE_CHAR);
 }
 
-int initial_page_load() {
+int handle_get_request() {
     char buf[2048];
     FILE *F;
     F = fopen(html_path, "rt");
@@ -233,6 +233,6 @@ int main() {
     // char decoded[256];
     // url_decode(encoded, encoded);
     // printf("Decoded: %s\n", encoded);
-    initial_page_load();
+    handle_get_request();
     return 0;
 }

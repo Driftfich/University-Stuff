@@ -20,6 +20,7 @@ int url_decode(char *out, const char*in);
 PostParams *parse_post_data(char *post_data);
 void _error_row(int idx);
 void _table_printer(tList *list);
-int initial_page_load();
+int handle_get_request();
+void handle_post_request();
 
 #endif
