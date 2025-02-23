@@ -5,18 +5,19 @@
 1. s88216.c
 2. web.c
     - methods for parsing post request, handling get and post request
+    - table printing method
 3. media.c
     - defines tMedia structure
     - method for creating tMedia from query string
-    - (table) printing methods
+    - printing method
     - I/O methods
 4. idxlist.c
     - double ring list implementation with pointer and index to current selected item
 5. utility.c
-    - includes methods used trough the project in different libraries
+    - includes methods used through the project in different libraries
 6. logger.h
-    - 
 7. config.h
+    - macros for **debugging**, **media_path**, **html_path** and csv **DELIMITER**
 8. index.html
 
 ## Data Files
@@ -26,13 +27,13 @@
 
 ## Configuration options
 **change...**
-- location/name of image folder with the **IMAGE_BASE_URL** variable in the **index.html** file
-- location/name of cgi file with the **POST_URL** variable in the **index.html** file
+- path of image folder with the **IMAGE_BASE_URL** variable in the **index.html** file
+- path of cgi file with the **POST_URL** variable in the **index.html** file
 - the column delimiter in the media.csv file with the **DELIMITER** makro in **config.h** file
     - Attention: If the **DELIMITER** doesnt match the current delimiter in the **media.csv** file,
-    the programm cannot parse the **media.csv** file and will overwrite it with nothing in worst case
-- location/name of **index.html** file in the **config.h** file
-- location/name of **media.csv** file in the **config.h** file
+    the programm cannot parse the **media.csv** file correctly and will overwrite it with nothing in worst case
+- path of **index.html** file in the **config.h** file
+- path of **media.csv** file in the **config.h** file
 
 **activate/deactivate debuging...**
 - **permanently** by outcommenting/commenting **#define DEBUG** in the **config.h** file

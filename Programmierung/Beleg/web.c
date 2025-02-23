@@ -12,9 +12,11 @@
 int url_decode(char* out, const char* in)
 {
     if (!in) return -1;
+    // c equals the first char of input string
     char c=*in++, v1, v2;
     while(c != '\0') {
         if(c == '%') {
+            // when c equals percentage, next two char get converted to integer
             v1 = hex_to_int(*in++);
             v2 = hex_to_int(*in++);
             if((v1)<0 || (v2)<0) {
@@ -22,11 +24,14 @@ int url_decode(char* out, const char* in)
                 DEBUG_STR("Error: Failed to decode URL-encoded string.\n");
                 return -1;
             }
+            // Combine the two original 4 Bit to 8 Bit representation to get original char
             c = (v1<<4)|v2;
         }
+        // Set the next output char to c
         *out++ = c;
         c=*in++;
     }
+    // Set last output char to terminating zero
     *out = '\0';
     return 0;
 }
@@ -43,12 +48,13 @@ PostParams *parse_post_data(char *post_data) {
     }
 
     char tmp[200] = {0};
+    // copy post_data to keep input the same for further possible usage
     char *post_copy = strdup(post_data);
     if (!post_copy) {
         free(params);
         error_msg("Memory allocation failed for post data copy.\n");
     }
-
+    // "split" up the post_data by "&", check if the variable is in the current split, scan the value, decode it back
     char *token = strtok(post_copy, "&");
     while (token != NULL) {
         if (strstr(token, "search")) {
@@ -83,8 +89,10 @@ PostParams *parse_post_data(char *post_data) {
             sscanf(token, "action=%29s", params->action);
         }
         else if (strstr(token, "ids=")) {
+            // set start to first row number/id
             char *start = strstr(token, "ids=");
             start += 4;
+            // set end to & after last id
             char *end = strstr(start, "&");
             int len;
             if (end) {
@@ -93,7 +101,7 @@ PostParams *parse_post_data(char *post_data) {
             else {
                 len = strlen(start);
             }
-
+            // copy string with separated numbers to params->ids
             params->ids = malloc(len + 1);
             if (params->ids) {
                 strncpy(params->ids, start, len);
@@ -122,6 +130,7 @@ void _table_printer(tList *list) {
         puts("");
         return;
     }
+    // Iterates over given list and uses _row_printer from media.csv library
     tNode *tmp = list->head->nxt;
     int idx = 0;
     while (tmp != list->head) {
@@ -141,9 +150,11 @@ int handle_get_request() {
     if (F == NULL) {
         error_msg("Failed to open html file.\n");
     }
+    // Iterates over html file and prints it out
     while (fgets(buf, sizeof(buf), F))
     {   
         printf("%s", buf);
+        // if table body is in the current line the media.csv is loaded, sorted and printed out
         if (strstr(buf, "<tbody id=\"table-body\">") != NULL) {
             tList *list = from_file(media_path, DELIMITER, read_media);
             
@@ -187,7 +198,7 @@ void handle_post_request() {
     // char *post_data = strdup("sort_key=2&search=");
     // int length = strlen(post_data);
 
-    
+    // parse the post_data into separate attributes
     PostParams *params = parse_post_data(post_data);
     if (!params) {
         error_msg("Failed to parse post data.\n");
@@ -198,24 +209,11 @@ void handle_post_request() {
         error_msg("Failed to create list from file.\n");
     }
 
+    // If the action equals add, new media gets created with given attributes and inserted into the list
     if (strstr(params->action, "add") != NULL) {
-        tMedia *media = malloc(sizeof(tMedia));
-        if (media) {
-            media->name = strdup(params->name);
-            media->author = strdup(params->author);
-            media->borrower = strdup(params->borrower);
-            media->borrowed_date = strdup(params->date);
-
-            if (!media->name || !media->author || !media->borrower || !media->borrowed_date) {
-                if (media->name) free(media->name);
-                if (media->author) free(media->author);
-                if (media->borrower) free(media->borrower);
-                if (media->borrowed_date) free(media->borrowed_date);
-                free(media);
-                error_msg("Memory allocation failed for new media attributes.\n");
-            }
-
-            insert_tail(list, media);
+        tMedia *new_media = create_media(params->name, params->author, params->borrower, params->date);
+        if (new_media) {
+            insert_tail(list, new_media);
         }
         else {
             error_msg("Memory allocation failed for new media.\n");
@@ -224,23 +222,22 @@ void handle_post_request() {
 
     tList *found = NULL;
     int split = 0;
+    // Check if the query string has been provided
     if (strlen(params->query) > 0) {
-        tMedia *search_query = create_search_query(params->query);
+        // Create media item, where all attributes equal the search query
+        tMedia *search_query = create_media(params->query, params->query, params->query, params->query);
         if (!search_query) {
             error_msg("Failed to create search query.\n");
         }
-
+        // search the list with the _search_media method and the search query media item
         found = search(list, _search_media, search_query);
         if (!found) {
             error_msg("Search failed. Found list is NULL.\n");
         }
+        // set split to 1/true, to concat the lists later on
         split = 1;
 
-        free(search_query->name);
-        free(search_query->author);
-        free(search_query->borrower);
-        free(search_query->borrowed_date);
-        free(search_query);
+        free_media(search_query);
     }
     else {
         found = list;

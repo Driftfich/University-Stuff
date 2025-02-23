@@ -1,8 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+    // uncomment next line to enable debug mode permanently for all compilations
     // #define DEBUG
 
+    // change paths for specific OS if needed
     #ifdef _WIN32
         #define media_path ".\\media.csv"
         #define html_path ".\\index.html"

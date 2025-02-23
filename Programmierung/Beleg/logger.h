@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <time.h>
 
+// if DEBUG flag is defined, logging is enabled
 #ifdef DEBUG 
     extern FILE *ProtFile;
 
     #define FNAME "./log.txt"
 
+    // Macro to get the current time as a string
     #define TIMESTR() { \
         asctime(localtime(&(time(NULL))));
     }

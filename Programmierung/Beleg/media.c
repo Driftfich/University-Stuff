@@ -37,6 +37,40 @@ tMedia *create_search_query(char *query) {
     return search_query;
 }
 
+void free_media(tMedia *media) {
+    if (!media) return;
+    if (media->name) free(media->name);
+    if (media->author) free(media->author);
+    if (media->borrower) free(media->borrower);
+    if (media->borrowed_date) free(media->borrowed_date);
+    free(media);
+    return;
+}
+
+tMedia *create_media(char *name, char*author, char*borrower, char*borrowed_date) {
+    if (!name || !author || !borrower || !borrowed_date) {
+        DEBUG_STR("Warning: At least one attribute was not given.\n");
+        return NULL;
+    }
+
+    tMedia *new_media = malloc(sizeof(tMedia));
+    if (!new_media) {
+        error_msg("Memory allocation failed for new media item.\n");
+    }
+    
+    new_media->name = strdup(name);
+    new_media->author = strdup(author);
+    new_media->borrower = strdup(borrower);
+    new_media->borrowed_date = strdup(borrowed_date);
+
+    if (!new_media->name || !new_media->author || !new_media->borrower || !new_media->borrowed_date) {
+        free_media(new_media);
+        error_msg("Memory allocation failed for at least one attribute of the new media item.\n");
+    }
+    
+    return new_media;
+}
+
 //// Compare Methods for sorting 
 int cmp_name(const void *media, const void *search) {
     if (!media || !search) return 0;
