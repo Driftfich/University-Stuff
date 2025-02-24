@@ -9,7 +9,7 @@
 #include "config.h"
 
 // method for parsing URL-encoded string into original string
-int url_decode(char* out, const char* in)
+int url_decode_inplace(char* out, const char* in)
 {
     if (!in) return -1;
     // c equals the first char of input string
@@ -34,6 +34,19 @@ int url_decode(char* out, const char* in)
     // Set last output char to terminating zero
     *out = '\0';
     return 0;
+}
+
+char *url_decode(const char*in) {
+    char *out = malloc(strlen(in) + 1);
+    if (!out) {
+        DEBUG_STR("Error: Memory allocation failed for URL-decoding.\n");
+        return NULL;
+    }
+    if (url_decode_inplace(out, in) != 0) {
+        free(out);
+        return NULL;
+    }
+    return out;
 }
 
 void free_post_params(PostParams *params) {
@@ -80,31 +93,16 @@ char *parse_attribute(char *token, char *needle, char*delim, int offset, int max
         DEBUG_STR("Warning: Length of attribute exceeds maximum length.\n");
         len = max_len;
     }
-    // allocate memory for the temporary and output strings
-    char *tmp = malloc(len + 1);
-    if (!tmp) {
-        DEBUG_STR("Error: Memory allocation failed for attribute.\n");
-        return NULL;
-    }
+    // allocate memory for the output string
     char *out = malloc(len + 1);
     if (!out) {
-        free(tmp);
         DEBUG_STR("Error: Memory allocation failed for attribute.\n");
         return NULL;
     }
-    // copy the attribute value to the temporary string and set the last char to terminating zero
-    strncpy(tmp, start, len);
-    tmp[len] = '\0';
-
-    // decode the URL-encoded string
-    if (url_decode(out, tmp) != 0) {
-        free(tmp);
-        free(out);
-        DEBUG_STR("Error: Failed to decode URL-encoded string.\n");
-        return NULL;
-    }
-    // free the temporary string and return the output string
-    free(tmp);
+    // copy the attribute value to the output string
+    strncpy(out, start, len);
+    out[len] = '\0';
+    
     return out;
 }
 
@@ -130,25 +128,25 @@ PostParams *parse_post_data(char *post_data) {
     char *token = strtok(post_copy, "&");
     while (token != NULL) {
         if (strstr(token, "search=")) {
-            params->query = parse_attribute(token, "search=", "&", 7, -1);
+            params->query = parse_attribute(token, "search=", "&", 7, MAX_INPUT_LENGTH);
         }
-        else if (strstr(token, "sort_key")) {
+        else if (strstr(token, "sort_key=")) {
             if (sscanf(token, "sort_key=%29s", params->sort_key) != 1) {
                 free_post_params(params);
                 free(post_copy);
                 error_msg("Error: Failed to parse sort key.\n");
             }
         }
-        else if (strstr(token, "name")) {
-            params->name = parse_attribute(token, "name=", "&", 5, -1);
+        else if (strstr(token, "name=")) {
+            params->name = parse_attribute(token, "name=", "&", 5, MAX_INPUT_LENGTH);
         }
-        else if (strstr(token, "author")) {
-            params->author = parse_attribute(token, "author=", "&", 7, -1);
+        else if (strstr(token, "author=")) {
+            params->author = parse_attribute(token, "author=", "&", 7, MAX_INPUT_LENGTH);
         }
-        else if (strstr(token, "borrower")) {
-            params->borrower = parse_attribute(token, "borrower=", "&", 9, -1);
+        else if (strstr(token, "borrower=")) {
+            params->borrower = parse_attribute(token, "borrower=", "&", 9, MAX_INPUT_LENGTH);
         }
-        else if (strstr(token, "date")) {
+        else if (strstr(token, "date=")) {
             params->date = parse_attribute(token, "date=", "&", 5, 50);
         }
         else if (strstr(token, "action=")) {
@@ -184,7 +182,7 @@ void _table_printer(tList *list) {
         puts("");
         return;
     }
-    // Iterates over given list and uses _row_printer from media.csv library
+    // Iterates over given list and uses _row_printer from media.c library
     tNode *tmp = list->head->nxt;
     int idx = 0;
     while (tmp != list->head) {

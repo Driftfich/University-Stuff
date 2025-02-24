@@ -15,7 +15,8 @@ typedef struct {
     char* ids;
 } PostParams;
 
-int url_decode(char *out, const char*in);
+int url_decode_inplace(char* out, const char* in);
+char *url_decode(const char* in);
 char *parse_attribute(char *token, char *needle, char*delim, int offset, int max_len);
 void free_post_params(PostParams *params);
 PostParams *parse_post_data(char *post_data);

@@ -8,6 +8,7 @@
 #include "media.h"
 #include "logger.h"
 #include "utility.h"
+#include "web.h"
 
 void free_media(tMedia *media) {
     // free all attributes of the media struct which are dynamically allocated
@@ -58,7 +59,7 @@ int cmp_name(const void *media, const void *search) {
         return 0;
     }
 
-    return strcmp(m1->author, m2->author);
+    return strcmp(m1->name, m2->name);
 }
 
 int cmp_author(const void *media, const void *search) {
@@ -129,14 +130,42 @@ int _media_printer(void *item) {
 void _row_printer(void *item, int row_idx) {
     tMedia *media = (tMedia*) item;
 
+    // url-decoding just happens here, because the data should be in the original format in the file, to make it work with standard delimiters
+    char *name = url_decode(media->name);
+    char *author = url_decode(media->author);
+    char *borrower = url_decode(media->borrower);
+    char *borrowed_date = url_decode(media->borrowed_date);
+
+    if (!name) {
+        DEBUG_STR("Error: Failed to decode media name.\n");
+        name = "";
+    }
+    if (!author) {
+        DEBUG_STR("Error: Failed to decode media author.\n");
+        author = "";
+    }
+    if (!borrower) {
+        DEBUG_STR("Error: Failed to decode media borrower.\n");
+        borrower = "";
+    }
+    if (!borrowed_date) {
+        DEBUG_STR("Error: Failed to decode media borrowed date.\n");
+        borrowed_date = "";
+    }
     puts("<tr class=clickable-row\n");
     puts("onclick=\"this.classList.toggle('row-selected')\"\n");
     printf("data-id=\"%d\">\n", row_idx);
-    printf("<td>%s</td>\n", media->name);
-    printf("<td>%s</td>\n", media->author);
-    printf("<td>%s</td>\n", media->borrower);
-    printf("<td>%s</td>\n", media->borrowed_date);
+    printf("<td>%s</td>\n", name);
+    printf("<td>%s</td>\n", author);
+    printf("<td>%s</td>\n", borrower);
+    printf("<td>%s</td>\n", borrowed_date);
     puts("</tr>\n");
+
+    if (name) free(name);
+    if (author) free(author);
+    if (borrower) free(borrower);
+    if (borrowed_date) free(borrowed_date);
+
     return;
 }
 
@@ -155,11 +184,16 @@ void *read_media(FILE *file, char *delimiter) {
         return NULL;
     }
 
-    // split the line into the attributes
-    name = strtok(line, delimiter);
-    author = strtok(NULL, delimiter);
-    borrower = strtok(NULL, delimiter);
-    borrowed_date = strtok(NULL, "\n");
+    // split the line into the attributes using strsep to handle empty fields
+    char *tmp_line = line;
+    name = strsep(&tmp_line, delimiter);
+    author = strsep(&tmp_line, delimiter);
+    borrower = strsep(&tmp_line, delimiter);
+    borrowed_date = strsep(&tmp_line, "\n");
+
+    // As author and date are optional, check if they are NULL and set them to empty string
+    if (!author) author = "";
+    if (!borrowed_date) borrowed_date = "";
 
     // create a new media item with the given attributes
     tMedia *media = create_media(name, author, borrower, borrowed_date);

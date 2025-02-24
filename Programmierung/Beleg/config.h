@@ -15,4 +15,6 @@
 
     #define DELIMITER ";"
 
+    #define MAX_INPUT_LENGTH 800
+
 #endif

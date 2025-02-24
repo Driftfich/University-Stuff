@@ -34,6 +34,7 @@
     the programm cannot parse the **media.csv** file correctly and will overwrite it with nothing in worst case
 - path of **index.html** file in the **config.h** file
 - path of **media.csv** file in the **config.h** file
+- **MAX_INPUT_LENGTH** makro in the **config.h** file, to allow bigger/smaller inputs for the fields name, borrower, author and the search query. If **MAX_INPUT_LENGTH** equals a negative number, the limit will be removed. Try this option with caution, as it can be used for a buffer overflow. Default value is currently 800 chars.
 
 **activate/deactivate debuging...**
 - **permanently** by outcommenting/commenting **#define DEBUG** in the **config.h** file
