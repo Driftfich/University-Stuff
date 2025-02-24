@@ -13,8 +13,10 @@
         #define html_path "./index.html"
     #endif
 
-    #define DELIMITER ";"
+    // media.csv file delimiter
+    #define DELIMITER ","
 
+    // Choose negative value to disable limit
     #define MAX_INPUT_LENGTH 800
 
 #endif

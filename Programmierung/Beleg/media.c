@@ -130,7 +130,7 @@ int _media_printer(void *item) {
 void _row_printer(void *item, int row_idx) {
     tMedia *media = (tMedia*) item;
 
-    // url-decoding just happens here, because the data should be in the original format in the file, to make it work with standard delimiters
+    // url-decoding just happens here, because the data should be in the encoded format in the file, to make it work with standard delimiters
     char *name = url_decode(media->name);
     char *author = url_decode(media->author);
     char *borrower = url_decode(media->borrower);
@@ -178,9 +178,13 @@ void *read_media(FILE *file, char *delimiter) {
     
     // read complete line from file
     read = getline(&line, &len, file);
-    if (read == -1 || !line) {
+    if (read == -1) {
         DEBUG_STR("Error: Failed to read line from file.\n");
         free(line);
+        return NULL;
+    }
+    if (!line) {
+        DEBUG_STR("Error: Failed to read line from file.\n");
         return NULL;
     }
 
@@ -198,6 +202,7 @@ void *read_media(FILE *file, char *delimiter) {
     // create a new media item with the given attributes
     tMedia *media = create_media(name, author, borrower, borrowed_date);
     if (!media) {
+        DEBUG_STR("Error: Failed to create media item from file.\n");
         free(line);
         return NULL;
     }

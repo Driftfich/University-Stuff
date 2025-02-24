@@ -102,7 +102,7 @@ char *parse_attribute(char *token, char *needle, char*delim, int offset, int max
     // copy the attribute value to the output string
     strncpy(out, start, len);
     out[len] = '\0';
-    
+
     return out;
 }
 
@@ -116,6 +116,15 @@ PostParams *parse_post_data(char *post_data) {
     if (!params) {
         error_msg("Memory allocation failed for post params.\n");
     }
+
+    params->query = NULL;
+    params->name = NULL;
+    params->author = NULL;
+    params->borrower = NULL;
+    params->date = NULL;
+    params->ids = NULL;
+    params->action[0] = '\0';
+    params->sort_key[0] = '\0';
 
     char *tmp;
     // copy post_data to keep input the same for further possible usage
@@ -234,6 +243,7 @@ int handle_get_request() {
 
 void handle_post_request() {
     // // read in query string
+    DEBUG_STR("Info: Handling post request.\n");
     char *content_length = getenv("CONTENT_LENGTH");
     if (content_length == NULL) {
         error_msg("No content length for the post request found.\n");
@@ -247,7 +257,7 @@ void handle_post_request() {
     }
 
     // // Fake post data
-    // char *post_data = strdup("sort_key=2&search=");
+    // char *post_data = strdup("action=delete_all");
     // int length = strlen(post_data);
 
     // parse the post_data into separate attributes
@@ -260,7 +270,7 @@ void handle_post_request() {
     if (!list) {
         error_msg("Failed to create list from file.\n");
     }
-
+    
     // If the action equals add, new media gets created with given attributes and inserted into the list
     if (strstr(params->action, "add") != NULL) {
         tMedia *new_media = create_media(params->name, params->author, params->borrower, params->date);
@@ -275,7 +285,7 @@ void handle_post_request() {
     tList *found = NULL;
     int split = 0;
     // Check if the query string has been provided
-    if (strlen(params->query) > 0) {
+    if (params->query && strlen(params->query) > 0) {
         // Create media item, where all attributes equal the search query
         tMedia *search_query = create_media(params->query, params->query, params->query, params->query);
         if (!search_query) {
@@ -296,7 +306,6 @@ void handle_post_request() {
         // If no query string is given, the whole list is shown
         found = list;
     }
-
     // sort the visible list
     if (found->length > 1) {
         // sort the list with the given sort key
@@ -313,7 +322,7 @@ void handle_post_request() {
         error_msg("Sort failed. List is NULL.\n");
     }
 
-    if (strstr(params->action, "delete_all") != NULL) { 
+    if (strstr(params->action, "delete_all") != NULL) {
         // empty found list by recreating it
         list_destroy(found);
         found = list_create();

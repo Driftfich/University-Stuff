@@ -431,8 +431,8 @@
                 <div class="button-container">
                     <!-- When confirmation button is pressed, close the dialog and trigger delete all action -->
                     <button id="confirmYes" onclick="this.closest('dialog').close()"
-                    hx-post="POST_URL" 
-                    hx-vals='{"action": "delete_all"}' 
+                    hx-post="POST_URL"
+                    hx-vals='{"action": "delete_all"}'
                     hx-target="#table-body"
                     hx-swap="innerHTML">Ja</button>
                     <button id="confirmNo" onclick="this.closest('dialog').close()">Nein</button>
@@ -520,6 +520,7 @@
                 onclick="toggleDelete(this)"
                 hx-post="POST_URL"
                 hx-swap="innerHTML"
+                hx-include="[name='search'], [name='sort_key']"
                 hx-target="#table-body">
                 <img src="IMAGE_URL/trashcan_closed.png" 
                      src-normal="IMAGE_URL/trashcan_closed.png"
