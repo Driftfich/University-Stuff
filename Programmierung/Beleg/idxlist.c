@@ -9,6 +9,7 @@
 #include "utility.h"
 
 tList* list_create() {
+    // allocate memory for the list and its header
     tList *list = (tList*) malloc(sizeof(tList));
     if (!list) {
         DEBUG_STR("Error: Failed to allocate memory for the list body => Failed to create List.\n");
@@ -21,11 +22,12 @@ tList* list_create() {
         DEBUG_STR("Error: Failed to allocate memory for the header => Failed to create List.\n");
         return NULL;
     }
-    
+    // set the header node attributes
     head->nxt = head;
     head->prv = head;
     head->data = NULL;
     
+    // set the list attributes
     list->head = head;
     list->curpos = head;
     list->curidx = 0;
@@ -33,6 +35,7 @@ tList* list_create() {
     return list;
 }
 
+// checks that important pointers for the list are not NULL
 int _check_null(tList *list){
     if (!list) {
         printf("Error: List is NULL.\n");
@@ -52,6 +55,7 @@ int _check_null(tList *list){
 
 
 // ABSTRACT CURRENT POSITION POINTER METHODS
+// resets the curpos and curidx to the top of the list
 int _curidx_top(tList *list) {
     if (!list || !list->head) {
         DEBUG_STR("Error: Failed to set the curpos/curidx to top of list. List or List header equals NULL.\n");
@@ -62,6 +66,7 @@ int _curidx_top(tList *list) {
     return 1;
 }
 
+// resets the curpos and curidx to the end of the list
 int _curidx_end(tList *list) {
     if (!list || !list->head) {
         DEBUG_STR("Error: Failed to set the curpos/curidx to end of list. List or List header equals NULL.\n");
@@ -72,6 +77,7 @@ int _curidx_end(tList *list) {
     return 1;
 }
 
+// abstract forward move of the position pointer in the list
 int _mov_nxt_idx(tList *list) {
     if (!list || !list->head) {
         DEBUG_STR("Error: Failed to move curpos to nxt index. List or List header equals NULL.\n");
@@ -109,6 +115,7 @@ int _move_index(tList *list, int index) {
     if (_check_null(list) == 0){
         return 0;
     }
+    // Check that index is not out of bounds
     else if (index < 0) {
         printf("Error: Index is negative.\n");
         DEBUG_STR("Error: Index is negative.\n");
@@ -118,8 +125,9 @@ int _move_index(tList *list, int index) {
         DEBUG_STR("Error: Index is out of bounds.\n");
         return 0;
     }
-
+    // Calculate the distance between the current selected node and the target node
     int dist = index - list->curidx + 1;
+    // move the position pointer to the target node based on the distance
     if (dist >= 0 && dist < list->length / 2) {
         for (int i=0; i<dist; i++) {
             _mov_nxt_idx(list);
@@ -152,12 +160,13 @@ int _move_index(tList *list, int index) {
 int _insert_behind(tList *list, void *data) {
     if (!list || !list->curpos) return 0;
     
+    // allocate memory for the new node
     tNode *new = (tNode*) malloc(sizeof(tNode));
     if (!new) {
         DEBUG_STR("Error: Failed to insert behind the list.\n");
         return 0;
     }
-    
+    // set the new node attributes
     new->data = data;
     new->nxt = list->curpos->nxt;
     new->prv = list->curpos;
@@ -165,6 +174,7 @@ int _insert_behind(tList *list, void *data) {
     new->nxt->prv = new;
     list->curpos->nxt = new;
 
+    // increase the list length
     list->length++;
     return 1;
 }
@@ -185,7 +195,9 @@ int insert_head(tList *list, void *data) {
     return _insert_behind(list, data);
 }
 
+// insert data at a specific index
 int insert(tList *list, void *data, int idx) {
+    // move the position pointer before the target index and insert the data behind
     if (_move_index(list, idx-1) == 0) {
         DEBUG_STR("Error: Failed to inset new data.\n");
         return 0;
@@ -195,15 +207,16 @@ int insert(tList *list, void *data, int idx) {
 
 
 // DELETION METHODS
-// delete the current selected (current position pointer) node (+data)
+// disconnect the current selected node from the list/chain
 tNode *_disconnect_node(tList *list) {
     tNode *tmp = list->curpos;
     tmp->nxt->prv = tmp->prv;
     tmp->prv->nxt = tmp->nxt;
-
+    
     return tmp;
 }
 
+// delete the current selected (current position pointer) node (+data) and reset the current position pointer to the top of the list
 int delete_node(tList *list) {
     if (!list || !list->curpos || list->curpos == list->head) {
         DEBUG_STR("Error: Failed to delete list node. list, list header equals NULL or the current position equals the list head.\n");
@@ -288,18 +301,20 @@ void print_list(tList *list, void (*printer) (void *data)) {
     printf("])\n");
 }
 
+// Create a pointer array from the list
 void **to_arr(tList *list) {
-    // Falls list->length <= 0 wird einfach nur ein leeres Pointer Array erstellt
+    // if list->length <= 0, a empty array is returned
     if (!list || !list->head) {
         DEBUG_STR("Error: Failed to convert the list to array. List or List header equals NULL.\n");
         return NULL;
     }
-
+    // allocate memory for the pointer array
     void **arr = malloc(sizeof(void *) * list->length);
     if (!arr) {
         DEBUG_STR("Error: Failed to convert the list to array. Failed to allocate the memory for the pointer array.\n");
         return NULL;
     }
+    // Iterate over the list and copy the data pointers to the array
     tNode *current = list->head->nxt;
     for (int i=0; i<list->length && current != list->head; i++) {
         arr[i] = current->data;
@@ -309,16 +324,19 @@ void **to_arr(tList *list) {
     return arr;
 }
 
+// create a list from a pointer array
 tList *from_arr(void **arr, int arr_length) {
     if (!arr) {
         DEBUG_STR("Error: Failed to create list from array. Input array is NULL.\n");
         return NULL;
     }
+    // create a new list
     tList *list = list_create();
     if (!list) {
         DEBUG_STR("Error: Failed to create list from array. Failed to create list.\n");
         return NULL;
     }
+    // iterate over the array and insert each element into the list
     for (int i=0; i<arr_length; i++) {
         if (!insert_tail(list, arr[i])) {
             DEBUG_STR("Error: Failed to create list from array. Failed to insert element into the list.\n");
@@ -329,23 +347,25 @@ tList *from_arr(void **arr, int arr_length) {
     return list;
 }
 
+// write the list to a file
 int to_file(tList *list, char *filename, char *delimiter, char *mode, int (*item_saver)(FILE *file, void *item, char *delimiter)) {
     if (!list || !list->head) {
         DEBUG_STR("Error: Failed to write list to file. List or List header equals NULL.\n");
         return 0;
     }
-
+    // open the file
     FILE *file = fopen(filename, mode);
     if (!file) {
         printf("Error opening file %s\n", filename);
         DEBUG_STR("Error: Failed to open file for writing.\n");
         return 0;
     }
-
+    // if the list is empty, write an empty line
     if (list->length == 0) {
         fputs("", file);
     }
     else {
+        // iterate over the list and write each element to the file with the given item_saver method
         tNode *tmp = list->head->nxt;
         while (tmp != list->head) {
             void *item = tmp->data;
@@ -358,20 +378,22 @@ int to_file(tList *list, char *filename, char *delimiter, char *mode, int (*item
     return 1;
 }
 
-
+// create a list from a file
 tList *from_file(char *filename, char *delimiter, void *(*item_loader)(FILE *file, char *delimiter)) {
+    // create a new list
     tList *list = list_create();
     if (!list) {
         DEBUG_STR("Error: Failed to create list from file. Failed to create list.\n");
         return NULL;
     }
+    // open the file
     FILE *file = fopen(filename, "r");
     if (!file) {
         fprintf(stderr, "Error opening file %s\n", filename);
         DEBUG_STR("Error: Failed to open file for reading.\n");
         return NULL;
     }
-
+    // iterate over the file and load each element into the list with the given item_loader method
     while (!feof(file)) {
         void *item = item_loader(file, delimiter);
         if (!item) {
@@ -386,16 +408,18 @@ tList *from_file(char *filename, char *delimiter, void *(*item_loader)(FILE *fil
     return list;
 }
 
+// search for data in the list with the given compare method. Input list becomes rest list and found list is returned
 tList *search(tList *list, int (*cmp)(const void*c1, const void*c2), const void *data) {
     if (!list || !list->head || !cmp) return NULL;
     
-    // Input list becomes rest list and found list is returned
     tList *found = list_create();
     if (!found) {
         DEBUG_STR("Error: Failed to create found list.\n");
         return NULL;
     }
+    // set the current position pointer to the top of the list
     if (_curidx_top(list) == 0) return NULL;
+    // Iterate over the list. If the comparison is successful, disconnect the node from old list and insert it into the found list
     while (list->curpos != list->head) {
         if (!list->curpos->data) {
             printf("Error: Data is NULL\n");
@@ -405,9 +429,8 @@ tList *search(tList *list, int (*cmp)(const void*c1, const void*c2), const void 
         if (cmp(list->curpos->data, data) == 0) {
             tNode *tmp = _disconnect_node(list);
             list->curpos = tmp->nxt;
-            // list->curidx hasnt to be increased, because the next element idx is the same as the current, when the current is deleted
+            // list->curidx hasnt to be increased, because the next element idx is the same as the current, when the current is disconnected
             list->length--;
-            // printf("Found: %s\n", (char *) tmp->data);
             insert_tail(found, tmp->data);
             free(tmp);
         }
@@ -415,6 +438,7 @@ tList *search(tList *list, int (*cmp)(const void*c1, const void*c2), const void 
             _mov_nxt_idx(list);
         }
     }
+    // reset the current position pointer to the top of the list
     if (_curidx_top(list) == 0) {
         DEBUG_STR("Warning: Failed to reset the current position to the top of the list.\n");
         return NULL;
@@ -422,6 +446,7 @@ tList *search(tList *list, int (*cmp)(const void*c1, const void*c2), const void 
     return found;
 }
 
+// bubblesort the list
 tList *sort(tList *list, int (*cmp)(const void *c1, const void*c2)) { // 
     if (!list || !list->head || !cmp) {
         DEBUG_STR("Error: Failed to sort list. List, list header or comp(are) method equals NULL.\n");
@@ -448,6 +473,7 @@ tList *sort(tList *list, int (*cmp)(const void *c1, const void*c2)) { //
     return list;
 }
 
+// qsort the list, by converting it to an array, use the qsort function and convert it back to a list
 tList* qsort_list(tList *list, int (*cmp) (const void *c1, const void *c2)) {
     if (!list || !list->head || !cmp) {
         DEBUG_STR("Error: Failed to sort list. List, list header or comp(are) method equals NULL.\n");
@@ -473,6 +499,8 @@ tList* qsort_list(tList *list, int (*cmp) (const void *c1, const void *c2)) {
     return list;
 }
 
+// concat two lists together and free the second list
+// Need to check before if the two input lists refer to the same list
 tList* concat_lists(tList *list1, tList *list2) {
     if (!list1 || !list2) {
         DEBUG_STR("Error: List1 or List2 is NULL.\n");
@@ -493,21 +521,21 @@ tList* concat_lists(tList *list1, tList *list2) {
         return list1;
     }
     
-    // Verbinde letztes Element von list1 mit erstem von list2
+    // Connect the last element of list1 to the first element of list2
     list1->head->prv->nxt = list2->head->nxt;
     list2->head->nxt->prv = list1->head->prv;
     
-    // Verbinde letztes Element von list2 mit head von list1
+    // Connect the last element of list2 to the head of list1
     list2->head->prv->nxt = list1->head;
     list1->head->prv = list2->head->prv;
     
-    // Aktualisiere Länge
+    // Update length
     list1->length += list2->length;
 
     list1->curpos = list1->head->nxt;
     list1->curidx = 1;
     
-    // Speicher von list2 head freigeben
+    // Free the memory of list2 head
     free(list2->head);
     free(list2);
     

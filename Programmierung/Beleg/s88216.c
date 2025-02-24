@@ -13,6 +13,7 @@
 #include "utility.h"
 #include "config.h"
 
+// Variable for the log file
 FILE *ProtFile;
 
 int main (int argc, char *argv[], char*env[]) {
@@ -54,8 +55,7 @@ int main (int argc, char *argv[], char*env[]) {
         handle_post_request();
     }
     else {
-        puts("No valid request method found."); 
-        DEBUG_STR("Error: No valid request method found.\n");
+        error_msg("Error: No valid request method found.\n");
     }
 
     return 0;

@@ -9,35 +9,8 @@
 #include "logger.h"
 #include "utility.h"
 
-tMedia *create_search_query(char *query) {
-    if (!query) {
-        DEBUG_STR("Warning: No query given.\n");
-        return NULL;
-    }
-
-    tMedia *search_query = malloc(sizeof(tMedia));
-    if (!search_query) {
-        error_msg("Memory allocation failed for search query.\n");
-    }
-    
-    search_query->name = strdup(query);
-    search_query->author = strdup(query);
-    search_query->borrower = strdup(query);
-    search_query->borrowed_date = strdup(query);
-
-    if (!search_query->name || !search_query->author || !search_query->borrower || !search_query->borrowed_date) {
-        if (search_query->name) free(search_query->name);
-        if (search_query->author) free(search_query->author);
-        if (search_query->borrower) free(search_query->borrower);
-        if (search_query->borrowed_date) free(search_query->borrowed_date);
-        free(search_query);
-        error_msg("Memory allocation failed for search query attributes.\n");
-    }
-    
-    return search_query;
-}
-
 void free_media(tMedia *media) {
+    // free all attributes of the media struct which are dynamically allocated
     if (!media) return;
     if (media->name) free(media->name);
     if (media->author) free(media->author);
@@ -48,6 +21,7 @@ void free_media(tMedia *media) {
 }
 
 tMedia *create_media(char *name, char*author, char*borrower, char*borrowed_date) {
+    // Create a new media item with the given attributes + Checks if the attributes arent NULL
     if (!name || !author || !borrower || !borrowed_date) {
         DEBUG_STR("Warning: At least one attribute was not given.\n");
         return NULL;
@@ -151,7 +125,7 @@ int _media_printer(void *item) {
     return printf("Media: %s, Author: %s, Borrower: %s , Date: %s\n", media->name, media->author, media->borrower, media->borrowed_date);
 }
 
-// Printing media item to table row
+// Printing media item to table row with the given row index for identification
 void _row_printer(void *item, int row_idx) {
     tMedia *media = (tMedia*) item;
 
@@ -168,55 +142,46 @@ void _row_printer(void *item, int row_idx) {
 
 // Methods for file I/O with media instances
 void *read_media(FILE *file, char *delimiter) {
-    char name[200], author[200], borrower[200], borrowed_date[200];
-    char format[256] = {0};
-    int ret;
-    ret = snprintf(format, sizeof(format),
-         "%%[^%s]%s"     // Name bis Delimiter
-         "%%[^%s]%s"     // Author bis Delimiter
-         "%%[^%s]%s"     // Borrower bis Delimiter
-         "%%s\n",    // Date bis Zeilenende
-         delimiter, delimiter,
-         delimiter, delimiter,
-         delimiter, delimiter);
-    if (ret == -1) {
-        DEBUG_STR("Error: Failed to create format string for reading media from file.\n");
-        return NULL;
-    }
-    ret = fscanf(file, format,
-                 name, author, borrower, &borrowed_date);
-    if (ret != 4) {
-        DEBUG_STR("Error: Failed to read media from file.\n");
+    char *name = NULL, *author = NULL, *borrower = NULL, *borrowed_date = NULL;
+    char *line = NULL;
+    size_t len = 0;
+    size_t read;
+    
+    // read complete line from file
+    read = getline(&line, &len, file);
+    if (read == -1 || !line) {
+        DEBUG_STR("Error: Failed to read line from file.\n");
+        free(line);
         return NULL;
     }
 
-    tMedia *media = malloc(sizeof(tMedia));
+    // split the line into the attributes
+    name = strtok(line, delimiter);
+    author = strtok(NULL, delimiter);
+    borrower = strtok(NULL, delimiter);
+    borrowed_date = strtok(NULL, "\n");
+
+    // create a new media item with the given attributes
+    tMedia *media = create_media(name, author, borrower, borrowed_date);
     if (!media) {
-        DEBUG_STR("Error: Failed to allocate memory for media.\n");
-        printf("Error allocating memory for media\n");
+        free(line);
         return NULL;
     }
 
-    // Strings duplizieren
-    media->name = strdup(name);
-    media->author = strdup(author);
-    media->borrower = strdup(borrower);
-    media->borrowed_date = strdup(borrowed_date);
-
-    if (!media->name || !media->author || !media->borrower || !media->borrowed_date) {
-        DEBUG_STR("Error: Failed to duplicate media strings.\n");
-        if (media->name) free(media->name);
-        if (media->author) free(media->author);
-        if (media->borrower) free(media->borrower);
-        if (media->borrowed_date) free(media->borrowed_date);
-        free(media);
-        return NULL;
-    }
-
-    return (void *) media;
+    free(line);
+    return media;
 }
 
 int write_media(FILE *file, void *item, char *delimiter) {
     tMedia *media = (tMedia*) item;
+    if (!media) {
+        DEBUG_STR("Error: Failed to write media item to file. Media item is NULL.\n");
+        return -1;
+    }
+    // Check if any of the media attributes are NULL
+    if (!media->name || !media->author || !media->borrower || !media->borrowed_date) {
+        DEBUG_STR("Error: One or more media attributes are NULL. Cannot write to file.\n");
+        return -1;
+    }
     return fprintf(file, "%s%s%s%s%s%s%s\n", media->name, delimiter, media->author, delimiter, media->borrower, delimiter, media->borrowed_date);
 }

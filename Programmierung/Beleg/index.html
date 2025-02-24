@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="de">
     <head>
+        <!-- Define char encoding, Viewport width and scaling -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <script>
-            
+            // Change these path for your needs
             const POST_URL = "./s88216.cgi";
             const IMAGE_BASE_URL = "./images";
             
+            // Function to set HTMX post attributes and image URLs
             function setHxPostAttributes() {
                 console.log("Starte Platzhalter-Ersetzung...");
                 
+                // Select all hx-post-elements
                 const hxElems = document.querySelectorAll("[hx-post]");
                 console.log("Gefundene hx-post Elemente: ", hxElems.length);
+                // Replace each POST_URL in hx-post value with POST_URL
                 hxElems.forEach((element) => {
                     const currentValue = element.getAttribute("hx-post");
                     if (currentValue.includes("POST_URL")) {
@@ -23,11 +27,15 @@
                 
                 const srcPattern = /^src.*/i;
                 count = 0;
+                // Select all img elements
                 const imgElems = document.querySelectorAll("img");
                 imgElems.forEach(img => {
+                    // Convert img attributes to array
                     [...img.attributes].forEach(attr => {
                         count += 1;
+                        // Check that the attribute name starts with "src" and the value contains "IMAGE_URL"
                         if (srcPattern.test(attr.name) && attr.value.includes("IMAGE_URL")) {
+                            // Replace IMAGE_URL with IMAGE_BASE_URL
                             img.setAttribute(attr.name, attr.value.replace("IMAGE_URL", IMAGE_BASE_URL));
                             console.log(`Ersetze ${attr.name}:`, attr.value);
                         }
@@ -35,12 +43,15 @@
                 });
                 console.log("Gefunde src Elemente: ", count);
             }
+            // Call the function when the DOM is fully loaded
             document.addEventListener("DOMContentLoaded", setHxPostAttributes);
         </script>
 
+        <!-- Load htmx package -->
         <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
         
         <style>
+            /* Styling for page-title, toolbar, search-container, sort, add-button, delete-button*/
             .page-title {
                 position: relative;
                 font-size: 40px;
@@ -116,7 +127,8 @@
                 font-size: 16px;
                 color: #007bff;
             }
-
+            
+            /* shake animation and color animation for trashcan */
             @keyframes shake {
                 0% { transform: translateY(0) rotate(0deg); }
                 20% { transform: translateY(-5px) rotate(-15deg); }
@@ -182,6 +194,7 @@
                 transform: scale(1.1);
             }
 
+            /* rotate and color animation for the add-button */
             @keyframes rotate {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
@@ -248,7 +261,7 @@
             /* Overlay Container */
             .add-overlay {
                 position: absolute;
-                top: 120%;  /* Unter dem Button */
+                top: 120%; 
                 right: 88px;
                 /* transform: translateX(-50%); */
                 background: white;
@@ -262,7 +275,7 @@
                 justify-content: center;
             }
 
-            /* Pfeil/Nob nach oben */
+            /* Arrow/Nob of the add-overlay */
             .add-overlay::before {
                 content: '';
                 position: absolute;
@@ -274,7 +287,7 @@
                 border-bottom: 10px solid white;
             }
 
-            /* Pfeilrand */
+            /* Arrow border */
             .add-overlay::after {
                 content: '';
                 position: absolute;
@@ -287,7 +300,7 @@
                 z-index: -1;
             }
 
-            /* Sichtbarkeitsklasse */
+            /* Visibility class */
             .add-overlay.visible {
                 display: block;
             }
@@ -295,7 +308,7 @@
             .add-form {
                 display: flex;
                 flex-direction: column;
-                gap: 15px;  /* Abstand zwischen Feldern */
+                gap: 15px;  /* distance between fields */
                 padding: 5px;
                 
             }
@@ -303,7 +316,7 @@
             .form-input {
                 padding: 10px 15px;
                 border: 1px solid #ddd;
-                border-radius: 20px;  /* Runde Ecken */
+                border-radius: 20px;  /* Rounded corners */
                 font-size: 14px;
                 transition: all 0.3s ease;
                 width: 90%;
@@ -349,35 +362,36 @@
     <body>
 
         <script>
+            // Method to toggle the visibility of the add-overlay
             function toggleAdd(button) {
                 const overlay = document.querySelector('.add-overlay');
                 overlay.classList.toggle('visible');
+                // Block closing the overlay via add-button
                 button.classList.add('active');
-                
 
-                // Nach Animation Klasse entfernen
+                // reset the block after 500ms
                 setTimeout(() => {
                     button.classList.remove('active');
                 }, 500);
             }
-        </script>
-
-        <script>
-
+            
+            // Method to get selected row IDs
             function getSelectedIds() {
                 const selectedRows = document.querySelectorAll('.clickable-row.row-selected');
                 return Array.from(selectedRows).map(row => row.getAttribute('data-id'));
             }
 
+            // Method to toggle delete action
             function toggleDelete(button) {
                 const img = button.querySelector('img');
                 button.classList.add('active');
                 
-                // Zum aktiven Bild wechseln
+                // Change to open trashcan
                 img.src = img.getAttribute('src-active');
                 
-                // Selektierte IDs abrufen und zu post hinzufügen
+                // get selected IDs
                 const ids = getSelectedIds();
+                // if ids are selected, add them to the post request
                 if(ids.length > 0) {
                     button.setAttribute('hx-vals', JSON.stringify({
                         action: "delete",
@@ -385,7 +399,8 @@
                         search: document.querySelector('[name="search"]').value,
                         sort_key: document.querySelector('[name="sort_key"]').value
                     }));
-                } 
+                }
+                // if no ids are selected, show popup message
                 else {
                     button.removeAttribute('hx-vals');
                     // popup message
@@ -397,7 +412,7 @@
                     button.removeAttribute('hx-vals');
                 });
                 
-                // Nach 500ms zurücksetzen
+                // reset the image after 500ms
                 setTimeout(() => {
                     button.classList.remove('active');
                     img.src = img.getAttribute('src-normal');
@@ -407,14 +422,15 @@
 
         <h1 class="page-title">Bibliotheksverzeichnis</h1>
 
-
+        <!-- Dialog for delete all confirmation -->
         <dialog id="delete-all-dialog" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="this.closest('dialog').close()">&times;</span>
                 <p>Möchten Sie wirklich alle Einträge löschen?</p>
                 <p>Hinweis: Zeilen zum selektieren anklicken.</p>
                 <div class="button-container">
-                    <button id="confirmYes" onclick="this.closest('dialog').close()" 
+                    <!-- When confirmation button is pressed, close the dialog and trigger delete all action -->
+                    <button id="confirmYes" onclick="this.closest('dialog').close()"
                     hx-post="POST_URL" 
                     hx-vals='{"action": "delete_all"}' 
                     hx-target="#table-body"
@@ -426,6 +442,7 @@
 
 
         <style>
+            /* Styling of the popup window */
             .modal {
                 border: none;
                 border-radius: 8px;
@@ -470,13 +487,14 @@
 
         <div class="toolbar">
             <div class="search-container">
+                <!-- Search bar with 500ms delayed input, to throttle for fast input -->
                 <input 
                     type="text" 
                     class="search-input"
                     name="search"
                     placeholder="Suche..."
                     oninput="this.classList.toggle('empty', !this.value)"
-                    hx-trigger="keyup changed delay:500ms"
+                    hx-trigger="keyup changed delay:500ms" 
                     hx-post="POST_URL" 
                     hx-target="#table-body"
                     hx-include="[name='search'], [name='sort_key']"
@@ -534,7 +552,7 @@
                                class="form-input" 
                                placeholder="Author"
                                value=""
-                               required>
+                               >
                     </div>
                     <div class="form-group">
                         <input type="text"
@@ -552,7 +570,7 @@
                                title="Bitte Datum im Format YYYY-MM-DD eingeben"
                                 pattern="\d{4}-[0-1][0-9]-[0-3][0-9]"
                                value=""
-                               required>
+                               >
                     </div>
 
                     <button type="submit" class="submit-button">Hinzufügen</button>
@@ -563,27 +581,28 @@
         </div>
 
         <script>
+            // Method to control the closing of the overlay
+            let canCloseOverlay = true;
             document.querySelector('.add-button').addEventListener('click', function(event) {
                 event.stopPropagation();
                 const overlay = document.querySelector('.add-overlay');
-                // const canCloseOverlay = true;
                 
                 // When the overlay is closed 
                 if (getComputedStyle(overlay).display === 'none') {
                     overlay.style.display = 'block';
-                    // Blockiere das Schließen kurzzeitig
+                    // Block closing the overlay for short time
                     canCloseOverlay = false;
                     setTimeout(() => {
                         canCloseOverlay = true;
                     }, 100); // 100ms Delay
                 } 
-                // Wenn das Overlay offen ist und geschlossen werden kann
+                // When the overlay is open and can be closed
                 else if (canCloseOverlay) {
                     overlay.style.display = 'none';
                 }
             });
 
-            // Klick außerhalb des Overlays
+            // Click outside of the overlay to close it
             document.addEventListener('click', function(event) {
                 const overlay = document.querySelector('.add-overlay');
                 const overlayContent = document.querySelector('.add-form');
@@ -596,13 +615,13 @@
                     !overlayContent.contains(event.target) &&
                     !add_button.contains(event.target)) {
                     
-                    // Alle Formularfelder zurücksetzen
+                    // reset the form inputs
                     const formInputs = document.querySelectorAll('.form-input');
                     formInputs.forEach(input => {
                         input.value = '';
                     });
             
-                    // Overlay ausblenden
+                    // hide the overlay
                     overlay.style.display = 'none';
                 }
             });
@@ -630,13 +649,13 @@
                 box-sizing: border-box; /* Box-Sizing for correct column sizing */
             }
             
-            /* Hervorhebung selektierter Zeilen */
+            /* highlight selected rows */
             .row-selected {
                 background-color: #91d3ff;
                 transition: background-color 0.2s ease;
             }
 
-            /* Hover-Effekt für Zeilen */
+            /* Hover effect for rows */
             .clickable-row:hover {
                 background-color: #d3dbe0;
                 cursor: pointer;

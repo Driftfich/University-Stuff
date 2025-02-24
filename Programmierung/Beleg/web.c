@@ -36,6 +36,78 @@ int url_decode(char* out, const char* in)
     return 0;
 }
 
+void free_post_params(PostParams *params) {
+    // free all attributes of the PostParams struct which are all dynamically allocated
+    if (!params) return;
+    if (params->query) free(params->query);
+    if (params->name) free(params->name);
+    if (params->author) free(params->author);
+    if (params->borrower) free(params->borrower);
+    if (params->date) free(params->date);
+    if (params->ids) free(params->ids);
+    free(params);
+    return;
+}
+
+char *parse_attribute(char *token, char *needle, char*delim, int offset, int max_len) {
+    if (!token || !needle || !delim) {
+        DEBUG_STR("Error: Invalid input for parse_attribute.\n");
+        return NULL;
+    }
+    // search for the start of the attribute in the token
+    char *start = strstr(token, needle);
+    if (!start) {
+        DEBUG_STR("Warning: Needle not found in token.\n");
+        return NULL;
+    }
+    // move the start pointer to the end of the needle, therefore before the attribute value
+    if (strlen(start) < offset) {
+        DEBUG_STR("Warning: Offset is greater than length of attribute.\n");
+        return NULL;
+    }
+    start += offset;
+    // search for the end of the attribute in the token and calculate the length
+    char *end = strstr(start, delim);
+    int len;
+    if (end) {
+        len = end - start;
+    }
+    else {
+        len = strlen(start);
+    }
+    // check if the length exceeds the maximum length
+    if (len > max_len && max_len > 0) {
+        DEBUG_STR("Warning: Length of attribute exceeds maximum length.\n");
+        len = max_len;
+    }
+    // allocate memory for the temporary and output strings
+    char *tmp = malloc(len + 1);
+    if (!tmp) {
+        DEBUG_STR("Error: Memory allocation failed for attribute.\n");
+        return NULL;
+    }
+    char *out = malloc(len + 1);
+    if (!out) {
+        free(tmp);
+        DEBUG_STR("Error: Memory allocation failed for attribute.\n");
+        return NULL;
+    }
+    // copy the attribute value to the temporary string and set the last char to terminating zero
+    strncpy(tmp, start, len);
+    tmp[len] = '\0';
+
+    // decode the URL-encoded string
+    if (url_decode(out, tmp) != 0) {
+        free(tmp);
+        free(out);
+        DEBUG_STR("Error: Failed to decode URL-encoded string.\n");
+        return NULL;
+    }
+    // free the temporary string and return the output string
+    free(tmp);
+    return out;
+}
+
 PostParams *parse_post_data(char *post_data) {
     if (!post_data) {
         DEBUG_STR("Warning: No post data given.\n");
@@ -47,66 +119,47 @@ PostParams *parse_post_data(char *post_data) {
         error_msg("Memory allocation failed for post params.\n");
     }
 
-    char tmp[200] = {0};
+    char *tmp;
     // copy post_data to keep input the same for further possible usage
     char *post_copy = strdup(post_data);
     if (!post_copy) {
         free(params);
         error_msg("Memory allocation failed for post data copy.\n");
     }
-    // "split" up the post_data by "&", check if the variable is in the current split, scan the value, decode it back
+    // "split" up the post_data copy by "&", check if the variable is in the current split, parse the value and save it
     char *token = strtok(post_copy, "&");
     while (token != NULL) {
-        if (strstr(token, "search")) {
-            sscanf(token, "search=%199s", tmp);
-            url_decode(params->query, tmp);
-            memset(tmp, 0, sizeof(tmp));
+        if (strstr(token, "search=")) {
+            params->query = parse_attribute(token, "search=", "&", 7, -1);
         }
         else if (strstr(token, "sort_key")) {
-            sscanf(token, "sort_key=%29s", params->sort_key);
+            if (sscanf(token, "sort_key=%29s", params->sort_key) != 1) {
+                free_post_params(params);
+                free(post_copy);
+                error_msg("Error: Failed to parse sort key.\n");
+            }
         }
         else if (strstr(token, "name")) {
-            sscanf(token, "name=%199s", tmp);
-            url_decode(params->name, tmp);
-            memset(tmp, 0, sizeof(tmp));
+            params->name = parse_attribute(token, "name=", "&", 5, -1);
         }
         else if (strstr(token, "author")) {
-            sscanf(token, "author=%199s", tmp);
-            url_decode(params->author, tmp);
-            memset(tmp, 0, sizeof(tmp));
+            params->author = parse_attribute(token, "author=", "&", 7, -1);
         }
         else if (strstr(token, "borrower")) {
-            sscanf(token, "borrower=%199s", tmp);
-            url_decode(params->borrower, tmp);
-            memset(tmp, 0, sizeof(tmp));
+            params->borrower = parse_attribute(token, "borrower=", "&", 9, -1);
         }
         else if (strstr(token, "date")) {
-            sscanf(token, "date=%199s", tmp);
-            url_decode(params->date, tmp);
-            memset(tmp, 0, sizeof(tmp));
+            params->date = parse_attribute(token, "date=", "&", 5, 50);
         }
         else if (strstr(token, "action=")) {
-            sscanf(token, "action=%29s", params->action);
+            if (sscanf(token, "action=%29s", params->action) != 1) {
+                free_post_params(params);
+                free(post_copy);
+                error_msg("Error: Failed to parse action.\n");
+            }
         }
         else if (strstr(token, "ids=")) {
-            // set start to first row number/id
-            char *start = strstr(token, "ids=");
-            start += 4;
-            // set end to & after last id
-            char *end = strstr(start, "&");
-            int len;
-            if (end) {
-                len = end - start;
-            }
-            else {
-                len = strlen(start);
-            }
-            // copy string with separated numbers to params->ids
-            params->ids = malloc(len + 1);
-            if (params->ids) {
-                strncpy(params->ids, start, len);
-                params->ids[len] = '\0';
-            }
+            params->ids = parse_attribute(token, "ids=", "&", 4, -1);
 
         }
         token = strtok(NULL, "&");
@@ -117,6 +170,7 @@ PostParams *parse_post_data(char *post_data) {
 }
 
 void _error_row(int idx) {
+    // Prints out a row with 4 error cells for debugging purposes
     puts("<tr class=clickable-row\n");
     puts("onclick=\"this.classList.toggle('row-selected')\"\n");
     printf("data-id=\"%d\">\n", idx);
@@ -236,14 +290,18 @@ void handle_post_request() {
         }
         // set split to 1/true, to concat the lists later on
         split = 1;
-
+        
+        // remove the search query media item from memory
         free_media(search_query);
     }
     else {
+        // If no query string is given, the whole list is shown
         found = list;
     }
 
+    // sort the visible list
     if (found->length > 1) {
+        // sort the list with the given sort key
         int (*comp[4])(const void*, const void*) = {cmp_name, cmp_author, cmp_borrower, cmp_date};
         int idx = atoi(params->sort_key);
         if (idx < 0 || idx > 3) {
@@ -253,27 +311,26 @@ void handle_post_request() {
         found = qsort_list(found, comp[idx]);
     }
 
-    if (!found || found->length == 0) {
+    if (!found) {
         error_msg("Sort failed. List is NULL.\n");
     }
 
     if (strstr(params->action, "delete_all") != NULL) { 
-        // empty found list
+        // empty found list by recreating it
         list_destroy(found);
         found = list_create();
     }
 
     if (strstr(params->action, "delete") != NULL && params->ids) {
+        // delete specific nodes from the found list
         if (delete_ids(found, params->ids) == 0) {
             error_msg("Failed to delete ids.\n");
         }
     }
-    if (params->ids) {
-        free(params->ids);
-    }
+    // clean up the post params
+    free_post_params(params);
 
-    free(params);
-
+    // if the found list has elements, print them out. Otherwise, print out that no results were found
     if (found->length > 0) {
         _table_printer(found);
     }
@@ -281,13 +338,13 @@ void handle_post_request() {
         puts("<tr><td>No results found.</td></tr>\n");
     }
 
-    // concat the rest and list together to save the whole list
+    // concat the visible and rest list together when they got split up before. Else not, because then found and list refer to the same list
     if (split) {
         found = concat_lists(found, list);
         if (!found) DEBUG_STR("Error: Failed concat list and found together.\n");
     }
     
-    // Save the list to file
+    // Save the complete list to file
     if (to_file(found, media_path, DELIMITER, "w", &write_media) == 0) DEBUG_STR("Error: Failed saving found list to file\n");
 
     // Free the list
