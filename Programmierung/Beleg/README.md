@@ -1,5 +1,8 @@
 # Library Directory Readme
 
+## Author
+Franz Rehschuh (Matr.-Nr.:s88216)
+
 ## Project outline
 
 1. s88216.c
