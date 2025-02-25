@@ -433,6 +433,7 @@
                     <button id="confirmYes" onclick="this.closest('dialog').close()"
                     hx-post="POST_URL"
                     hx-vals='{"action": "delete_all"}'
+                    hx-include="[name='search'], [name='sort_key']"
                     hx-target="#table-body"
                     hx-swap="innerHTML">Ja</button>
                     <button id="confirmNo" onclick="this.closest('dialog').close()">Nein</button>
