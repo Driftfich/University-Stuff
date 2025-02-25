@@ -4,6 +4,7 @@
 * Description: Utility functions for the library management system, including conversion and formatting, which are used in multiple files.
 */
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

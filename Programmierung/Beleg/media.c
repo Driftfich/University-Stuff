@@ -4,12 +4,12 @@
 * Description: Functions for managing media items, including creating, freeing, comparing, printing and I/O operations.
 */
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
 #include <ctype.h>
-#define _GNU_SOURCE
 
 #include "media.h"
 #include "logger.h"
