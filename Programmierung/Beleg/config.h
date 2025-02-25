@@ -26,4 +26,7 @@ Description: Configuration file containing paths and settings for the project.
     // Choose negative value to disable limit for user inputs
     #define MAX_INPUT_LENGTH 800
 
+    // Maximum length of the read in post data, to avoid buffer overflow. Choose negative value to disable limit
+    #define MAX_POSTD_LENGTH 32000
+
 #endif

@@ -259,6 +259,10 @@ void handle_post_request() {
     }
 
     int length = atoi(content_length) + 1;
+    if (length > MAX_POSTD_LENGTH && MAX_POSTD_LENGTH > 0) {
+        DEBUG_STR("Warning: Post data length exceeds maximum length and will be cut down.\n");
+        length = MAX_POSTD_LENGTH;
+    }
     char post_data[length];
     
     if (fgets(post_data, length, stdin) == NULL) {

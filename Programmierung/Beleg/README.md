@@ -20,7 +20,7 @@ Franz Rehschuh (Matr.-Nr.:MATRICULATION_NUMBER) (s-Nr.:s88216)
     - includes methods used through the project in different libraries
 6. **logger.h**
 7. **config.h**
-    - macros for **debugging**, **media_path**, **html_path**, **MAX_INPUT_LENGTH** and csv file **DELIMITER**
+    - macros for **debugging**, **media_path**, **html_path**, **MAX_INPUT_LENGTH**, **MAX_POSTD_LENGTH** and csv file **DELIMITER**
 8. **index.html**
 
 ## Data Files
@@ -38,6 +38,7 @@ Franz Rehschuh (Matr.-Nr.:MATRICULATION_NUMBER) (s-Nr.:s88216)
 - path of **index.html** file in the **config.h** file
 - path of **media.csv** file in the **config.h** file
 - **MAX_INPUT_LENGTH** makro in the **config.h** file, to allow bigger/smaller inputs for the fields name, borrower, author and the search query. If **MAX_INPUT_LENGTH** equals a negative number, the limit will be removed. Try this option with caution, as it can be used for a buffer overflow. Default value is currently 800 char.
+- **MAX_POSTD_LENGTH** makro in the **config.h** file, to allow larger/smaller post data requests. This maximum is set, to avoid buffer overflows. Change with caution. To disable limit, set to a negative int value. Default is 32000 Chars (32KB).
 
 **activate/deactivate debuging...**
 - **permanently** by outcommenting/commenting **#define DEBUG** in the **config.h** file
