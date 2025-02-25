@@ -1,4 +1,8 @@
-
+/*
+* Author: Franz Rehschuh
+* Date: 2025-02-25
+* Description: Header file for managing media items, including creation, comparison, printing, and I/O operations.
+*/
 #ifndef MEDIA_H
 #define MEDIA_H
 

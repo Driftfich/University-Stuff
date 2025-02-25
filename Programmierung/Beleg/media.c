@@ -1,3 +1,9 @@
+/*
+* Author: Franz Rehschuh
+* Date: 2025-02-25
+* Description: Functions for managing media items, including creating, freeing, comparing, printing and I/O operations.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

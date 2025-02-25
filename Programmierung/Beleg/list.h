@@ -1,3 +1,9 @@
+/*
+* Author: Franz Rehschuh
+* Date: 2025-02-25
+* Description: Header file for a linked list implementation with various utilities.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>

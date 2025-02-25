@@ -1,3 +1,9 @@
+/*
+* Author: Franz Rehschuh
+* Date: 2025-02-25
+* Description: Main file for the library management system, combining all components by using the get and post handler methods.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -1,3 +1,16 @@
+/**
+ * Author: Franz Rehschuh
+ * Date: 2025-02-25
+ *
+ * Description: Functions for managing a linked list, including
+ * creating the list, checking pointers, and moving through it.
+ * Also includes functions for inserting and deleting nodes,
+ * printing the list, and converting it to and from an array.
+ * Additionally, it provides functions for searching and sorting
+ * the list, as well as writing to and reading from a file.
+ * Finally, it includes a function for concatenating two lists.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>

@@ -1,3 +1,9 @@
+/*
+* Author: Franz Rehschuh
+* Date: 2025-02-25
+* Description: Header file containing methods for decoding url-encoded strings, parsing post data and handling GET and POST requests.
+*/
+
 #include "list.h"
 
 #ifndef WEB_H

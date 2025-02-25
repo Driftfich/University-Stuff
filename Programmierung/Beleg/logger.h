@@ -1,3 +1,10 @@
+/*
+* Author: Franz Rehschuh
+* Date: 2025-02-25
+* Description: Header file for a simple logging system, allowing to log strings,
+* integers, and floats to a file together with metadata (file name, line number, function name and time).
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

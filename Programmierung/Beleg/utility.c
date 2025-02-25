@@ -1,3 +1,9 @@
+/*
+* Author: Franz Rehschuh
+* Date: 2025-02-25
+* Description: Utility functions for the library management system, including conversion and formatting, which are used in multiple files.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

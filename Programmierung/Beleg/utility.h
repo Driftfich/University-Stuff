@@ -1,3 +1,9 @@
+/*
+* Author: Franz Rehschuh
+* Date: 2025-02-25
+* Description: Header file for utility functions used in multiple files.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -1,3 +1,10 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-02-25
+
+Description: Configuration file containing paths and settings for the project.
+*/
+
 #ifndef CONFIG_H
 #define CONFIG_H
 

@@ -1,3 +1,10 @@
+/*
+* Author: Franz Rehschuh
+* Date: 2025-02-25
+* Description: C-file containing methods for parsing url-encoded strings, parsing post data,
+* freeing post params, printing tables, and handling GET and POST requests.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
