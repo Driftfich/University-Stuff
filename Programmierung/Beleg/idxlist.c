@@ -152,14 +152,16 @@ int _move_index(tList *list, int index) {
         }
     }
     else if (index < list->length / 2) {
-        list->curpos = list->head->nxt;
-        list->curidx = 1;
+        // list->curpos = list->head->nxt;
+        // list->curidx = 1;
+        _curidx_top(list);
         for (int i = 0; i < index; i++) {
             _mov_nxt_idx(list);
         }
     } else {
-        list->curpos = list->head->prv;
-        list->curidx = list->length;
+        // list->curpos = list->head->prv;
+        // list->curidx = list->length;
+        _curidx_end(list);
         for (int i = list->length - 1; i > index; i--) {
             _mov_prv_idx(list);
         }
@@ -184,6 +186,7 @@ int _insert_behind(tList *list, void *data) {
     new->nxt = list->curpos->nxt;
     new->prv = list->curpos;
 
+    // connect the new node to the list
     new->nxt->prv = new;
     list->curpos->nxt = new;
 
@@ -248,7 +251,7 @@ int delete_node(tList *list) {
     return 1;
 }
 
-// Delete nodes with the given ids separated by ~
+// Delete nodes with the given ids separated by ~ (beginning with smallest to largest id)
 int delete_ids(tList *list, char *ids) {
     if (!list) {
         error_msg("No list given for deletion.\n");
@@ -278,7 +281,7 @@ int delete_ids(tList *list, char *ids) {
     return 1;
 }
 
-// remove the whole list, its nodes with the corresponding data from the memory
+// remove the whole list and its nodes with the corresponding data from the memory
 void list_destroy(tList *list) {
     if (!list || !list->head) {
         DEBUG_STR("Error: Failed to destroy list. list or list header is NULL.\n");
@@ -320,6 +323,10 @@ void **to_arr(tList *list) {
     if (!list || !list->head) {
         DEBUG_STR("Error: Failed to convert the list to array. List or List header equals NULL.\n");
         return NULL;
+    }
+    if (list->length < 0) {
+        DEBUG_STR("Warning: List length is negative and will be set to zero for conversion to array.\n");
+        list->length = 0;
     }
     // allocate memory for the pointer array
     void **arr = malloc(sizeof(void *) * list->length);
@@ -382,7 +389,9 @@ int to_file(tList *list, char *filename, char *delimiter, char *mode, int (*item
         tNode *tmp = list->head->nxt;
         while (tmp != list->head) {
             void *item = tmp->data;
-            item_saver(file, item, delimiter);
+            if (item_saver(file, item, delimiter) == -1) {
+                DEBUG_STR("Error: Failed to write item to file.\n");
+            }
             tmp = tmp->nxt;
         }
     }
@@ -486,7 +495,7 @@ tList *sort(tList *list, int (*cmp)(const void *c1, const void*c2)) { //
     return list;
 }
 
-// qsort the list, by converting it to an array, use the qsort function and convert it back to a list
+// qsort the list, by converting it to an array, use the qsort function and overwrite the list nodes with the sorted elements
 tList* qsort_list(tList *list, int (*cmp) (const void *c1, const void *c2)) {
     if (!list || !list->head || !cmp) {
         DEBUG_STR("Error: Failed to sort list. List, list header or comp(are) method equals NULL.\n");

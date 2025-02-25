@@ -23,7 +23,7 @@ Description: Configuration file containing paths and settings for the project.
     // media.csv file delimiter
     #define DELIMITER ","
 
-    // Choose negative value to disable limit
+    // Choose negative value to disable limit for user inputs
     #define MAX_INPUT_LENGTH 800
 
 #endif

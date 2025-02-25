@@ -1,27 +1,27 @@
 # Library Directory Readme
 
 ## Author
-Franz Rehschuh (Matr.-Nr.:s88216)
+Franz Rehschuh (Matr.-Nr.:MATRICULATION_NUMBER) (s-Nr.:s88216)
 
 ## Project outline
 
-1. s88216.c
-2. web.c
+1. **s88216.c**
+2. **web.c + web.h**
     - methods for parsing post request, handling get and post request
     - table printing method
-3. media.c
+3. **media.c + media.h**
     - defines tMedia structure
     - method for creating tMedia from query string
     - printing method
     - I/O methods
-4. idxlist.c
+4. **idxlist.c + list.h**
     - double ring list implementation with pointer and index to current selected item
-5. utility.c
+5. **utility.c + utility.h**
     - includes methods used through the project in different libraries
-6. logger.h
-7. config.h
+6. **logger.h**
+7. **config.h**
     - macros for **debugging**, **media_path**, **html_path**, **MAX_INPUT_LENGTH** and csv file **DELIMITER**
-8. index.html
+8. **index.html**
 
 ## Data Files
 
@@ -53,6 +53,6 @@ gcc -o s88216.cgi s88216.c idxlist.c media.c web.c utility.c -DDEBUG
 - in the browser direct to the server adress, where the s88216.cgi file is placed.
 - For **searching**, just type the query into the top search bar. The search area includes all columns.
 - **Sorting** can be changed via the blue dropdown menu
-- **Add items** by clicking the plus button to open the add overlay. Type in the required attributes and press the submit button. Please check that the date is in the required format, for correct sorting by the date.
+- **Add items** by clicking the plus button to open the add overlay. Type in the required attributes and press the submit button. Please check that the date is in the required format, for correct sorting by the date. The author and date field are optional.
 - For **specific row deletion** click on the lines which you want to delete to color them permanently light blue. Then press the trashcan button.
 - To **delete all** rows, unselect all rows which are currently selected and press the trashcan button. A popup occurs and asks for agreement. Press yes/ja to confirm the action.

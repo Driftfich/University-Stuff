@@ -21,6 +21,7 @@ int url_decode_inplace(char* out, const char* in)
     if (!in) return -1;
     // c equals the first char of input string
     char c=*in++, v1, v2;
+    // iterate over the input string until the terminating zero is reached
     while(c != '\0') {
         if(c == '%') {
             // when c equals percentage, next two char get converted to integer
@@ -31,7 +32,7 @@ int url_decode_inplace(char* out, const char* in)
                 DEBUG_STR("Error: Failed to decode URL-encoded string.\n");
                 return -1;
             }
-            // Combine the two original 4 Bit to 8 Bit representation to get original char
+            // Combine the two original 4 Bit hex to 8 Bit representation to get original char
             c = (v1<<4)|v2;
         }
         // Set the next output char to c
@@ -69,6 +70,7 @@ void free_post_params(PostParams *params) {
     return;
 }
 
+// parse a single attribute from a token string with the given needle and metadata for the attribute
 char *parse_attribute(char *token, char *needle, char*delim, int offset, int max_len) {
     if (!token || !needle || !delim) {
         DEBUG_STR("Error: Invalid input for parse_attribute.\n");
@@ -80,7 +82,7 @@ char *parse_attribute(char *token, char *needle, char*delim, int offset, int max
         DEBUG_STR("Warning: Needle not found in token.\n");
         return NULL;
     }
-    // move the start pointer to the end of the needle, therefore before the attribute value
+    // move the start pointer to the end of the needle, therefore before the attribute value by adding the offset
     if (strlen(start) < offset) {
         DEBUG_STR("Warning: Offset is greater than length of attribute.\n");
         return NULL;
@@ -249,8 +251,8 @@ int handle_get_request() {
 }
 
 void handle_post_request() {
-    // // read in query string
     DEBUG_STR("Info: Handling post request.\n");
+    // // read in query string
     char *content_length = getenv("CONTENT_LENGTH");
     if (content_length == NULL) {
         error_msg("No content length for the post request found.\n");
@@ -314,7 +316,7 @@ void handle_post_request() {
         found = list;
     }
     // sort the visible list
-    if (found->length > 1) {
+    if (found->length > 1 && params->sort_key) {
         // sort the list with the given sort key
         int (*comp[4])(const void*, const void*) = {cmp_name, cmp_author, cmp_borrower, cmp_date};
         int idx = atoi(params->sort_key);
@@ -325,8 +327,8 @@ void handle_post_request() {
         found = qsort_list(found, comp[idx]);
     }
 
-    if (!found) {
-        error_msg("Sort failed. List is NULL.\n");
+    if (!found || !params->sort_key) {
+        error_msg("Sort failed. List is NULL or sort key wasnt given.\n");
     }
 
     if (strstr(params->action, "delete_all") != NULL) {
@@ -362,7 +364,20 @@ void handle_post_request() {
     if (to_file(found, media_path, DELIMITER, "w", &write_media) == 0) DEBUG_STR("Error: Failed saving found list to file\n");
 
     // Free the list
-    list_destroy(found);
+    // list_destroy(found);
+    tNode *tmp = found->head->nxt;
+    tNode *nxt;
+    while (tmp != found->head) {
+        free_media(tmp->data);
+        nxt = tmp->nxt;
+        free(tmp);
+        tmp = nxt;
+    }
+    free(found->head);
+    free(found);
 
+
+    DEBUG_STR("Info: Successfully freed the found list.\n");
+    
     return;
 }

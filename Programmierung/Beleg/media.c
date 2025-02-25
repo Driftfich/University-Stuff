@@ -132,9 +132,13 @@ int _media_printer(void *item) {
     return printf("Media: %s, Author: %s, Borrower: %s , Date: %s\n", media->name, media->author, media->borrower, media->borrowed_date);
 }
 
-// Printing media item to table row with the given row index for identification
+// Printing media item to table row with the given row index for identification. Url decodes the attributes for correct display before printing
 void _row_printer(void *item, int row_idx) {
     tMedia *media = (tMedia*) item;
+    if (!media) {
+        DEBUG_STR("Error: Failed to print media item. Media item is NULL.\n");
+        return;
+    }
 
     // url-decoding just happens here, because the data should be in the encoded format in the file, to make it work with standard delimiters
     char *name = url_decode(media->name);

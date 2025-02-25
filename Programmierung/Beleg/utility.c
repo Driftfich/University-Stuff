@@ -41,10 +41,16 @@ char *format_string(char *format,...) {
 void error_msg(char *msg) {
     // print out the error message to stdout and to the log file and exit
     if (msg) {
-        char *err_msg = format_string("Error: %s", msg);
-        DEBUG_STR(err_msg);
-        puts(err_msg);
-        free(err_msg);
+        char *err_msg = format_string("Error: %s", msg);  
+        if (err_msg) {
+            DEBUG_STR(err_msg);
+            puts(err_msg);
+            free(err_msg);
+        } else {
+            DEBUG_STR(msg);
+            puts(msg);
+        }
     }
+    DEBUG_STR("Warning: Exiting program.\n");
     exit(1);
 }

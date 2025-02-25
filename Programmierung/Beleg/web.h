@@ -21,13 +21,22 @@ typedef struct {
     char* ids;
 } PostParams;
 
+// Methods for decoding url-encoded strings
 int url_decode_inplace(char* out, const char* in);
 char *url_decode(const char* in);
+
+// Methods for parsing post data
 char *parse_attribute(char *token, char *needle, char*delim, int offset, int max_len);
-void free_post_params(PostParams *params);
 PostParams *parse_post_data(char *post_data);
+
+// Method for freeing post params
+void free_post_params(PostParams *params);
+
+// Methods for printing
 void _error_row(int idx);
 void _table_printer(tList *list);
+
+// Methods for handling GET and POST requests
 int handle_get_request();
 void handle_post_request();
 
