@@ -5,8 +5,9 @@
 int encrypt(char *in, int dist) {
     if (!in) return -1;
 
+    char c;
     for (int i=0; in[i] != '\0'; i++) {
-        char c = in[i];
+        c = in[i];
 
         if (c >= 'a' && c <= 'z') {
             c = (c - 'a' + dist) % 26 + 'a';
@@ -23,14 +24,15 @@ int encrypt(char *in, int dist) {
 int decrypt(char *in, int dist) {
     if (!in) return -1;
 
+    char c;
     for (int i=0; in[i] != '\0'; i++) {
-        char c = in[i];
+        c = in[i];
 
         if (c >= 'a' && c <= 'z') {
-            c = (c - 'a' - dist + 26) % 26 + 'a';
+            c = (c - 'a' - dist) % 26 + 'a';
         }
         else if (c >= 'A' && c <= 'Z') {
-            c = (c - 'A' - dist + 26) % 26 + 'A';
+            c = (c - 'A' - dist) % 26 + 'A';
         }
         in[i] = c;
     }
