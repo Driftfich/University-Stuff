@@ -126,6 +126,92 @@ int Person::setEmail(const std::string& email) {
         cerr << "Error: Email is too long" << endl;
         return -1;
     }
+
+    // Check the email with regex for a valid email address
+    if (!email.empty()) {
+        std::regex email_regex(R"((\w+)(\.\w+)*@(\w+)(\.\w+)+)");
+        if (!std::regex_match(email, email_regex)) {
+            cerr << "Error: Email is not a valid email address" << endl;
+            return -1;
+        }
+    }
+    
     this->email = email;
     return 0;
+}
+
+int Person::setTel(const std::string& tel) {
+    // Check that the tel is not too long
+    if (tel.length() > MAX_TEL_LENGTH && MAX_TEL_LENGTH != -1) {
+        cerr << "Error: Tel is too long" << endl;
+        return -1;
+    }
+
+    // Check the tel with regex for a valid tel number
+    if (!tel.empty()) {
+        std::regex tel_regex("^\\+?[1-9]\\d{1,14}$");
+        if (!std::regex_match(tel, tel_regex)) {
+            cerr << "Error: Tel is not a valid number" << endl;
+            return -1;
+        }
+    }
+    this->tel = tel;
+    return 0;
+}
+
+// constructor using setters
+Person::Person(unsigned long id, const std::string& fname, const std::string& lname, const std::string& ename,
+               const std::chrono::year_month_day birthday, Gender gender, const std::string& note,
+               const std::string& location, const std::string& email, const std::string& tel) {
+    setId(id);
+    setFname(fname);
+    setLname(lname);
+    setEname(ename);
+    setBirthday(birthday);
+    setGender(gender);
+    setNote(note);
+    setLocation(location);
+    setEmail(email);
+    setTel(tel);
+}
+
+// copy constructor
+Person::Person(const Person& other) {
+    // deep copy is handled by the copy constructor of the std::string class
+    // setter method overhead is not needed as already ensured in the other object
+    this->id = other.id;
+    this->fname = other.fname;
+    this->lname = other.lname;
+    this->ename = other.ename;
+    this->birthday = other.birthday;
+    this->gender = other.gender;
+    this->note = other.note;
+    this->location = other.location;
+    this->email = other.email;
+    this->tel = other.tel;
+}
+
+// copy assignment operator
+Person& Person::operator=(const Person& other) {
+    // deep copy is handled by the copy assignment operator of the std::string class
+    // setter method overhead is not needed as already ensured in the other object
+    // self-assignment check
+    if (this != &other) {
+        this->id = other.id;
+        this->fname = other.fname;
+        this->lname = other.lname;
+        this->ename = other.ename;
+        this->birthday = other.birthday;
+        this->gender = other.gender;
+        this->note = other.note;
+        this->location = other.location;
+        this->email = other.email;
+        this->tel = other.tel;
+    }
+    return *this;
+}
+
+Person::~Person() {
+    // destructor
+    // no need to delete anything as std::string and std::chrono::year_month_day are handled by the C++ standard library
 }

@@ -6,7 +6,7 @@
 // return -1 <=> error
 // return 0 <=> fine
 
-#infdef _PERSON_H
+#ifndef _PERSON_H
 #define _PERSON_H
 
 #include <iostream>
@@ -48,14 +48,45 @@ class Person {
         int setLocation(const std::string& note);
         int setEmail(const std::string& note);
         int setTel(const std::string& note);
+
+        // getter methods
+        unsigned long getId() const {return this->id;}
+        std::string getFname() const {return this->fname;}
+        std::string getLname() const {return this->lname;}
+        std::string getEname() const {return this->ename;}
+        std::chrono::year_month_day getBirthday() const {return this->birthday;}
+        Gender getGender() const {return this->gender;}
+        std::string getNote() const {return this->note;}
+        std::string getLocation() const {return this->location;}
+        std::string getEmail() const {return this->email;}
+        std::string getTel() const {return this->tel;}
+
+        // constructor using setters
+        Person(unsigned long id, const std::string& fname, const std::string& lname, const std::string& ename,
+                const std::chrono::year_month_day birthday, Gender gender, const std::string& note,
+                const std::string& location, const std::string& email, const std::string& tel) {
+            setId(id);
+            setFname(fname);
+            setLname(lname);
+            setEname(ename);
+            setBirthday(birthday);
+            setGender(gender);
+            setNote(note);
+            setLocation(location);
+            setEmail(email);
+            setTel(tel);
+        }
+
+        // copy constructor
+        Person(const Person& other);
+
+        // copy assignment operator
+        Person& operator=(const Person& other);
+
+        // destructor
+        ~Person();
 }
 
-class Borrower: public Person {
-    int limit; // LImit the amount of items one borrower can hold at the same time
 
-    public:
-        // constructor
-
-}
 
 #endif
