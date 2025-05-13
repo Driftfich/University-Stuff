@@ -11,8 +11,8 @@
 
 #define MAX_ENAME_LENGTH 120
 // age
-#define MAX_AGE
-#define MIN_AGE
+#define MAX_AGE 120
+#define MIN_AGE 0
 
 // metadata max lengths
 #define MAX_NOTE_LENGTH 500
@@ -25,6 +25,15 @@
 #define MAX_ITEMS_PER_BORROWER_DEFAULT 5 // Default at init, dont set to -1
 
 // Settings for Media params
+#define MIN_TITLE_LENGTH 3
 #define MAX_TITLE_LENGTH 100
+#define MAX_DESCRIPTION_LENGTH 500
+#define MAX_PUBLISHER_LENGTH 100
+#define MAX_GENRE_LENGTH 50
+#define MAX_LANGUAGE_LENGTH 50
+#define MAX_LANGUAGE_COUNT 10
+#define MAX_ARTIST_COUNT 50
+#define MAX_METADATA_LENGTH 100
+#define MAX_METADATA_COUNT 10
 
 #endif

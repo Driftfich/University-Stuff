@@ -84,7 +84,7 @@ class Person {
         Person& operator=(const Person& other);
 
         // destructor
-        ~Person();
+        virtual ~Person();
 }
 
 

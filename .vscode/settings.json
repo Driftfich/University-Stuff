@@ -63,6 +63,10 @@
         "variant": "cpp",
         "list": "cpp",
         "format": "cpp",
-        "__nullptr": "cpp"
+        "__nullptr": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "shared_mutex": "cpp",
+        "cfenv": "cpp"
     }
 }
