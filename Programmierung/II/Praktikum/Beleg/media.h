@@ -19,7 +19,7 @@ class Media {
     std::string description;
     std::string genre;
     std::vector<std::string> languages;
-    unsigned int available_copies;
+    // unsigned int available_copies;
     // metadata map with string to T map
     std::map<std::string, std::variant<int, float, std::string>> metadata;
 
@@ -33,7 +33,7 @@ class Media {
         int setDescription(const std::string& description);
         int setGenre(const std::string& genre);
         int setLanguages(const std::vector<std::string>& languages);
-        void setAvailableCopies(unsigned int available_copies) {this->available_copies = available_copies;}
+        // void setAvailableCopies(unsigned int available_copies) {this->available_copies = available_copies;}
         int setMetadata(const std::map<std::string, std::variant<int, float, std::string>>& metadata);
 
         // getter methods
@@ -45,13 +45,14 @@ class Media {
         std::string getDescription() const {return this->description;}
         std::string getGenre() const {return this->genre;}
         std::vector<std::string> getLanguages() const {return this->languages;}
-        unsigned int getAvailableCopies() const {return this->available_copies;}
+        // unsigned int getAvailableCopies() const {return this->available_copies;}
         std::map<std::string, std::variant<int, float, std::string>> getMetadata() const {return this->metadata;}
         
         // constructor using setters
         Media(unsigned long id, const std::string& title, const std::chrono::year_month_day publication_date,
               const std::vector<int>& artist_ids, const std::string& publisher, const std::string& description,
-              const std::string& genre, const std::vector<std::string>& languages, unsigned int available_copies,
+              const std::string& genre, const std::vector<std::string>& languages,
+            //    unsigned int available_copies,
               const std::map<std::string, std::variant<int, float, std::string>>& metadata) {
             setId(id);
             setTitle(title);
@@ -61,7 +62,7 @@ class Media {
             setDescription(description);
             setGenre(genre);
             setLanguages(languages);
-            setAvailableCopies(available_copies);
+            // setAvailableCopies(available_copies);
             setMetadata(metadata);
             this->artists = std::vector<Person*>();
         }
@@ -77,7 +78,7 @@ class Media {
             this->description = other.description;
             this->genre = other.genre;
             this->languages = other.languages;
-            this->available_copies = other.available_copies;
+            // this->available_copies = other.available_copies;
             this->metadata = other.metadata;
         }
 
@@ -93,7 +94,7 @@ class Media {
                 this->description = other.description;
                 this->genre = other.genre;
                 this->languages = other.languages;
-                this->available_copies = other.available_copies;
+                // this->available_copies = other.available_copies;
                 this->metadata = other.metadata;
             }
             return *this;

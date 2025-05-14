@@ -9,6 +9,8 @@ using namespace std;
 
 class Borrower: public Person {
     unsigned int limit; // Limit the amount of items one borrower can hold at the same time
+    unsigned long lib_id; // Library ID
+    unsigned long bow_id; // Borrower ID 
 
     public:
         // constructor with member initializer list
@@ -48,9 +50,25 @@ class Borrower: public Person {
             }
         }
 
+        void setLibId(unsigned long lib_id) {
+            this->lib_id = lib_id;
+        }
+
+        void setBowId(unsigned long bow_id) {
+            this->bow_id = bow_id;
+        }
+
         // getter method
         unsigned int getLimit() const {
             return this->limit;
+        }
+
+        unsigned long getLibId() const {
+            return this->lib_id;
+        }
+
+        unsigned long getBowId() const {
+            return this->bow_id;
         }
 }
 
