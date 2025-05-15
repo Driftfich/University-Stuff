@@ -1,10 +1,10 @@
-#include <string>
+#include <QString>
 #include <iostream>
 #include "text.h"
 
 using namespace std;
 
-int Text::setIsbn(const string& isbn) {
+int Text::setIsbn(const QString& isbn) {
     if (isbn.length() != 13) {
         cerr << "Error: ISBN must be 13 characters long" << endl;
         return -1;
@@ -13,9 +13,9 @@ int Text::setIsbn(const string& isbn) {
     int sum = 0;
     for (int i = 0; i < 12; i++) {
         if (i % 2 == 0) {
-            sum += isbn[i] - '0';
+            sum += isbn[i].digitValue();
         } else {
-            sum += (isbn[i] - '0') * 3;
+            sum += isbn[i].digitValue() * 3;
         }
     }
     int checkDigit = sum % 10;
@@ -27,12 +27,12 @@ int Text::setIsbn(const string& isbn) {
     return 0;
 }
 
-int Text::setBindingType(const string& bindingType) {
+int Text::setBindingType(const QString& bindingType) {
     this->bindingType = bindingType;
     return 0;
 }
 
-int Text::setTextFormat(const string& textFormat) {
+int Text::setTextFormat(const QString& textFormat) {
     this->textFormat = textFormat;
     return 0;
 }

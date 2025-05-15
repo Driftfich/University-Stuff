@@ -4,15 +4,18 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <chrono>
-#include <map>
+#include <QDate>
+#include <QString>
+#include <QVector>
+#include <QMap>
+#include <variant>
 #include "json.hpp" // for json work with files
 #include "config.h"
 
 class Media {
     unsigned long id;
     QString title;
-    std::chrono::year_month_day publication_date;
+    QDate publication_date;
     QVector<int> artist_ids; // array persons ids => Information about saved in Person class
     QVector<Person*> artists; // array of deserialized artists/persons (person.h) objects
     QString publisher;
@@ -21,39 +24,39 @@ class Media {
     QVector<QString> languages;
     // unsigned int available_copies;
     // metadata map with string to T map
-    std::map<QString, std::variant<int, float, QString>> metadata;
+    QMap<QString, std::variant<int, float, QString>> metadata;
 
     public:
         // setter methods
         void setId(unsigned long id) {this->id = id;}
         int setTitle(const QString& title);
-        int setPublicationDate(const std::chrono::year_month_day publication_date);
+        int setPublicationDate(const QDate publication_date);
         int setArtistIds(const QVector<int>& artist_ids);
         int setPublisher(const QString& publisher);
         int setDescription(const QString& description);
         int setGenre(const QString& genre);
         int setLanguages(const QVector<QString>& languages);
         // void setAvailableCopies(unsigned int available_copies) {this->available_copies = available_copies;}
-        int setMetadata(const std::map<QString, std::variant<int, float, QString>>& metadata);
+        int setMetadata(const QMap<QString, std::variant<int, float, QString>>& metadata);
 
         // getter methods
         unsigned long getId() const {return this->id;}
         QString getTitle() const {return this->title;}
-        std::chrono::year_month_day getPublicationDate() const {return this->publication_date;}
+        QDate getPublicationDate() const {return this->publication_date;}
         QVector<int> getArtistIds() const {return this->artist_ids;}
         QString getPublisher() const {return this->publisher;}
         QString getDescription() const {return this->description;}
         QString getGenre() const {return this->genre;}
         QVector<QString> getLanguages() const {return this->languages;}
         // unsigned int getAvailableCopies() const {return this->available_copies;}
-        std::map<QString, std::variant<int, float, QString>> getMetadata() const {return this->metadata;}
+        QMap<QString, std::variant<int, float, QString>> getMetadata() const {return this->metadata;}
         
         // constructor using setters
-        Media(unsigned long id, const QString& title, const std::chrono::year_month_day publication_date,
+        Media(unsigned long id, const QString& title, const QDate publication_date,
               const QVector<int>& artist_ids, const QString& publisher, const QString& description,
               const QString& genre, const QVector<QString>& languages,
             //    unsigned int available_copies,
-              const std::map<QString, std::variant<int, float, QString>>& metadata) {
+              const QMap<QString, std::variant<int, float, QString>>& metadata) {
             setId(id);
             setTitle(title);
             setPublicationDate(publication_date);

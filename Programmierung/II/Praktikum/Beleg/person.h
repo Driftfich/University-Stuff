@@ -11,7 +11,9 @@
 
 #include <iostream>
 #include <string>
-#include <chrono>
+#include <QDate>
+#include <QString>
+#include <QVector>
 
 #include "config.h"
 
@@ -29,12 +31,12 @@ class Person {
     QString fname;
     QString lname;
     QString ename;
-    std::chrono::year_month_day birthday;
+    QDate birthday;
     Gender gender;
     QString note;
-    std::location;
-    std::email;
-    std::tel;
+    QString location;
+    QString email;
+    QString tel;
 
     public:
         // setter methods
@@ -42,19 +44,19 @@ class Person {
         int setFname(const QString& fname);
         int setLName(const QString& lname);
         int setEname(const QString& ename);
-        int setBirthday(const std::chrono::year_month_day birthday);
+        int setBirthday(const QDate birthday);
         int setGender(const Gender gender);
         int setNote(const QString& note);
-        int setLocation(const QString& note);
-        int setEmail(const QString& note);
-        int setTel(const QString& note);
+        int setLocation(const QString& location);
+        int setEmail(const QString& email);
+        int setTel(const QString& tel);
 
         // getter methods
         unsigned long getId() const {return this->id;}
         QString getFname() const {return this->fname;}
         QString getLname() const {return this->lname;}
         QString getEname() const {return this->ename;}
-        std::chrono::year_month_day getBirthday() const {return this->birthday;}
+        QDate getBirthday() const {return this->birthday;}
         Gender getGender() const {return this->gender;}
         QString getNote() const {return this->note;}
         QString getLocation() const {return this->location;}
@@ -63,7 +65,7 @@ class Person {
 
         // constructor using setters
         Person(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
-                const std::chrono::year_month_day birthday, Gender gender, const QString& note,
+                const QDate birthday, Gender gender, const QString& note,
                 const QString& location, const QString& email, const QString& tel) {
             setId(id);
             setFname(fname);

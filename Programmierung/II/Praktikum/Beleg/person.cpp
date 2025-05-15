@@ -1,5 +1,7 @@
 #include <iostream>
-#include <chrono>
+#include <QDate>
+#include <QVector>
+#include <QString>
 #include <string>
 // #include <math.h>
 #include "person.h"
@@ -8,9 +10,7 @@
 // return -1 <=> error
 // return 0 <=> fine
 
-using namespace std;
-
-int Person::setFname(const string& fname) {
+int Person::setFname(const QString& fname) {
     if (MAX_FNAME_LENGTH != -1 && MIN_FNAME_LENGTH != -1 && MAX_FNAME_LENGTH < MIN_FNAME_LENGTH) {
         cerr << "Error: MAX_FNAME_LENGTH has to be >= MIN_FNAME_LENGTH" << endl;
         return -1;
@@ -32,7 +32,7 @@ int Person::setFname(const string& fname) {
     return 0;
 }
 
-int Person::setLname(const string& lname) {
+int Person::setLname(const QString& lname) {
     if (MAX_LNAME_LENGTH != -1 && MIN_LNAME_LENGTH != -1 && MAX_LNAME_LENGTH < MIN_LNAME_LENGTH) {
         cerr << "Error: MAX_LNAME_LENGTH has to be >= MIN_LNAME_LENGTH" << endl;
         return -1;
@@ -54,7 +54,7 @@ int Person::setLname(const string& lname) {
     return 0;
 }
 
-int Person::setEname(const string& ename) {
+int Person::setEname(const QString& ename) {
     // Shorten the ename if it exceeds MAX_ENAME_LENGTH
     if (MAX_ENAME_LENGTH != -1 && MAX_ENAME_LENGTH < ename.length()) {
         cerr << "Warning: E(xtension)name gets cut to " << MAX_ENAME_LENGTH << " characters from " << ename.length() << " characters" << endl;
@@ -65,15 +65,16 @@ int Person::setEname(const string& ename) {
     return 0;
 }
 
-int Person::setBirthday(const std::chrono::year_month_day birthday) {
+int Person::setBirthday(const QDate birthday) {
     if (MIN_AGE != -1 && MAX_AGE != -1 && MIN_AGE > MAX_AGE) {
         cerr << "Error: MIN_AGE > MAX_AGE" << endl;
         return -1;
     }
 
-    std::chrono::year_month_day today = std::chrono::year_month_day(std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now()));
-    std::chrono::years age = today.year() - birthday.year();
-
+    QDate today = QDate::currentDate();
+    // calculate the age
+    int age = today.year() - birthday.year();
+    
     // check that birthday is not in the future
     if (birthday > today) {
         cerr << "Error: Birthday is in the future" << endl;
@@ -161,7 +162,7 @@ int Person::setTel(const QString& tel) {
 
 // constructor using setters
 Person::Person(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
-               const std::chrono::year_month_day birthday, Gender gender, const QString& note,
+               const QDate birthday, Gender gender, const QString& note,
                const QString& location, const QString& email, const QString& tel) {
     setId(id);
     setFname(fname);
@@ -213,5 +214,5 @@ Person& Person::operator=(const Person& other) {
 
 Person::~Person() {
     // destructor
-    // no need to delete anything as QString and std::chrono::year_month_day are handled by the C++ standard library
+    // no need to delete anything as QString and QDate are handled by the C++ standard library
 }

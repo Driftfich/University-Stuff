@@ -1,6 +1,9 @@
 #ifndef _AUDIO_H
 #define _AUDIO_H
 
+#include <QString>
+#include <QVector>
+#include <QDate>
 #include <vector>
 #include <string>
 #include "config.h"
@@ -18,25 +21,20 @@ class Audio : public Media {
 
     public:
         void setDuration(unsigned int duration) {this->duration = duration;}
-        int setType(const string& type);
-        int setBitrate(unsigned int bitrate) {this->bitrate = bitrate;}
-        int setSampleRate(unsigned int sample_rate) {this->sample_rate = sample_rate;}
-        int setChannels(const string& channels);
-        int setCodec(const string& codec);
-        int setAlbum(const string& album);
-        int setTracks(const vector<string>& tracks);
+        int setBitrate(unsigned int bitrate) {this->bitrate = bitrate; return 0;}
+        int setSampleRate(unsigned int sample_rate) {this->sample_rate = sample_rate; return 0;}
 
         unsigned int getDuration() const {return this->duration;}
-        string getType() const {return this->type;}
+        QString getType() const {return this->type;}
         unsigned int getBitrate() const {return this->bitrate;}
         unsigned int getSampleRate() const {return this->sample_rate;}
-        string getChannels() const {return this->channels;}
+        QString getChannels() const {return this->channels;}
         QString getCodec() const {return this->codec;}
         QString getAlbum() const {return this->album;}
         QVector<QString> getTracks() const {return this->tracks;}
 
         // constructor using setters
-        Audio(unsigned long id, const QString& title, const std::chrono::year_month_day publication_date,
+        Audio(unsigned long id, const QString& title, const QDate publication_date,
               const QVector<int>& artist_ids, const QString& publisher, const QString& description,
               const QString& genre, const QVector<QString>& languages, unsigned int available_copies,
               unsigned int duration, const QString& type, unsigned int bitrate, unsigned int sample_rate,

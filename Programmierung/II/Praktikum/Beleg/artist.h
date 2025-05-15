@@ -7,6 +7,7 @@
 // #include <QApplication>
 #include <QString>
 #include <QVector>
+#include <QDate>
 
 #include "config.h"
 #include "person.h"
@@ -19,17 +20,17 @@ class Artist : public Person {
     public:
         // setter methods
         int setArtistType(const QString& artist_type);
-        int setMediaIds(const QVector<int>& media_ids);
+        int setMediaIds(const QVector<unsigned long>& media_ids);
 
         // getter methods
         QString getArtistType() const {return this->artist_type;}
-        QVector<int> getMediaIds() const {return this->media_ids;}
+        QVector<unsigned long> getMediaIds() const {return this->media_ids;}
         QVector<Media*> getMedia() const {return this->media;}
 
         // constructor using setters
         Artist(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
-               const std::chrono::year_month_day birthday,
-               const QString& artist_type, const QVector<int>& media_ids,) :
+               const QDate birthday,
+               const QString& artist_type, const QVector<unsigned long>& media_ids) :
                Person(id, fname, lname, ename, birthday) {
             setArtistType(artist_type);
             setMediaIds(media_ids);

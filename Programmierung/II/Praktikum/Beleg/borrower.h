@@ -1,6 +1,7 @@
 #ifndef _BORROWER_H
 #define _BORROWER_H
 
+#include <QDate>
 #include "person.h"
 #include "config.h"
 #include <iostream>
@@ -14,7 +15,7 @@ class Borrower: public Person {
     public:
         // constructor with member initializer list
         Borrower(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
-                 const std::chrono::year_month_day birthday, Gender gender, const QString& note,
+                 const QDate& birthday, Gender gender, const QString& note,
                  const QString& location, const QString& email, const QString& tel,
                 unsigned int limit = MAX_ITEMS_PER_BORROWER_DEFAULT)
             : Person(id, fname, lname, ename, birthday, gender, note, location, email, tel) {

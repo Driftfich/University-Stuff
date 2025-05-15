@@ -1,8 +1,9 @@
 #ifndef _VIDEO_H
 #define _VIDEO_H
 
-#include <vector>
-#include <string>
+#include <QString>
+#include <QVector>
+#include <QDate>
 #include "config.h"
 #include "media.h"
 
@@ -30,12 +31,12 @@ class Video : public Media {
         QString getAudioChannels() const {return this->audio_channels;}
 
         // constructor using setters
-        Video(unsigned long id, const QString& title, const std::chrono::year_month_day publication_date,
+        Video(unsigned long id, const QString& title, const QDate publication_date,
               const QVector<int>& artist_ids, const QString& publisher, const QString& description,
               const QString& genre, const QVector<QString>& languages, unsigned int available_copies,
               unsigned int duration, const QString& type, unsigned int resolution,
-              const QString& codec, const QString& aspect_ratio, const QString& audio_channels) :
-              Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, available_copies) {
+              const QString& codec, const QString& aspect_ratio, const QString& audio_channels)
+            : Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, available_copies) {
             setDuration(duration);
             setType(type);
             setResolution(resolution);
@@ -73,7 +74,6 @@ class Video : public Media {
             // Destructor logic if needed
             // Note: Media objects are not deleted here, as they are managed elsewhere
         }
-
-}
+};
 
 #endif

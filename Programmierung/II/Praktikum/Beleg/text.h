@@ -2,6 +2,9 @@
 #define _TEXT_H
 
 #include "media.h"
+#include <QString>
+#include <QVector>
+#include <QDate>
 
 class Text : public Media {
     int pages;
@@ -21,11 +24,11 @@ class Text : public Media {
         QString getTextFormat() const {return this->textFormat;}
 
         // constructor using setters
-        Text(unsigned long id, const QString& title, const std::chrono::year_month_day publication_date,
+        Text(unsigned long id, const QString& title, const QDate publication_date,
              const QVector<int>& artist_ids, const QString& publisher, const QString& description,
              const QString& genre, const QVector<QString>& languages, unsigned int available_copies,
-             int pages, const QString& isbn, const QString& bindingType, const QString& textFormat) :
-             Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, available_copies) {
+             int pages, const QString& isbn, const QString& bindingType, const QString& textFormat)
+            : Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, available_copies) {
             setPages(pages);
             setIsbn(isbn);
             setBindingType(bindingType);
@@ -57,6 +60,6 @@ class Text : public Media {
             // Destructor logic if needed
             // Note: Media objects are not deleted here, as they are managed elsewhere
         }
-}
+};
 
 #endif

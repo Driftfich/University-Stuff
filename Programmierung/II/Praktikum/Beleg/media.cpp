@@ -1,4 +1,9 @@
-#include <chrono>
+#include <QDate>
+#include <QString>
+#include <QVector>
+#include <QMap>
+#include <variant>
+
 #include <map>
 #include <string>
 #include <vector>
@@ -7,9 +12,7 @@
 #include "config.h"
 #include <iostream>
 
-using namespace std;
-
-int Media::setTitle(const string& title) {
+int Media::setTitle(const QString& title) {
     if (MIN_TITLE_LENGTH != -1 && MAX_TITLE_LENGTH != -1 && MIN_TITLE_LENGTH > MAX_TITLE_LENGTH) {
         cerr << "Error: MIN_TITLE_LENGTH > MAX_TITLE_LENGTH" << endl;
         return -1;
@@ -30,7 +33,7 @@ int Media::setTitle(const string& title) {
     return 0;
 }
 
-int Media::setPublicationDate(const std::chrono::year_month_day publication_date) {
+int Media::setPublicationDate(const QDate publication_date) {
     this->publication_date = publication_date;
     return 0;
 }
@@ -44,7 +47,7 @@ int Media::setArtistIds(const QVector<int>& artist_ids) {
     return 0;
 }
 
-int Media::setPublisher(const string& publisher) {
+int Media::setPublisher(const QString& publisher) {
     if (MAX_PUBLISHER_LENGTH != -1 && publisher.length() > MAX_PUBLISHER_LENGTH) {
         cerr << "Warning: Publisher is too long, truncating to " << MAX_PUBLISHER_LENGTH << " characters" << endl;
         this->publisher = publisher.substr(0, MAX_PUBLISHER_LENGTH);
@@ -55,7 +58,7 @@ int Media::setPublisher(const string& publisher) {
     return 0;
 }
 
-int Media::setDescription(const string& description) {
+int Media::setDescription(const QString& description) {
     if (MAX_DESCRIPTION_LENGTH != -1 && description.length() > MAX_DESCRIPTION_LENGTH) {
         cerr << "Warning: Description is too long, turncating to " << MAX_DESCRIPTION_LENGTH << " characters" << endl;
         this->description = description.substr(0, MAX_DESCRIPTION_LENGTH);
@@ -68,7 +71,7 @@ int Media::setDescription(const string& description) {
     return 0;
 }
 
-int Media::setGenre(const string& genre) {
+int Media::setGenre(const QString& genre) {
     if (MAX_GENRE_LENGTH != -1 && genre.length() > MAX_GENRE_LENGTH) {
         cerr << "Warning: Genre is too long, truncating to " << MAX_GENRE_LENGTH << " characters" << endl;
         this->genre = genre.substr(0, MAX_GENRE_LENGTH);
@@ -79,7 +82,7 @@ int Media::setGenre(const string& genre) {
     return 0;
 }
 
-int Media::setLanguages(const vector<string>& languages) {
+int Media::setLanguages(const QVector<QString>& languages) {
     this->languages.clear();
     size_t num_languages = languages.size();
 
@@ -90,7 +93,7 @@ int Media::setLanguages(const vector<string>& languages) {
     }
 
     for (size_t i = 0; i < num_languages; ++i) {
-        const string& lang_str = languages[i];
+        const QString& lang_str = languages[i];
         if (MAX_LANGUAGE_LENGTH != -1 && lang_str.length() > static_cast<size_t>(MAX_LANGUAGE_LENGTH)) {
             cerr << "Warning: Language string '" << lang_str << "' is too long (length " << lang_str.length()
                  << "), truncating to " << MAX_LANGUAGE_LENGTH << " characters." << endl;
@@ -102,7 +105,7 @@ int Media::setLanguages(const vector<string>& languages) {
     return 0;
 }
 
-int Media::setMetadata(const map<string, variant<int, float, string>>) {
+int Media::setMetadata(const QMap<QString, variant<int, float, QString>>) {
     this->metadata.clear(); // Clear existing metadata
 
     size_t processed_count = 0;
@@ -113,12 +116,12 @@ int Media::setMetadata(const map<string, variant<int, float, string>>) {
             break; // Stop processing further entries
         }
 
-        const string& key = pair.first;
-        variant<int, float, string> value_to_store = pair.second; // Make a copy to potentially modify
+        const QString& key = pair.first;
+        variant<int, float, QString> value_to_store = pair.second; // Make a copy to potentially modify
 
         // Check if the variant holds a string and if its length needs truncation
-        if (std::holds_alternative<string>(value_to_store)) {
-            string& str_val = std::get<string>(value_to_store); // Get a reference to the string inside the variant
+        if (std::holds_alternative<QString>(value_to_store)) {
+            QString& str_val = std::get<QString>(value_to_store); // Get a reference to the string inside the variant
             if (MAX_METADATA_LENGTH != -1 && str_val.length() > static_cast<size_t>(MAX_METADATA_LENGTH)) {
                 cerr << "Warning: Metadata string value for key '" << key << "' is too long (length "
                      << str_val.length() << "), truncating to " << MAX_METADATA_LENGTH << " characters." << endl;
