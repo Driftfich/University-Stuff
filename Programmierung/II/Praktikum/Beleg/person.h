@@ -26,12 +26,12 @@ enum class Gender {
 
 class Person {
     unsigned long id;
-    std::string fname;
-    std::string lname;
-    std::string ename;
+    QString fname;
+    QString lname;
+    QString ename;
     std::chrono::year_month_day birthday;
     Gender gender;
-    std::string note;
+    QString note;
     std::location;
     std::email;
     std::tel;
@@ -39,32 +39,32 @@ class Person {
     public:
         // setter methods
         void setId(unsigned long id) {this->id = id;}
-        int setFname(const std::string& fname);
-        int setLName(const std::string& lname);
-        int setEname(const std::string& ename);
+        int setFname(const QString& fname);
+        int setLName(const QString& lname);
+        int setEname(const QString& ename);
         int setBirthday(const std::chrono::year_month_day birthday);
         int setGender(const Gender gender);
-        int setNote(const std::string& note);
-        int setLocation(const std::string& note);
-        int setEmail(const std::string& note);
-        int setTel(const std::string& note);
+        int setNote(const QString& note);
+        int setLocation(const QString& note);
+        int setEmail(const QString& note);
+        int setTel(const QString& note);
 
         // getter methods
         unsigned long getId() const {return this->id;}
-        std::string getFname() const {return this->fname;}
-        std::string getLname() const {return this->lname;}
-        std::string getEname() const {return this->ename;}
+        QString getFname() const {return this->fname;}
+        QString getLname() const {return this->lname;}
+        QString getEname() const {return this->ename;}
         std::chrono::year_month_day getBirthday() const {return this->birthday;}
         Gender getGender() const {return this->gender;}
-        std::string getNote() const {return this->note;}
-        std::string getLocation() const {return this->location;}
-        std::string getEmail() const {return this->email;}
-        std::string getTel() const {return this->tel;}
+        QString getNote() const {return this->note;}
+        QString getLocation() const {return this->location;}
+        QString getEmail() const {return this->email;}
+        QString getTel() const {return this->tel;}
 
         // constructor using setters
-        Person(unsigned long id, const std::string& fname, const std::string& lname, const std::string& ename,
-                const std::chrono::year_month_day birthday, Gender gender, const std::string& note,
-                const std::string& location, const std::string& email, const std::string& tel) {
+        Person(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
+                const std::chrono::year_month_day birthday, Gender gender, const QString& note,
+                const QString& location, const QString& email, const QString& tel) {
             setId(id);
             setFname(fname);
             setLname(lname);

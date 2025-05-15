@@ -100,7 +100,7 @@ int Person::setGender(const Gender gender) {
     return 0;
 }
 
-int Person::setNote(const std::string& note) {
+int Person::setNote(const QString& note) {
     // Check that the note is not too long
     if (note.length() > MAX_NOTE_LENGTH && MAX_NOTE_LENGTH != -1) {
         cerr << "Error: Note is too long" << endl;
@@ -110,7 +110,7 @@ int Person::setNote(const std::string& note) {
     return 0;
 }
 
-int Person::setLocation(const std::string& location) {
+int Person::setLocation(const QString& location) {
     // Check that the location is not too long
     if (location.length() > MAX_LOCATION_LENGTH && MAX_LOCATION_LENGTH != -1) {
         cerr << "Error: Location is too long" << endl;
@@ -120,7 +120,7 @@ int Person::setLocation(const std::string& location) {
     return 0;
 }
 
-int Person::setEmail(const std::string& email) {
+int Person::setEmail(const QString& email) {
     // Check that the email is not too long
     if (email.length() > MAX_EMAIL_LENGTH && MAX_EMAIL_LENGTH != -1) {
         cerr << "Error: Email is too long" << endl;
@@ -140,7 +140,7 @@ int Person::setEmail(const std::string& email) {
     return 0;
 }
 
-int Person::setTel(const std::string& tel) {
+int Person::setTel(const QString& tel) {
     // Check that the tel is not too long
     if (tel.length() > MAX_TEL_LENGTH && MAX_TEL_LENGTH != -1) {
         cerr << "Error: Tel is too long" << endl;
@@ -160,9 +160,9 @@ int Person::setTel(const std::string& tel) {
 }
 
 // constructor using setters
-Person::Person(unsigned long id, const std::string& fname, const std::string& lname, const std::string& ename,
-               const std::chrono::year_month_day birthday, Gender gender, const std::string& note,
-               const std::string& location, const std::string& email, const std::string& tel) {
+Person::Person(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
+               const std::chrono::year_month_day birthday, Gender gender, const QString& note,
+               const QString& location, const QString& email, const QString& tel) {
     setId(id);
     setFname(fname);
     setLname(lname);
@@ -177,7 +177,7 @@ Person::Person(unsigned long id, const std::string& fname, const std::string& ln
 
 // copy constructor
 Person::Person(const Person& other) {
-    // deep copy is handled by the copy constructor of the std::string class
+    // deep copy is handled by the copy constructor of the QString class
     // setter method overhead is not needed as already ensured in the other object
     this->id = other.id;
     this->fname = other.fname;
@@ -193,7 +193,7 @@ Person::Person(const Person& other) {
 
 // copy assignment operator
 Person& Person::operator=(const Person& other) {
-    // deep copy is handled by the copy assignment operator of the std::string class
+    // deep copy is handled by the copy assignment operator of the QString class
     // setter method overhead is not needed as already ensured in the other object
     // self-assignment check
     if (this != &other) {
@@ -213,5 +213,5 @@ Person& Person::operator=(const Person& other) {
 
 Person::~Person() {
     // destructor
-    // no need to delete anything as std::string and std::chrono::year_month_day are handled by the C++ standard library
+    // no need to delete anything as QString and std::chrono::year_month_day are handled by the C++ standard library
 }

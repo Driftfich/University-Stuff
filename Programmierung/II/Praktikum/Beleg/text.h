@@ -5,26 +5,26 @@
 
 class Text : public Media {
     int pages;
-    std::string isbn;  // International Standard Book Number
-    std::string bindingType; // e.g. paperback, hardcover
-    std::string textFormat;  // e.g. Book, Magazine, Newspaper
+    QString isbn;  // International Standard Book Number
+    QString bindingType; // e.g. paperback, hardcover
+    QString textFormat;  // e.g. Book, Magazine, Newspaper
 
     public:
         void setPages(int pages) {this->pages = pages;}
-        int setIsbn(const std::string& isbn);
-        int setBindingType(const std::string& bindingType);
-        int setTextFormat(const std::string& textFormat);
+        int setIsbn(const QString& isbn);
+        int setBindingType(const QString& bindingType);
+        int setTextFormat(const QString& textFormat);
 
         int getPages() const {return this->pages;}
-        std::string getIsbn() const {return this->isbn;}
-        std::string getBindingType() const {return this->bindingType;}
-        std::string getTextFormat() const {return this->textFormat;}
+        QString getIsbn() const {return this->isbn;}
+        QString getBindingType() const {return this->bindingType;}
+        QString getTextFormat() const {return this->textFormat;}
 
         // constructor using setters
-        Text(unsigned long id, const std::string& title, const std::chrono::year_month_day publication_date,
-             const std::vector<int>& artist_ids, const std::string& publisher, const std::string& description,
-             const std::string& genre, const std::vector<std::string>& languages, unsigned int available_copies,
-             int pages, const std::string& isbn, const std::string& bindingType, const std::string& textFormat) :
+        Text(unsigned long id, const QString& title, const std::chrono::year_month_day publication_date,
+             const QVector<int>& artist_ids, const QString& publisher, const QString& description,
+             const QString& genre, const QVector<QString>& languages, unsigned int available_copies,
+             int pages, const QString& isbn, const QString& bindingType, const QString& textFormat) :
              Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, available_copies) {
             setPages(pages);
             setIsbn(isbn);

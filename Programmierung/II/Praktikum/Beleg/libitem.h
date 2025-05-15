@@ -6,7 +6,6 @@
 
 class Libitem {
     unsigned long id; // libitem id
-    unsigned long lib_id; // library id
     unsigned long media_id; // media id
     Media* media; // pointer to media object
     unsigned int available_copies; // number of available copies in the library

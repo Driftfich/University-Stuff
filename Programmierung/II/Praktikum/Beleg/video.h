@@ -8,33 +8,33 @@
 
 class Video : public Media {
     unsigned int duration; // in seconds
-    std::string type; // e.g. movie, series, documentary
+    QString type; // e.g. movie, series, documentary
     unsigned int resolution; // e.g. 1080p, 4K
-    std::string codec; // e.g. H.264, H.265, VP9
-    std::string aspect_ratio; // e.g. 16:9, 4:3
-    std::string audio_channels; // e.g. stereo, 5.1, 7.1
+    QString codec; // e.g. H.264, H.265, VP9
+    QString aspect_ratio; // e.g. 16:9, 4:3
+    QString audio_channels; // e.g. stereo, 5.1, 7.1
 
     public:
         void setDuration(unsigned int duration) {this->duration = duration;}
-        int setType(const std::string& type);
+        int setType(const QString& type);
         int setResolution(unsigned int resolution) {this->resolution = resolution;}
-        int setCodec(const std::string& codec) {this->codec = codec;}
-        int setAspectRatio(const std::string& aspect_ratio) {this->aspect_ratio = aspect_ratio;}
-        int setAudioChannels(const std::string& audio_channels) {this->audio_channels = audio_channels;}
+        int setCodec(const QString& codec) {this->codec = codec;}
+        int setAspectRatio(const QString& aspect_ratio) {this->aspect_ratio = aspect_ratio;}
+        int setAudioChannels(const QString& audio_channels) {this->audio_channels = audio_channels;}
 
         unsigned int getDuration() const {return this->duration;}
-        std::string getType() const {return this->type;}
+        QString getType() const {return this->type;}
         unsigned int getResolution() const {return this->resolution;}
-        std::string getCodec() const {return this->codec;}
-        std::string getAspectRatio() const {return this->aspect_ratio;}
-        std::string getAudioChannels() const {return this->audio_channels;}
+        QString getCodec() const {return this->codec;}
+        QString getAspectRatio() const {return this->aspect_ratio;}
+        QString getAudioChannels() const {return this->audio_channels;}
 
         // constructor using setters
-        Video(unsigned long id, const std::string& title, const std::chrono::year_month_day publication_date,
-              const std::vector<int>& artist_ids, const std::string& publisher, const std::string& description,
-              const std::string& genre, const std::vector<std::string>& languages, unsigned int available_copies,
-              unsigned int duration, const std::string& type, unsigned int resolution,
-              const std::string& codec, const std::string& aspect_ratio, const std::string& audio_channels) :
+        Video(unsigned long id, const QString& title, const std::chrono::year_month_day publication_date,
+              const QVector<int>& artist_ids, const QString& publisher, const QString& description,
+              const QString& genre, const QVector<QString>& languages, unsigned int available_copies,
+              unsigned int duration, const QString& type, unsigned int resolution,
+              const QString& codec, const QString& aspect_ratio, const QString& audio_channels) :
               Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, available_copies) {
             setDuration(duration);
             setType(type);

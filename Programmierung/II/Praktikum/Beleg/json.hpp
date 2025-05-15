@@ -3525,15 +3525,15 @@ NLOHMANN_JSON_NAMESPACE_END
     /// @sa https://json.nlohmann.me/api/basic_json/
     template<template<typename U, typename V, typename... Args> class ObjectType =
     std::map,
-    template<typename U, typename... Args> class ArrayType = std::vector,
-    class StringType = std::string, class BooleanType = bool,
+    template<typename U, typename... Args> class ArrayType = QVector,
+    class StringType = QString, class BooleanType = bool,
     class NumberIntegerType = std::int64_t,
     class NumberUnsignedType = std::uint64_t,
     class NumberFloatType = double,
     template<typename U> class AllocatorType = std::allocator,
     template<typename T, typename SFINAE = void> class JSONSerializer =
     adl_serializer,
-    class BinaryType = std::vector<std::uint8_t>, // cppcheck-suppress syntaxError
+    class BinaryType = QVector<std::uint8_t>, // cppcheck-suppress syntaxError
     class CustomBaseClass = void>
     class basic_json;
 
@@ -4155,7 +4155,7 @@ using has_erase_with_key_type = typename std::conditional <
                                 std::false_type >::type;
 
 // a naive helper to check if a type is an ordered_map (exploits the fact that
-// ordered_map inherits capacity() from std::vector)
+// ordered_map inherits capacity() from QVector)
 template <typename T>
 struct is_ordered_map
 {
@@ -4472,7 +4472,7 @@ inline void concat_into(OutStringType& out, const Arg& arg, Args&& ... rest)
     concat_into(out, std::forward<Args>(rest)...);
 }
 
-template<typename OutStringType = std::string, typename... Args>
+template<typename OutStringType = QString, typename... Args>
 inline OutStringType concat(Args && ... args)
 {
     OutStringType str;
@@ -4523,21 +4523,21 @@ class exception : public std::exception
     JSON_HEDLEY_NON_NULL(3)
     exception(int id_, const char* what_arg) : id(id_), m(what_arg) {} // NOLINT(bugprone-throw-keyword-missing)
 
-    static std::string name(const std::string& ename, int id_)
+    static QString name(const QString& ename, int id_)
     {
         return concat("[json.exception.", ename, '.', std::to_string(id_), "] ");
     }
 
-    static std::string diagnostics(std::nullptr_t /*leaf_element*/)
+    static QString diagnostics(std::nullptr_t /*leaf_element*/)
     {
         return "";
     }
 
     template<typename BasicJsonType>
-    static std::string diagnostics(const BasicJsonType* leaf_element)
+    static QString diagnostics(const BasicJsonType* leaf_element)
     {
 #if JSON_DIAGNOSTICS
-        std::vector<std::string> tokens;
+        QVector<QString> tokens;
         for (const auto* current = leaf_element; current != nullptr && current->m_parent != nullptr; current = current->m_parent)
         {
             switch (current->m_parent->type())
@@ -4586,8 +4586,8 @@ class exception : public std::exception
             return "";
         }
 
-        auto str = std::accumulate(tokens.rbegin(), tokens.rend(), std::string{},
-                                   [](const std::string & a, const std::string & b)
+        auto str = std::accumulate(tokens.rbegin(), tokens.rend(), QString{},
+                                   [](const QString & a, const QString & b)
         {
             return concat(a, '/', detail::escape(b));
         });
@@ -4603,9 +4603,9 @@ class exception : public std::exception
     std::runtime_error m;
 #if JSON_DIAGNOSTIC_POSITIONS
     template<typename BasicJsonType>
-    static std::string get_byte_positions(const BasicJsonType* leaf_element)
+    static QString get_byte_positions(const BasicJsonType* leaf_element)
     {
-        if ((leaf_element->start_pos() != std::string::npos) && (leaf_element->end_pos() != std::string::npos))
+        if ((leaf_element->start_pos() != QString::npos) && (leaf_element->end_pos() != QString::npos))
         {
             return concat("(bytes ", std::to_string(leaf_element->start_pos()), "-", std::to_string(leaf_element->end_pos()), ") ");
         }
@@ -4613,7 +4613,7 @@ class exception : public std::exception
     }
 #else
     template<typename BasicJsonType>
-    static std::string get_byte_positions(const BasicJsonType* leaf_element)
+    static QString get_byte_positions(const BasicJsonType* leaf_element)
     {
         static_cast<void>(leaf_element);
         return "";
@@ -4636,17 +4636,17 @@ class parse_error : public exception
     @return parse_error object
     */
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static parse_error create(int id_, const position_t& pos, const std::string& what_arg, BasicJsonContext context)
+    static parse_error create(int id_, const position_t& pos, const QString& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("parse_error", id_), "parse error",
+        const QString w = concat(exception::name("parse_error", id_), "parse error",
                                      position_string(pos), ": ", exception::diagnostics(context), what_arg);
         return {id_, pos.chars_read_total, w.c_str()};
     }
 
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static parse_error create(int id_, std::size_t byte_, const std::string& what_arg, BasicJsonContext context)
+    static parse_error create(int id_, std::size_t byte_, const QString& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("parse_error", id_), "parse error",
+        const QString w = concat(exception::name("parse_error", id_), "parse error",
                                      (byte_ != 0 ? (concat(" at byte ", std::to_string(byte_))) : ""),
                                      ": ", exception::diagnostics(context), what_arg);
         return {id_, byte_, w.c_str()};
@@ -4667,7 +4667,7 @@ class parse_error : public exception
     parse_error(int id_, std::size_t byte_, const char* what_arg)
         : exception(id_, what_arg), byte(byte_) {}
 
-    static std::string position_string(const position_t& pos)
+    static QString position_string(const position_t& pos)
     {
         return concat(" at line ", std::to_string(pos.lines_read + 1),
                       ", column ", std::to_string(pos.chars_read_current_line));
@@ -4680,9 +4680,9 @@ class invalid_iterator : public exception
 {
   public:
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static invalid_iterator create(int id_, const std::string& what_arg, BasicJsonContext context)
+    static invalid_iterator create(int id_, const QString& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("invalid_iterator", id_), exception::diagnostics(context), what_arg);
+        const QString w = concat(exception::name("invalid_iterator", id_), exception::diagnostics(context), what_arg);
         return {id_, w.c_str()};
     }
 
@@ -4698,9 +4698,9 @@ class type_error : public exception
 {
   public:
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static type_error create(int id_, const std::string& what_arg, BasicJsonContext context)
+    static type_error create(int id_, const QString& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("type_error", id_), exception::diagnostics(context), what_arg);
+        const QString w = concat(exception::name("type_error", id_), exception::diagnostics(context), what_arg);
         return {id_, w.c_str()};
     }
 
@@ -4715,9 +4715,9 @@ class out_of_range : public exception
 {
   public:
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static out_of_range create(int id_, const std::string& what_arg, BasicJsonContext context)
+    static out_of_range create(int id_, const QString& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("out_of_range", id_), exception::diagnostics(context), what_arg);
+        const QString w = concat(exception::name("out_of_range", id_), exception::diagnostics(context), what_arg);
         return {id_, w.c_str()};
     }
 
@@ -4732,9 +4732,9 @@ class other_error : public exception
 {
   public:
     template<typename BasicJsonContext, enable_if_t<is_basic_json_context<BasicJsonContext>::value, int> = 0>
-    static other_error create(int id_, const std::string& what_arg, BasicJsonContext context)
+    static other_error create(int id_, const QString& what_arg, BasicJsonContext context)
     {
-        const std::string w = concat(exception::name("other_error", id_), exception::diagnostics(context), what_arg);
+        const QString w = concat(exception::name("other_error", id_), exception::diagnostics(context), what_arg);
         return {id_, w.c_str()};
     }
 
@@ -5328,7 +5328,7 @@ inline void from_json(const BasicJsonType& j, std_fs::path& p)
 #ifdef JSON_HAS_CPP_20
     p = std_fs::path(std::u8string_view(reinterpret_cast<const char8_t*>(s.data()), s.size()));
 #else
-    p = std_fs::u8path(s); // accepts UTF-8 encoded std::string in C++17, deprecated in C++20
+    p = std_fs::u8path(s); // accepts UTF-8 encoded QString in C++17, deprecated in C++20
 #endif
 }
 #endif
@@ -5838,7 +5838,7 @@ struct external_constructor<value_t::array>
     }
 
     template<typename BasicJsonType>
-    static void construct(BasicJsonType& j, const std::vector<bool>& arr)
+    static void construct(BasicJsonType& j, const QVector<bool>& arr)
     {
         j.m_data.m_value.destroy(j.m_data.m_type);
         j.m_data.m_type = value_t::array;
@@ -5936,10 +5936,10 @@ inline void to_json(BasicJsonType& j, T b) noexcept
 
 template < typename BasicJsonType, typename BoolRef,
            enable_if_t <
-               ((std::is_same<std::vector<bool>::reference, BoolRef>::value
-                 && !std::is_same <std::vector<bool>::reference, typename BasicJsonType::boolean_t&>::value)
-                || (std::is_same<std::vector<bool>::const_reference, BoolRef>::value
-                    && !std::is_same <detail::uncvref_t<std::vector<bool>::const_reference>,
+               ((std::is_same<QVector<bool>::reference, BoolRef>::value
+                 && !std::is_same <QVector<bool>::reference, typename BasicJsonType::boolean_t&>::value)
+                || (std::is_same<QVector<bool>::const_reference, BoolRef>::value
+                    && !std::is_same <detail::uncvref_t<QVector<bool>::const_reference>,
                                       typename BasicJsonType::boolean_t >::value))
                && std::is_convertible<const BoolRef&, typename BasicJsonType::boolean_t>::value, int > = 0 >
 inline void to_json(BasicJsonType& j, const BoolRef& b) noexcept
@@ -5993,7 +5993,7 @@ inline void to_json(BasicJsonType& j, EnumType e) noexcept
 #endif  // JSON_DISABLE_ENUM_SERIALIZATION
 
 template<typename BasicJsonType>
-inline void to_json(BasicJsonType& j, const std::vector<bool>& e)
+inline void to_json(BasicJsonType& j, const QVector<bool>& e)
 {
     external_constructor<value_t::array>::construct(j, e);
 }
@@ -6092,9 +6092,9 @@ inline void to_json(BasicJsonType& j, const std_fs::path& p)
 {
 #ifdef JSON_HAS_CPP_20
     const std::u8string s = p.u8string();
-    j = std::string(s.begin(), s.end());
+    j = QString(s.begin(), s.end());
 #else
-    j = p.u8string(); // returns std::string in C++17
+    j = p.u8string(); // returns QString in C++17
 #endif
 }
 #endif
@@ -6910,8 +6910,8 @@ typename container_input_adapter_factory_impl::container_input_adapter_factory<C
     return container_input_adapter_factory_impl::container_input_adapter_factory<ContainerType>::create(container);
 }
 
-// specialization for std::string
-using string_input_adapter_type = decltype(input_adapter(std::declval<std::string>()));
+// specialization for QString
+using string_input_adapter_type = decltype(input_adapter(std::declval<QString>()));
 
 #ifndef JSON_NO_IO
 // Special cases with fast paths
@@ -8346,7 +8346,7 @@ scan_number_done:
     {
         token_buffer.clear();
         token_string.clear();
-        decimal_point_position = std::string::npos;
+        decimal_point_position = QString::npos;
         token_string.push_back(char_traits<char_type>::to_char_type(current));
     }
 
@@ -8456,7 +8456,7 @@ scan_number_done:
     string_t& get_string()
     {
         // translate decimal points from locale back to '.' (#4084)
-        if (decimal_point_char != '.' && decimal_point_position != std::string::npos)
+        if (decimal_point_char != '.' && decimal_point_position != QString::npos)
         {
             token_buffer[decimal_point_position] = '.';
         }
@@ -8476,10 +8476,10 @@ scan_number_done:
     /// return the last read token (for errors only).  Will never contain EOF
     /// (an arbitrary value that is not a valid char value, often -1), because
     /// 255 may legitimately occur.  May contain NUL, which should be escaped.
-    std::string get_token_string() const
+    QString get_token_string() const
     {
         // escape control characters
-        std::string result;
+        QString result;
         for (const auto c : token_string)
         {
             if (static_cast<unsigned char>(c) <= '\x1F')
@@ -8492,7 +8492,7 @@ scan_number_done:
             else
             {
                 // add character as is
-                result.push_back(static_cast<std::string::value_type>(c));
+                result.push_back(static_cast<QString::value_type>(c));
             }
         }
 
@@ -8642,7 +8642,7 @@ scan_number_done:
     position_t position {};
 
     /// raw input token string (for error messages)
-    std::vector<char_type> token_string {};
+    QVector<char_type> token_string {};
 
     /// buffer for variable-length tokens (numbers, strings)
     string_t token_buffer {};
@@ -8658,7 +8658,7 @@ scan_number_done:
     /// the decimal point
     const char_int_type decimal_point_char = '.';
     /// the position of the decimal point in the input
-    std::size_t decimal_point_position = std::string::npos;
+    std::size_t decimal_point_position = QString::npos;
 };
 
 }  // namespace detail
@@ -8782,7 +8782,7 @@ struct json_sax
     @return whether parsing should proceed (must return false)
     */
     virtual bool parse_error(std::size_t position,
-                             const std::string& last_token,
+                             const QString& last_token,
                              const detail::exception& ex) = 0;
 
     json_sax() = default;
@@ -8973,7 +8973,7 @@ class json_sax_dom_parser
     }
 
     template<class Exception>
-    bool parse_error(std::size_t /*unused*/, const std::string& /*unused*/,
+    bool parse_error(std::size_t /*unused*/, const QString& /*unused*/,
                      const Exception& ex)
     {
         errored = true;
@@ -9032,7 +9032,7 @@ class json_sax_dom_parser
                 // LCOV_EXCL_START
                 case value_t::discarded:
                 {
-                    v.end_position = std::string::npos;
+                    v.end_position = QString::npos;
                     v.start_position = v.end_position;
                     break;
                 }
@@ -9108,7 +9108,7 @@ class json_sax_dom_parser
     /// the parsed JSON value
     BasicJsonType& root;
     /// stack to model hierarchy of values
-    std::vector<BasicJsonType*> ref_stack {};
+    QVector<BasicJsonType*> ref_stack {};
     /// helper to hold the reference for the next object element
     BasicJsonType* object_element = nullptr;
     /// whether a syntax error occurred
@@ -9368,7 +9368,7 @@ class json_sax_dom_callback_parser
     }
 
     template<class Exception>
-    bool parse_error(std::size_t /*unused*/, const std::string& /*unused*/,
+    bool parse_error(std::size_t /*unused*/, const QString& /*unused*/,
                      const Exception& ex)
     {
         errored = true;
@@ -9422,7 +9422,7 @@ class json_sax_dom_callback_parser
 
                 case value_t::discarded:
                 {
-                    v.end_position = std::string::npos;
+                    v.end_position = QString::npos;
                     v.start_position = v.end_position;
                     break;
                 }
@@ -9537,11 +9537,11 @@ class json_sax_dom_callback_parser
     /// the parsed JSON value
     BasicJsonType& root;
     /// stack to model hierarchy of values
-    std::vector<BasicJsonType*> ref_stack {};
+    QVector<BasicJsonType*> ref_stack {};
     /// stack to manage which values to keep
-    std::vector<bool> keep_stack {}; // NOLINT(readability-redundant-member-init)
+    QVector<bool> keep_stack {}; // NOLINT(readability-redundant-member-init)
     /// stack to manage which object keys to keep
-    std::vector<bool> key_keep_stack {}; // NOLINT(readability-redundant-member-init)
+    QVector<bool> key_keep_stack {}; // NOLINT(readability-redundant-member-init)
     /// helper to hold the reference for the next object element
     BasicJsonType* object_element = nullptr;
     /// whether a syntax error occurred
@@ -9626,7 +9626,7 @@ class json_sax_acceptor
         return true;
     }
 
-    bool parse_error(std::size_t /*unused*/, const std::string& /*unused*/, const detail::exception& /*unused*/)
+    bool parse_error(std::size_t /*unused*/, const QString& /*unused*/, const detail::exception& /*unused*/)
     {
         return false;
     }
@@ -9712,7 +9712,7 @@ using end_array_function_t = decltype(std::declval<T&>().end_array());
 
 template<typename T, typename Exception>
 using parse_error_function_t = decltype(std::declval<T&>().parse_error(
-        std::declval<std::size_t>(), std::declval<const std::string&>(),
+        std::declval<std::size_t>(), std::declval<const QString&>(),
         std::declval<const Exception&>()));
 
 template<typename SAX, typename BasicJsonType>
@@ -9797,7 +9797,7 @@ struct is_sax_static_asserts
     static_assert(
         is_detected_exact<bool, parse_error_function_t, SAX, exception_t>::value,
         "Missing/invalid function: bool parse_error(std::size_t, const "
-        "std::string&, const exception&)");
+        "QString&, const exception&)");
 };
 
 }  // namespace detail
@@ -10114,7 +10114,7 @@ class binary_reader
             {
                 std::array<char, 3> cr{{}};
                 static_cast<void>((std::snprintf)(cr.data(), cr.size(), "%.2hhX", static_cast<unsigned char>(element_type))); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
-                const std::string cr_str{cr.data()};
+                const QString cr_str{cr.data()};
                 return sax->parse_error(element_type_parse_position, cr_str,
                                         parse_error::create(114, element_type_parse_position, concat("Unsupported BSON record type 0x", cr_str), nullptr));
             }
@@ -11708,7 +11708,7 @@ class binary_reader
                 break;
         }
         auto last_token = get_token_string();
-        std::string message;
+        QString message;
 
         if (input_format != input_format_t::bjdata)
         {
@@ -11725,7 +11725,7 @@ class binary_reader
     @param[out] dim  an integer vector storing the ND array dimensions
     @return whether reading ND array size vector is successful
     */
-    bool get_ubjson_ndarray_size(std::vector<size_t>& dim)
+    bool get_ubjson_ndarray_size(QVector<size_t>& dim)
     {
         std::pair<std::size_t, char_int_type> size_and_type;
         size_t dimlen = 0;
@@ -11939,7 +11939,7 @@ class binary_reader
                 {
                     return sax->parse_error(chars_read, get_token_string(), parse_error::create(113, chars_read, exception_message(input_format, "ndarray dimensional vector is not allowed", "size"), nullptr));
                 }
-                std::vector<size_t> dim;
+                QVector<size_t> dim;
                 if (JSON_HEDLEY_UNLIKELY(!get_ubjson_ndarray_size(dim)))
                 {
                     return false;
@@ -11989,7 +11989,7 @@ class binary_reader
                 break;
         }
         auto last_token = get_token_string();
-        std::string message;
+        QString message;
 
         if (input_format != input_format_t::bjdata)
         {
@@ -12483,7 +12483,7 @@ class binary_reader
         }
 
         // get number string
-        std::vector<char> number_vector;
+        QVector<char> number_vector;
         for (std::size_t i = 0; i < size; ++i)
         {
             get();
@@ -12731,11 +12731,11 @@ class binary_reader
     /*!
     @return a string representation of the last read byte
     */
-    std::string get_token_string() const
+    QString get_token_string() const
     {
         std::array<char, 3> cr{{}};
         static_cast<void>((std::snprintf)(cr.data(), cr.size(), "%.2hhX", static_cast<unsigned char>(current))); // NOLINT(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
-        return std::string{cr.data()};
+        return QString{cr.data()};
     }
 
     /*!
@@ -12744,11 +12744,11 @@ class binary_reader
     @param[in] context  further context information
     @return a message string to use in the parse_error exceptions
     */
-    std::string exception_message(const input_format_t format,
-                                  const std::string& detail,
-                                  const std::string& context) const
+    QString exception_message(const input_format_t format,
+                                  const QString& detail,
+                                  const QString& context) const
     {
-        std::string error_msg = "syntax error while parsing ";
+        QString error_msg = "syntax error while parsing ";
 
         switch (format)
         {
@@ -13039,7 +13039,7 @@ class parser
     {
         // stack to remember the hierarchy of structured values we are parsing
         // true = array; false = object
-        std::vector<bool> states;
+        QVector<bool> states;
         // value to avoid a goto (see comment where set to true)
         bool skip_to_state_evaluation = false;
 
@@ -13333,9 +13333,9 @@ class parser
         return last_token = m_lexer.scan();
     }
 
-    std::string exception_message(const token_type expected, const std::string& context)
+    QString exception_message(const token_type expected, const QString& context)
     {
-        std::string error_msg = "syntax error ";
+        QString error_msg = "syntax error ";
 
         if (!context.empty())
         {
@@ -15167,9 +15167,9 @@ class json_pointer
     @throw parse_error.107  if the pointer is not empty or begins with '/'
     @throw parse_error.108  if character '~' is not followed by '0' or '1'
     */
-    static std::vector<string_t> split(const string_t& reference_string)
+    static QVector<string_t> split(const string_t& reference_string)
     {
-        std::vector<string_t> result;
+        QVector<string_t> result;
 
         // special case: empty reference string -> no reference tokens
         if (reference_string.empty())
@@ -15426,7 +15426,7 @@ class json_pointer
 
   private:
     /// the reference tokens
-    std::vector<string_t> reference_tokens;
+    QVector<string_t> reference_tokens;
 };
 
 #if !JSON_HAS_THREE_WAY_COMPARISON
@@ -15664,7 +15664,7 @@ template<typename CharType, typename AllocatorType = std::allocator<CharType>>
 class output_vector_adapter : public output_adapter_protocol<CharType>
 {
   public:
-    explicit output_vector_adapter(std::vector<CharType, AllocatorType>& vec) noexcept
+    explicit output_vector_adapter(QVector<CharType, AllocatorType>& vec) noexcept
         : v(vec)
     {}
 
@@ -15680,7 +15680,7 @@ class output_vector_adapter : public output_adapter_protocol<CharType>
     }
 
   private:
-    std::vector<CharType, AllocatorType>& v;
+    QVector<CharType, AllocatorType>& v;
 };
 
 #ifndef JSON_NO_IO
@@ -15738,7 +15738,7 @@ class output_adapter
 {
   public:
     template<typename AllocatorType = std::allocator<CharType>>
-    output_adapter(std::vector<CharType, AllocatorType>& vec)
+    output_adapter(QVector<CharType, AllocatorType>& vec)
         : oa(std::make_shared<output_vector_adapter<CharType, AllocatorType>>(vec)) {}
 
 #ifndef JSON_NO_IO
@@ -16561,7 +16561,7 @@ class binary_writer
                         return ubjson_prefix(v, use_bjdata) == first_prefix;
                     });
 
-                    std::vector<CharType> bjdx = {'[', '{', 'S', 'H', 'T', 'F', 'N', 'Z'}; // excluded markers in bjdata optimized type
+                    QVector<CharType> bjdx = {'[', '{', 'S', 'H', 'T', 'F', 'N', 'Z'}; // excluded markers in bjdata optimized type
 
                     if (same_prefix && !(use_bjdata && std::find(bjdx.begin(), bjdx.end(), first_prefix) != bjdx.end()))
                     {
@@ -16659,7 +16659,7 @@ class binary_writer
                         return ubjson_prefix(v, use_bjdata) == first_prefix;
                     });
 
-                    std::vector<CharType> bjdx = {'[', '{', 'S', 'H', 'T', 'F', 'N', 'Z'}; // excluded markers in bjdata optimized type
+                    QVector<CharType> bjdx = {'[', '{', 'S', 'H', 'T', 'F', 'N', 'Z'}; // excluded markers in bjdata optimized type
 
                     if (same_prefix && !(use_bjdata && std::find(bjdx.begin(), bjdx.end(), first_prefix) != bjdx.end()))
                     {
@@ -19395,9 +19395,9 @@ class serializer
      * @param[in] byte byte to represent
      * @return representation ("00".."FF")
      */
-    static std::string hex_bytes(std::uint8_t byte)
+    static QString hex_bytes(std::uint8_t byte)
     {
-        std::string result = "FF";
+        QString result = "FF";
         constexpr const char* nibble_to_hex = "0123456789ABCDEF";
         result[0] = nibble_to_hex[byte / 16];
         result[1] = nibble_to_hex[byte % 16];
@@ -19743,11 +19743,11 @@ NLOHMANN_JSON_NAMESPACE_BEGIN
 /// for use within nlohmann::basic_json<ordered_map>
 template <class Key, class T, class IgnoredLess = std::less<Key>,
           class Allocator = std::allocator<std::pair<const Key, T>>>
-              struct ordered_map : std::vector<std::pair<const Key, T>, Allocator>
+              struct ordered_map : QVector<std::pair<const Key, T>, Allocator>
 {
     using key_type = Key;
     using mapped_type = T;
-    using Container = std::vector<std::pair<const Key, T>, Allocator>;
+    using Container = QVector<std::pair<const Key, T>, Allocator>;
     using iterator = typename Container::iterator;
     using const_iterator = typename Container::const_iterator;
     using size_type = typename Container::size_type;
@@ -20583,7 +20583,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
             if (t == value_t::array || t == value_t::object)
             {
                 // flatten the current json_value to a heap-allocated stack
-                std::vector<basic_json> stack;
+                QVector<basic_json> stack;
 
                 // move the top-level items to stack
                 if (t == value_t::array)
@@ -21253,8 +21253,8 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
         other.m_data.m_value = {};
 
 #if JSON_DIAGNOSTIC_POSITIONS
-        other.start_position = std::string::npos;
-        other.end_position = std::string::npos;
+        other.start_position = QString::npos;
+        other.end_position = QString::npos;
 #endif
 
         set_parents();
@@ -21633,8 +21633,8 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     @liveexample{The example below shows several conversions from JSON values
     to other types. There a few things to note: (1) Floating-point numbers can
     be converted to integers\, (2) A JSON array can be converted to a standard
-    `std::vector<short>`\, (3) A JSON object can be converted to C++
-    associative containers such as `std::unordered_map<std::string\,
+    `QVector<short>`\, (3) A JSON object can be converted to C++
+    associative containers such as `std::unordered_map<QString\,
     json>`.,get__ValueType_const}
 
     @since version 2.1.0
@@ -21897,9 +21897,9 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
     @tparam ValueType non-pointer type compatible to the JSON value, for
     instance `int` for JSON integer numbers, `bool` for JSON booleans, or
-    `std::vector` types for JSON arrays. The character type of @ref string_t
+    `QVector` types for JSON arrays. The character type of @ref string_t
     as well as an initializer list of this type is excluded to avoid
-    ambiguities as these types implicitly convert to `std::string`.
+    ambiguities as these types implicitly convert to `QString`.
 
     @return copy of the JSON value, converted to type @a ValueType
 
@@ -21912,8 +21912,8 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
     @liveexample{The example below shows several conversions from JSON values
     to other types. There a few things to note: (1) Floating-point numbers can
     be converted to integers\, (2) A JSON array can be converted to a standard
-    `std::vector<short>`\, (3) A JSON object can be converted to C++
-    associative containers such as `std::unordered_map<std::string\,
+    `QVector<short>`\, (3) A JSON object can be converted to C++
+    associative containers such as `std::unordered_map<QString\,
     json>`.,operator__ValueType}
 
     @since version 1.0.0
@@ -21927,7 +21927,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
                                         detail::negation<detail::is_basic_json<ValueType>>,
                                         detail::negation<std::is_same<ValueType, std::initializer_list<typename string_t::value_type>>>,
 #if defined(JSON_HAS_CPP_17) && (defined(__GNUC__) || (defined(_MSC_VER) && _MSC_VER >= 1910 && _MSC_VER <= 1914))
-                                                detail::negation<std::is_same<ValueType, std::string_view>>,
+                                                detail::negation<std::is_same<ValueType, QString_view>>,
 #endif
 #if defined(JSON_HAS_CPP_17) && JSON_HAS_STATIC_RTTI
                                                 detail::negation<std::is_same<ValueType, std::any>>,
@@ -24268,9 +24268,9 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
 #if JSON_DIAGNOSTIC_POSITIONS
     /// the start position of the value
-    std::size_t start_position = std::string::npos;
+    std::size_t start_position = QString::npos;
     /// the end position of the value
-    std::size_t end_position = std::string::npos;
+    std::size_t end_position = QString::npos;
   public:
     constexpr std::size_t start_pos() const noexcept
     {
@@ -24293,9 +24293,9 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
   public:
     /// @brief create a CBOR serialization of a given JSON value
     /// @sa https://json.nlohmann.me/api/basic_json/to_cbor/
-    static std::vector<std::uint8_t> to_cbor(const basic_json& j)
+    static QVector<std::uint8_t> to_cbor(const basic_json& j)
     {
-        std::vector<std::uint8_t> result;
+        QVector<std::uint8_t> result;
         to_cbor(j, result);
         return result;
     }
@@ -24316,9 +24316,9 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
     /// @brief create a MessagePack serialization of a given JSON value
     /// @sa https://json.nlohmann.me/api/basic_json/to_msgpack/
-    static std::vector<std::uint8_t> to_msgpack(const basic_json& j)
+    static QVector<std::uint8_t> to_msgpack(const basic_json& j)
     {
-        std::vector<std::uint8_t> result;
+        QVector<std::uint8_t> result;
         to_msgpack(j, result);
         return result;
     }
@@ -24339,11 +24339,11 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
     /// @brief create a UBJSON serialization of a given JSON value
     /// @sa https://json.nlohmann.me/api/basic_json/to_ubjson/
-    static std::vector<std::uint8_t> to_ubjson(const basic_json& j,
+    static QVector<std::uint8_t> to_ubjson(const basic_json& j,
             const bool use_size = false,
             const bool use_type = false)
     {
-        std::vector<std::uint8_t> result;
+        QVector<std::uint8_t> result;
         to_ubjson(j, result, use_size, use_type);
         return result;
     }
@@ -24366,12 +24366,12 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
     /// @brief create a BJData serialization of a given JSON value
     /// @sa https://json.nlohmann.me/api/basic_json/to_bjdata/
-    static std::vector<std::uint8_t> to_bjdata(const basic_json& j,
+    static QVector<std::uint8_t> to_bjdata(const basic_json& j,
             const bool use_size = false,
             const bool use_type = false,
             const bjdata_version_t version = bjdata_version_t::draft2)
     {
-        std::vector<std::uint8_t> result;
+        QVector<std::uint8_t> result;
         to_bjdata(j, result, use_size, use_type, version);
         return result;
     }
@@ -24396,9 +24396,9 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 
     /// @brief create a BSON serialization of a given JSON value
     /// @sa https://json.nlohmann.me/api/basic_json/to_bson/
-    static std::vector<std::uint8_t> to_bson(const basic_json& j)
+    static QVector<std::uint8_t> to_bson(const basic_json& j)
     {
-        std::vector<std::uint8_t> result;
+        QVector<std::uint8_t> result;
         to_bson(j, result);
         return result;
     }
@@ -25213,7 +25213,7 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec
 /// @brief user-defined to_string function for JSON values
 /// @sa https://json.nlohmann.me/api/basic_json/to_string/
 NLOHMANN_BASIC_JSON_TPL_DECLARATION
-std::string to_string(const NLOHMANN_BASIC_JSON_TPL& j)
+QString to_string(const NLOHMANN_BASIC_JSON_TPL& j)
 {
     return j.dump();
 }
@@ -25244,7 +25244,7 @@ JSON_HEDLEY_NON_NULL(1)
     inline nlohmann::json::json_pointer operator "" _json_pointer(const char* s, std::size_t n)
 #endif
 {
-    return nlohmann::json::json_pointer(std::string(s, n));
+    return nlohmann::json::json_pointer(QString(s, n));
 }
 
 }  // namespace json_literals

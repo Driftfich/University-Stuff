@@ -35,10 +35,10 @@ int Media::setPublicationDate(const std::chrono::year_month_day publication_date
     return 0;
 }
 
-int Media::setArtistIds(const std::vector<int>& artist_ids) {
+int Media::setArtistIds(const QVector<int>& artist_ids) {
     if (artist_ids.size() > MAX_ARTIST_COUNT) {
         cerr << "Warning: Too many artists, truncating to " << MAX_ARTIST_COUNT << " artists" << endl;
-        this->artist_ids = std::vector<int>(artist_ids.begin(), artist_ids.begin() + MAX_ARTIST_COUNT);
+        this->artist_ids = QVector<int>(artist_ids.begin(), artist_ids.begin() + MAX_ARTIST_COUNT);
     }
     this->artist_ids = artist_ids;
     return 0;

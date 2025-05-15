@@ -9,14 +9,13 @@ using namespace std;
 
 class Borrower: public Person {
     unsigned int limit; // Limit the amount of items one borrower can hold at the same time
-    unsigned long lib_id; // Library ID
     unsigned long bow_id; // Borrower ID 
 
     public:
         // constructor with member initializer list
-        Borrower(unsigned long id, const std::string& fname, const std::string& lname, const std::string& ename,
-                 const std::chrono::year_month_day birthday, Gender gender, const std::string& note,
-                 const std::string& location, const std::string& email, const std::string& tel,
+        Borrower(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
+                 const std::chrono::year_month_day birthday, Gender gender, const QString& note,
+                 const QString& location, const QString& email, const QString& tel,
                 unsigned int limit = MAX_ITEMS_PER_BORROWER_DEFAULT)
             : Person(id, fname, lname, ename, birthday, gender, note, location, email, tel) {
             this->limit = limit;
@@ -50,10 +49,6 @@ class Borrower: public Person {
             }
         }
 
-        void setLibId(unsigned long lib_id) {
-            this->lib_id = lib_id;
-        }
-
         void setBowId(unsigned long bow_id) {
             this->bow_id = bow_id;
         }
@@ -61,10 +56,6 @@ class Borrower: public Person {
         // getter method
         unsigned int getLimit() const {
             return this->limit;
-        }
-
-        unsigned long getLibId() const {
-            return this->lib_id;
         }
 
         unsigned long getBowId() const {

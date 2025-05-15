@@ -8,13 +8,13 @@
 
 class Audio : public Media {
     unsigned int duration; // in seconds
-    std::string type; // e.g. podcast, audiobook, music
+    QString type; // e.g. podcast, audiobook, music
     unsigned int bitrate; // in kbps
     unsigned int sample_rate; // in kHz
-    std::string channels; // mono, stereo, etc.
-    std::string codec; // e.g. MP3, AAC, FLAC, etc.
-    std::string album; // album name
-    std::vector<std::string> tracks;
+    QString channels; // mono, stereo, etc.
+    QString codec; // e.g. MP3, AAC, FLAC, etc.
+    QString album; // album name
+    QVector<QString> tracks;
 
     public:
         void setDuration(unsigned int duration) {this->duration = duration;}
@@ -31,17 +31,17 @@ class Audio : public Media {
         unsigned int getBitrate() const {return this->bitrate;}
         unsigned int getSampleRate() const {return this->sample_rate;}
         string getChannels() const {return this->channels;}
-        std::string getCodec() const {return this->codec;}
-        std::string getAlbum() const {return this->album;}
-        std::vector<std::string> getTracks() const {return this->tracks;}
+        QString getCodec() const {return this->codec;}
+        QString getAlbum() const {return this->album;}
+        QVector<QString> getTracks() const {return this->tracks;}
 
         // constructor using setters
-        Audio(unsigned long id, const std::string& title, const std::chrono::year_month_day publication_date,
-              const std::vector<int>& artist_ids, const std::string& publisher, const std::string& description,
-              const std::string& genre, const std::vector<std::string>& languages, unsigned int available_copies,
-              unsigned int duration, const std::string& type, unsigned int bitrate, unsigned int sample_rate,
-              const std::string& channels, const std::string& codec, const std::string& album,
-              const std::vector<std::string>& tracks) :
+        Audio(unsigned long id, const QString& title, const std::chrono::year_month_day publication_date,
+              const QVector<int>& artist_ids, const QString& publisher, const QString& description,
+              const QString& genre, const QVector<QString>& languages, unsigned int available_copies,
+              unsigned int duration, const QString& type, unsigned int bitrate, unsigned int sample_rate,
+              const QString& channels, const QString& codec, const QString& album,
+              const QVector<QString>& tracks) :
               Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, available_copies) {
             setDuration(duration);
             setType(type);

@@ -4,33 +4,36 @@
 #include <iostream>
 #include <string>
 #include <vector>
+// #include <QApplication>
+#include <QString>
+#include <QVector>
 
 #include "config.h"
 #include "person.h"
 
 class Artist : public Person {
-    std::string artist_type; // e.g. actor, director, musician, etc.
-    std::vector<int> media_ids; // array of media ids => works created by the artist
-    std::vector<Media*> media; // array of deserialized media objects
+    QString artist_type; // e.g. actor, director, musician, etc.
+    QVector<int> media_ids; // array of media ids => works created by the artist
+    QVector<Media*> media; // array of deserialized media objects
 
     public:
         // setter methods
-        int setArtistType(const std::string& artist_type);
-        int setMediaIds(const std::vector<int>& media_ids);
+        int setArtistType(const QString& artist_type);
+        int setMediaIds(const QVector<int>& media_ids);
 
         // getter methods
-        std::string getArtistType() const {return this->artist_type;}
-        std::vector<int> getMediaIds() const {return this->media_ids;}
-        std::vector<Media*> getMedia() const {return this->media;}
+        QString getArtistType() const {return this->artist_type;}
+        QVector<int> getMediaIds() const {return this->media_ids;}
+        QVector<Media*> getMedia() const {return this->media;}
 
         // constructor using setters
-        Artist(unsigned long id, const std::string& fname, const std::string& lname, const std::string& ename,
+        Artist(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
                const std::chrono::year_month_day birthday,
-               const std::string& artist_type, const std::vector<int>& media_ids,) :
+               const QString& artist_type, const QVector<int>& media_ids,) :
                Person(id, fname, lname, ename, birthday) {
             setArtistType(artist_type);
             setMediaIds(media_ids);
-            this->media = std::vector<Media*>();
+            this->media = QVector<Media*>();
         }
 
         // copy constructor
