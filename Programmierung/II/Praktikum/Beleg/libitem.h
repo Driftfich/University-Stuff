@@ -19,7 +19,7 @@ class Libitem {
 
         // setters
         void setId(unsigned long id) { this->id = id; }
-        int setMediaId(unsigned long media_id) { this->media_id = media_id; }
+        void setMediaId(unsigned long media_id) { this->media_id = media_id;}
         void setAvailableCopies(unsigned long available_copies) { this->available_copies = available_copies; }
         void setBorrowedCopies(unsigned long borrowed_copies) { this->borrowed_copies = borrowed_copies; }
         void setLocation(const QString& location) { this->location = location; }
@@ -81,6 +81,6 @@ class Libitem {
             }
             return *this;
         }
-}
+};
 
 #endif

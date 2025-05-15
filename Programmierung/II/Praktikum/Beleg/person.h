@@ -42,7 +42,7 @@ class Person {
         // setter methods
         void setId(unsigned long id) {this->id = id;}
         int setFname(const QString& fname);
-        int setLName(const QString& lname);
+        int setLname(const QString& lname);
         int setEname(const QString& ename);
         int setBirthday(const QDate birthday);
         int setGender(const Gender gender);
@@ -87,7 +87,7 @@ class Person {
 
         // destructor
         virtual ~Person();
-}
+};
 
 
 

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int setType(const QString& type) {
+int Audio::setType(const QString& type) {
     this->type = type;
     return 0;
 }

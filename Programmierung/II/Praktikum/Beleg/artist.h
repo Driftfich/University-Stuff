@@ -14,7 +14,7 @@
 
 class Artist : public Person {
     QString artist_type; // e.g. actor, director, musician, etc.
-    QVector<int> media_ids; // array of media ids => works created by the artist
+    QVector<unsigned long> media_ids; // array of media ids => works created by the artist
     QVector<Media*> media; // array of deserialized media objects
 
     public:
@@ -29,9 +29,10 @@ class Artist : public Person {
 
         // constructor using setters
         Artist(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
-               const QDate birthday,
+               const QDate birthday, Gender gender, const QString& note,
+                const QString& location, const QString& email, const QString& tel,
                const QString& artist_type, const QVector<unsigned long>& media_ids) :
-               Person(id, fname, lname, ename, birthday) {
+               Person(id, fname, lname, ename, birthday, gender, note, location, email, tel) {
             setArtistType(artist_type);
             setMediaIds(media_ids);
             this->media = QVector<Media*>();
@@ -63,7 +64,7 @@ class Artist : public Person {
 
 
 
-}
+};
 
 
 #endif

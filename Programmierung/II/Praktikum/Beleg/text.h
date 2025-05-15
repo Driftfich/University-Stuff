@@ -23,6 +23,14 @@ class Text : public Media {
         QString getBindingType() const {return this->bindingType;}
         QString getTextFormat() const {return this->textFormat;}
 
+        // methods for loading & saving text data
+        QString getSubclassType() const override {return "Text";} // used to identify it is a text
+
+        QJsonObject getSubclassParams() const override;
+
+        int loadSubclassParams(const QJsonObject& json) const override;
+
+
         // constructor using setters
         Text(unsigned long id, const QString& title, const QDate publication_date,
              const QVector<int>& artist_ids, const QString& publisher, const QString& description,
@@ -33,6 +41,13 @@ class Text : public Media {
             setIsbn(isbn);
             setBindingType(bindingType);
             setTextFormat(textFormat);
+        }
+
+        // constructor using json object
+        Text(const QJsonObject& json) : Media(json) {
+            if (loadSubclassParams(json["subclass_params"].toObject()) != 0) {
+                throw std::runtime_error("Issue loading subclass parameters for Text");
+            }
         }
 
         // copy constructor

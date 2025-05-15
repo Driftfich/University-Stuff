@@ -23,6 +23,11 @@ class Audio : public Media {
         void setDuration(unsigned int duration) {this->duration = duration;}
         int setBitrate(unsigned int bitrate) {this->bitrate = bitrate; return 0;}
         int setSampleRate(unsigned int sample_rate) {this->sample_rate = sample_rate; return 0;}
+        int setChannels(const QString& channels);
+        int setCodec(const QString& codec);
+        int setAlbum(const QString& album);
+        int setTracks(const QVector<QString>& tracks);
+        int setType(const QString& type);
 
         unsigned int getDuration() const {return this->duration;}
         QString getType() const {return this->type;}
@@ -35,12 +40,12 @@ class Audio : public Media {
 
         // constructor using setters
         Audio(unsigned long id, const QString& title, const QDate publication_date,
-              const QVector<int>& artist_ids, const QString& publisher, const QString& description,
-              const QString& genre, const QVector<QString>& languages, unsigned int available_copies,
+              const QVector<unsigned long>& artist_ids, const QString& publisher, const QString& description,
+              const QString& genre, const QVector<QString>& languages, const QMap<QString, QVariant>& metadata,
               unsigned int duration, const QString& type, unsigned int bitrate, unsigned int sample_rate,
               const QString& channels, const QString& codec, const QString& album,
               const QVector<QString>& tracks) :
-              Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, available_copies) {
+              Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, metadata) {
             setDuration(duration);
             setType(type);
             setBitrate(bitrate);
@@ -84,6 +89,6 @@ class Audio : public Media {
             // Destructor logic if needed
             // Note: Media objects are not deleted here, as they are managed elsewhere
         }
-}
+};
 
 #endif
