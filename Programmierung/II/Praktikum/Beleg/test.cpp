@@ -7,8 +7,11 @@
 #include "text.h"
 #include "video.h"
 #include "audio.h"
+#include "borrower.h"
+#include "person.h"
+#include "artist.h"
 
-int main() {
+int test_media_file_management() {
     // Test the Media class
     Media m1 = Media((unsigned long) 1, QString("Test Title"), QDate::currentDate(), QVector<unsigned long>{1, 2}, QString("Test Publisher"), QString("Test Description"), QString("Test Genre"), QVector<QString>{"English"}, QMap<QString, QVariant>{});
     Text t1 = Text((unsigned long) 1, QString("Test Title"), QDate::currentDate(), QVector<unsigned long>{1, 2}, QString("Test Publisher"), QString("Test Description"), QString("Test Genre"), QVector<QString>{"English"}, QMap<QString, QVariant>{}, 5, QString("1234567890123"), QString("Paperback"), QString("Book"));
@@ -24,23 +27,27 @@ int main() {
     std::vector<std::shared_ptr<Media>> mediaPtrs = {mediaPtr1, textPtr1, videoPtr1, audioPtr1};
 
     // // save all objects to a file
-    QString filename = QString("test.ndjson");
+    QString filename = QString("media.ndjson");
+    QFile file(filename);
+    // clear the file beforehand
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        std::cerr << "Error: Could not open file for writing" << std::endl;
+        return -1;
+    }
+
+    if (file.exists()) {
+        file.remove();
+    }
+
     for (int i = 0; i < (int) mediaPtrs.size(); ++i) {
         std::cout << "Saving object " << i << " to file: " << *mediaPtrs[i] << std::endl;
-        QFile file(filename);
         mediaPtrs[i]->toFile(file);
-        file.close();
     }
     
     // load all objects from a file by using the factory method from the media class
     // clear the mediaPtrs vector
     mediaPtrs.clear();
-    QFile file(filename);
 
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        std::cerr << "Error: Could not open file for reading" << std::endl;
-        return -1;
-    }
     // std::cout << "Loading objects from file" << std::endl;
     while (!file.atEnd()) {
         std::cout << "Loading object from file" << std::endl;
@@ -55,5 +62,68 @@ int main() {
             break;
         }
     }
+    return 0;
+}
+
+int test_person_file_management() {
+    // Test the Person class
+    // Create a Person object
+    Person p1 = Person((unsigned long) 1, QString("John"), QString("Doe"), QString(""), QDate::currentDate(), Gender::male, QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789"));
+    Borrower b1 = Borrower((unsigned long) 1, QString("John"), QString("Doe"), QString(""), QDate::currentDate(), Gender::male, QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789"), (unsigned int) 5, (unsigned long) 1);
+    Artist a1 = Artist((unsigned long) 1, QString("John"), QString("Doe"), QString(""), QDate::currentDate(), Gender::male, QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789"), QString("Test Art Style"), QVector<unsigned long>{1, 2});
+
+    // create a magic pointer array on the p1 and b1 objects
+    std::shared_ptr<Person> personPtr1 = std::make_shared<Person>(p1);
+    std::shared_ptr<Person> borrowerPtr1 = std::make_shared<Borrower>(b1);
+    std::shared_ptr<Person> artistPtr1 = std::make_shared<Artist>(a1);
+
+    // create a magic pointer array on the p1 and b1 objects
+    std::vector<std::shared_ptr<Person>> personPtrs = {personPtr1, borrowerPtr1, artistPtr1};
+
+    // save all objects to a file
+    QString filename = QString("person.ndjson");
+    QFile file(filename);
+
+    // clear the file beforehand
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        std::cerr << "Error: Could not open file for writing" << std::endl;
+        return -1;
+    }
+
+    if (file.exists()) {
+        file.remove();
+    }
+
+    for (int i = 0; i < (int) personPtrs.size(); ++i) {
+        std::cout << "Saving object " << i << " to file: " << *personPtrs[i] << std::endl;
+        personPtrs[i]->toFile(file);
+    }
+
+    // load all objects from a file by using the factory method from the person class
+    // clear the personPtrs vector
+    personPtrs.clear();
+    // std::cout << "Loading objects from file" << std::endl;
+    while (!file.atEnd()) {
+        std::cout << "Loading object from file" << std::endl;
+        std::shared_ptr<Person> personPtr = Person::fromFile(file);
+        if (personPtr) {
+            personPtrs.push_back(personPtr);
+        }
+        if (personPtr) {
+            std::cout << "Loaded object from file: " << *personPtr << std::endl;
+        } else {
+            std::cerr << "Failed to load object from file" << std::endl;
+            break;
+        }
+    }
+
+    return 0;
+
+}
+
+int main() {
+    // Test the Media class
+    test_media_file_management();
+    test_person_file_management();
     return 0;
 }

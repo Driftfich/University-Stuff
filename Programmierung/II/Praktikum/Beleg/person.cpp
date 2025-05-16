@@ -297,3 +297,38 @@ std::shared_ptr<Person> Person::PersonFactory(const QJsonObject& json) {
         throw std::runtime_error("Unknown subclass type: " + type.toStdString());
     }
 }
+
+
+void Person::printbase(std::ostream& os) const {
+    os << "ID: " << id << "\n"
+    << "First Name: " << fname.toStdString() << "\n"
+    << "Last Name: " << lname.toStdString() << "\n"
+    << "E(xtension)Name: " << ename.toStdString() << "\n"
+    << "Birthday: " << birthday.toString(Qt::ISODate).toStdString() << "\n"
+    << "Gender: " << (gender == Gender::male ? "Male" : gender == Gender::female ? "Female" : "Diverse") << "\n"
+    << "Note: " << note.toStdString() << "\n"
+    << "Location: " << location.toStdString() << "\n"
+    << "Email: " << email.toStdString() << "\n"
+    << "Telephone: " << tel.toStdString() << "\n";
+}
+
+void Person::printSubclass(std::ostream& os) const {
+    // iterate over the map from the subclass parameters
+    os << "Subclass type: " << getSubclassType().toStdString() << "\n";
+    QJsonObject subclass_params = getSubclassParams();
+    for (auto it = subclass_params.begin(); it != subclass_params.end(); ++it) {
+        os << it.key().toStdString() << ": " << it.value().toVariant().toString().toStdString() << "\n";
+    }
+} 
+
+void Person::print(std::ostream& os) const {
+    printbase(os);
+    printSubclass(os);
+    os << "----------------------------------------" << "\n";
+}
+
+// print the person object
+std::ostream& operator<<(std::ostream& os, const Person& person) {
+    person.print(os);
+    return os;
+}

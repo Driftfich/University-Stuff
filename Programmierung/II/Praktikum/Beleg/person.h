@@ -109,6 +109,12 @@ class Person {
         virtual int loadSubclassParams(const QJsonObject& json) { Q_UNUSED(json); return 0; }
         static std::shared_ptr<Person> fromFile(QFile& file);
         static std::shared_ptr<Person> PersonFactory(const QJsonObject& json);
+
+        // print methods
+        friend std::ostream& operator<<(std::ostream& os, const Person& person);
+        void printbase(std::ostream& os) const;
+        void print(std::ostream& os) const;
+        void printSubclass(std::ostream& os) const;
 };
 
 

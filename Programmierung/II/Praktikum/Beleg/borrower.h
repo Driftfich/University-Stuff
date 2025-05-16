@@ -18,14 +18,16 @@ class Borrower: public Person {
         Borrower(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
                  const QDate& birthday, Gender gender, const QString& note,
                  const QString& location, const QString& email, const QString& tel,
-                unsigned int limit = MAX_ITEMS_PER_BORROWER_DEFAULT)
+                unsigned int limit, unsigned long bow_id)
             : Person(id, fname, lname, ename, birthday, gender, note, location, email, tel) {
-            this->limit = limit;
+            setLimit(limit);
+            setBowId(bow_id);
         }
 
         // copy constructor
         Borrower(const Borrower& other): Person(other) {
             this->limit = other.limit;
+            this->bow_id = other.bow_id;
         }
 
         // copy assignment operator
@@ -33,6 +35,7 @@ class Borrower: public Person {
             if (this != &other) {
                 Person::operator=(other); // Call the base class assignment operator
                 this->limit = other.limit;
+                this->bow_id = other.bow_id;
             }
             return *this;
         }
