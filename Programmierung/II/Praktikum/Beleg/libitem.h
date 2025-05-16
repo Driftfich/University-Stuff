@@ -37,14 +37,12 @@ class Libitem {
         // constructor
         Libitem(unsigned long id, unsigned long media_id, unsigned long available_copies, unsigned long borrowed_copies, 
                 const QString& location = "", const QString& condition = "") {
-            this->id = id;
-            this->media_id = media_id;
-            // nullptr is set to null at init. When the media is get the first time, it is loaded from the media list and set to this->media
-            this->media = nullptr;
-            this->available_copies = available_copies;
-            this->borrowed_copies = borrowed_copies;
-            this->location = location;
-            this->condition = condition;
+            setId(id);
+            setMediaId(media_id);
+            setAvailableCopies(available_copies);
+            setBorrowedCopies(borrowed_copies);
+            setLocation(location);
+            setCondition(condition);
         }
 
         // destructor
@@ -81,6 +79,17 @@ class Libitem {
             }
             return *this;
         }
+
+        // method to load the media object from the media list
+        QJsonObject getJson() const;
+        void toFile(QFile& file) const;
+
+        // load json object from file
+        int loadLocalParams(const QJsonObject& json);
+        // read json object from file
+        static std::shared_ptr<Libitem> fromFile(QFile& file);
+        // factory method
+        static std::shared_ptr<Libitem> LibitemFactory(const QJsonObject& json);
 };
 
 #endif
