@@ -1,0 +1,17 @@
+# Ignore log files
+*.log
+
+# Ignore cache and binary files
+.check_cache
+.bin
+
+# Ignore Vagrant directory
+.vagrant/
+
+# Ignore make files
+*.make
+*.cmake
+
+
+# Ignore all directories ending with .dir
+*.dir/

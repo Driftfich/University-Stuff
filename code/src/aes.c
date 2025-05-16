@@ -1,6 +1,7 @@
 #include "aes.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 // S-Box und Inverse S-Box
 
@@ -53,16 +54,45 @@ static const uint8_t rsbox[256] = {
     0x55, 0x21, 0x0c, 0x7d };
 
 unsigned int numRounds(unsigned int keySize) {
-    return -1;
+    // Rijndael Algorithm num Rounds depends on Blocksize and Keysize. Because Blocksize in AES is always 128 Bit, the num of Rounds depends just on the keysize
+    switch (keySize) {
+        case 128:
+            return 10;
+        case 160:
+            return 11;
+        case 192:
+            return 12;
+        case 224:
+            return 13;
+        case 256:
+            return 14;
+        default:
+            printf("No valid keysize!");
+            exit(1);
+    }
 }
 
 unsigned int numKeyWords(unsigned int keySize) {
     return -1;
 }
 
-u_int8_t getSBoxValue(u_int8_t num) { return -1; }
+u_int8_t getSBoxValue(u_int8_t num) {
+    // get the x pos in the sbox
+    int xpos = num % 16;
+    int ypos = num / 16;
+    int idx = (16 * ypos) + xpos;
+    // printf("xpos: %d, ypos: %d, idx: %d\n", xpos, ypos, idx);
+    if (idx < 0 || idx > 256) exit(2);
+    return sbox[idx];
+}
 
-u_int8_t getSBoxInvert(u_int8_t num) { return -1; }
+u_int8_t getSBoxInvert(u_int8_t num) {
+    int xpos = num % 16;
+    int ypos = num / 16;
+    int idx = (16 * ypos) + xpos;
+    if (idx < 0 || idx > 256) exit(2);
+    return rsbox[idx];
+}
 
 u_int8_t rc(u_int8_t num) {
     return -1;
@@ -75,22 +105,72 @@ void getRoundKey(u_int8_t* roundKeys, u_int8_t* roundKey, u_int8_t round) {
 }
 
 void addRoundKey(u_int8_t* state, u_int8_t* roundKey) {
+    for (int i=0; i<16; i++) {
+        state[i] ^= roundKey[i];
+    }
 }
 
 void subBytes(u_int8_t* state) {
+    for (int i=0; i<16; i++) {
+        state[i] = getSBoxValue(state[i]);
+    }
 }
 
 void shiftRows(u_int8_t* state) {
+    // Shift the columns upwards by the column index
+    u_int8_t temp[16];
+
+    // // transpose the state matrix
+    memcpy(temp, state, 16);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            state[i * 4 + j] = temp[j * 4 + i];
+            // printf("%x ", state[i * 4 + j]);
+        }
+        // printf("\n");
+    }
+
+    memcpy(temp, state, 16);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            state[i * 4 + j] = temp[i * 4 + (j + i) % 4];
+            // printf("%x ", state[i * 4 + j]);
+        }
+        // printf("\n");
+    }
+
+    // // transpose the state matrix back
+    memcpy(temp, state, 16);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            state[j * 4 + i] = temp[i * 4 + j];
+            // printf("%x ", state[j * 4 + i]);
+        }
+        // printf("\n");
+    }
 }
 
 void multiply2(u_int8_t* state) {
+    for (int i = 0; i < 16; i++) {
+        if (state[i] > 0x7f) {
+            state[i] = (state[i] << 1) ^ 0x1b;
+        } else {
+            state[i] = (state[i] << 1);
+        }
+    }
 }
 
 void multiply3(u_int8_t* state) {
+    for (int i = 0; i < 16; i++) {
+        if (state[i] > 0x7f) {
+            state[i] = ((state[i] << 1) ^ 0x1b) ^ state[i];
+        } else {
+            state[i] = (state[i] << 1) ^ state[i];
+        }
+    }
 }
 
-void mixColumns(u_int8_t* state) {
-}
+void mixColumns(u_int8_t* state) {}
 
 void invMixColumns(u_int8_t* state) {
 }
@@ -99,12 +179,57 @@ void printBlock(u_int8_t* block) {
 }
 
 void encrypt(u_int8_t* block, u_int8_t* roundKeys, unsigned int rounds) {
+    // Initial AddRoundKey
+    addRoundKey(block, roundKeys);
+
+    // Main rounds
+    for (int i=0; i<rounds; i++) {
+        subBytes(block);
+        shiftRows(block);
+        if (i < rounds - 1) {
+            mixColumns(block);
+        }
+        addRoundKey(block, roundKeys + (i + 1) * 16);
+    }
 }
 
 void invSubBytes(u_int8_t* state) {
+    for (int i=0; i<16; i++) {
+        state[i] = getSBoxInvert(state[i]);
+    }
 }
 
 void invShiftRows(u_int8_t *state) {
+    u_int8_t temp[16];
+
+    // // transpose the state matrix
+    memcpy(temp, state, 16);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            state[i * 4 + j] = temp[j * 4 + i];
+            // printf("%x ", state[i * 4 + j]);
+        }
+        // printf("\n");
+    }
+
+    memcpy(temp, state, 16);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            state[i * 4 + j] = temp[i * 4 + (j - i + 4) % 4];
+            // printf("%x ", state[i * 4 + j]);
+        }
+        // printf("\n");
+    }
+
+    // // transpose the state matrix back
+    memcpy(temp, state, 16);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            state[j * 4 + i] = temp[i * 4 + j];
+            // printf("%x ", state[j * 4 + i]);
+        }
+        // printf("\n");
+    }
 }
 
 void decrypt(u_int8_t* block, u_int8_t* roundKeys, unsigned int rounds) {
