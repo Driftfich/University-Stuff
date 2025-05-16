@@ -10,6 +10,9 @@
 #include "media.h"
 #include "person.h"
 #include "config.h"
+#include "text.h"
+#include "audio.h"
+#include "video.h"
 #include <iostream>
 
 using namespace std;
@@ -134,7 +137,7 @@ int Media::setMetadata(const QMap<QString, QVariant> & newMetadata) {
     return 0;
 }
 
-QJsonObject Media::getLocalParams() {
+QJsonObject Media::getLocalParams() const {
     QJsonObject json;
     json["id"] = static_cast<qint64>(this->id);
     json["title"] = this->title;
@@ -289,11 +292,49 @@ std::shared_ptr<Media> Media::MediaFactory(const QJsonObject& json) {
     else if (type == "Video") {
         return std::make_shared<Video>(json);
     }
+    else if (type == "Media") {
+        return std::make_shared<Media>(json);
+    }
     else {
         throw std::runtime_error("Unbekannter Medientyp: " + type.toStdString());
     }
 }
 
+// print method for the base class
+void Media::printbase(std::ostream& os) const {
+    os << "ID: " << this->id << "\n"
+                << "Title: " << this->title.toStdString() << "\n"
+                << "Publication Date: " << this->publication_date.toString(Qt::ISODate).toStdString() << "\n"
+                << "Publisher: " << this->publisher.toStdString() << "\n"
+                << "Description: " << this->description.toStdString() << "\n"
+                << "Genre: " << this->genre.toStdString() << "\n"
+                << "Languages: ";
+    for (const auto& lang : this->languages) {
+        os << lang.toStdString() << ", ";
+    }
+    os << "\n" << "Metadata: ";
+    for (auto it = this->metadata.constBegin(); it != this->metadata.constEnd(); ++it) {
+        os << it.key().toStdString() << ": " << it.value().toString().toStdString() << ", ";
+    }
+    os << "\n";
+}
+
+void Media::printsubclass(std::ostream& os) const {
+    os << "Subclass type: " << getSubclassType().toStdString() << "\n";
+    // iterate over the subclass parameters
+    QJsonObject subclassParams = getSubclassParams();
+    for (auto it = subclassParams.constBegin(); it != subclassParams.constEnd(); ++it) {
+        os << it.key().toStdString() << ": " << it.value().toString().toStdString() << "\n";
+    }
+}
+
+std::ostream& operator<<(std::ostream& os, const Media& media) {
+    // use the printbase method to print the base class
+    media.printbase(os);
+    // use the printsubclass method to print the subclass
+    media.printsubclass(os);
+    return os;
+}
 
 
 

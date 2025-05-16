@@ -4,11 +4,19 @@
 #include <QString>
 #include <string>
 // #include <math.h>
+#include <regex>
 #include "person.h"
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
+#include "artist.h"
+#include "borrower.h"
 
 // Return values
 // return -1 <=> error
 // return 0 <=> fine
+
+using namespace std;
 
 int Person::setFname(const QString& fname) {
     if (MAX_FNAME_LENGTH != -1 && MIN_FNAME_LENGTH != -1 && MAX_FNAME_LENGTH < MIN_FNAME_LENGTH) {
@@ -25,7 +33,7 @@ int Person::setFname(const QString& fname) {
     // Shorten the fname if it exceeds MAX_FNAME_LENGTH
     if (MAX_FNAME_LENGTH != -1 && MAX_FNAME_LENGTH < fname.length()) {
         cerr << "Warning: First name gets cut to " << MAX_FNAME_LENGTH << " characters from " << fname.length() << " characters" << endl;
-        this->fname = fname.substr(0, min(fname.length(), MAX_FNAME_LENGTH));
+        this->fname = fname.left(MAX_FNAME_LENGTH);
     } else {
         this->fname = fname;
     }
@@ -47,7 +55,7 @@ int Person::setLname(const QString& lname) {
     // Shorten the lname if it exceeds MAX_LNAME_LENGTH
     if (MAX_LNAME_LENGTH != -1 && MAX_LNAME_LENGTH < lname.length()) {
         cerr << "Warning: Last name gets cut to " << MAX_LNAME_LENGTH << " characters from " << lname.length() << " characters" << endl;
-        this->lname = lname.substr(0, min(lname.length(), MAX_LNAME_LENGTH));
+        this->lname = lname.left(MAX_LNAME_LENGTH);
     } else {
         this->lname = lname;
     }
@@ -58,7 +66,7 @@ int Person::setEname(const QString& ename) {
     // Shorten the ename if it exceeds MAX_ENAME_LENGTH
     if (MAX_ENAME_LENGTH != -1 && MAX_ENAME_LENGTH < ename.length()) {
         cerr << "Warning: E(xtension)name gets cut to " << MAX_ENAME_LENGTH << " characters from " << ename.length() << " characters" << endl;
-        this->ename = ename.substr(0, min(ename.length(), MAX_ENAME_LENGTH));
+        this->ename = ename.left(MAX_ENAME_LENGTH);
     } else {
         this->ename = ename;
     }
@@ -129,9 +137,9 @@ int Person::setEmail(const QString& email) {
     }
 
     // Check the email with regex for a valid email address
-    if (!email.empty()) {
+    if (!email.isEmpty()) {
         std::regex email_regex(R"((\w+)(\.\w+)*@(\w+)(\.\w+)+)");
-        if (!std::regex_match(email, email_regex)) {
+        if (!std::regex_match(email.toStdString(), email_regex)) {
             cerr << "Error: Email is not a valid email address" << endl;
             return -1;
         }
@@ -149,9 +157,9 @@ int Person::setTel(const QString& tel) {
     }
 
     // Check the tel with regex for a valid tel number
-    if (!tel.empty()) {
+    if (!tel.isEmpty()) {
         std::regex tel_regex("^\\+?[1-9]\\d{1,14}$");
-        if (!std::regex_match(tel, tel_regex)) {
+        if (!std::regex_match(tel.toStdString(), tel_regex)) {
             cerr << "Error: Tel is not a valid number" << endl;
             return -1;
         }
@@ -161,20 +169,20 @@ int Person::setTel(const QString& tel) {
 }
 
 // constructor using setters
-Person::Person(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
-               const QDate birthday, Gender gender, const QString& note,
-               const QString& location, const QString& email, const QString& tel) {
-    setId(id);
-    setFname(fname);
-    setLname(lname);
-    setEname(ename);
-    setBirthday(birthday);
-    setGender(gender);
-    setNote(note);
-    setLocation(location);
-    setEmail(email);
-    setTel(tel);
-}
+// Person::Person(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
+//                const QDate birthday, Gender gender, const QString& note,
+//                const QString& location, const QString& email, const QString& tel) {
+//     setId(id);
+//     setFname(fname);
+//     setLname(lname);
+//     setEname(ename);
+//     setBirthday(birthday);
+//     setGender(gender);
+//     setNote(note);
+//     setLocation(location);
+//     setEmail(email);
+//     setTel(tel);
+// }
 
 // copy constructor
 Person::Person(const Person& other) {
@@ -190,6 +198,13 @@ Person::Person(const Person& other) {
     this->location = other.location;
     this->email = other.email;
     this->tel = other.tel;
+}
+
+// constructor for loading from JSON
+Person::Person(const QJsonObject& json) {
+    if (loadLocalParams(json) != 0) {
+        throw std::runtime_error("Issues loading person parameters");
+    }
 }
 
 // copy assignment operator
@@ -215,4 +230,70 @@ Person& Person::operator=(const Person& other) {
 Person::~Person() {
     // destructor
     // no need to delete anything as QString and QDate are handled by the C++ standard library
+}
+
+QJsonObject Person::getLocalParams() const {
+    QJsonObject json;
+    json["id"] = static_cast<qint64>(id);
+    json["fname"] = fname;
+    json["lname"] = lname;
+    json["ename"] = ename;
+    json["birthday"] = birthday.toString(Qt::ISODate);
+    json["gender"] = static_cast<int>(gender);
+    json["note"] = note;
+    json["location"] = location;
+    json["email"] = email;
+    json["tel"] = tel;
+    return json;
+}
+
+QJsonObject Person::getJson() const {
+    QJsonObject obj;
+    obj["person"] = getLocalParams();
+    obj["subclass_type"] = getSubclassParams().isEmpty() ? QString("Person") : getSubclassType();
+    obj["subclass_params"] = getSubclassParams();
+    return obj;
+}
+
+void Person::toFile(QFile& file) const {
+    if (!file.isOpen()) file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
+    QJsonDocument doc(getJson());
+    file.write(doc.toJson(QJsonDocument::Compact) + "\n");
+}
+
+int Person::loadLocalParams(const QJsonObject& json) {
+    if (json.contains("id")) id = static_cast<unsigned long>(json["id"].toVariant().toLongLong());
+    if (json.contains("fname")) fname = json["fname"].toString();
+    if (json.contains("lname")) lname = json["lname"].toString();
+    if (json.contains("ename")) ename = json["ename"].toString();
+    if (json.contains("birthday")) birthday = QDate::fromString(json["birthday"].toString(), Qt::ISODate);
+    if (json.contains("gender")) gender = static_cast<Gender>(json["gender"].toInt());
+    if (json.contains("note")) note = json["note"].toString();
+    if (json.contains("location")) location = json["location"].toString();
+    if (json.contains("email")) email = json["email"].toString();
+    if (json.contains("tel")) tel = json["tel"].toString();
+    return 0;
+}
+
+std::shared_ptr<Person> Person::fromFile(QFile& file) {
+    if (!file.isOpen()) file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray line = file.readLine();
+    QJsonObject obj = QJsonDocument::fromJson(line).object();
+    return PersonFactory(obj);
+}
+
+std::shared_ptr<Person> Person::PersonFactory(const QJsonObject& json) {
+    auto base = json["person"].toObject();
+    auto type = json["subclass_type"].toString();
+    if (type == "Artist") {
+        return std::make_shared<Artist>(json);
+    } else if (type == "Borrower") {
+        return std::make_shared<Borrower>(json);
+    }
+    else if (type == "Person") {
+        return std::make_shared<Person>(base);
+    }
+    else {
+        throw std::runtime_error("Unknown subclass type: " + type.toStdString());
+    }
 }

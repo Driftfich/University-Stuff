@@ -24,3 +24,30 @@ int Video::setAudioChannels(const QString& audio_channels) {
     this->audio_channels = audio_channels;
     return 0;
 }
+
+// methods for loading & saving video data
+
+QJsonObject Video::getSubclassParams() const {
+    QJsonObject json;
+    json["type"] = this->type;
+    json["codec"] = this->codec;
+    json["aspect_ratio"] = this->aspect_ratio;
+    json["audio_channels"] = this->audio_channels;
+    return json;
+}
+
+int Video::loadSubclassParams(const QJsonObject& json) {
+    if (json.contains("type")) {
+        setType(json["type"].toString());
+    }
+    if (json.contains("codec")) {
+        setCodec(json["codec"].toString());
+    }
+    if (json.contains("aspect_ratio")) {
+        setAspectRatio(json["aspect_ratio"].toString());
+    }
+    if (json.contains("audio_channels")) {
+        setAudioChannels(json["audio_channels"].toString());
+    }
+    return 0;
+}

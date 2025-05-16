@@ -82,6 +82,8 @@
         "__node_handle": "cpp",
         "__memory": "cpp",
         "filesystem": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "cinttypes": "cpp",
+        "regex": "cpp"
     }
 }

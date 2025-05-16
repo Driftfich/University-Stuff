@@ -2,9 +2,10 @@
 #define _BORROWER_H
 
 #include <QDate>
+#include <iostream>
+#include <algorithm>
 #include "person.h"
 #include "config.h"
-#include <iostream>
 
 using namespace std;
 
@@ -44,7 +45,7 @@ class Borrower: public Person {
         // setter method
         void setLimit(unsigned int limit) {
             if (MAX_ITEMS_PER_BORROWER_HARD != -1) {
-                this->limit = min(limit, MAX_ITEMS_PER_BORROWER_HARD);
+                this->limit = std::min(limit, static_cast<unsigned int> (MAX_ITEMS_PER_BORROWER_HARD));
             } else {
                 this->limit = limit;
             }
@@ -62,6 +63,17 @@ class Borrower: public Person {
         unsigned long getBowId() const {
             return this->bow_id;
         }
-}
+
+        // serialization methods
+        QString getSubclassType() const override { return "Borrower"; }
+        QJsonObject getSubclassParams() const override;
+        int loadSubclassParams(const QJsonObject& json) override;
+        Borrower(const QJsonObject& json) : Person(json) {
+            if (loadSubclassParams(json) != 0) {
+                throw std::runtime_error("Failed to load Borrower parameters");
+            }
+        }
+
+};
 
 #endif

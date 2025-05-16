@@ -17,11 +17,11 @@ class Video : public Media {
 
     public:
         void setDuration(unsigned int duration) {this->duration = duration;}
+        void setResolution(unsigned int resolution) {this->resolution = resolution;}
         int setType(const QString& type);
-        int setResolution(unsigned int resolution) {this->resolution = resolution;}
-        int setCodec(const QString& codec) {this->codec = codec;}
-        int setAspectRatio(const QString& aspect_ratio) {this->aspect_ratio = aspect_ratio;}
-        int setAudioChannels(const QString& audio_channels) {this->audio_channels = audio_channels;}
+        int setCodec(const QString& codec);
+        int setAspectRatio(const QString& aspect_ratio);
+        int setAudioChannels(const QString& audio_channels);
 
         unsigned int getDuration() const {return this->duration;}
         QString getType() const {return this->type;}
@@ -32,17 +32,23 @@ class Video : public Media {
 
         // constructor using setters
         Video(unsigned long id, const QString& title, const QDate publication_date,
-              const QVector<int>& artist_ids, const QString& publisher, const QString& description,
-              const QString& genre, const QVector<QString>& languages, unsigned int available_copies,
+              const QVector<unsigned long>& artist_ids, const QString& publisher, const QString& description,
+              const QString& genre, const QVector<QString>& languages, QMap<QString, QVariant> metadata,
               unsigned int duration, const QString& type, unsigned int resolution,
               const QString& codec, const QString& aspect_ratio, const QString& audio_channels)
-            : Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, available_copies) {
+            : Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, metadata) {
             setDuration(duration);
             setType(type);
             setResolution(resolution);
             setCodec(codec);
             setAspectRatio(aspect_ratio);
             setAudioChannels(audio_channels);
+        }
+
+        Video(const QJsonObject& json) : Media(json) {
+            if (loadSubclassParams(json["subclass_params"].toObject()) != 0) {
+                throw std::runtime_error("Issue loading subclass parameters for Video");
+            }
         }
 
         // copy constructor
@@ -74,6 +80,13 @@ class Video : public Media {
             // Destructor logic if needed
             // Note: Media objects are not deleted here, as they are managed elsewhere
         }
+
+        // methods for loading & saving text data
+        QString getSubclassType() const override {return "Video";} // used to identify it is a video
+
+        QJsonObject getSubclassParams() const override;
+
+        int loadSubclassParams(const QJsonObject& json) override;
 };
 
 #endif

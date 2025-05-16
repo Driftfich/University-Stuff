@@ -37,7 +37,7 @@ int Text::setTextFormat(const QString& textFormat) {
     return 0;
 }
 
-QJsonObject Text::getSubclassParams() const override {
+QJsonObject Text::getSubclassParams() const {
     QJsonObject json;
     json["pages"] = pages;
     json["isbn"] = isbn;
@@ -46,7 +46,7 @@ QJsonObject Text::getSubclassParams() const override {
     return json;
 }
 
-int Text::loadSubclassParams(const QJsonObject& json) const override {
+int Text::loadSubclassParams(const QJsonObject& json) {
     if (json.contains("pages")) {
         setPages(json["pages"].toInt());
     } else {

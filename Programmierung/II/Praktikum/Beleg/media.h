@@ -123,10 +123,8 @@ class Media {
 
         // method to retrieve the subclass type
         virtual QString getSubclassType() const {return "Media";} // used to identify if it is a text, audio, video, etc.
-
-        
         // get json object from local media object
-        QJsonObject getLocalParams();
+        QJsonObject getLocalParams() const;
         virtual QJsonObject getSubclassParams() const {return QJsonObject();}
         // get json object including subclass and local params
         QJsonObject getJson() const;
@@ -136,11 +134,16 @@ class Media {
         // load json object from file
         int loadLocalParams(const QJsonObject& json);
         // read json object from file
-        virtual int loadSubclassParams(const QJsonObject& json) const = 0;
+        virtual int loadSubclassParams(const QJsonObject& json) {Q_UNUSED(json); return 0;}
         // load json object from file
-        int fromFile(const QString& file);
+        static std::shared_ptr<Media> fromFile(QFile& file);
         // factory method to create the correct subclass object
         static std::shared_ptr<Media> MediaFactory(const QJsonObject& json);
+
+        // print methods
+        void printbase(std::ostream& os) const;
+        virtual void printsubclass(std::ostream& os) const;
+        friend std::ostream& operator<<(std::ostream& os, const Media& media);
 
 };
 

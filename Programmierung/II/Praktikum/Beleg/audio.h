@@ -56,6 +56,12 @@ class Audio : public Media {
             setTracks(tracks);
         }
 
+        Audio(const QJsonObject& json) : Media(json) {
+            if (loadSubclassParams(json["subclass_params"].toObject()) != 0) {
+                throw std::runtime_error("Issue loading subclass parameters for Audio");
+            }
+        }
+
         // copy constructor
         Audio(const Audio& other) : Media(other) {
             this->duration = other.duration;
@@ -89,6 +95,13 @@ class Audio : public Media {
             // Destructor logic if needed
             // Note: Media objects are not deleted here, as they are managed elsewhere
         }
+
+        // methods for loading & saving audio data
+        QString getSubclassType() const override {return "Audio";} // used to identify it is a audio
+
+        QJsonObject getSubclassParams() const override;
+
+        int loadSubclassParams(const QJsonObject& json) override;
 };
 
 #endif

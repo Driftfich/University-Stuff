@@ -14,6 +14,12 @@
 #include <QDate>
 #include <QString>
 #include <QVector>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
+#include <QJsonArray>
+#include <QVariant>
+#include <QMap>
 
 #include "config.h"
 
@@ -79,6 +85,9 @@ class Person {
             setTel(tel);
         }
 
+        // constructor for loading from JSON
+        Person(const QJsonObject& json);
+
         // copy constructor
         Person(const Person& other);
 
@@ -87,6 +96,19 @@ class Person {
 
         // destructor
         virtual ~Person();
+
+        // subclass type
+        virtual QString getSubclassType() const { return "Person"; } // used to identify it is a person
+
+        // serialization methods
+        QJsonObject getLocalParams() const;
+        virtual QJsonObject getSubclassParams() const { return QJsonObject(); }
+        QJsonObject getJson() const;
+        void toFile(QFile& file) const;
+        int loadLocalParams(const QJsonObject& json);
+        virtual int loadSubclassParams(const QJsonObject& json) { Q_UNUSED(json); return 0; }
+        static std::shared_ptr<Person> fromFile(QFile& file);
+        static std::shared_ptr<Person> PersonFactory(const QJsonObject& json);
 };
 
 

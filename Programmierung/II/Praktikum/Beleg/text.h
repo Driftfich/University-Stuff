@@ -5,6 +5,7 @@
 #include <QString>
 #include <QVector>
 #include <QDate>
+#include <QMap>
 
 class Text : public Media {
     int pages;
@@ -28,15 +29,15 @@ class Text : public Media {
 
         QJsonObject getSubclassParams() const override;
 
-        int loadSubclassParams(const QJsonObject& json) const override;
+        int loadSubclassParams(const QJsonObject& json) override;
 
 
         // constructor using setters
         Text(unsigned long id, const QString& title, const QDate publication_date,
-             const QVector<int>& artist_ids, const QString& publisher, const QString& description,
-             const QString& genre, const QVector<QString>& languages, unsigned int available_copies,
+             const QVector<unsigned long>& artist_ids, const QString& publisher, const QString& description,
+             const QString& genre, const QVector<QString>& languages, QMap<QString, QVariant> metadata,
              int pages, const QString& isbn, const QString& bindingType, const QString& textFormat)
-            : Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, available_copies) {
+            : Media(id, title, publication_date, artist_ids, publisher, description, genre, languages, metadata) {
             setPages(pages);
             setIsbn(isbn);
             setBindingType(bindingType);

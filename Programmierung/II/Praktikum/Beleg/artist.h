@@ -11,6 +11,7 @@
 
 #include "config.h"
 #include "person.h"
+#include "media.h"
 
 class Artist : public Person {
     QString artist_type; // e.g. actor, director, musician, etc.
@@ -59,12 +60,19 @@ class Artist : public Person {
         // destructor
         ~Artist() {
             // Destructor logic if needed
-            // Note: Media objects are not deleted here, as they are managed elsewhere
         }
 
+        // serialization methods
+        QString getSubclassType() const override { return "Artist"; }
+        QJsonObject getSubclassParams() const override;
+        int loadSubclassParams(const QJsonObject& json) override;
 
+        Artist(const QJsonObject& json) : Person(json) {
+            if (loadSubclassParams(json["subclass_params"].toObject()) != 0) {
+                throw std::runtime_error("Issue loading subclass parameters for Artist");
+            }
+        }
 
 };
-
 
 #endif
