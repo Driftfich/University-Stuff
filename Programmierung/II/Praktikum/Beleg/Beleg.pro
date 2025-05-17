@@ -14,7 +14,7 @@ INCLUDEPATH += .
 #DEFINES += QT_DISABLE_DEPRECATED_UP_TO=0x060000 # disables all APIs deprecated in Qt 6.0.0 and earlier
 
 # Input
-HEADERS += artist.h \
+HEADERS +=  artist.h \
             audio.h \
             borrower.h \
             config.h \
@@ -27,9 +27,10 @@ HEADERS += artist.h \
             video.h \
             transactionman.h \
             personman.h \
-            mediaman.h
+            mediaman.h \
+            libitemman.h
 
-SOURCES += artist.cpp \
+SOURCES +=  artist.cpp \
             audio.cpp \
             media.cpp \
             person.cpp \
@@ -41,6 +42,7 @@ SOURCES += artist.cpp \
             transaction.cpp \
             transactionman.cpp \
             personman.cpp \
-            mediaman.cpp
+            mediaman.cpp \
+            libitemman.cpp 
 
 QT += core gui

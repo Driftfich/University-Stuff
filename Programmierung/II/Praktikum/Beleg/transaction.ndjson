@@ -1,2 +1,13 @@
-{"borrower_id":1,"id":1,"libitem_id":1,"transaction_time":"Sat May 17 21:30:59 2025"}
-{"borrower_id":1,"id":2,"libitem_id":1,"transaction_time":"Sat May 17 21:31:43 2025"}
+{"borrower_id":1,"id":0,"libitem_id":1,"transaction_time":"Sat May 17 23:06:18 2025"}
+{"borrower_id":1,"id":1,"libitem_id":1,"transaction_time":"Sat May 17 23:06:22 2025"}
+{"borrower_id":1,"id":2,"libitem_id":1,"transaction_time":"Sat May 17 23:06:41 2025"}
+{"borrower_id":1,"id":3,"libitem_id":1,"transaction_time":"Sat May 17 23:06:42 2025"}
+{"borrower_id":1,"id":4,"libitem_id":1,"transaction_time":"Sat May 17 23:07:50 2025"}
+{"borrower_id":1,"id":5,"libitem_id":1,"transaction_time":"Sat May 17 23:07:52 2025"}
+{"borrower_id":1,"id":6,"libitem_id":1,"transaction_time":"Sat May 17 23:07:53 2025"}
+{"borrower_id":1,"id":7,"libitem_id":1,"transaction_time":"Sat May 17 23:07:54 2025"}
+{"borrower_id":1,"id":8,"libitem_id":1,"transaction_time":"Sat May 17 23:10:38 2025"}
+{"borrower_id":1,"id":9,"libitem_id":1,"transaction_time":"Sat May 17 23:10:39 2025"}
+{"borrower_id":1,"id":10,"libitem_id":1,"transaction_time":"Sat May 17 23:10:40 2025"}
+{"borrower_id":1,"id":11,"libitem_id":1,"transaction_time":"Sat May 17 23:10:41 2025"}
+{"borrower_id":1,"id":12,"libitem_id":1,"transaction_time":"Sat May 17 23:38:57 2025"}

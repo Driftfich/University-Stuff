@@ -15,6 +15,8 @@
 #include "transaction.h"
 #include "transactionman.h"
 #include "mediaman.h"
+#include "personman.h"
+#include "libitemman.h"
 
 int test_media_file_management() {
     // Test the Media class
@@ -272,6 +274,30 @@ int test_mediaman() {
     return 0;
 }
 
+int test_personman() {
+    // Test the PersonMan class
+    PersonMan pm = PersonMan(QString("person.ndjson"));
+    std::cout << pm << std::endl;
+
+    // add a new person
+    std::shared_ptr<Person> p1 = std::make_shared<Person>(Person(pm.getNextId(), QString("John"), QString("Doe"), QString(""), QDate::currentDate(), Gender::male, QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789")));
+    pm.addPerson(p1);
+
+    return 0;
+}
+
+int test_libitemman() {
+    // Test the LibitemMan class
+    LibitemMan lm = LibitemMan(QString("libitem.ndjson"));
+    std::cout << lm << std::endl;
+
+    // add a new libitem
+    std::shared_ptr<Libitem> l1 = std::make_shared<Libitem>(Libitem(lm.getNextId(), (unsigned long) 1, (unsigned long) 5, (unsigned long) 0, QString("Shelf A"), QString("New")));
+    lm.addLibitem(l1);
+
+    return 0;
+}
+
 int main() {
     // Test the Media class
     // test_media_file_management();
@@ -280,5 +306,7 @@ int main() {
     // test_transaction_file_management();
     test_transactionman();
     test_mediaman();
+    test_personman();
+    test_libitemman();
     return 0;
 }

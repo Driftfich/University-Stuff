@@ -84,6 +84,7 @@
         "filesystem": "cpp",
         "locale": "cpp",
         "cinttypes": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "__split_buffer": "cpp"
     }
 }

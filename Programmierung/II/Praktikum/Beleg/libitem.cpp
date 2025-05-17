@@ -7,10 +7,10 @@
 
 QJsonObject Libitem::getJson() const {
     QJsonObject json;
-    json["id"] = QString::number(id);
-    json["media_id"] = QString::number(media_id);
-    json["available_copies"] = QString::number(available_copies);
-    json["borrowed_copies"] = QString::number(borrowed_copies);
+    json["id"] = static_cast<qint64>(id);
+    json["media_id"] = static_cast<qint64>(media_id);
+    json["available_copies"] = static_cast<qint64>(available_copies);
+    json["borrowed_copies"] = static_cast<qint64>(borrowed_copies);
     json["location"] = location;
     json["condition"] = condition;
     return json;

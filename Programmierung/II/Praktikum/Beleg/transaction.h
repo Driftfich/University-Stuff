@@ -14,7 +14,7 @@
 class Transaction {
     unsigned long id;
     unsigned long libitem_id;
-    unsigned long borrower_id;
+    unsigned long borrower_id; // Person id 
     QDateTime transaction_time;
 
     public:

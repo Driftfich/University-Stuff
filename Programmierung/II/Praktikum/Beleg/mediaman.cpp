@@ -4,6 +4,7 @@
 #include <QDate>
 #include <QString>
 #include <QVector>
+#include <QHash>
 #include <iostream>
 #include "mediaman.h"
 #include "media.h"
@@ -25,6 +26,10 @@ int MediaMan::setFilename(const QString& filename) {
 int MediaMan::addMedia(std::shared_ptr<Media> media) {
     if (media) {
         this->media.push_back(media);
+        if (media->getId() >= next_id) {
+            setNextId(media->getId() + 1);
+        }
+        media_map.insert(media->getId(), media);
         return 0;
     }
     return -1;
@@ -34,6 +39,7 @@ int MediaMan::removeMedia(unsigned long id) {
     for (auto it = media.begin(); it != media.end(); ++it) {
         if ((*it)->getId() == id) {
             media.erase(it);
+            media_map.remove(id);
             return 0;
         }
     }
@@ -56,20 +62,15 @@ int MediaMan::load() {
         std::cerr << "Error opening file for reading: " << filename.toStdString() << std::endl;
         return -1;
     }
-    unsigned long max_id = 0;
     while (!file.atEnd()) {
         std::shared_ptr<Media> media = Media::fromFile(file);
         if (media) {
-            this->media.push_back(media);
-            if (media->getId() > max_id) {
-                max_id = media->getId();
-            }
+            addMedia(media);
         } else {
             std::cerr << "Error loading media from file" << std::endl;
             break;
         }
     }
-    setNextId(max_id + 1);
     return 0;
 }
 

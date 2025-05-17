@@ -7,11 +7,14 @@
 #include <QDate>
 #include <QString>
 #include <QVector>
+#include <QHash>
+#include <iostream>
 #include "media.h"
 
 class MediaMan {
     QString filename;
     QVector<std::shared_ptr<Media>> media;
+    QHash<unsigned long, std::shared_ptr<Media>> media_map; // fast access to media by id
     unsigned long next_id;
     void setNextId(unsigned long id) {
         next_id = id;

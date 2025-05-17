@@ -9,11 +9,15 @@
 #include <QDateTime>
 #include <QString>
 #include <QVector>
+#include <QHash>
+#include <iostream>
 #include "transaction.h"
 
 class TransactionMan {
     QString filename;
     QVector<std::shared_ptr<Transaction>> transactions;
+    QHash<unsigned long, QVector<std::shared_ptr<Transaction>>> libitem_map; // fast access to all transactions containing a specific libitem id
+    QHash<unsigned long, QVector<std::shared_ptr<Transaction>>> person_map; // fast access to all transactions containing a specific person id
     unsigned long next_id;
 
 
@@ -25,7 +29,6 @@ public:
     // constructor and destructor
     TransactionMan(const QString& filename);
     ~TransactionMan();
-
 
     // load and save functions
     int load();

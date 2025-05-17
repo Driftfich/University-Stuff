@@ -13,6 +13,7 @@
 class PersonMan {
     QString filename;
     QVector<std::shared_ptr<Person>> persons;
+    QHash<unsigned long, std::shared_ptr<Person>> person_map; // fast access to persons by id
     unsigned long next_id;
 
     void setNextId(unsigned long id) {

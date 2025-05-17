@@ -4,6 +4,8 @@
 #include <QDateTime>
 #include <QString>
 #include <QVector>
+#include <QHash>
+#include <iostream>
 #include "transactionman.h"
 #include "transaction.h"
 #include <iostream>
@@ -24,20 +26,15 @@ int TransactionMan::load() {
         std::cerr << "Error opening file for reading: " << filename.toStdString() << std::endl;
         return -1;
     }
-    unsigned long max_id = 0;
     while (!file.atEnd()) {
         std::shared_ptr<Transaction> transaction = Transaction::fromFile(file);
         if (transaction) {
-            transactions.push_back(transaction);
-            if (transaction->getId() > max_id) {
-                max_id = transaction->getId();
-            }
+            addTransaction(transaction);
         } else {
             std::cerr << "Error loading transaction from file" << std::endl;
             break;
         }
     }
-    setNextId(max_id + 1);
     return 0;
 }
 
@@ -61,8 +58,14 @@ int TransactionMan::setFilename(const QString& filename) {
 int TransactionMan::addTransaction(std::shared_ptr<Transaction> transaction) {
     if (transaction) {
         transactions.push_back(transaction);
+        if (transaction->getId() >= next_id) {
+            setNextId(transaction->getId() + 1);
+        }
+        libitem_map[transaction->getLibitemId()].push_back(transaction);
+        person_map[transaction->getId()].push_back(transaction);
         return 0;
     }
+    std::cerr << "Error: Transaction is null" << std::endl;
     return -1;
 }
 
@@ -80,6 +83,8 @@ int TransactionMan::removeTransaction(unsigned long id) {
     for (auto it = transactions.begin(); it != transactions.end(); ++it) {
         if ((*it)->getId() == id) {
             transactions.erase(it);
+            libitem_map.remove((*it)->getLibitemId());
+            person_map.remove((*it)->getId());
             return 0;
         }
     }
