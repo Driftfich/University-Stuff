@@ -2,6 +2,9 @@
 #define _LIBITEM_H
 
 #include <QString>
+#include <QFile>
+#include <QJsonObject>
+#include <QJsonDocument>
 #include "media.h"
 #include "config.h"
 
@@ -36,13 +39,21 @@ class Libitem {
 
         // constructor
         Libitem(unsigned long id, unsigned long media_id, unsigned long available_copies, unsigned long borrowed_copies, 
-                const QString& location = "", const QString& condition = "") {
+                const QString& location, const QString& condition) {
             setId(id);
             setMediaId(media_id);
             setAvailableCopies(available_copies);
             setBorrowedCopies(borrowed_copies);
             setLocation(location);
             setCondition(condition);
+            this->media = nullptr;
+        }
+
+        Libitem(QJsonObject json) {
+            std::cout << "Reached Libitem constructor" << std::endl;
+            if (loadLocalParams(json) != 0) {
+                throw std::runtime_error("Issues loading libitem parameters");
+            }
         }
 
         // destructor
@@ -90,6 +101,9 @@ class Libitem {
         static std::shared_ptr<Libitem> fromFile(QFile& file);
         // factory method
         static std::shared_ptr<Libitem> LibitemFactory(const QJsonObject& json);
+
+        // print method
+        friend std::ostream& operator<<(std::ostream& os, const Libitem& libitem);
 };
 
 #endif

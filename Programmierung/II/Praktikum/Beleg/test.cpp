@@ -1,6 +1,7 @@
 #include <QDate>
 #include <QVector>
 #include <QMap>
+#include <QString>
 #include <QVariant>
 #include <iostream>
 #include "media.h"
@@ -10,6 +11,7 @@
 #include "borrower.h"
 #include "person.h"
 #include "artist.h"
+#include "libitem.h"
 
 int test_media_file_management() {
     // Test the Media class
@@ -121,9 +123,81 @@ int test_person_file_management() {
 
 }
 
+int test_libitem_file_management() {
+    // Test the Libitem class
+    // Create a Libitem object
+    Libitem l1 = Libitem((unsigned long) 1, (unsigned long) 1, (unsigned long) 5, (unsigned long) 0, QString("Shelf A"), QString("New"));
+    Libitem l2 = Libitem((unsigned long) 2, (unsigned long) 2, (unsigned long) 3, (unsigned long) 1, QString("Shelf B"), QString("Used"));
+    // create a magic pointer array on the l1 object
+    std::shared_ptr<Libitem> libitemPtr1 = std::make_shared<Libitem>(l1);
+    std::shared_ptr<Libitem> libitemPtr2 = std::make_shared<Libitem>(l2);
+
+    // create a magic pointer array on the l1 object
+    std::vector<std::shared_ptr<Libitem>> libitemPtrs = {libitemPtr1, libitemPtr2};
+
+    // save all objects to a file
+    QString filename = QString("libitem.ndjson");
+    QFile file(filename);
+    // clear the file beforehand
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        std::cerr << "Error: Could not open file for writing" << std::endl;
+        return -1;
+    }
+
+    if (file.exists()) {
+        file.remove();
+    }
+
+    // save all objects to a file
+    for (int i = 0; i < (int) libitemPtrs.size(); ++i) {
+        std::cout << "Saving object " << i << " to file: " << *libitemPtrs[i] << std::endl;
+        libitemPtrs[i]->toFile(file);
+    }
+
+    // file.close();
+
+    // load all objects from a file by using the factory method from the libitem class
+    // clear the libitemPtrs vector
+    libitemPtrs.clear();
+
+    file.close();
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        std::cerr << "Fehler beim Öffnen zum Lesen\n";
+        return -1;
+    }
+
+
+    // // reset file cursor to the beginning
+    int i = 0;
+    // std::cout << "Loading object from file" << std::endl;
+    while (!file.atEnd()) {
+        if (i == 1) {
+            break;
+        }
+        std::cout << "Loading object from file" << std::endl;
+        std::shared_ptr<Libitem> libitemPtr = Libitem::fromFile(file);
+        if (libitemPtr) {
+            libitemPtrs.push_back(libitemPtr);
+        }
+        if (libitemPtr) {
+            std::cout << "Loaded object from file: " << *libitemPtr << std::endl;
+        } else {
+            std::cerr << "Failed to load object from file" << std::endl;
+            break;
+        }
+        i++;
+    }
+
+    file.close();
+
+    return 0;
+}
+
 int main() {
     // Test the Media class
     test_media_file_management();
     test_person_file_management();
+    test_libitem_file_management();
     return 0;
 }
