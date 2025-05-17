@@ -71,8 +71,6 @@ int Libitem::loadLocalParams(const QJsonObject& json) {
         return -1;
     }
 
-
-    this->media = nullptr; // media object is not loaded here
     std::cout << "Loaded Libitem Params" << std::endl;
     
     return 0;

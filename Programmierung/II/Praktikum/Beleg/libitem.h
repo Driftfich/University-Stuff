@@ -11,7 +11,7 @@
 class Libitem {
     unsigned long id; // libitem id
     unsigned long media_id; // media id
-    Media* media; // pointer to media object
+    // Media* media; // pointer to media object
     unsigned long available_copies; // number of available copies in the library
     unsigned long borrowed_copies; // number of borrowed copies
     QString location; // location of the libitem in the library
@@ -33,7 +33,7 @@ class Libitem {
         unsigned long getMediaId() const {return media_id;}
         unsigned long getAvailableCopies() const {return available_copies;}
         unsigned long getBorrowedCopies() const {return borrowed_copies;}
-        Media* getMedia() const {return media;}
+        // Media* getMedia() const {return media;}
         QString getLocation() const {return location;}
         QString getCondition() const {return condition;}
 
@@ -46,7 +46,7 @@ class Libitem {
             setBorrowedCopies(borrowed_copies);
             setLocation(location);
             setCondition(condition);
-            this->media = nullptr;
+            // this->media = nullptr;
         }
 
         Libitem(QJsonObject json) {
@@ -58,9 +58,9 @@ class Libitem {
 
         // destructor
         ~Libitem() {
-            if (media != nullptr) {
-                delete media;
-            }
+            // if (media != nullptr) {
+            //     delete media;
+            // }
         }
 
         // copy constructor
@@ -68,7 +68,7 @@ class Libitem {
             this->id = other.id;
             this->media_id = other.media_id;
             this->available_copies = other.available_copies;
-            this->media = other.media; // media object has assignment and copy constructor
+            // this->media = other.media; // media object has assignment and copy constructor
             this->borrowed_copies = other.borrowed_copies;
             this->location = other.location;
             this->condition = other.condition;
@@ -83,10 +83,10 @@ class Libitem {
                 this->borrowed_copies = other.borrowed_copies;
                 this->location = other.location;
                 this->condition = other.condition;
-                if (this->media != nullptr) {
-                    delete this->media;
-                }
-                this->media = other.media; // media object has assignment and copy constructor
+                // if (this->media != nullptr) {
+                //     delete this->media;
+                // }
+                // this->media = other.media; // media object has assignment and copy constructor
             }
             return *this;
         }

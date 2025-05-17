@@ -15,16 +15,32 @@ INCLUDEPATH += .
 
 # Input
 HEADERS += artist.h \
-           audio.h \
-           borrower.h \
-           config.h \
-           json.hpp \
-           libitem.h \
-           media.h \
-           person.h \
-           text.h \
-           transaction.h \
-           video.h
-SOURCES += artist.cpp audio.cpp media.cpp person.cpp test.cpp text.cpp video.cpp borrower.cpp libitem.cpp transaction.cpp
+            audio.h \
+            borrower.h \
+            config.h \
+            json.hpp \
+            libitem.h \
+            media.h \
+            person.h \
+            text.h \
+            transaction.h \
+            video.h \
+            transactionman.h \
+            personman.h \
+            mediaman.h
+
+SOURCES += artist.cpp \
+            audio.cpp \
+            media.cpp \
+            person.cpp \
+            test.cpp \
+            text.cpp \
+            video.cpp \
+            borrower.cpp \
+            libitem.cpp \
+            transaction.cpp \
+            transactionman.cpp \
+            personman.cpp \
+            mediaman.cpp
 
 QT += core gui

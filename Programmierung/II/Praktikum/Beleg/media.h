@@ -23,7 +23,7 @@ class Media {
     QString title;
     QDate publication_date;
     QVector<unsigned long> artist_ids; // array persons ids => Information about saved in Person class
-    QVector<Person*> artists; // array of deserialized artists/persons (person.h) objects
+    // QVector<Person*> artists; // array of deserialized artists/persons (person.h) objects
     QString publisher;
     QString description;
     QString genre;
@@ -73,7 +73,6 @@ class Media {
             setLanguages(languages);
             // setAvailableCopies(available_copies);
             setMetadata(metadata);
-            this->artists = QVector<Person*>();
         }
 
         // constructor for loading from file
@@ -88,7 +87,6 @@ class Media {
             this->id = other.id;
             this->title = other.title;
             this->publication_date = other.publication_date;
-            this->artists = other.artists;
             this->artist_ids = other.artist_ids;
             this->publisher = other.publisher;
             this->description = other.description;
@@ -104,7 +102,6 @@ class Media {
                 this->id = other.id;
                 this->title = other.title;
                 this->publication_date = other.publication_date;
-                this->artists = other.artists;
                 this->artist_ids = other.artist_ids;
                 this->publisher = other.publisher;
                 this->description = other.description;

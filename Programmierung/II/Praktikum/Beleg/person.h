@@ -19,8 +19,6 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QVariant>
-#include <QMap>
-
 #include "config.h"
 
 

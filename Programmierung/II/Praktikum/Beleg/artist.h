@@ -16,7 +16,7 @@
 class Artist : public Person {
     QString artist_type; // e.g. actor, director, musician, etc.
     QVector<unsigned long> media_ids; // array of media ids => works created by the artist
-    QVector<Media*> media; // array of deserialized media objects
+    // QVector<Media*> media; // array of deserialized media objects
 
     public:
         // setter methods
@@ -26,7 +26,7 @@ class Artist : public Person {
         // getter methods
         QString getArtistType() const {return this->artist_type;}
         QVector<unsigned long> getMediaIds() const {return this->media_ids;}
-        QVector<Media*> getMedia() const {return this->media;}
+        // QVector<Media*> getMedia() const {return this->media;}
 
         // constructor using setters
         Artist(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
@@ -36,14 +36,14 @@ class Artist : public Person {
                Person(id, fname, lname, ename, birthday, gender, note, location, email, tel) {
             setArtistType(artist_type);
             setMediaIds(media_ids);
-            this->media = QVector<Media*>();
+            // this->media = QVector<Media*>();
         }
 
         // copy constructor
         Artist(const Artist& other) : Person(other) {
             this->artist_type = other.artist_type;
             this->media_ids = other.media_ids;
-            this->media = other.media;
+            // this->media = other.media;
         }
 
         // copy assignment operator
@@ -52,7 +52,7 @@ class Artist : public Person {
                 Person::operator=(other); // Call base class assignment operator
                 this->artist_type = other.artist_type;
                 this->media_ids = other.media_ids;
-                this->media = other.media;
+                // this->media = other.media;
             }
             return *this;
         }

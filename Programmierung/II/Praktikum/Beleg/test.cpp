@@ -13,6 +13,8 @@
 #include "artist.h"
 #include "libitem.h"
 #include "transaction.h"
+#include "transactionman.h"
+#include "mediaman.h"
 
 int test_media_file_management() {
     // Test the Media class
@@ -245,11 +247,38 @@ int test_transaction_file_management() {
     return 0;
 }
 
+int test_transactionman() {
+    // Test the TransactionMan class
+    TransactionMan tm = TransactionMan(QString("transaction.ndjson"));
+    std::cout << tm << std::endl;
+
+    // add a new transaction
+    std::shared_ptr<Transaction> t1 = std::make_shared<Transaction>(Transaction(tm.getNextId(), (unsigned long) 1, (unsigned long) 1, QDateTime::currentDateTime()));
+
+    tm.addTransaction(t1);
+
+    return 0;
+}
+
+int test_mediaman() {
+    // Test the MediaMan class
+    MediaMan mm = MediaMan(QString("media.ndjson"));
+    std::cout << mm << std::endl;
+
+    // add a new media
+    std::shared_ptr<Media> m1 = std::make_shared<Media>(Media(mm.getNextId(), QString("Test Title"), QDate::currentDate(), QVector<unsigned long>{1, 2}, QString("Test Publisher"), QString("Test Description"), QString("Test Genre"), QVector<QString>{"English"}, QMap<QString, QVariant>{}));
+    mm.addMedia(m1);
+
+    return 0;
+}
+
 int main() {
     // Test the Media class
-    test_media_file_management();
-    test_person_file_management();
-    test_libitem_file_management();
-    test_transaction_file_management();
+    // test_media_file_management();
+    // test_person_file_management();
+    // test_libitem_file_management();
+    // test_transaction_file_management();
+    test_transactionman();
+    test_mediaman();
     return 0;
 }
