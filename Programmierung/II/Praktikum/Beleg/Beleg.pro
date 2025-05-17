@@ -25,6 +25,6 @@ HEADERS += artist.h \
            text.h \
            transaction.h \
            video.h
-SOURCES += artist.cpp audio.cpp media.cpp person.cpp test.cpp text.cpp video.cpp borrower.cpp libitem.cpp
+SOURCES += artist.cpp audio.cpp media.cpp person.cpp test.cpp text.cpp video.cpp borrower.cpp libitem.cpp transaction.cpp
 
 QT += core gui

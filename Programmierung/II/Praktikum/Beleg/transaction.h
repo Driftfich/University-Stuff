@@ -2,6 +2,10 @@
 #define _TRANSACTION_H
 
 #include <QDateTime>
+#include <QFile>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QString>
 
 #include "libitem.h"
 #include "borrower.h"
@@ -28,10 +32,16 @@ class Transaction {
 
         // constructor
         Transaction(unsigned long id, unsigned long libitem_id, unsigned long borrower_id, const QDateTime& transaction_time) {
-            this->id = id;
-            this->libitem_id = libitem_id;
-            this->borrower_id = borrower_id;
-            this->transaction_time = transaction_time;
+            setId(id);
+            setLibitemId(libitem_id);
+            setBorrowerId(borrower_id);
+            setTransactionTime(transaction_time);
+        }
+
+        Transaction(QJsonObject json) {
+            if (loadLocalParams(json) != 0) {
+                throw std::runtime_error("Issues loading transaction parameters");
+            }
         }
 
         // destructor
@@ -54,6 +64,24 @@ class Transaction {
                 this->transaction_time = other.transaction_time;
             }
             return *this;
+        }
+
+        // methods to load and save the transaction to/from a file
+        QJsonObject getJson() const;
+        void toFile(QFile& file) const;
+
+        // load json object from file
+        int loadLocalParams(const QJsonObject& json);
+        static std::shared_ptr<Transaction> fromFile(QFile& file);
+        static std::shared_ptr<Transaction> TransactionFactory(const QJsonObject& json);
+        
+        // print method
+        friend std::ostream& operator<<(std::ostream& os, const Transaction& transaction) {
+            os << "Transaction ID: " << transaction.id << "\n"
+               << "Libitem ID: " << transaction.libitem_id << "\n"
+               << "Borrower ID: " << transaction.borrower_id << "\n"
+               << "Transaction Timestamp: " << transaction.transaction_time.toString().toStdString() << "\n";
+            return os;
         }
 };
 

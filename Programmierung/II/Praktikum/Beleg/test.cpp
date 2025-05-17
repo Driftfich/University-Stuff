@@ -12,6 +12,7 @@
 #include "person.h"
 #include "artist.h"
 #include "libitem.h"
+#include "transaction.h"
 
 int test_media_file_management() {
     // Test the Media class
@@ -194,10 +195,67 @@ int test_libitem_file_management() {
     return 0;
 }
 
+int test_transaction_file_management() {
+    // Test the Transaction class
+    // Create a Transaction object
+    Transaction t1 = Transaction((unsigned long) 1, (unsigned long) 1, (unsigned long) 1, QDateTime::currentDateTime());
+    // create a magic pointer array on the t1 object
+    std::shared_ptr<Transaction> transactionPtr1 = std::make_shared<Transaction>(t1);
+
+    // save all objects to a file
+    QString filename = QString("transaction.ndjson");
+    QFile file(filename);
+    // clear the file beforehand
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        std::cerr << "Error: Could not open file for writing" << std::endl;
+        return -1;
+    }
+
+    if (file.exists()) {
+        file.remove();
+    }
+
+    std::cout << "Saving object to file: " << *transactionPtr1 << std::endl;
+    transactionPtr1->toFile(file);
+
+    // load all objects from a file by using the factory method from the transaction class
+    // clear the transactionPtrs vector
+    // transactionPtrs.clear();
+
+    file.close();
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        std::cerr << "Fehler beim Öffnen zum Lesen\n";
+        return -1;
+    }
+
+    // reset file cursor to the beginning
+    int i = 0;
+    // std::cout << "Loading object from file" << std::endl;
+    while (!file.atEnd()) {
+        if (i == 1) {
+            break;
+        }
+        std::cout << "Loading object from file" << std::endl;
+        std::shared_ptr<Transaction> transactionPtr = Transaction::fromFile(file);
+        if (transactionPtr) {
+            // transactionPtrs.push_back(transactionPtr);
+            std::cout << "Loaded object from file: " << *transactionPtr << std::endl;
+        } else {
+            std::cerr << "Failed to load object from file" << std::endl;
+            break;
+        }
+        i++;
+    }
+
+    return 0;
+}
+
 int main() {
     // Test the Media class
     test_media_file_management();
     test_person_file_management();
     test_libitem_file_management();
+    test_transaction_file_management();
     return 0;
 }
