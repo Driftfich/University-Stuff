@@ -170,12 +170,8 @@ int test_libitem_file_management() {
 
 
     // // reset file cursor to the beginning
-    int i = 0;
     // std::cout << "Loading object from file" << std::endl;
     while (!file.atEnd()) {
-        if (i == 1) {
-            break;
-        }
         std::cout << "Loading object from file" << std::endl;
         std::shared_ptr<Libitem> libitemPtr = Libitem::fromFile(file);
         if (libitemPtr) {
@@ -187,7 +183,6 @@ int test_libitem_file_management() {
             std::cerr << "Failed to load object from file" << std::endl;
             break;
         }
-        i++;
     }
 
     file.close();
@@ -199,8 +194,10 @@ int test_transaction_file_management() {
     // Test the Transaction class
     // Create a Transaction object
     Transaction t1 = Transaction((unsigned long) 1, (unsigned long) 1, (unsigned long) 1, QDateTime::currentDateTime());
+    Transaction t2 = Transaction((unsigned long) 2, (unsigned long) 4, (unsigned long) 3, QDateTime::currentDateTime());
     // create a magic pointer array on the t1 object
     std::shared_ptr<Transaction> transactionPtr1 = std::make_shared<Transaction>(t1);
+    std::shared_ptr<Transaction> transactionPtr2 = std::make_shared<Transaction>(t2);
 
     // save all objects to a file
     QString filename = QString("transaction.ndjson");
@@ -217,6 +214,8 @@ int test_transaction_file_management() {
 
     std::cout << "Saving object to file: " << *transactionPtr1 << std::endl;
     transactionPtr1->toFile(file);
+    std::cout << "Saving object to file: " << *transactionPtr1 << std::endl;
+    transactionPtr2->toFile(file);
 
     // load all objects from a file by using the factory method from the transaction class
     // clear the transactionPtrs vector
@@ -230,12 +229,8 @@ int test_transaction_file_management() {
     }
 
     // reset file cursor to the beginning
-    int i = 0;
     // std::cout << "Loading object from file" << std::endl;
     while (!file.atEnd()) {
-        if (i == 1) {
-            break;
-        }
         std::cout << "Loading object from file" << std::endl;
         std::shared_ptr<Transaction> transactionPtr = Transaction::fromFile(file);
         if (transactionPtr) {
@@ -245,7 +240,6 @@ int test_transaction_file_management() {
             std::cerr << "Failed to load object from file" << std::endl;
             break;
         }
-        i++;
     }
 
     return 0;
