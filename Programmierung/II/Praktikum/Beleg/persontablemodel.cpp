@@ -1,0 +1,118 @@
+#include "persontablemodel.h"
+#include "personman.h"
+
+#include <QAbstractTableModel>
+#include <QVector>
+#include <QVariant>
+#include <QModelIndex>
+
+
+PersonTableModel::PersonTableModel(PersonMan* personMan, QObject *parent)
+    : QAbstractTableModel(parent), personMan(personMan) {
+    // Initialize the displayed columns with all columns
+    for (int i = 0; i < MaxColumnIdentity; ++i) {
+        displayedColumns.push_back(static_cast<ColumnIdentity>(i));
+    }
+}
+
+PersonTableModel::~PersonTableModel() {
+    // Destructor
+}
+
+int PersonTableModel::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
+    return personMan->getPersons().size();
+}
+int PersonTableModel::columnCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent);
+    return displayedColumns.size();
+}
+QVariant PersonTableModel::data(const QModelIndex& index, int role) const {
+    if (!index.isValid() || role != Qt::DisplayRole) {
+        return QVariant();
+    }
+
+    int row = index.row();
+    int column = index.column();
+
+    if (row < 0 || row >= personMan->getPersons().size() || column < 0 || column >= displayedColumns.size()) {
+        return QVariant();
+    }
+    auto person = personMan->getPersons()[row];
+    ColumnIdentity columnIdentity = displayedColumns[column];
+    switch (columnIdentity) {
+        case Id:
+            return static_cast<quint64>(person->getId());
+        case FirstName:
+            return person->getFirstName();
+        case LastName:
+            return person->getLastName();
+        case ExtensionName:
+            return person->getExtensionName();
+        case BirthDate:
+            return person->getBirthDate().toString("yyyy-MM-dd");
+        case Gender:
+            return person->getGender();
+        case Location:
+            return person->getLocation();
+        case Email:
+            return person->getEmail();
+        case Phone:
+            return person->getPhone();
+        case Note:
+            return person->getNote();
+        default:
+            return QVariant();
+    }
+}
+
+QVariant PersonTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
+    if (role != Qt::DisplayRole) {
+        return QVariant();
+    }
+
+    if (orientation == Qt::Horizontal) {
+        if (section < 0 || section >= displayedColumns.size()) {
+            return QVariant();
+        }
+        ColumnIdentity columnIdentity = displayedColumns[section];
+        QMap<ColumnIdentity, QString> columnNames = getAllColumnNames();
+        return columnNames[columnIdentity];
+    }
+    return QVariant();
+}
+
+Qt::ItemFlags PersonTableModel::flags(const QModelIndex &index) const {
+    if (!index.isValid()) {
+        return Qt::NoItemFlags;
+    }
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
+void PersonTableModel::setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns) {
+    this->displayedColumns = displayedColumns;
+    emit layoutChanged();
+}
+
+QMap<PersonTableModel::ColumnIdentity, QString> PersonTableModel::getAllColumnNames() const {
+    QMap<ColumnIdentity, QString> columnNames;
+    columnNames[Id] = "ID";
+    columnNames[FirstName] = "Vorname";
+    columnNames[LastName] = "Nachname";
+    columnNames[ExtensionName] = "Zusatzname";
+    columnNames[BirthDate] = "Geburtsdatum";
+    columnNames[Gender] = "Geschlecht";
+    columnNames[Location] = "Standort";
+    columnNames[Email] = "E-Mail";
+    columnNames[Phone] = "Telefon";
+    columnNames[Note] = "Notiz";
+    return columnNames;
+}
+
+QVector<PersonTableModel::ColumnIdentity> PersonTableModel::getDisplayedColumns() const {
+    return displayedColumns;
+}
+void PersonTableModel::refreshData() {
+    beginResetModel();
+    endResetModel();
+}
