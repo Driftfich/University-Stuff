@@ -5,6 +5,8 @@
 #include <QVector>
 #include <QVariant>
 #include <QModelIndex>
+#include "person.h"
+#include "personman.h"
 
 
 PersonTableModel::PersonTableModel(PersonMan* personMan, QObject *parent)
@@ -32,33 +34,33 @@ QVariant PersonTableModel::data(const QModelIndex& index, int role) const {
         return QVariant();
     }
 
-    int row = index.row();
+    unsigned long row = (unsigned long) index.row();
     int column = index.column();
 
-    if (row < 0 || row >= personMan->getPersons().size() || column < 0 || column >= displayedColumns.size()) {
+    if (row >= (unsigned long) personMan->getPersons().size() || column < 0 || column >= displayedColumns.size()) {
         return QVariant();
     }
-    auto person = personMan->getPersons()[row];
+    std::shared_ptr<Person> person = (*personMan)[row];
     ColumnIdentity columnIdentity = displayedColumns[column];
     switch (columnIdentity) {
         case Id:
             return static_cast<quint64>(person->getId());
         case FirstName:
-            return person->getFirstName();
+            return person->getFname();
         case LastName:
-            return person->getLastName();
+            return person->getLname();
         case ExtensionName:
-            return person->getExtensionName();
+            return person->getEname();
         case BirthDate:
-            return person->getBirthDate().toString("yyyy-MM-dd");
+            return person->getBirthday().toString("yyyy-MM-dd");
         case Gender:
-            return person->getGender();
+            return person->getGenderString();
         case Location:
             return person->getLocation();
         case Email:
             return person->getEmail();
         case Phone:
-            return person->getPhone();
+            return person->getTel();
         case Note:
             return person->getNote();
         default:

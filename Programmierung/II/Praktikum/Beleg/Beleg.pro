@@ -29,7 +29,9 @@ HEADERS +=  artist.h \
             personman.h \
             mediaman.h \
             libitemman.h \
-            library.h
+            library.h \
+            libitemtablemodel.h \
+            persontablemodel.h
 
 SOURCES +=  artist.cpp \
             audio.cpp \
@@ -45,6 +47,8 @@ SOURCES +=  artist.cpp \
             personman.cpp \
             mediaman.cpp \
             libitemman.cpp \
-            library.cpp 
+            library.cpp \
+            libitemtablemodel.cpp \
+            persontablemodel.cpp
 
 QT += core gui

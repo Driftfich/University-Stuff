@@ -109,6 +109,16 @@ int Person::setGender(const Gender gender) {
     return 0;
 }
 
+QString Person::getGenderString() const  {
+    switch (gender) {
+        case Gender::female: return "Female";
+        case Gender::male: return "Male";
+        case Gender::diverse: return "Diverse";
+        case Gender::unknown: return "Unknown";
+    }
+    return "Unknown";
+}
+
 int Person::setNote(const QString& note) {
     // Check that the note is not too long
     if (note.length() > MAX_NOTE_LENGTH && MAX_NOTE_LENGTH != -1) {

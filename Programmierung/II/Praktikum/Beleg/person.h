@@ -62,6 +62,7 @@ class Person {
         QString getEname() const {return this->ename;}
         QDate getBirthday() const {return this->birthday;}
         Gender getGender() const {return this->gender;}
+        QString getGenderString() const;
         QString getNote() const {return this->note;}
         QString getLocation() const {return this->location;}
         QString getEmail() const {return this->email;}

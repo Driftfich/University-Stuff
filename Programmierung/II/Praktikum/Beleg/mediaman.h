@@ -29,7 +29,8 @@ class MediaMan {
         int removeMedia(unsigned long id);
 
         unsigned long getNextId() const;
-        QVector<std::shared_ptr<Media>> getMedia() const;
+        QVector<std::shared_ptr<Media>> getAllMedia() const;
+        std::shared_ptr<Media> getMedia(unsigned long id) const;
         QString getFilename() const;
 
         int load();

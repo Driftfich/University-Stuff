@@ -1,36 +1,41 @@
-// Abstract Qt table model for the personman class
-
-#ifndef _PERSONMODEL_H
-#define _PERSONMODEL_H
+#ifndef _LIBITEMTABLEMODEL_H
+#define _LIBITEMTABLEMODEL_H
 
 #include <QAbstractTableModel>
 #include <QVector>
 #include <QVariant>
 #include <QModelIndex>
-#include "personman.h"
+#include "libitemman.h"
+#include "libitem.h"
+#include "media.h"
+#include "mediaman.h"
 
-class PersonTableModel : public QAbstractTableModel {
+class LibItemTableModel : public QAbstractTableModel {
     Q_OBJECT
 
     public:
         enum ColumnIdentity {
             Id,
-            FirstName,
-            LastName,
-            ExtensionName,
-            BirthDate,
-            Gender,
+            MediaId,
+            AvailableCopies,
+            BorrowedCopies,
             Location,
-            Email,
-            Phone,
-            Note,
+            Condition,
+            Title,
+            PublicationDate,
+            // ArtistIds,
+            Publisher,
+            Description,
+            Genre,
+            Languages,
+            // Metadata,
             MaxColumnIdentity
         };
 
         Q_ENUM(ColumnIdentity)
 
-        explicit PersonTableModel(PersonMan* personMan, QObject *parent = nullptr);
-        ~PersonTableModel() override;
+        explicit LibItemTableModel(LibitemMan* libItemMan, MediaMan* mediaMan, QObject *parent = nullptr);
+        ~LibItemTableModel() override;
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
         int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -42,14 +47,14 @@ class PersonTableModel : public QAbstractTableModel {
         void setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns);
         QMap<ColumnIdentity, QString> getAllColumnNames() const;
         QVector<ColumnIdentity> getDisplayedColumns() const;
-    
+
     public slots:
         void refreshData();
 
     private:
-        PersonMan* personMan;
+        LibitemMan* libItemMan;
+        MediaMan* mediaMan;
         QVector<ColumnIdentity> displayedColumns;
-
 };
 
 #endif

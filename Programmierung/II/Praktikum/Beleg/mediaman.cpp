@@ -49,9 +49,14 @@ int MediaMan::removeMedia(unsigned long id) {
 unsigned long MediaMan::getNextId() const {
     return next_id;
 }
-QVector<std::shared_ptr<Media>> MediaMan::getMedia() const {
+QVector<std::shared_ptr<Media>> MediaMan::getAllMedia() const {
     return media;
 }
+
+std::shared_ptr<Media> MediaMan::getMedia(unsigned long id) const {
+            return media_map.value(id, nullptr);
+}
+
 QString MediaMan::getFilename() const {
     return filename;
 }
@@ -96,9 +101,9 @@ std::shared_ptr<Media> MediaMan::operator[](unsigned long idx) {
 std::ostream& operator<<(std::ostream& os, const MediaMan& mm) {
     os << "=== MediaMan: " << mm.getFilename().toStdString() << " ===" << std::endl;
     os << "Next ID: " << mm.getNextId() << std::endl;
-    os << "Total media items: " << mm.getMedia().size() << std::endl;
+    os << "Total media items: " << mm.getAllMedia().size() << std::endl;
     os << "Media items:" << std::endl;
-    for (const auto& media : mm.getMedia()) {
+    for (const auto& media : mm.getAllMedia()) {
         os << *media << std::endl;
     }
     os << "=========================" << std::endl;
