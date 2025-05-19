@@ -14,43 +14,46 @@ INCLUDEPATH += .
 #DEFINES += QT_DISABLE_DEPRECATED_UP_TO=0x060000 # disables all APIs deprecated in Qt 6.0.0 and earlier
 
 # Input
-HEADERS +=  artist.h \
-            audio.h \
-            borrower.h \
-            config.h \
-            json.hpp \
-            libitem.h \
-            media.h \
-            person.h \
-            text.h \
-            transaction.h \
-            video.h \
-            transactionman.h \
-            personman.h \
-            mediaman.h \
-            libitemman.h \
-            library.h \
-            libitemtablemodel.h \
-            persontablemodel.h \
-            transactiontablemodel.h
+HEADERS +=  core/artist.h \
+            core/audio.h \
+            core/borrower.h \
+            core/config.h \
+            core/libitem.h \
+            core/media.h \
+            core/person.h \
+            core/text.h \
+            core/transaction.h \
+            core/video.h \
+            manager/library.h \
+            manager/transactionman.h \
+            manager/personman.h \
+            manager/mediaman.h \
+            manager/libitemman.h \
+            tablemodel/libitemtablemodel.h \
+            tablemodel/persontablemodel.h \
+            tablemodel/transactiontablemodel.h
 
-SOURCES +=  artist.cpp \
-            audio.cpp \
-            media.cpp \
-            person.cpp \
-            test.cpp \
-            text.cpp \
-            video.cpp \
-            borrower.cpp \
-            libitem.cpp \
-            transaction.cpp \
-            transactionman.cpp \
-            personman.cpp \
-            mediaman.cpp \
-            libitemman.cpp \
-            library.cpp \
-            libitemtablemodel.cpp \
-            persontablemodel.cpp \
-            transactiontablemodel.cpp
+SOURCES +=  core/artist.cpp \
+            core/audio.cpp \
+            core/media.cpp \
+            core/person.cpp \
+            core/test.cpp \
+            core/text.cpp \
+            core/video.cpp \
+            core/borrower.cpp \
+            core/libitem.cpp \
+            core/transaction.cpp \
+            manager/library.cpp \
+            manager/transactionman.cpp \
+            manager/personman.cpp \
+            manager/mediaman.cpp \
+            manager/libitemman.cpp \
+            tablemodel/libitemtablemodel.cpp \
+            tablemodel/persontablemodel.cpp \
+            tablemodel/transactiontablemodel.cpp
+
+INCLUDEPATH += $$PWD/core
+INCLUDEPATH += $$PWD/manager
+INCLUDEPATH += $$PWD/tablemodel
 
 QT += core gui

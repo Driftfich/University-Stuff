@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -fPIC -D_REENTRANT $(DEFINES)
 CXXFLAGS      = -pipe -O2 -Wall -Wextra -fPIC -D_REENTRANT $(DEFINES)
-INCPATH       = -I. -I. -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I. -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++
+INCPATH       = -I. -I. -Icore -Imanager -Itablemodel -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I. -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/USER/Qt/6.6.1/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -52,24 +52,24 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = artist.cpp \
-		audio.cpp \
-		media.cpp \
-		person.cpp \
-		test.cpp \
-		text.cpp \
-		video.cpp \
-		borrower.cpp \
-		libitem.cpp \
-		transaction.cpp \
-		transactionman.cpp \
-		personman.cpp \
-		mediaman.cpp \
-		libitemman.cpp \
-		library.cpp \
-		libitemtablemodel.cpp \
-		persontablemodel.cpp \
-		transactiontablemodel.cpp moc_library.cpp \
+SOURCES       = core/artist.cpp \
+		core/audio.cpp \
+		core/media.cpp \
+		core/person.cpp \
+		core/test.cpp \
+		core/text.cpp \
+		core/video.cpp \
+		core/borrower.cpp \
+		core/libitem.cpp \
+		core/transaction.cpp \
+		manager/library.cpp \
+		manager/transactionman.cpp \
+		manager/personman.cpp \
+		manager/mediaman.cpp \
+		manager/libitemman.cpp \
+		tablemodel/libitemtablemodel.cpp \
+		tablemodel/persontablemodel.cpp \
+		tablemodel/transactiontablemodel.cpp moc_library.cpp \
 		moc_libitemtablemodel.cpp \
 		moc_persontablemodel.cpp \
 		moc_transactiontablemodel.cpp
@@ -83,11 +83,11 @@ OBJECTS       = artist.o \
 		borrower.o \
 		libitem.o \
 		transaction.o \
+		library.o \
 		transactionman.o \
 		personman.o \
 		mediaman.o \
 		libitemman.o \
-		library.o \
 		libitemtablemodel.o \
 		persontablemodel.o \
 		transactiontablemodel.o \
@@ -408,42 +408,41 @@ DIST          = /home/USER/Qt/6.6.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/USER/Qt/6.6.1/gcc_64/mkspecs/features/exceptions.prf \
 		/home/USER/Qt/6.6.1/gcc_64/mkspecs/features/yacc.prf \
 		/home/USER/Qt/6.6.1/gcc_64/mkspecs/features/lex.prf \
-		Beleg.pro artist.h \
-		audio.h \
-		borrower.h \
-		config.h \
-		json.hpp \
-		libitem.h \
-		media.h \
-		person.h \
-		text.h \
-		transaction.h \
-		video.h \
-		transactionman.h \
-		personman.h \
-		mediaman.h \
-		libitemman.h \
-		library.h \
-		libitemtablemodel.h \
-		persontablemodel.h \
-		transactiontablemodel.h artist.cpp \
-		audio.cpp \
-		media.cpp \
-		person.cpp \
-		test.cpp \
-		text.cpp \
-		video.cpp \
-		borrower.cpp \
-		libitem.cpp \
-		transaction.cpp \
-		transactionman.cpp \
-		personman.cpp \
-		mediaman.cpp \
-		libitemman.cpp \
-		library.cpp \
-		libitemtablemodel.cpp \
-		persontablemodel.cpp \
-		transactiontablemodel.cpp
+		Beleg.pro core/artist.h \
+		core/audio.h \
+		core/borrower.h \
+		core/config.h \
+		core/libitem.h \
+		core/media.h \
+		core/person.h \
+		core/text.h \
+		core/transaction.h \
+		core/video.h \
+		manager/library.h \
+		manager/transactionman.h \
+		manager/personman.h \
+		manager/mediaman.h \
+		manager/libitemman.h \
+		tablemodel/libitemtablemodel.h \
+		tablemodel/persontablemodel.h \
+		tablemodel/transactiontablemodel.h core/artist.cpp \
+		core/audio.cpp \
+		core/media.cpp \
+		core/person.cpp \
+		core/test.cpp \
+		core/text.cpp \
+		core/video.cpp \
+		core/borrower.cpp \
+		core/libitem.cpp \
+		core/transaction.cpp \
+		manager/library.cpp \
+		manager/transactionman.cpp \
+		manager/personman.cpp \
+		manager/mediaman.cpp \
+		manager/libitemman.cpp \
+		tablemodel/libitemtablemodel.cpp \
+		tablemodel/persontablemodel.cpp \
+		tablemodel/transactiontablemodel.cpp
 QMAKE_TARGET  = Beleg
 DESTDIR       = 
 TARGET        = Beleg
@@ -1103,8 +1102,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /home/USER/Qt/6.6.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents artist.h audio.h borrower.h config.h json.hpp libitem.h media.h person.h text.h transaction.h video.h transactionman.h personman.h mediaman.h libitemman.h library.h libitemtablemodel.h persontablemodel.h transactiontablemodel.h $(DISTDIR)/
-	$(COPY_FILE) --parents artist.cpp audio.cpp media.cpp person.cpp test.cpp text.cpp video.cpp borrower.cpp libitem.cpp transaction.cpp transactionman.cpp personman.cpp mediaman.cpp libitemman.cpp library.cpp libitemtablemodel.cpp persontablemodel.cpp transactiontablemodel.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents core/artist.h core/audio.h core/borrower.h core/config.h core/libitem.h core/media.h core/person.h core/text.h core/transaction.h core/video.h manager/library.h manager/transactionman.h manager/personman.h manager/mediaman.h manager/libitemman.h tablemodel/libitemtablemodel.h tablemodel/persontablemodel.h tablemodel/transactiontablemodel.h $(DISTDIR)/
+	$(COPY_FILE) --parents core/artist.cpp core/audio.cpp core/media.cpp core/person.cpp core/test.cpp core/text.cpp core/video.cpp core/borrower.cpp core/libitem.cpp core/transaction.cpp manager/library.cpp manager/transactionman.cpp manager/personman.cpp manager/mediaman.cpp manager/libitemman.cpp tablemodel/libitemtablemodel.cpp tablemodel/persontablemodel.cpp tablemodel/transactiontablemodel.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1139,7 +1138,7 @@ moc_predefs.h: /home/USER/Qt/6.6.1/gcc_64/mkspecs/features/data/dummy.cpp
 compiler_moc_header_make_all: moc_library.cpp moc_libitemtablemodel.cpp moc_persontablemodel.cpp moc_transactiontablemodel.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_library.cpp moc_libitemtablemodel.cpp moc_persontablemodel.cpp moc_transactiontablemodel.cpp
-moc_library.cpp: library.h \
+moc_library.cpp: manager/library.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
@@ -1274,25 +1273,25 @@ moc_library.cpp: library.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
-		mediaman.h \
-		media.h \
+		manager/mediaman.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp \
-		transactionman.h \
-		transaction.h \
-		libitem.h \
-		borrower.h \
-		personman.h \
-		libitemman.h \
+		manager/transactionman.h \
+		core/transaction.h \
+		core/libitem.h \
+		core/borrower.h \
+		manager/personman.h \
+		manager/libitemman.h \
 		moc_predefs.h \
 		/home/USER/Qt/6.6.1/gcc_64/libexec/moc
-	/home/USER/Qt/6.6.1/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/moc_predefs.h -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include library.h -o moc_library.cpp
+	/home/USER/Qt/6.6.1/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/moc_predefs.h -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include manager/library.h -o moc_library.cpp
 
-moc_libitemtablemodel.cpp: libitemtablemodel.h \
+moc_libitemtablemodel.cpp: tablemodel/libitemtablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QAbstractTableModel \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
@@ -1408,7 +1407,7 @@ moc_libitemtablemodel.cpp: libitemtablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QModelIndex \
-		libitemman.h \
+		manager/libitemman.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
@@ -1430,20 +1429,20 @@ moc_libitemtablemodel.cpp: libitemtablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
-		libitem.h \
-		media.h \
+		core/libitem.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp \
-		mediaman.h \
+		manager/mediaman.h \
 		moc_predefs.h \
 		/home/USER/Qt/6.6.1/gcc_64/libexec/moc
-	/home/USER/Qt/6.6.1/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/moc_predefs.h -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include libitemtablemodel.h -o moc_libitemtablemodel.cpp
+	/home/USER/Qt/6.6.1/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/moc_predefs.h -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/libitemtablemodel.h -o moc_libitemtablemodel.cpp
 
-moc_persontablemodel.cpp: persontablemodel.h \
+moc_persontablemodel.cpp: tablemodel/persontablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QAbstractTableModel \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
@@ -1559,7 +1558,7 @@ moc_persontablemodel.cpp: persontablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QModelIndex \
-		personman.h \
+		manager/personman.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
@@ -1580,15 +1579,15 @@ moc_persontablemodel.cpp: persontablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
-		person.h \
+		core/person.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		config.h \
+		core/config.h \
 		moc_predefs.h \
 		/home/USER/Qt/6.6.1/gcc_64/libexec/moc
-	/home/USER/Qt/6.6.1/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/moc_predefs.h -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include persontablemodel.h -o moc_persontablemodel.cpp
+	/home/USER/Qt/6.6.1/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/moc_predefs.h -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/persontablemodel.h -o moc_persontablemodel.cpp
 
-moc_transactiontablemodel.cpp: transactiontablemodel.h \
+moc_transactiontablemodel.cpp: tablemodel/transactiontablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QAbstractTableModel \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
@@ -1704,7 +1703,7 @@ moc_transactiontablemodel.cpp: transactiontablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QModelIndex \
-		transactionman.h \
+		manager/transactionman.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
@@ -1726,23 +1725,23 @@ moc_transactiontablemodel.cpp: transactiontablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDateTime \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
-		transaction.h \
-		libitem.h \
-		media.h \
+		core/transaction.h \
+		core/libitem.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp \
-		borrower.h \
-		mediaman.h \
-		libitemman.h \
-		personman.h \
+		core/borrower.h \
+		manager/mediaman.h \
+		manager/libitemman.h \
+		manager/personman.h \
 		moc_predefs.h \
 		/home/USER/Qt/6.6.1/gcc_64/libexec/moc
-	/home/USER/Qt/6.6.1/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/moc_predefs.h -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include transactiontablemodel.h -o moc_transactiontablemodel.cpp
+	/home/USER/Qt/6.6.1/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/moc_predefs.h -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/transactiontablemodel.h -o moc_transactiontablemodel.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1758,7 +1757,7 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean
 
 ####### Compile
 
-artist.o: artist.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
+artist.o: core/artist.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
@@ -1837,7 +1836,7 @@ artist.o: artist.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringlist.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringmatcher.h \
-		media.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
@@ -1894,13 +1893,13 @@ artist.o: artist.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp \
-		artist.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o artist.o artist.cpp
+		core/artist.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o artist.o core/artist.cpp
 
-audio.o: audio.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
+audio.o: core/audio.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
@@ -2026,9 +2025,9 @@ audio.o: audio.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qurl.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/quuid.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qendian.h \
-		audio.h \
-		config.h \
-		media.h \
+		core/audio.h \
+		core/config.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
@@ -2038,11 +2037,11 @@ audio.o: audio.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		person.h \
+		core/person.h \
 		json.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o audio.o audio.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o audio.o core/audio.cpp
 
-media.o: media.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
+media.o: core/media.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
@@ -2159,7 +2158,7 @@ media.o: media.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
-		media.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
@@ -2178,15 +2177,15 @@ media.o: media.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp \
-		text.h \
-		audio.h \
-		video.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o media.o media.cpp
+		core/text.h \
+		core/audio.h \
+		core/video.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o media.o core/media.cpp
 
-person.o: person.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
+person.o: core/person.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
@@ -2302,7 +2301,7 @@ person.o: person.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
-		person.h \
+		core/person.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
@@ -2321,15 +2320,15 @@ person.o: person.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
-		config.h \
-		artist.h \
-		media.h \
+		core/config.h \
+		core/artist.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
 		json.hpp \
-		borrower.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o person.o person.cpp
+		core/borrower.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o person.o core/person.cpp
 
-test.o: test.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
+test.o: core/test.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
@@ -2447,7 +2446,7 @@ test.o: test.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
-		media.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
@@ -2465,25 +2464,25 @@ test.o: test.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp \
-		text.h \
-		video.h \
-		audio.h \
-		borrower.h \
-		artist.h \
-		libitem.h \
-		transaction.h \
+		core/text.h \
+		core/video.h \
+		core/audio.h \
+		core/borrower.h \
+		core/artist.h \
+		core/libitem.h \
+		core/transaction.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDateTime \
-		transactionman.h \
+		manager/transactionman.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
-		mediaman.h \
-		personman.h \
-		libitemman.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o test.o test.cpp
+		manager/mediaman.h \
+		manager/personman.h \
+		manager/libitemman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o test.o core/test.cpp
 
-text.o: text.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
+text.o: core/text.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
@@ -2553,8 +2552,8 @@ text.o: text.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qutf8stringview.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringtokenizer.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringbuilder.h \
-		text.h \
-		media.h \
+		core/text.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
@@ -2620,12 +2619,12 @@ text.o: text.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o text.o text.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o text.o core/text.cpp
 
-video.o: video.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
+video.o: core/video.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
@@ -2695,7 +2694,7 @@ video.o: video.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qutf8stringview.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringtokenizer.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringbuilder.h \
-		video.h \
+		core/video.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlist.h \
@@ -2742,8 +2741,8 @@ video.o: video.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcoreevent.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject_impl.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbindingstorage.h \
-		config.h \
-		media.h \
+		core/config.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
@@ -2763,11 +2762,11 @@ video.o: video.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		person.h \
+		core/person.h \
 		json.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o video.o video.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o video.o core/video.cpp
 
-borrower.o: borrower.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
+borrower.o: core/borrower.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
@@ -2894,19 +2893,19 @@ borrower.o: borrower.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		borrower.h \
+		core/borrower.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
-		person.h \
+		core/person.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
-		config.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o borrower.o borrower.cpp
+		core/config.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o borrower.o core/borrower.cpp
 
-libitem.o: libitem.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
+libitem.o: core/libitem.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
@@ -3035,20 +3034,20 @@ libitem.o: libitem.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonDocument \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
-		libitem.h \
+		core/libitem.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
-		media.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libitem.o libitem.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libitem.o core/libitem.cpp
 
-transaction.o: transaction.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
+transaction.o: core/transaction.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
@@ -3177,9 +3176,9 @@ transaction.o: transaction.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDateTime \
-		transaction.h \
-		libitem.h \
-		media.h \
+		core/transaction.h \
+		core/libitem.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
@@ -3187,586 +3186,13 @@ transaction.o: transaction.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp \
-		borrower.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction.o transaction.cpp
+		core/borrower.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transaction.o core/transaction.cpp
 
-transactionman.o: transactionman.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversionchecks.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfiginclude.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconfig.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcore-config.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfigmacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcoreexports.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtdeprecationmarkers.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtpreprocessorsupport.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qassert.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtnoop.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypes.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversion.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtclasshelpermacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsysinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlogging.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qflags.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconstructormacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdarwinhelpers.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qexceptionhandling.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qforeach.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttypetraits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmalloc.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qminmax.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnumeric.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qoverload.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qswap.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtenvironmentvariables.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtresource.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttranslation.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qversiontagging.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevicebase.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnamespace.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtmetamacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionaltools_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearray.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qrefcount.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydata.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qpair.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydatapointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydataops.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainertools_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qxptype_traits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20functional.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20memory.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringfwd.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20type_traits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringliteral.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlatin1stringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qanystringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qutf8stringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringtokenizer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhashfunctions.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterator.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringlist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcoreevent.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetatype.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatastream.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfloat16.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmath.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterable.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetacontainer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtaggedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopeguard.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbindingstorage.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborvalue.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlocale.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvariant.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdebug.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtextstream.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringconverter_base.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmap.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qset.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q23utility.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborcommon.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qregularexpression.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qurl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/quuid.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qendian.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonDocument \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDateTime \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
-		transactionman.h \
-		transaction.h \
-		libitem.h \
-		media.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		person.h \
-		config.h \
-		json.hpp \
-		borrower.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transactionman.o transactionman.cpp
-
-personman.o: personman.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversionchecks.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfiginclude.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconfig.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcore-config.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfigmacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcoreexports.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtdeprecationmarkers.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtpreprocessorsupport.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qassert.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtnoop.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypes.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversion.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtclasshelpermacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsysinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlogging.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qflags.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconstructormacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdarwinhelpers.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qexceptionhandling.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qforeach.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttypetraits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmalloc.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qminmax.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnumeric.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qoverload.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qswap.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtenvironmentvariables.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtresource.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttranslation.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qversiontagging.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevicebase.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnamespace.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtmetamacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionaltools_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearray.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qrefcount.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydata.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qpair.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydatapointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydataops.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainertools_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qxptype_traits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20functional.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20memory.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringfwd.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20type_traits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringliteral.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlatin1stringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qanystringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qutf8stringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringtokenizer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhashfunctions.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterator.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringlist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcoreevent.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetatype.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatastream.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfloat16.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmath.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterable.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetacontainer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtaggedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopeguard.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbindingstorage.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborvalue.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlocale.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvariant.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdebug.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtextstream.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringconverter_base.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmap.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qset.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q23utility.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborcommon.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qregularexpression.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qurl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/quuid.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qendian.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonDocument \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
-		personman.h \
-		person.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
-		config.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o personman.o personman.cpp
-
-mediaman.o: mediaman.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversionchecks.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfiginclude.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconfig.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcore-config.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfigmacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcoreexports.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtdeprecationmarkers.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtpreprocessorsupport.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qassert.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtnoop.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypes.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversion.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtclasshelpermacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsysinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlogging.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qflags.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconstructormacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdarwinhelpers.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qexceptionhandling.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qforeach.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttypetraits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmalloc.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qminmax.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnumeric.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qoverload.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qswap.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtenvironmentvariables.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtresource.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttranslation.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qversiontagging.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevicebase.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnamespace.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtmetamacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionaltools_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearray.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qrefcount.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydata.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qpair.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydatapointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydataops.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainertools_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qxptype_traits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20functional.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20memory.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringfwd.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20type_traits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringliteral.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlatin1stringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qanystringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qutf8stringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringtokenizer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhashfunctions.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterator.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringlist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcoreevent.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetatype.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatastream.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfloat16.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmath.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterable.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetacontainer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtaggedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopeguard.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbindingstorage.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborvalue.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlocale.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvariant.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdebug.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtextstream.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringconverter_base.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmap.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qset.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q23utility.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborcommon.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qregularexpression.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qurl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/quuid.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qendian.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonDocument \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
-		mediaman.h \
-		media.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		person.h \
-		config.h \
-		json.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mediaman.o mediaman.cpp
-
-libitemman.o: libitemman.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversionchecks.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfiginclude.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconfig.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcore-config.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfigmacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcoreexports.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompilerdetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsystemdetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qprocessordetection.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtdeprecationmarkers.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtpreprocessorsupport.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qassert.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtnoop.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypes.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversion.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtclasshelpermacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypeinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerfwd.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsysinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlogging.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qflags.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbasicatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic_cxx11.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qgenericatomic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconstructormacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdarwinhelpers.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qexceptionhandling.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qforeach.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttypetraits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobalstatic.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmalloc.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qminmax.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnumeric.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qoverload.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qswap.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtenvironmentvariables.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtresource.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttranslation.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qversiontagging.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevicebase.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnamespace.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtmetamacros.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionaltools_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearray.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qrefcount.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydata.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qpair.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydatapointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydataops.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainertools_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qxptype_traits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20functional.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20memory.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringfwd.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20type_traits.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringliteral.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlatin1stringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qanystringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qutf8stringview.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringtokenizer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringbuilder.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhashfunctions.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterator.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearraylist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringlist.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcoreevent.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetatype.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatastream.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfloat16.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmath.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterable.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetacontainer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerinfo.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtaggedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopeguard.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbindingstorage.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborvalue.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlocale.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvariant.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdebug.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtextstream.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringconverter_base.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontiguouscache.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmap.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata_impl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qset.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvarlengtharray.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q23utility.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborcommon.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qregularexpression.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qurl.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/quuid.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qendian.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonDocument \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
-		libitem.h \
-		media.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		person.h \
-		config.h \
-		json.hpp \
-		libitemman.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libitemman.o libitemman.cpp
-
-library.o: library.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
+library.o: manager/library.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
@@ -3900,7 +3326,7 @@ library.o: library.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfileinfo.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtimezone.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDebug \
-		library.h \
+		manager/library.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDateTime \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
@@ -3908,21 +3334,594 @@ library.o: library.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
-		mediaman.h \
-		media.h \
+		manager/mediaman.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp \
-		transactionman.h \
-		transaction.h \
-		libitem.h \
-		borrower.h \
-		personman.h \
-		libitemman.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o library.o library.cpp
+		manager/transactionman.h \
+		core/transaction.h \
+		core/libitem.h \
+		core/borrower.h \
+		manager/personman.h \
+		manager/libitemman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o library.o manager/library.cpp
 
-libitemtablemodel.o: libitemtablemodel.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QAbstractTableModel \
+transactionman.o: manager/transactionman.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconfig.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qassert.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtnoop.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypes.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversion.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlogging.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qflags.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qforeach.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttypetraits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmalloc.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qminmax.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qoverload.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qswap.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtresource.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttranslation.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qpair.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydataops.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20functional.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20memory.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringfwd.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20type_traits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qanystringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterator.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfloat16.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmath.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterable.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopeguard.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborvalue.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlocale.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvariant.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdebug.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmap.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qset.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q23utility.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborcommon.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qregularexpression.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qurl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/quuid.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qendian.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonDocument \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDateTime \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
+		manager/transactionman.h \
+		core/transaction.h \
+		core/libitem.h \
+		core/media.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
+		core/person.h \
+		core/config.h \
+		json.hpp \
+		core/borrower.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transactionman.o manager/transactionman.cpp
+
+personman.o: manager/personman.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconfig.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qassert.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtnoop.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypes.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversion.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlogging.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qflags.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qforeach.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttypetraits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmalloc.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qminmax.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qoverload.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qswap.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtresource.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttranslation.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qpair.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydataops.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20functional.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20memory.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringfwd.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20type_traits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qanystringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterator.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfloat16.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmath.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterable.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopeguard.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborvalue.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlocale.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvariant.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdebug.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmap.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qset.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q23utility.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborcommon.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qregularexpression.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qurl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/quuid.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qendian.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonDocument \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
+		manager/personman.h \
+		core/person.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
+		core/config.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o personman.o manager/personman.cpp
+
+mediaman.o: manager/mediaman.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconfig.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qassert.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtnoop.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypes.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversion.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlogging.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qflags.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qforeach.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttypetraits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmalloc.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qminmax.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qoverload.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qswap.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtresource.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttranslation.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qpair.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydataops.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20functional.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20memory.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringfwd.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20type_traits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qanystringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterator.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfloat16.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmath.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterable.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopeguard.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborvalue.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlocale.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvariant.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdebug.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmap.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qset.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q23utility.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborcommon.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qregularexpression.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qurl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/quuid.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qendian.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonDocument \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
+		manager/mediaman.h \
+		core/media.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
+		core/person.h \
+		core/config.h \
+		json.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mediaman.o manager/mediaman.cpp
+
+libitemman.o: manager/libitemman.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevice.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobal.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconfig.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qassert.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtnoop.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypes.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtversion.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlogging.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qflags.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qforeach.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttypetraits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmalloc.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qminmax.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qoverload.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qswap.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtresource.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qttranslation.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstring.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qchar.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qpair.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qarraydataops.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20functional.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20memory.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringfwd.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q20type_traits.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qanystringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterator.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcompare.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfloat16.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmath.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qiterable.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qscopeguard.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonObject \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonobject.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborvalue.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdatetime.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcalendar.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qlocale.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvariant.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qdebug.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qmap.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qset.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/q23utility.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qcborcommon.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qregularexpression.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qurl.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/quuid.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qendian.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonDocument \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVector \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
+		core/libitem.h \
+		core/media.h \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
+		core/person.h \
+		core/config.h \
+		json.hpp \
+		manager/libitemman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libitemman.o manager/libitemman.cpp
+
+libitemtablemodel.o: tablemodel/libitemtablemodel.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QAbstractTableModel \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
@@ -4037,8 +4036,8 @@ libitemtablemodel.o: libitemtablemodel.cpp /home/USER/Qt/6.6.1/gcc_64/include/Qt
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QModelIndex \
-		libitemtablemodel.h \
-		libitemman.h \
+		tablemodel/libitemtablemodel.h \
+		manager/libitemman.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
@@ -4060,18 +4059,18 @@ libitemtablemodel.o: libitemtablemodel.cpp /home/USER/Qt/6.6.1/gcc_64/include/Qt
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
-		libitem.h \
-		media.h \
+		core/libitem.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp \
-		mediaman.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libitemtablemodel.o libitemtablemodel.cpp
+		manager/mediaman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libitemtablemodel.o tablemodel/libitemtablemodel.cpp
 
-persontablemodel.o: persontablemodel.cpp persontablemodel.h \
+persontablemodel.o: tablemodel/persontablemodel.cpp tablemodel/persontablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QAbstractTableModel \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
@@ -4187,7 +4186,7 @@ persontablemodel.o: persontablemodel.cpp persontablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QModelIndex \
-		personman.h \
+		manager/personman.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
@@ -4208,13 +4207,13 @@ persontablemodel.o: persontablemodel.cpp persontablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsondocument.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
-		person.h \
+		core/person.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		config.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o persontablemodel.o persontablemodel.cpp
+		core/config.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o persontablemodel.o tablemodel/persontablemodel.cpp
 
-transactiontablemodel.o: transactiontablemodel.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QAbstractTableModel \
+transactiontablemodel.o: tablemodel/transactiontablemodel.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QAbstractTableModel \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qhash.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qalgorithms.h \
@@ -4329,7 +4328,8 @@ transactiontablemodel.o: transactiontablemodel.cpp /home/USER/Qt/6.6.1/gcc_64/in
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QModelIndex \
-		transactionman.h \
+		tablemodel/transactiontablemodel.h \
+		manager/transactionman.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qfiledevice.h \
@@ -4351,21 +4351,21 @@ transactiontablemodel.o: transactiontablemodel.cpp /home/USER/Qt/6.6.1/gcc_64/in
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDateTime \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QHash \
-		transaction.h \
-		libitem.h \
-		media.h \
+		core/transaction.h \
+		core/libitem.h \
+		core/media.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/qjsonarray.h \
-		person.h \
-		config.h \
+		core/person.h \
+		core/config.h \
 		json.hpp \
-		borrower.h \
-		mediaman.h \
-		libitemman.h \
-		personman.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transactiontablemodel.o transactiontablemodel.cpp
+		core/borrower.h \
+		manager/mediaman.h \
+		manager/libitemman.h \
+		manager/personman.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o transactiontablemodel.o tablemodel/transactiontablemodel.cpp
 
 moc_library.o: moc_library.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_library.o moc_library.cpp
