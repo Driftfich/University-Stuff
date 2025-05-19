@@ -5,11 +5,16 @@ public class week {
 
     public static void main(String[] args) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Enter a date (dd.mm.yyyy): ");
         try {
-            String date = reader.readLine();
-            int dayOfWeek = getDayOfWeek(date);
-            System.out.println("The day of the week is: " + DayMapping(dayOfWeek));
+            while (true) {
+                System.out.print("Enter a date (dd.mm.yyyy): ");
+                String date = reader.readLine();
+                if (date.matches(".*break.*")) {
+                    break;
+                }
+                int dayOfWeek = getDayOfWeek(date);
+                System.out.println("The day of the week is: " + DayMapping(dayOfWeek));
+            }
         } catch (IOException e) {
             System.out.println("Error reading input: " + e.getMessage());
         }
