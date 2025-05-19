@@ -16,24 +16,24 @@ class TransactionTableModel : public QAbstractTableModel {
 
     public:
         enum ColumnIdentity {
-            // column name from transaction.h
+            // column names from transaction.h
             Id,
             LibitemId,
             PersonId,
             Timestamp,
-            // column name from libitem
-            MediaId
-            // column name from media from libitem
+            // column names from libitem
+            MediaId,
+            // most important column names from libitem->media
             Title,
             PublicationDate,
             Publisher,
-            // column name from person
+            // most important column names from person
             FirstName,
             LastName,
             ExtensionName,
             BirthDate,
             MaxColumnIdentity
-        }
+        };
 
         Q_ENUM(ColumnIdentity);
 
@@ -59,5 +59,7 @@ class TransactionTableModel : public QAbstractTableModel {
         PersonMan* personMan;
         LibitemMan* libItemMan;
         MediaMan* mediaMan;
+
+};
 
 #endif
