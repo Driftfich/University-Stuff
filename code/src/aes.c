@@ -95,13 +95,72 @@ u_int8_t getSBoxInvert(u_int8_t num) {
 }
 
 u_int8_t rc(u_int8_t num) {
-    return -1;
+    if (num==0) return 0;
+    u_int8_t rcon = 1;
+    for (u_int8_t j=1; j<num; j++) {
+        if (rcon >= 0x80) {
+            rcon = (rcon << 1) ^ 0x1b;
+        } else {
+            rcon = (rcon << 1);
+        }
+    }
+    return rcon;
 }
 
 void keyExpansion(u_int8_t* key, u_int8_t* roundKeys, unsigned int keySize) {
+    unsigned int Nk = keySize / 32; // Number of 32-bit words in the key
+    unsigned int Nr = numRounds(keySize); // Number of rounds
+    unsigned int Nw = (Nr + 1) * 4; // Number of 32-bit words in the expanded key
+    
+    // Copy the original key into the first Nk words of the expanded key
+    for (int i = 0; i < Nk; i++) {
+        roundKeys[i * 4] = key[i * 4];
+        roundKeys[i * 4 + 1] = key[i * 4 + 1];
+        roundKeys[i * 4 + 2] = key[i * 4 + 2];
+        roundKeys[i * 4 + 3] = key[i * 4 + 3];
+    }
+
+    // Expand the key
+    u_int8_t temp[4];
+    for (int i = Nk; i < Nw; i++) {
+        // copy the previous word
+        for (int j = 0; j < 4; j++) {
+            temp[j] = roundKeys[(i - 1) * 4 + j];
+        }
+
+        if (i % Nk == 0) {
+            // Rotate the word
+            u_int8_t t = temp[0];
+            temp[0] = temp[1];
+            temp[1] = temp[2];
+            temp[2] = temp[3];
+            temp[3] = t;
+            // Apply S-Box
+            for (int j = 0; j < 4; j++) {
+                temp[j] = getSBoxValue(temp[j]);
+            }
+            // XOR with the round constant
+            u_int8_t rcon = rc(i / Nk);
+            temp[0] ^= rcon;
+        }
+        else if (Nk > 6 && i % Nk == 4) {
+            // Apply S-Box
+            for (int j = 0; j < 4; j++) {
+                temp[j] = getSBoxValue(temp[j]);
+            }
+        }
+
+        // copy the new word into the expanded key and xor with the previous word
+        for (int j = 0; j < 4; j++) {
+            roundKeys[i * 4 + j] = roundKeys[(i - Nk) * 4 + j] ^ temp[j];
+        }
+    }
 }
 
 void getRoundKey(u_int8_t* roundKeys, u_int8_t* roundKey, u_int8_t round) {
+    for (int i=0; i<16; i++) {
+        roundKey[i] = roundKeys[round * 16 + i];
+    }
 }
 
 void addRoundKey(u_int8_t* state, u_int8_t* roundKey) {

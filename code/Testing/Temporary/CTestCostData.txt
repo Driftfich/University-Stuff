@@ -1,19 +1,19 @@
 numKeyWords 0 0
-numRounds 57 3.29655e-05
-sboxes 54 2.91928e-05
-rc 0 0
-keyExpansion 0 0
-getRoundKey 0 0
-addRoundKey 32 4.93345e-05
-subBytes 12 0.000151789
-shiftRows 8 0.000207479
-mul2 19 9.03202e-05
-mul3 13 0.000125626
+numRounds 60 2.3779e-05
+sboxes 57 2.61898e-05
+rc 2 0.000768755
+keyExpansion 2 0.000799102
+getRoundKey 1 0.00146664
+addRoundKey 35 4.40077e-05
+subBytes 15 9.93905e-05
+shiftRows 11 0.000129752
+mul2 22 6.39666e-05
+mul3 16 9.19095e-05
 mixColumns 0 0
 encrypt 0 0
 invMixColumns 0 0
-invSubBytes 11 0.000162063
-invShiftRows 4 0.000442336
+invSubBytes 14 0.000102841
+invShiftRows 7 0.000199983
 decrypt 0 0
 encrypt_decrypt 55 0
 ecb_encrypt 0 0
@@ -24,9 +24,6 @@ aes192 0 0
 aes256 0 0
 ---
 numKeyWords
-rc
-keyExpansion
-getRoundKey
 mixColumns
 encrypt
 invMixColumns
