@@ -31,7 +31,8 @@ HEADERS +=  artist.h \
             libitemman.h \
             library.h \
             libitemtablemodel.h \
-            persontablemodel.h
+            persontablemodel.h \
+            transactiontablemodel.h
 
 SOURCES +=  artist.cpp \
             audio.cpp \
@@ -49,6 +50,7 @@ SOURCES +=  artist.cpp \
             libitemman.cpp \
             library.cpp \
             libitemtablemodel.cpp \
-            persontablemodel.cpp
+            persontablemodel.cpp \
+            transactiontablemodel.cpp
 
 QT += core gui
