@@ -69,6 +69,14 @@ int PersonMan::addPerson(std::shared_ptr<Person> person) {
 QVector<std::shared_ptr<Person>> PersonMan::getPersons() const {
     return persons;
 }
+std::shared_ptr<Person> PersonMan::getPerson(unsigned long id) const {
+    auto it = person_map.find(id);
+    if (it != person_map.end()) {
+        return it.value();
+    }
+    return nullptr;
+}
+
 unsigned long PersonMan::getNextId() const {
     return next_id;
 }

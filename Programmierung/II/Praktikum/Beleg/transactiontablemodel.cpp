@@ -2,6 +2,7 @@
 #include <QVector>
 #include <QVariant>
 #include <QModelIndex>
+#include "transactiontablemodel.h"
 #include <transactionman.h>
 #include <mediaman.h>
 #include <libitemman.h>
@@ -66,16 +67,55 @@ QVariant TransactionTableModel::data(const QModelIndex& index, int role) const {
         case Publisher:
             return media->getPublisher();
         case FirstName:
-            return person->getFirstName();
+            return person->getFname();
         case LastName:
-            return person->getLastName();
+            return person->getLname();
         case ExtensionName:
-            return person->getExtensionName();
+            return person->getEname();
         case BirthDate:
-            return person->getBirthDate().toString("yyyy-MM-dd");
+            return person->getBirthday().toString("yyyy-MM-dd");
         default:
             return QVariant();
     }
+}
+
+QVariant TransactionTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
+    if (role != Qt::DisplayRole) {
+        return QVariant();
+    }
+
+    if (orientation == Qt::Horizontal) {
+        ColumnIdentity columnIdentity = displayedColumns[section];
+        switch (columnIdentity) {
+            case Id:
+                return "ID";
+            case LibitemId:
+                return "Libitem ID";
+            case PersonId:
+                return "Person ID";
+            case Timestamp:
+                return "Timestamp";
+            case MediaId:
+                return "Media ID";
+            case Title:
+                return "Title";
+            case PublicationDate:
+                return "Publication Date";
+            case Publisher:
+                return "Publisher";
+            case FirstName:
+                return "First Name";
+            case LastName:
+                return "Last Name";
+            case ExtensionName:
+                return "Extension Name";
+            case BirthDate:
+                return "Birth Date";
+            default:
+                return QVariant();
+        }
+    }
+    return QVariant();
 }
 
 Qt::ItemFlags TransactionTableModel::flags(const QModelIndex &index) const {

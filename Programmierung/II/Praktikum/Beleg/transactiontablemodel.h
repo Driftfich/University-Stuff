@@ -59,6 +59,7 @@ class TransactionTableModel : public QAbstractTableModel {
         PersonMan* personMan;
         LibitemMan* libItemMan;
         MediaMan* mediaMan;
+        QVector<ColumnIdentity> displayedColumns;
 
 };
 

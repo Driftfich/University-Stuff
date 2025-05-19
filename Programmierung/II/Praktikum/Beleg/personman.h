@@ -34,6 +34,7 @@ class PersonMan {
         int addPerson(std::shared_ptr<Person> person);
 
         QVector<std::shared_ptr<Person>> getPersons() const;
+        std::shared_ptr<Person> getPerson(unsigned long id) const;
         unsigned long getNextId() const;
         QString getFilename() const;
 

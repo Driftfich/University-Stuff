@@ -51,6 +51,15 @@ unsigned long LibitemMan::getNextId() const {
 QVector<std::shared_ptr<Libitem>> LibitemMan::getLibitems() const {
     return libitems;
 }
+
+std::shared_ptr<Libitem> LibitemMan::getLibitem(unsigned long id) const {
+    auto it = libitem_map.find(id);
+    if (it != libitem_map.end()) {
+        return it.value();
+    }
+    return nullptr;
+}
+
 QString LibitemMan::getFilename() const {
     return filename;
 }

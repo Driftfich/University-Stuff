@@ -30,6 +30,7 @@ class LibitemMan {
 
         unsigned long getNextId() const;
         QVector<std::shared_ptr<Libitem>> getLibitems() const;
+        std::shared_ptr<Libitem> getLibitem(unsigned long id) const;
         QString getFilename() const;
 
         int load();
