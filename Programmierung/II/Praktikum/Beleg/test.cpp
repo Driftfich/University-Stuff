@@ -27,6 +27,8 @@
 #include "persontablemodel.h"
 #include "libitemtablemodel.h"
 #include "transactiontablemodel.h"
+// include the variant type
+#include <variant>
 
 int test_media_file_management() {
     // Test the Media class
@@ -323,6 +325,10 @@ int test_ui(int argc, char *argv[]) {
     w.setMinimumSize(800, 600);
     app.setWindowIcon(QIcon(":/icons/lib.png"));
 
+    // extract toolbar widget and table widget
+    auto *tabWidget = w.getTableWidgetUi();
+    auto *toolbar = w.getToolbarUi();
+
     // 3) TableModels erstellen
     auto *personModel = new PersonTableModel(lib.getPersonManager(), &w);
     auto *libitemModel = new LibItemTableModel(lib.getLibitemManager(), lib.getMediaManager(), &w);
@@ -344,59 +350,46 @@ int test_ui(int argc, char *argv[]) {
     transactionProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
     transactionProxy->setDynamicSortFilter(true);
 
-
     // 5) Proxies an die Views hängen
-    w.getTableWidgetUi()->persontab->setModel(personProxy);
-    w.getTableWidgetUi()->persontab->setSortingEnabled(true);
-    w.getTableWidgetUi()->itemtab->setModel(libitemProxy);
-    w.getTableWidgetUi()->itemtab->setSortingEnabled(true);
-    w.getTableWidgetUi()->transtab->setModel(transactionProxy);
-    w.getTableWidgetUi()->transtab->setSortingEnabled(true);
+    tabWidget->persontab->setModel(personProxy);
+    tabWidget->persontab->setSortingEnabled(true);
+    tabWidget->itemtab->setModel(libitemProxy);
+    tabWidget->itemtab->setSortingEnabled(true);
+    tabWidget->transtab->setModel(transactionProxy);
+    tabWidget->transtab->setSortingEnabled(true);
 
-    auto tv = w.getTableWidgetUi()->persontab;
+
+    // tables extend with the window
+    auto tv = tabWidget->persontab;
     tv->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     tv->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // dasselbe für die anderen Tabs:
-    auto iv = w.getTableWidgetUi()->itemtab;
+    auto iv = tabWidget->itemtab;
     iv->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    auto tv2 = w.getTableWidgetUi()->transtab;
+    auto tv2 = tabWidget->transtab;
     tv2->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    // 6) Toolbar-Signals mit den Proxies verbinden
-    // (angenommen die toolbar.h hat searchEdit, columns, sort)
-    QObject::connect(w.getToolbarUi()->searchbar, &QLineEdit::textChanged,
-                     personProxy, &QSortFilterProxyModel::setFilterFixedString);
-    QObject::connect(w.getToolbarUi()->columns, QOverload<int>::of(&QComboBox::currentIndexChanged),
-                     [&personProxy](int col){ personProxy->setFilterKeyColumn(col); });
-    QObject::connect(w.getToolbarUi()->sort, QOverload<int>::of(&QComboBox::currentIndexChanged),
-                     [&personProxy](int idx){
-                         personProxy->sort(personProxy->sortColumn(),
-                                           idx==0 ? Qt::AscendingOrder : Qt::DescendingOrder);
-                     });
+    // Connections for the columns dropdown in the toolbar
+    // 1) When the tab is changed, the columns dropdown should be updated to the current model columns
+    QObject::connect(tabWidget->TabSelector, &QTabWidget::currentChanged, [&]() {
+        // get the current active abstract table model
+        std::variant<PersonTableModel,
+               LibItemTableModel,
+               TransactionTableModel> model;
+        switch(tabWidget->TabSelector->currentIndex()) {
+            case 0: model = personModel;      break;
+            case 1: model = libitemModel;     break;
+            case 2: model = transactionModel; break;
+            default: return;
+        }
+        toolbar->setColumns(model);
+
+    });
+
+
     
-                     
-    // … analog für libitemProxy …
-    QObject::connect(w.getToolbarUi()->searchbar, &QLineEdit::textChanged,
-                     libitemProxy, &QSortFilterProxyModel::setFilterFixedString);
-    QObject::connect(w.getToolbarUi()->columns, QOverload<int>::of(&QComboBox::currentIndexChanged),
-                     [&libitemProxy](int col){ libitemProxy->setFilterKeyColumn(col); });
-    QObject::connect(w.getToolbarUi()->sort, QOverload<int>::of(&QComboBox::currentIndexChanged),
-                     [&libitemProxy](int idx){
-                         libitemProxy->sort(libitemProxy->sortColumn(),
-                                            idx==0 ? Qt::AscendingOrder : Qt::DescendingOrder);
-                     });
-    // … analog für transactionProxy …
-    QObject::connect(w.getToolbarUi()->searchbar, &QLineEdit::textChanged,
-                     transactionProxy, &QSortFilterProxyModel::setFilterFixedString);
-    QObject::connect(w.getToolbarUi()->columns, QOverload<int>::of(&QComboBox::currentIndexChanged),
-                     [&transactionProxy](int col){ transactionProxy->setFilterKeyColumn(col); });
-    QObject::connect(w.getToolbarUi()->sort, QOverload<int>::of(&QComboBox::currentIndexChanged),
-                     [&transactionProxy](int idx){
-                         transactionProxy->sort(transactionProxy->sortColumn(),
-                                                idx==0 ? Qt::AscendingOrder : Qt::DescendingOrder);
-                     });
 
     w.show();
     return app.exec();

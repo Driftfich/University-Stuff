@@ -32,6 +32,11 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <QIcon>
+#include <variant>
+
+#include "libitemtablemodel.h"
+#include "transactiontablemodel.h"
+#include "persontablemodel.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -137,12 +142,13 @@ public:
         deletec->setMaximumSize(QSize(40, 40));
         
         // Setzen der Icons aus dem .qrc
-        const QString addRsrc = QStringLiteral(":/icons/add.png");
-        const QString delRsrc = QStringLiteral(":/icons/trashcan_closed.png");
-        if (!QIcon::hasThemeIcon(addRsrc))
-            qDebug() << "Ressource nicht gefunden:" << addRsrc;
-        add->setIcon(QIcon(addRsrc));
-        deletec->setIcon(QIcon(delRsrc));
+        add->setIcon(QIcon(":/icons/add.png"));
+        // set active trashcan icon
+        QIcon trashcanIcon;
+        trashcanIcon.addFile(QStringLiteral(":/icons/trashcan_closed.png"), QSize(), QIcon::Normal, QIcon::Off);
+        trashcanIcon.addFile(QStringLiteral(":/icons/trashcan_open.png"), QSize(), QIcon::Active, QIcon::Off);
+        deletec->setIcon(trashcanIcon);
+        // deletec->setCheckable(true);
 
         horizontalLayout->addWidget(deletec);
 
@@ -166,6 +172,44 @@ public:
         deletec->setText(QCoreApplication::translate("toolbar", "", nullptr));
     } // retranslateUi
 
+    // get columns
+    QVector<QString> getColumns() const {
+        QVector<QString> columns;
+        for (int i = 0; i < this->columns->count(); i++) {
+            columns.push_back(this->columns->itemText(i));
+        }
+        return columns;
+    }
+    // get checked columns
+    QVector<QString> getCheckedColumns() const {
+        QVector<QString> checkedColumns;
+        for (int i = 0; i < this->columns->count(); i++) {
+            if (this->columns->itemData(i, Qt::CheckStateRole).toBool()) {
+                checkedColumns.push_back(this->columns->itemText(i));
+            }
+        }
+        return checkedColumns;
+    }
+    // set columns
+    void setColumns(const QStringList& columns, const QStringList& checkedColumns) {
+        this->columns->clear();
+        for (const auto& column : columns) {
+            this->columns->addItem(column);
+        }
+        for (int i = 0; i < this->columns->count(); i++) {
+            if (checkedColumns.contains(this->columns->itemText(i))) {
+                this->columns->setItemData(i, Qt::Checked, Qt::CheckStateRole);
+            } else {
+                this->columns->setItemData(i, Qt::Unchecked, Qt::CheckStateRole);
+            }
+        }
+    }
+
+    void setColumns(std::variant<PersonTableModel,
+      LibItemTableModel,
+      TransactionTableModel>& v) {
+        setColumns(v.getAllColumnNames(), v.getDisplayedColumns());
+  }
 };
 
 namespace Ui {
