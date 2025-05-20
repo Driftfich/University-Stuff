@@ -312,6 +312,7 @@ int test_ui(int argc, char *argv[]) {
     Q_INIT_RESOURCE(ressources);
     QApplication app(argc, argv);
 
+
     // 1) Core-Daten laden
     Library lib(QCoreApplication::applicationDirPath());
     lib.load();
@@ -320,6 +321,7 @@ int test_ui(int argc, char *argv[]) {
     MainWindow w = MainWindow();
     w.setWindowTitle("Library Management System");
     w.setMinimumSize(800, 600);
+    app.setWindowIcon(QIcon(":/icons/lib.png"));
 
     // 3) TableModels erstellen
     auto *personModel = new PersonTableModel(lib.getPersonManager(), &w);

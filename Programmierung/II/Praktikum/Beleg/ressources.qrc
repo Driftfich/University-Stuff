@@ -4,5 +4,6 @@
     <file>icons/search.png</file>
     <file>icons/trashcan_closed.png</file>
     <file>icons/trashcan_open.png</file>
+    <file>icons/lib.png</file>
   </qresource>
 </RCC>

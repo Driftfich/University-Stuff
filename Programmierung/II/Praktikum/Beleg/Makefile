@@ -1147,6 +1147,7 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_ressources.cpp
 qrc_ressources.cpp: ressources.qrc \
 		/home/USER/Qt/6.6.1/gcc_64/libexec/rcc \
+		icons/lib.png \
 		icons/search.png \
 		icons/trashcan_closed.png \
 		icons/trashcan_open.png \
