@@ -72,6 +72,8 @@ public:
         sizePolicy.setHeightForWidth(searchbar->sizePolicy().hasHeightForWidth());
         searchbar->setSizePolicy(sizePolicy);
         searchbar->setMinimumSize(QSize(150, 0));
+        searchbar->setMinimumWidth(200);
+        searchbar->setMaximumWidth(600);
 
         horizontalLayout->addWidget(searchbar);
 
@@ -87,6 +89,8 @@ public:
         sizePolicy1.setHeightForWidth(columns->sizePolicy().hasHeightForWidth());
         columns->setSizePolicy(sizePolicy1);
         columns->setMinimumSize(QSize(100, 0));
+        columns->setMinimumWidth(150);
+        columns->setMaximumWidth(200);
 
         horizontalLayout->addWidget(columns);
 
@@ -99,6 +103,8 @@ public:
         sizePolicy1.setHeightForWidth(sort->sizePolicy().hasHeightForWidth());
         sort->setSizePolicy(sizePolicy1);
         sort->setMinimumSize(QSize(100, 0));
+        sort->setMinimumWidth(150);
+        sort->setMaximumWidth(200);
 
         horizontalLayout->addWidget(sort);
 
