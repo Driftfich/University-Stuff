@@ -143,8 +143,12 @@ QMap<LibItemTableModel::ColumnIdentity, QString> LibItemTableModel::getAllColumn
     return columnNames;
 }
 
-QVector<LibItemTableModel::ColumnIdentity> LibItemTableModel::getDisplayedColumns() const {
-    return displayedColumns;
+QVector<QString> LibItemTableModel::getDisplayedColumns() const {
+    QVector<QString> columnNames;
+    for (const auto& column : displayedColumns) {
+        columnNames.push_back(getAllColumnNames()[column]);
+    }
+    return columnNames;
 }
 
 void LibItemTableModel::refreshData() {

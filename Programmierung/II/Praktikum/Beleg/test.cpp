@@ -375,9 +375,9 @@ int test_ui(int argc, char *argv[]) {
     // 1) When the tab is changed, the columns dropdown should be updated to the current model columns
     QObject::connect(tabWidget->TabSelector, &QTabWidget::currentChanged, [&]() {
         // get the current active abstract table model
-        std::variant<PersonTableModel,
-               LibItemTableModel,
-               TransactionTableModel> model;
+        std::variant<PersonTableModel*,
+               LibItemTableModel*,
+               TransactionTableModel*> model;
         switch(tabWidget->TabSelector->currentIndex()) {
             case 0: model = personModel;      break;
             case 1: model = libitemModel;     break;

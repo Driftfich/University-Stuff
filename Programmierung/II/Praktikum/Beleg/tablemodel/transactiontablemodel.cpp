@@ -148,8 +148,13 @@ QMap<TransactionTableModel::ColumnIdentity, QString> TransactionTableModel::getA
     return columnNames;
 }
 
-QVector<TransactionTableModel::ColumnIdentity> TransactionTableModel::getDisplayedColumns() const {
-    return displayedColumns;
+QVector<QString> TransactionTableModel::getDisplayedColumns() const {
+    // substitute the displayedColumns with the actual column names
+    QVector<QString> columnNames;
+    for (const auto& column : displayedColumns) {
+        columnNames.push_back(getAllColumnNames()[column]);
+    }
+    return columnNames;
 }
 
 void TransactionTableModel::refreshData() {

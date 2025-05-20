@@ -41,7 +41,7 @@ class PersonTableModel : public QAbstractTableModel {
 
         void setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns);
         QMap<ColumnIdentity, QString> getAllColumnNames() const;
-        QVector<ColumnIdentity> getDisplayedColumns() const;
+        QVector<QString> getDisplayedColumns() const;
     
     public slots:
         void refreshData();

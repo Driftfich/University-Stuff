@@ -205,11 +205,16 @@ public:
         }
     }
 
-    void setColumns(std::variant<PersonTableModel,
-      LibItemTableModel,
-      TransactionTableModel>& v) {
-        setColumns(v.getAllColumnNames(), v.getDisplayedColumns());
-  }
+    void setColumns(const std::variant<PersonTableModel*,
+                                       LibItemTableModel*,
+                                       TransactionTableModel*>& v)
+    {
+        std::visit([this](auto *m){
+            // ruft intern das QStringList/QStringList-setColumns auf
+            setColumns(m->getAllColumnNames(),
+                       m->getDisplayedColumns());
+        }, v);
+    }
 };
 
 namespace Ui {

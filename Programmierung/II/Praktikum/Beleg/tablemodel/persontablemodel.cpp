@@ -111,9 +111,14 @@ QMap<PersonTableModel::ColumnIdentity, QString> PersonTableModel::getAllColumnNa
     return columnNames;
 }
 
-QVector<PersonTableModel::ColumnIdentity> PersonTableModel::getDisplayedColumns() const {
-    return displayedColumns;
+QVector<QString> PersonTableModel::getDisplayedColumns() const {
+    QVector<QString> columnNames;
+    for (const auto& column : displayedColumns) {
+        columnNames.push_back(getAllColumnNames()[column]);
+    }
+    return columnNames;
 }
+
 void PersonTableModel::refreshData() {
     beginResetModel();
     endResetModel();
