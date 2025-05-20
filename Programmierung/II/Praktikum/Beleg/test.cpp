@@ -3,6 +3,10 @@
 #include <QMap>
 #include <QString>
 #include <QVariant>
+#include <QApplication>
+#include <QSortFilterProxyModel>
+#include <QSizePolicy>
+#include <QLineEdit>
 #include <iostream>
 #include "media.h"
 #include "text.h"
@@ -17,6 +21,12 @@
 #include "mediaman.h"
 #include "personman.h"
 #include "libitemman.h"
+#include "tablewidget.h"
+#include "mainw.h"
+#include "library.h"
+#include "persontablemodel.h"
+#include "libitemtablemodel.h"
+#include "transactiontablemodel.h"
 
 int test_media_file_management() {
     // Test the Media class
@@ -298,15 +308,106 @@ int test_libitemman() {
     return 0;
 }
 
-int main() {
+int test_ui(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+
+    // 1) Core-Daten laden
+    Library lib(QCoreApplication::applicationDirPath());
+    lib.load();
+
+    // 2) UI aufbauen
+    MainWindow w = MainWindow();
+    w.setWindowTitle("Library Management System");
+    w.setMinimumSize(800, 600);
+
+    // 3) TableModels erstellen
+    auto *personModel = new PersonTableModel(lib.getPersonManager(), &w);
+    auto *libitemModel = new LibItemTableModel(lib.getLibitemManager(), lib.getMediaManager(), &w);
+    auto *transactionModel = new TransactionTableModel(lib.getTransactionManager(), lib.getPersonManager(), lib.getLibitemManager(), lib.getMediaManager(), &w);
+
+    // 4) Proxy-Models als Filter/Sortierer
+    auto *personProxy = new QSortFilterProxyModel(&w);
+    personProxy->setSourceModel(personModel);
+    personProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    personProxy->setDynamicSortFilter(true);
+
+    auto *libitemProxy = new QSortFilterProxyModel(&w);
+    libitemProxy->setSourceModel(libitemModel);
+    libitemProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    libitemProxy->setDynamicSortFilter(true);
+    
+    auto *transactionProxy = new QSortFilterProxyModel(&w);
+    transactionProxy->setSourceModel(transactionModel);
+    transactionProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    transactionProxy->setDynamicSortFilter(true);
+
+
+    // 5) Proxies an die Views hängen
+    w.getTableWidgetUi()->persontab->setModel(personProxy);
+    w.getTableWidgetUi()->persontab->setSortingEnabled(true);
+    w.getTableWidgetUi()->itemtab->setModel(libitemProxy);
+    w.getTableWidgetUi()->itemtab->setSortingEnabled(true);
+    w.getTableWidgetUi()->transtab->setModel(transactionProxy);
+    w.getTableWidgetUi()->transtab->setSortingEnabled(true);
+
+    auto tv = w.getTableWidgetUi()->persontab;
+    tv->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    tv->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    // dasselbe für die anderen Tabs:
+    auto iv = w.getTableWidgetUi()->itemtab;
+    iv->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    auto tv2 = w.getTableWidgetUi()->transtab;
+    tv2->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    // 6) Toolbar-Signals mit den Proxies verbinden
+    // (angenommen die toolbar.h hat searchEdit, columns, sort)
+    QObject::connect(w.getToolbarUi()->searchbar, &QLineEdit::textChanged,
+                     personProxy, &QSortFilterProxyModel::setFilterFixedString);
+    QObject::connect(w.getToolbarUi()->columns, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                     [&personProxy](int col){ personProxy->setFilterKeyColumn(col); });
+    QObject::connect(w.getToolbarUi()->sort, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                     [&personProxy](int idx){
+                         personProxy->sort(personProxy->sortColumn(),
+                                           idx==0 ? Qt::AscendingOrder : Qt::DescendingOrder);
+                     });
+    
+                     
+    // … analog für libitemProxy …
+    QObject::connect(w.getToolbarUi()->searchbar, &QLineEdit::textChanged,
+                     libitemProxy, &QSortFilterProxyModel::setFilterFixedString);
+    QObject::connect(w.getToolbarUi()->columns, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                     [&libitemProxy](int col){ libitemProxy->setFilterKeyColumn(col); });
+    QObject::connect(w.getToolbarUi()->sort, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                     [&libitemProxy](int idx){
+                         libitemProxy->sort(libitemProxy->sortColumn(),
+                                            idx==0 ? Qt::AscendingOrder : Qt::DescendingOrder);
+                     });
+    // … analog für transactionProxy …
+    QObject::connect(w.getToolbarUi()->searchbar, &QLineEdit::textChanged,
+                     transactionProxy, &QSortFilterProxyModel::setFilterFixedString);
+    QObject::connect(w.getToolbarUi()->columns, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                     [&transactionProxy](int col){ transactionProxy->setFilterKeyColumn(col); });
+    QObject::connect(w.getToolbarUi()->sort, QOverload<int>::of(&QComboBox::currentIndexChanged),
+                     [&transactionProxy](int idx){
+                         transactionProxy->sort(transactionProxy->sortColumn(),
+                                                idx==0 ? Qt::AscendingOrder : Qt::DescendingOrder);
+                     });
+
+    w.show();
+    return app.exec();
+}
+
+int main(int argc, char *argv[]) {
     // Test the Media class
     // test_media_file_management();
     // test_person_file_management();
     // test_libitem_file_management();
     // test_transaction_file_management();
-    test_transactionman();
-    test_mediaman();
-    test_personman();
-    test_libitemman();
-    return 0;
+    // test_transactionman();
+    // test_mediaman();
+    // test_personman();
+    // test_libitemman();
+    test_ui(argc, argv);
 }

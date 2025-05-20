@@ -31,13 +31,15 @@ HEADERS +=  core/artist.h \
             manager/libitemman.h \
             tablemodel/libitemtablemodel.h \
             tablemodel/persontablemodel.h \
-            tablemodel/transactiontablemodel.h
+            tablemodel/transactiontablemodel.h \
+            ui/mainw.h \
+            ui/toolbar.h \
+            ui/tablewidget.h
 
 SOURCES +=  core/artist.cpp \
             core/audio.cpp \
             core/media.cpp \
             core/person.cpp \
-            core/test.cpp \
             core/text.cpp \
             core/video.cpp \
             core/borrower.cpp \
@@ -50,10 +52,15 @@ SOURCES +=  core/artist.cpp \
             manager/libitemman.cpp \
             tablemodel/libitemtablemodel.cpp \
             tablemodel/persontablemodel.cpp \
-            tablemodel/transactiontablemodel.cpp
+            tablemodel/transactiontablemodel.cpp \
+            #ui/mainw.cpp \
+            #ui/toolbar.cpp \
+            #ui/tablewidget.cpp \
+            test.cpp 
 
 INCLUDEPATH += $$PWD/core
 INCLUDEPATH += $$PWD/manager
 INCLUDEPATH += $$PWD/tablemodel
+INCLUDEPATH += $$PWD/ui
 
-QT += core gui
+QT += core gui widgets
