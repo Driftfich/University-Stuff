@@ -309,6 +309,7 @@ int test_libitemman() {
 }
 
 int test_ui(int argc, char *argv[]) {
+    Q_INIT_RESOURCE(ressources);
     QApplication app(argc, argv);
 
     // 1) Core-Daten laden

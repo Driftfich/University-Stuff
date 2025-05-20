@@ -31,6 +31,7 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include <QIcon>
 
 QT_BEGIN_NAMESPACE
 
@@ -134,6 +135,14 @@ public:
         deletec->setSizePolicy(sizePolicy2);
         deletec->setMinimumSize(QSize(40, 40));
         deletec->setMaximumSize(QSize(40, 40));
+        
+        // Setzen der Icons aus dem .qrc
+        const QString addRsrc = QStringLiteral(":/icons/add.png");
+        const QString delRsrc = QStringLiteral(":/icons/trashcan_closed.png");
+        if (!QIcon::hasThemeIcon(addRsrc))
+            qDebug() << "Ressource nicht gefunden:" << addRsrc;
+        add->setIcon(QIcon(addRsrc));
+        deletec->setIcon(QIcon(delRsrc));
 
         horizontalLayout->addWidget(deletec);
 
@@ -153,8 +162,8 @@ public:
     void retranslateUi(QWidget *toolbar)
     {
         toolbar->setWindowTitle(QCoreApplication::translate("toolbar", "Form", nullptr));
-        add->setText(QCoreApplication::translate("toolbar", "PushButton", nullptr));
-        deletec->setText(QCoreApplication::translate("toolbar", "PushButton", nullptr));
+        add->setText(QCoreApplication::translate("toolbar", "", nullptr));
+        deletec->setText(QCoreApplication::translate("toolbar", "", nullptr));
     } // retranslateUi
 
 };

@@ -63,4 +63,6 @@ INCLUDEPATH += $$PWD/manager
 INCLUDEPATH += $$PWD/tablemodel
 INCLUDEPATH += $$PWD/ui
 
+RESOURCES = ressources.qrc
+
 QT += core gui widgets
