@@ -19,7 +19,6 @@
 **
 ** Created by: Qt User Interface Compiler version 6.9.0
 **
-** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
 #include <QtCore/QVariant>
@@ -32,6 +31,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <QIcon>
+#include <QListView>
 #include <variant>
 
 #include "libitemtablemodel.h"
@@ -89,6 +89,7 @@ public:
 
         columns = new QComboBox(toolbar);
         columns->setObjectName("columns");
+
         QSizePolicy sizePolicy1(QSizePolicy::Policy::MinimumExpanding, QSizePolicy::Policy::Expanding);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -97,6 +98,7 @@ public:
         columns->setMinimumSize(QSize(100, 0));
         columns->setMinimumWidth(150);
         columns->setMaximumWidth(200);
+        // columns->view()->move(QPoint(0, 0));
 
         horizontalLayout->addWidget(columns);
 
@@ -195,25 +197,27 @@ public:
         this->columns->clear();
         for (const auto& column : columns) {
             this->columns->addItem(column);
-        }
-        for (int i = 0; i < this->columns->count(); i++) {
-            if (checkedColumns.contains(this->columns->itemText(i))) {
-                this->columns->setItemData(i, Qt::Checked, Qt::CheckStateRole);
+
+            int idx = this->columns->count() - 1;
+            
+            if (checkedColumns.contains(column)) {
+                this->columns->setItemData(idx, Qt::Checked, Qt::CheckStateRole);
             } else {
-                this->columns->setItemData(i, Qt::Unchecked, Qt::CheckStateRole);
+                this->columns->setItemData(idx, Qt::Unchecked, Qt::CheckStateRole);
             }
         }
     }
 
-    void setColumns(const std::variant<PersonTableModel*,
+    void setColumns(std::variant<PersonTableModel*,
                                        LibItemTableModel*,
-                                       TransactionTableModel*>& v)
+                                       TransactionTableModel*>& model)
     {
-        std::visit([this](auto *m){
-            // ruft intern das QStringList/QStringList-setColumns auf
-            setColumns(m->getAllColumnNames(),
+        // std::visit verwendet einen Lambdaausdruck, der für jeden möglichen Typ des Variants aufgerufen wird
+        std::visit([this](auto* m) {
+            // Hier rufen wir die andere setColumns-Methode auf, die mit QStringList arbeitet
+            setColumns(QStringList::fromVector(m->getAllColumnNames().values()),
                        m->getDisplayedColumns());
-        }, v);
+        }, model);
     }
 };
 

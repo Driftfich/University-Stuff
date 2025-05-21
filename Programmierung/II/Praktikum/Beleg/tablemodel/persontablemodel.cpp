@@ -92,6 +92,7 @@ Qt::ItemFlags PersonTableModel::flags(const QModelIndex &index) const {
 }
 
 void PersonTableModel::setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns) {
+    beginResetModel();
     this->displayedColumns = displayedColumns;
     emit layoutChanged();
 }

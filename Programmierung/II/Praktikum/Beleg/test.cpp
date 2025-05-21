@@ -388,6 +388,44 @@ int test_ui(int argc, char *argv[]) {
 
     });
 
+    // emit the tab changed signal to show the columns of the first tab
+    emit tabWidget->TabSelector->currentChanged(0);
+
+    // 2) use the dropdown selection change signal to uncheck/check this item in the columns dropdown
+    QObject::connect(toolbar->columns->view(), &QAbstractItemView::pressed,
+                     [&](const QModelIndex &index) {
+        // get the current index of the selected item
+        // int index = toolbar->columns->currentIndex();
+        // change the check state of the item
+        // if (toolbar->columns->itemData(index, Qt::CheckStateRole).toBool()) {
+        //     toolbar->columns->setItemData(index, Qt::Unchecked, Qt::CheckStateRole);
+        // } else {
+        //     toolbar->columns->setItemData(index, Qt::Checked, Qt::CheckStateRole);
+        // }
+        std::variant<PersonTableModel*,
+        LibItemTableModel*,
+        TransactionTableModel*> model;
+        switch(tabWidget->TabSelector->currentIndex()) {
+            case 0: model = personModel;      break;
+            case 1: model = libitemModel;     break;
+            case 2: model = transactionModel; break;
+            default: return;
+        }
+        
+        QComboBox *combo = toolbar->columns;
+        QAbstractItemModel *m = combo->model();
+        Qt::CheckState cs = static_cast<Qt::CheckState>(
+            m->data(index, Qt::CheckStateRole).toInt());
+            m->setData(index,
+                (cs == Qt::Checked ? Qt::Unchecked : Qt::Checked),
+                Qt::CheckStateRole);
+        combo->showPopup();
+
+        // update the columns in the current model
+        
+        
+
+    });
 
     
 
