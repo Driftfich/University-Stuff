@@ -422,7 +422,10 @@ int test_ui(int argc, char *argv[]) {
         combo->showPopup();
 
         // update the columns in the current model
-        
+        std::visit([&](auto* m) {
+            // Hier rufen wir die andere setColumns-Methode auf, die mit QStringList arbeitet
+            m->setDisplayedColumns(toolbar->getCheckedColumns());
+        }, model);
         
 
     });

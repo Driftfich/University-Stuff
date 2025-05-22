@@ -44,7 +44,8 @@ class LibItemTableModel : public QAbstractTableModel {
         QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-        void setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns);
+        // void setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns);
+        void setDisplayedColumns(const QVector<QString>& displayedColumns);
         QMap<ColumnIdentity, QString> getAllColumnNames() const;
         QVector<QString> getDisplayedColumns() const;
 

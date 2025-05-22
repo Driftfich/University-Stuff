@@ -120,10 +120,24 @@ Qt::ItemFlags LibItemTableModel::flags(const QModelIndex &index) const {
     return QAbstractTableModel::flags(index);
 }
 
-void LibItemTableModel::setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns) {
-    this->displayedColumns = displayedColumns;
-    emit headerDataChanged(Qt::Horizontal, 0, columnCount() - 1);
-    emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1));
+// void LibItemTableModel::setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns) {
+//     this->displayedColumns = displayedColumns;
+//     emit headerDataChanged(Qt::Horizontal, 0, columnCount() - 1);
+//     emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1));
+// }
+
+void LibItemTableModel::setDisplayedColumns(const QVector<QString>& displayedColumns) {
+    beginResetModel();
+    this->displayedColumns.clear();
+    for (const auto& column : displayedColumns) {
+        for (int i = 0; i < MaxColumnIdentity; ++i) {
+            if (getAllColumnNames()[static_cast<ColumnIdentity>(i)] == column) {
+                this->displayedColumns.push_back(static_cast<ColumnIdentity>(i));
+                break;
+            }
+        }
+    }
+    emit layoutChanged();
 }
 
 QMap<LibItemTableModel::ColumnIdentity, QString> LibItemTableModel::getAllColumnNames() const {

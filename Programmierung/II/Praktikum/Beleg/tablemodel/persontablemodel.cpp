@@ -91,9 +91,23 @@ Qt::ItemFlags PersonTableModel::flags(const QModelIndex &index) const {
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-void PersonTableModel::setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns) {
+// void PersonTableModel::setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns) {
+//     beginResetModel();
+//     this->displayedColumns = displayedColumns;
+//     emit layoutChanged();
+// }
+
+void PersonTableModel::setDisplayedColumns(const QVector<QString>& displayedColumns) {
     beginResetModel();
-    this->displayedColumns = displayedColumns;
+    this->displayedColumns.clear();
+    for (const auto& column : displayedColumns) {
+        for (int i = 0; i < MaxColumnIdentity; ++i) {
+            if (getAllColumnNames()[static_cast<ColumnIdentity>(i)] == column) {
+                this->displayedColumns.push_back(static_cast<ColumnIdentity>(i));
+                break;
+            }
+        }
+    }
     emit layoutChanged();
 }
 
