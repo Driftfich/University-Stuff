@@ -506,6 +506,49 @@ int test_ui(int argc, char *argv[]) {
         currentTableView->horizontalHeader()->setSortIndicator(dropdownIndex, newSortOrder);
     });
 
+    // 3) Toolbar search field connections
+    // Hilfs-Lambda, um die Filterlogik zu kapseln, da sie von zwei Signalen verwendet wird
+    auto applySearchFilter = [&]() {
+        QSortFilterProxyModel *currentProxyModel = nullptr;
+
+        switch(tabWidget->TabSelector->currentIndex()) {
+            case 0: 
+                currentProxyModel = personProxy;
+                break;
+            case 1: 
+                currentProxyModel = libitemProxy; 
+                break;
+            case 2: 
+                currentProxyModel = transactionProxy; 
+                break;
+            default:
+                qWarning() << "Ungültiger Tab-Index für Filterung:" << tabWidget->TabSelector->currentIndex();
+                return;
+        }
+
+        if (!currentProxyModel) {
+            qWarning() << "Konnte ProxyModel für Filterung nicht ermitteln.";
+            return;
+        }
+
+        // get filter string from the search bar
+        QString filterString = toolbar->searchbar->text();
+
+        // filter across all columns
+        currentProxyModel->setFilterKeyColumn(-1); 
+
+        // Use setFilterWildcard for a "contains" search across all columns.
+        // The '*' acts as a placeholder for any string.
+        // The already set filterCaseSensitivity ensures a case-insensitive search.
+        currentProxyModel->setFilterWildcard("*" + filterString + "*");
+    };
+
+    // 3.1) Wenn der Tab gewechselt wird, Filter anwenden
+    QObject::connect(tabWidget->TabSelector, &QTabWidget::currentChanged, applySearchFilter);
+
+    // 3.2) Wenn sich der Text im Suchfeld ändert, Filter anwenden
+    QObject::connect(toolbar->searchbar, &QLineEdit::textChanged, applySearchFilter);
+
     // emit the tab changed signal to show the columns of the first tab
     emit tabWidget->TabSelector->currentChanged(0);
     

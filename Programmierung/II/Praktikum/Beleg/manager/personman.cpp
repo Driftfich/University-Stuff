@@ -39,7 +39,7 @@ int PersonMan::load() {
 
 int PersonMan::save() {
     QFile file(filename);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
         std::cerr << "Error opening file for writing: " << filename.toStdString() << std::endl;
         return -1;
     }
