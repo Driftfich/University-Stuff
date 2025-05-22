@@ -12,10 +12,10 @@
 
 
 Library::Library(const QString& dir) : dir(dir) {
-    mediaManager = std::make_unique<MediaMan>(dir + "/media.json");
-    libitemManager = std::make_unique<LibitemMan>(dir + "/libitems.json");
-    personManager = std::make_unique<PersonMan>(dir + "/persons.json");
-    transactionManager = std::make_unique<TransactionMan>(dir + "/transactions.json");
+    mediaManager = std::make_unique<MediaMan>(dir + "/media.ndjson");
+    libitemManager = std::make_unique<LibitemMan>(dir + "/libitem.ndjson");
+    personManager = std::make_unique<PersonMan>(dir + "/person.ndjson");
+    transactionManager = std::make_unique<TransactionMan>(dir + "/transaction.ndjson");
 }
 Library::~Library() {
     save();
@@ -60,10 +60,10 @@ int Library::save() {
 }
 
 std::ostream& operator<<(std::ostream& os, const Library& lib) {
-    os << "Library Directory: " << lib.getDir().toStdString() << std::endl;
-    os << "Media Manager: " << *(lib.getMediaManager()) << std::endl;
-    os << "Libitem Manager: " << *(lib.getLibitemManager()) << std::endl;
-    os << "Person Manager: " << *(lib.getPersonManager()) << std::endl;
-    os << "Transaction Manager: " << *(lib.getTransactionManager()) << std::endl;
+    os << lib.getDir().toStdString() << std::endl;
+    os << *(lib.getMediaManager()) << std::endl;
+    os << *(lib.getLibitemManager()) << std::endl;
+    os << *(lib.getPersonManager()) << std::endl;
+    os << *(lib.getTransactionManager()) << std::endl;
     return os;
 }

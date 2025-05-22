@@ -106,6 +106,6 @@ std::ostream& operator<<(std::ostream& os, const TransactionMan& tm) {
     for (const auto& transaction : tm.getTransactions()) {
         os << *transaction << std::endl;
     }
-    os << "=========================" << std::endl;
+    os << "========= End Transactionman =========" << std::endl;
     return os;
 }

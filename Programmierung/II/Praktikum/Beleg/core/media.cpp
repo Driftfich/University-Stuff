@@ -333,6 +333,7 @@ std::ostream& operator<<(std::ostream& os, const Media& media) {
     media.printbase(os);
     // use the printsubclass method to print the subclass
     media.printsubclass(os);
+    os << "----------------------------------------" << std::endl;
     return os;
 }
 

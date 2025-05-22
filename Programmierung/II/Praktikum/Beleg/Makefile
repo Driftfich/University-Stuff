@@ -1836,6 +1836,11 @@ moc_mainw.cpp: ui/mainw.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QVBoxLayout \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QWidget \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtGui/QIcon \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QListView \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qlistview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qitemselectionmodel.h \
 		tablemodel/libitemtablemodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QAbstractTableModel \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVector \
@@ -1879,9 +1884,6 @@ moc_mainw.cpp: ui/mainw.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QGridLayout \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QHeaderView \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qheaderview.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qabstractitemview.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qitemselectionmodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QTabWidget \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QTableView \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtableview.h \
@@ -4938,6 +4940,8 @@ test.o: test.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qabstractbutton.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QSpacerItem \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtGui/QIcon \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QListView \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qlistview.h \
 		tablemodel/libitemtablemodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QAbstractTableModel \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QModelIndex \

@@ -80,7 +80,8 @@ class Transaction {
             os << "Transaction ID: " << transaction.id << "\n"
                << "Libitem ID: " << transaction.libitem_id << "\n"
                << "Borrower ID: " << transaction.borrower_id << "\n"
-               << "Transaction Timestamp: " << transaction.transaction_time.toString().toStdString() << "\n";
+               << "Transaction Timestamp: " << transaction.transaction_time.toString().toStdString() << "\n"
+               << "----------------------------------------" << std::endl;
             return os;
         }
 };

@@ -109,6 +109,7 @@ void PersonTableModel::setDisplayedColumns(const QVector<QString>& displayedColu
         }
     }
     emit layoutChanged();
+    endResetModel();
 }
 
 QMap<PersonTableModel::ColumnIdentity, QString> PersonTableModel::getAllColumnNames() const {

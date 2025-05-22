@@ -110,6 +110,7 @@ std::ostream& operator<<(std::ostream& os, const PersonMan& pm) {
     for (const auto& person : pm.getPersons()) {
         os << *person << std::endl;
     }
+    os << "======== End Personman ===========" << std::endl;
     return os;
 }
 

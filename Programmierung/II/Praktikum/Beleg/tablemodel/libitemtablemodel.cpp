@@ -138,6 +138,7 @@ void LibItemTableModel::setDisplayedColumns(const QVector<QString>& displayedCol
         }
     }
     emit layoutChanged();
+    endResetModel();
 }
 
 QMap<LibItemTableModel::ColumnIdentity, QString> LibItemTableModel::getAllColumnNames() const {

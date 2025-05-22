@@ -219,6 +219,26 @@ public:
                        m->getDisplayedColumns());
         }, model);
     }
+
+    void setSortColumns(const QStringList& columns) {
+        this->sort->clear();
+        for (const auto& column : columns) {
+            this->sort->addItem(column);
+        }
+    }
+
+    void setSortColumns(std::variant<PersonTableModel*,
+                                       LibItemTableModel*,
+                                       TransactionTableModel*>& model)
+    {
+        // std::visit verwendet einen Lambdaausdruck, der für jeden möglichen Typ des Variants aufgerufen wird
+        std::visit([this](auto* m) {
+            // Hier rufen wir die andere setColumns-Methode auf, die mit QStringList arbeitet
+            setSortColumns(QStringList::fromVector(m->getAllColumnNames().values()));
+        }, model);
+    }
+
+
 };
 
 namespace Ui {

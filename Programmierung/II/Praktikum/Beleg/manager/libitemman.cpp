@@ -102,11 +102,13 @@ std::shared_ptr<Libitem> LibitemMan::operator[](unsigned long idx) {
 }
 
 std::ostream& operator<<(std::ostream& os, const LibitemMan& lm) {
-    os << "LibitemMan: " << lm.getFilename().toStdString() << std::endl;
+    os << "====== LibitemMan: " << lm.getFilename().toStdString() << " ======" << std::endl;
     os << "Next ID: " << lm.getNextId() << std::endl;
     os << "Libitems: " << std::endl;
+    os << "-------------------------" << std::endl;
     for (const auto& libitem : lm.getLibitems()) {
         os << *libitem << std::endl;
     }
+    os << "======= End of LibitemMan =======" << std::endl;
     return os;
 }

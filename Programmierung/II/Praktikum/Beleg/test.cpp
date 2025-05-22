@@ -317,7 +317,7 @@ int test_ui(int argc, char *argv[]) {
 
     // 1) Core-Daten laden
     Library lib(QCoreApplication::applicationDirPath());
-    lib.load();
+    // std::cout << lib << std::endl;
 
     // 2) UI aufbauen
     MainWindow w = MainWindow();
@@ -388,10 +388,7 @@ int test_ui(int argc, char *argv[]) {
 
     });
 
-    // emit the tab changed signal to show the columns of the first tab
-    emit tabWidget->TabSelector->currentChanged(0);
-
-    // 2) use the dropdown selection change signal to uncheck/check this item in the columns dropdown
+    // use the dropdown selection change signal to uncheck/check this item in the columns dropdown
     QObject::connect(toolbar->columns->view(), &QAbstractItemView::pressed,
                      [&](const QModelIndex &index) {
         // get the current index of the selected item
@@ -430,6 +427,87 @@ int test_ui(int argc, char *argv[]) {
 
     });
 
+    // 2) Connection for the sort dropdown in the toolbar
+    // 2.1) When the tab is changed, the sort dropdown should be updated to the current model columns
+    QObject::connect(tabWidget->TabSelector, &QTabWidget::currentChanged, [&]() {
+        // get the current active abstract table model
+        std::variant<PersonTableModel*,
+               LibItemTableModel*,
+               TransactionTableModel*> model;
+        switch(tabWidget->TabSelector->currentIndex()) {
+            case 0: model = personModel;      break;
+            case 1: model = libitemModel;     break;
+            case 2: model = transactionModel; break;
+            default: return;
+        }
+
+        // get the previous active sort column from the current selected tab proxy model
+        int sortColumn = 0;
+        switch(tabWidget->TabSelector->currentIndex()) {
+            case 0: sortColumn = personProxy->sortColumn();      break;
+            case 1: sortColumn = libitemProxy->sortColumn();     break;
+            case 2: sortColumn = transactionProxy->sortColumn(); break;
+            default: return;
+        }
+
+        // update the sort dropdown with the current model columns
+        toolbar->setSortColumns(model);
+        
+        // update the active sort column to the last used sort column
+        toolbar->sort->setCurrentIndex(sortColumn);
+    });
+
+    // 2.2) When the sort dropdown is changed, the current proxy model should be sorted by the selected column
+    QObject::connect(toolbar->sort, QOverload<int>::of(&QComboBox::activated), [&](int dropdownIndex) {
+        // get the current active proxy model e.g. personProxy, libitemProxy, transactionProxy
+        QSortFilterProxyModel *currentProxyModel = nullptr;
+        QTableView *currentTableView = nullptr;
+
+        switch(tabWidget->TabSelector->currentIndex()) {
+            case 0: 
+                currentProxyModel = personProxy;
+                currentTableView = tabWidget->persontab;
+                break;
+            case 1: 
+                currentProxyModel = libitemProxy; 
+                currentTableView = tabWidget->itemtab;
+                break;
+            case 2: 
+                currentProxyModel = transactionProxy; 
+                currentTableView = tabWidget->transtab;
+                break;
+            default:
+                qWarning() << "Ungültiger Tab-Index für Sortierung:" << tabWidget->TabSelector->currentIndex();
+                return;
+        }
+
+        if (!currentProxyModel || !currentTableView) {
+            qWarning() << "Konnte ProxyModel oder TableView für Sortierung nicht ermitteln.";
+            return;
+        }
+
+        // Daten aus der ComboBox abrufen. Wir erwarten, dass die ColumnIdentity (als int)
+        // oder der Spaltenindex des Quellmodells als UserData gespeichert ist.
+        // In toolbar->setSortColumns wurde die ColumnIdentity als UserData gespeichert.
+        int columnToSort = toolbar->sort->itemData(dropdownIndex).toInt();
+        // Aktuelle Sortierspalte und -reihenfolge des Proxy-Modells abrufen
+        int currentSortColumn = currentProxyModel->sortColumn();
+        Qt::SortOrder currentSortOrder = currentProxyModel->sortOrder();
+
+        Qt::SortOrder newSortOrder = Qt::AscendingOrder;
+        // Wenn dieselbe Spalte erneut ausgewählt wird, die Sortierreihenfolge umkehren
+        if (columnToSort == currentSortColumn) {
+            newSortOrder = (currentSortOrder == Qt::AscendingOrder) ? Qt::DescendingOrder : Qt::AscendingOrder;
+        }
+        
+        currentProxyModel->sort(columnToSort, newSortOrder);
+        // Optional: Sicherstellen, dass der Header der TableView die Sortierindikatoren aktualisiert
+        // Dies geschieht normalerweise automatisch, wenn setSortingEnabled(true) gesetzt ist.
+        currentTableView->horizontalHeader()->setSortIndicator(dropdownIndex, newSortOrder);
+    });
+
+    // emit the tab changed signal to show the columns of the first tab
+    emit tabWidget->TabSelector->currentChanged(0);
     
 
     w.show();

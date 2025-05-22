@@ -106,6 +106,6 @@ std::ostream& operator<<(std::ostream& os, const MediaMan& mm) {
     for (const auto& media : mm.getAllMedia()) {
         os << *media << std::endl;
     }
-    os << "=========================" << std::endl;
+    os << "=========== End MediaMan ===========" << std::endl;
     return os;
 }
