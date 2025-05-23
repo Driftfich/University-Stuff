@@ -50,7 +50,7 @@ class Libitem {
         }
 
         Libitem(QJsonObject json) {
-            std::cout << "Reached Libitem constructor" << std::endl;
+            // std::cout << "Reached Libitem constructor" << std::endl;
             if (loadLocalParams(json) != 0) {
                 throw std::runtime_error("Issues loading libitem parameters");
             }

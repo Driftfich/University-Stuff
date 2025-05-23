@@ -32,6 +32,8 @@
 #include <QtWidgets/QWidget>
 #include <QIcon>
 #include <QListView>
+#include <QTimer>
+#include <QGraphicsDropShadowEffect>
 #include <variant>
 
 #include "libitemtablemodel.h"
@@ -148,9 +150,27 @@ public:
         // set active trashcan icon
         QIcon trashcanIcon;
         trashcanIcon.addFile(QStringLiteral(":/icons/trashcan_closed.png"), QSize(), QIcon::Normal, QIcon::Off);
-        trashcanIcon.addFile(QStringLiteral(":/icons/trashcan_open.png"), QSize(), QIcon::Active, QIcon::Off);
+        trashcanIcon.addFile(QStringLiteral(":/icons/trashcan_open.png"), QSize(), QIcon::Active, QIcon::On);
         deletec->setIcon(trashcanIcon);
-        // deletec->setCheckable(true);
+
+        QGraphicsDropShadowEffect *deleteEffect = new QGraphicsDropShadowEffect();
+        deleteEffect->setBlurRadius(15);
+        deleteEffect->setColor(QColor(255, 0, 0, 180)); // Rot mit Alpha
+        deleteEffect->setOffset(0, 0);
+        deleteEffect->setEnabled(false); // Initial deaktiviert
+        deletec->setGraphicsEffect(deleteEffect);
+        
+        QObject::connect(deletec, &QPushButton::pressed, [=]() {
+            deletec->setIcon(QIcon(":/icons/trashcan_open.png"));
+            deleteEffect->setEnabled(true); // Glow aktivieren
+        });
+
+        QObject::connect(deletec, &QPushButton::released, [=]() {
+            QTimer::singleShot(150, [=]() {
+                deletec->setIcon(QIcon(":/icons/trashcan_closed.png"));
+                deleteEffect->setEnabled(false); // Glow deaktivieren
+            });
+        });
 
         horizontalLayout->addWidget(deletec);
 

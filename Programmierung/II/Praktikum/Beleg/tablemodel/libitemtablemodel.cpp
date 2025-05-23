@@ -27,6 +27,30 @@ int LibItemTableModel::columnCount(const QModelIndex &parent) const {
     return displayedColumns.size();
 }
 
+int LibItemTableModel::removeRow(int row, const QModelIndex &parent) {
+    // std::cout << "Trying to remove row: " << row << std::endl;
+    if (row < 0 || row >= libItemMan->getLibitems().size()) {
+        return false;
+    }
+    beginRemoveRows(parent, row, row);
+    // std::cout << "Removing row: " << row << std::endl;
+    libItemMan->removeLibitem(row);
+    endRemoveRows();
+    return true;
+}
+
+bool LibItemTableModel::removeRows(int row, int count, const QModelIndex &parent) {
+    if (row < 0 || row + count > libItemMan->getLibitems().size()) {
+        return false;
+    }
+    beginRemoveRows(parent, row, row + count - 1);
+    for (int i = 0; i < count; ++i) {
+        libItemMan->removeLibitem(row);
+    }
+    endRemoveRows();
+    return true;
+}
+
 QVariant LibItemTableModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid() || role != Qt::DisplayRole) {
         return QVariant();

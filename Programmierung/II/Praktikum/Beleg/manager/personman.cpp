@@ -84,13 +84,23 @@ QString PersonMan::getFilename() const {
     return filename;
 }
 
-int PersonMan::removePerson(unsigned long id) {
+int PersonMan::removePersonId(unsigned long id) {
     for (auto p = persons.begin(); p != persons.end(); ++p) {
         if ((*p)->getId() == id) {
             persons.erase(p);
             person_map.remove(id);
             return 0;
         }
+    }
+    return -1;
+}
+
+int PersonMan::removePerson(unsigned long index) {
+    if (index < (unsigned long) persons.size()) {
+        unsigned long id = persons[index]->getId();
+        persons.erase(persons.begin() + index);
+        person_map.remove(id);
+        return 0;
     }
     return -1;
 }

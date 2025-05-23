@@ -79,7 +79,7 @@ QString TransactionMan::getFilename() const {
     return filename;
 }
 
-int TransactionMan::removeTransaction(unsigned long id) {
+int TransactionMan::removeTransactionId(unsigned long id) {
     for (auto it = transactions.begin(); it != transactions.end(); ++it) {
         if ((*it)->getId() == id) {
             transactions.erase(it);
@@ -88,6 +88,15 @@ int TransactionMan::removeTransaction(unsigned long id) {
             return 0;
         }
     }
+    return -1;
+}
+
+int TransactionMan::removeTransaction(unsigned long index) {
+    if (index < transactions.size()) {
+        transactions.erase(transactions.begin() + index);
+        return 0;
+    }
+    std::cerr << "Error: Index out of range" << std::endl;
     return -1;
 }
 

@@ -7,6 +7,8 @@
 #include <QSortFilterProxyModel>
 #include <QSizePolicy>
 #include <QLineEdit>
+#include <QMouseEvent>
+#include <QMessageBox>
 #include <iostream>
 #include "media.h"
 #include "text.h"
@@ -358,7 +360,17 @@ int test_ui(int argc, char *argv[]) {
     tabWidget->transtab->setModel(transactionProxy);
     tabWidget->transtab->setSortingEnabled(true);
 
+    // When a item in a row is clicked, the whole row should be selected
+    tabWidget->persontab->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tabWidget->itemtab->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tabWidget->transtab->setSelectionBehavior(QAbstractItemView::SelectRows);
 
+    // Optional: Mehrfachauswahl aktivieren für bessere Delete-Funktionalität
+    tabWidget->persontab->setSelectionMode(QAbstractItemView::MultiSelection);
+    tabWidget->itemtab->setSelectionMode(QAbstractItemView::MultiSelection);
+    tabWidget->transtab->setSelectionMode(QAbstractItemView::MultiSelection);
+
+    
     // tables extend with the window
     auto tv = tabWidget->persontab;
     tv->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -533,6 +545,25 @@ int test_ui(int argc, char *argv[]) {
 
         // get filter string from the search bar
         QString filterString = toolbar->searchbar->text();
+        // escape regex special characters in the filter string
+        QString escapedFilter = filterString;
+        const QString specialChars = "\\^$.|?*+()[{";
+        for (QChar c : specialChars) {
+            escapedFilter.replace(c, QString("\\") + c);
+        }
+        filterString = escapedFilter;
+        
+        // std::cout << "Filterstring: " << filterString.toStdString() << std::endl;
+        QStringList filtertokens = filterString.split(" ");
+
+        // remove empty tokens
+        filtertokens.removeAll("");
+        filtertokens.removeAll(" ");
+        // remove duplicates
+        filtertokens.removeDuplicates();
+        QString searchpattern = filtertokens.join("|");
+        QRegularExpression re(searchpattern,
+        QRegularExpression::CaseInsensitiveOption);
 
         // filter across all columns
         currentProxyModel->setFilterKeyColumn(-1); 
@@ -540,7 +571,8 @@ int test_ui(int argc, char *argv[]) {
         // Use setFilterWildcard for a "contains" search across all columns.
         // The '*' acts as a placeholder for any string.
         // The already set filterCaseSensitivity ensures a case-insensitive search.
-        currentProxyModel->setFilterWildcard("*" + filterString + "*");
+        // std::cout << "Filter: " << searchpattern.toStdString() << std::endl;
+        currentProxyModel->setFilterRegularExpression(searchpattern);
     };
 
     // 3.1) Wenn der Tab gewechselt wird, Filter anwenden
@@ -548,6 +580,75 @@ int test_ui(int argc, char *argv[]) {
 
     // 3.2) Wenn sich der Text im Suchfeld ändert, Filter anwenden
     QObject::connect(toolbar->searchbar, &QLineEdit::textChanged, applySearchFilter);
+
+    // 4) When the deletec button is clicked, the selected rows in the current table view should be deleted
+    QObject::connect(toolbar->deletec, &QPushButton::clicked, [&]() {
+        // Bestimme das aktuelle TableView und ProxyModel
+        QTableView *currentTableView = nullptr;
+        QSortFilterProxyModel *currentProxyModel = nullptr;
+        QAbstractTableModel *currentSourceModel = nullptr;
+
+        switch(tabWidget->TabSelector->currentIndex()) {
+            case 0: // Person Tab
+                currentTableView = tabWidget->persontab;
+                currentProxyModel = personProxy;
+                currentSourceModel = personModel;
+                break;
+            case 1: // LibItem Tab
+                currentTableView = tabWidget->itemtab;
+                currentProxyModel = libitemProxy;
+                currentSourceModel = libitemModel;
+                break;
+            case 2: // Transaction Tab
+                currentTableView = tabWidget->transtab;
+                currentProxyModel = transactionProxy;
+                currentSourceModel = transactionModel;
+                break;
+            default:
+                qWarning() << "Ungültiger Tab-Index für Löschvorgang:" << tabWidget->TabSelector->currentIndex();
+                return;
+        }
+
+        if (!currentTableView || !currentProxyModel || !currentSourceModel) {
+            qWarning() << "Konnte TableView, ProxyModel oder SourceModel für Löschvorgang nicht ermitteln.";
+            return;
+        }
+
+        // Hole die ausgewählten Zeilen
+        QModelIndexList selectedIndexes = currentTableView->selectionModel()->selectedRows();
+        
+        if (selectedIndexes.isEmpty()) {
+            QMessageBox::information(&w, "Keine Auswahl", "Bitte wählen Sie mindestens eine Zeile zum Löschen aus.");
+            return;
+        }
+
+        // Bestätigungsdialog anzeigen
+        QString message = QString("Möchten Sie wirklich %1 Eintrag/Einträge löschen?").arg(selectedIndexes.size());
+        QMessageBox::StandardButton reply = QMessageBox::question(&w, "Löschen bestätigen", message,
+                                                                QMessageBox::Yes | QMessageBox::No);
+        
+        if (reply != QMessageBox::Yes) {
+            return;
+        }
+
+        // Konvertiere Proxy-Indizes zu Source-Indizes
+        QList<int> sourceRows;
+        for (const QModelIndex &proxyIndex : selectedIndexes) {
+            QModelIndex sourceIndex = currentProxyModel->mapToSource(proxyIndex);
+            sourceRows.append(sourceIndex.row());
+        }
+
+        // Sortiere die Zeilen in absteigender Reihenfolge, um beim Löschen keine Indexverschiebungen zu haben
+        std::sort(sourceRows.begin(), sourceRows.end(), std::greater<int>());
+
+        // Lösche die Zeilen aus dem Source-Model
+        for (int row : sourceRows) {
+            // std::cout << "Deleting row: " << row << std::endl;
+            currentSourceModel->removeRow(row);
+        }
+
+        // std::cout << "Gelöscht: " << sourceRows.size() << " Einträge" << std::endl;
+    });
 
     // emit the tab changed signal to show the columns of the first tab
     emit tabWidget->TabSelector->currentChanged(0);

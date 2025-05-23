@@ -43,7 +43,8 @@ public:
     QString getFilename() const;
 
     // transaction management functions
-    int removeTransaction(unsigned long id);
+    int removeTransactionId(unsigned long id);
+    int removeTransaction(unsigned long index);
 
     std::shared_ptr<Transaction> operator[](unsigned long idx);
 

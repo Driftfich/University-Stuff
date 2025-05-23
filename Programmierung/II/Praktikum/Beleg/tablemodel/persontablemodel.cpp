@@ -29,6 +29,31 @@ int PersonTableModel::columnCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
     return displayedColumns.size();
 }
+
+int PersonTableModel::removeRow(int row, const QModelIndex &parent) {
+    // std::cout << "Trying to remove row: " << row << std::endl;
+    if (row < 0 || row >= personMan->getPersons().size()) {
+        return false;
+    }
+    beginRemoveRows(parent, row, row);
+    // std::cout << "Removing row: " << row << std::endl;
+    personMan->removePerson(row);
+    endRemoveRows();
+    return true;
+}
+
+bool PersonTableModel::removeRows(int row, int count, const QModelIndex &parent) {
+    if (row < 0 || row + count > personMan->getPersons().size()) {
+        return false;
+    }
+    beginRemoveRows(parent, row, row + count - 1);
+    for (int i = 0; i < count; ++i) {
+        personMan->removePerson(row);
+    }
+    endRemoveRows();
+    return true;
+}
+
 QVariant PersonTableModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid() || role != Qt::DisplayRole) {
         return QVariant();

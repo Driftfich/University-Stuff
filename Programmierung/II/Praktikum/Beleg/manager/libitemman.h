@@ -26,7 +26,8 @@ class LibitemMan {
 
         int setFilename(const QString& filename);
         int addLibitem(std::shared_ptr<Libitem> libitem);
-        int removeLibitem(unsigned long id);
+        int removeLibitemId(unsigned long id);
+        int removeLibitem(unsigned long index);
 
         unsigned long getNextId() const;
         QVector<std::shared_ptr<Libitem>> getLibitems() const;

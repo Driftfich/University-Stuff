@@ -2,6 +2,8 @@
 #include <QVector>
 #include <QVariant>
 #include <QModelIndex>
+#include <QDate>
+#include <QDateTime>
 #include "transactiontablemodel.h"
 #include <transactionman.h>
 #include <mediaman.h>
@@ -28,6 +30,30 @@ int TransactionTableModel::rowCount(const QModelIndex &parent) const {
 int TransactionTableModel::columnCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
     return displayedColumns.size();
+}
+
+int TransactionTableModel::removeRow(int row, const QModelIndex &parent) {
+    // std::cout << "Trying to remove row: " << row << std::endl;
+    if (row < 0 || row >= transactionMan->getTransactions().size()) {
+        return false;
+    }
+    beginRemoveRows(parent, row, row);
+    // std::cout << "Removing row: " << row << std::endl;
+    transactionMan->removeTransaction(row);
+    endRemoveRows();
+    return true;
+}
+
+bool TransactionTableModel::removeRows(int row, int count, const QModelIndex &parent) {
+    if (row < 0 || row + count > transactionMan->getTransactions().size()) {
+        return false;
+    }
+    beginRemoveRows(parent, row, row + count - 1);
+    for (int i = 0; i < count; ++i) {
+        transactionMan->removeTransaction(row);
+    }
+    endRemoveRows();
+    return true;
 }
 
 QVariant TransactionTableModel::data(const QModelIndex& index, int role) const {

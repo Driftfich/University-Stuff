@@ -39,7 +39,8 @@ class PersonMan {
         QString getFilename() const;
 
         // person management functions
-        int removePerson(unsigned long id);
+        int removePersonId(unsigned long id);
+        int removePerson(unsigned long index);
 
         std::shared_ptr<Person> operator[](unsigned long idx);
 

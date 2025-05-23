@@ -34,13 +34,23 @@ int LibitemMan::addLibitem(std::shared_ptr<Libitem> libitem) {
     }
     return -1;
 }
-int LibitemMan::removeLibitem(unsigned long id) {
+int LibitemMan::removeLibitemId(unsigned long id) {
     for (auto it = libitems.begin(); it != libitems.end(); ++it) {
         if ((*it)->getId() == id) {
             libitems.erase(it);
             libitem_map.remove(id);
             return 0;
         }
+    }
+    return -1;
+}
+
+int LibitemMan::removeLibitem(unsigned long index) {
+    if (index < (unsigned long) libitems.size()) {
+        unsigned long id = libitems[index]->getId();
+        libitems.erase(libitems.begin() + index);
+        libitem_map.remove(id);
+        return 0;
     }
     return -1;
 }

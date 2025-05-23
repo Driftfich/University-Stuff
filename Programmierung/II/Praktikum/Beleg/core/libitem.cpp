@@ -71,7 +71,7 @@ int Libitem::loadLocalParams(const QJsonObject& json) {
         return -1;
     }
 
-    std::cout << "Loaded Libitem Params" << std::endl;
+    // std::cout << "Loaded Libitem Params" << std::endl;
     
     return 0;
 }
@@ -97,7 +97,7 @@ std::shared_ptr<Libitem> Libitem::fromFile(QFile& file) {
 // factory method
 std::shared_ptr<Libitem> Libitem::LibitemFactory(const QJsonObject& json) {
     // call the constructor with the json object
-    std::cout << "Reached LibitemFactory" << std::endl;
+    // std::cout << "Reached LibitemFactory" << std::endl;
     std::shared_ptr<Libitem> item = std::make_shared<Libitem>(json);
     return item;
 }
