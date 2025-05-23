@@ -34,7 +34,11 @@ HEADERS +=  core/artist.h \
             tablemodel/transactiontablemodel.h \
             ui/mainw.h \
             ui/toolbar.h \
-            ui/tablewidget.h
+            ui/tablewidget.h \
+            ui/sidepanel.h \
+            ui/input.h \
+            #ui/inputmodel.h \
+            ui/infopanel.h
 
 SOURCES +=  core/artist.cpp \
             core/audio.cpp \
@@ -56,7 +60,9 @@ SOURCES +=  core/artist.cpp \
             #ui/mainw.cpp \
             #ui/toolbar.cpp \
             #ui/tablewidget.cpp \
-            test.cpp 
+            #ui/inputmodel.cpp \
+            ui/infopanel.cpp \
+            test.cpp
 
 INCLUDEPATH += $$PWD/core
 INCLUDEPATH += $$PWD/manager

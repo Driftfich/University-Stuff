@@ -196,6 +196,29 @@ QVector<QString> LibItemTableModel::getDisplayedColumns() const {
     return columnNames;
 }
 
+QJsonObject LibItemTableModel::getJsonObject(const QModelIndex& index) const {
+    if (!index.isValid()) {
+        return QJsonObject();
+    }
+
+    unsigned long row = (unsigned long) index.row();
+    if (row >= (unsigned long) libItemMan->getLibitems().size()) {
+        return QJsonObject();
+    }
+    std::shared_ptr<Libitem> libitem = (*libItemMan)[row];
+    std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
+
+    QJsonObject jsonObject;
+    jsonObject["Libitem"] = (*libitem).getJson();
+    if (media) {
+        jsonObject["Media"] = (*media).getJson();
+    }
+    else {
+        jsonObject["Media"] = QJsonObject();
+    }
+    return jsonObject;
+}
+
 void LibItemTableModel::refreshData() {
     beginResetModel();
     endResetModel();

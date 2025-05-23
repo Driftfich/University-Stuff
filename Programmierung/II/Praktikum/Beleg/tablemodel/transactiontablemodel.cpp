@@ -207,6 +207,42 @@ QVector<QString> TransactionTableModel::getDisplayedColumns() const {
     return columnNames;
 }
 
+QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const {
+    QJsonObject jsonObject;
+    if (!index.isValid()) {
+        return jsonObject;
+    }
+
+    unsigned long row = (unsigned long) index.row();
+    if (row >= (unsigned long) transactionMan->getTransactions().size()) {
+        return jsonObject;
+    }
+    std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
+    std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
+    std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
+    std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
+
+    // add the json data to the main json object
+    jsonObject["Transaction"] = transaction->getJson();
+    if (libitem) {
+        jsonObject["Libitem"] = libitem->getJson();
+    } else {
+        jsonObject["Libitem"] = QJsonObject();
+    }
+    if (media) {
+        jsonObject["Media"] = media->getJson();
+    } else {
+        jsonObject["Media"] = QJsonObject();
+    }
+    if (person) {
+        jsonObject["Person"] = person->getJson();
+    } else {
+        jsonObject["Person"] = QJsonObject();
+    }
+
+    return jsonObject;
+}
+
 void TransactionTableModel::refreshData() {
     beginResetModel();
     endResetModel();

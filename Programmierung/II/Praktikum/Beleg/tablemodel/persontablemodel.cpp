@@ -160,6 +160,19 @@ QVector<QString> PersonTableModel::getDisplayedColumns() const {
     return columnNames;
 }
 
+QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index) const {
+    if (!index.isValid()) {
+        return QJsonObject();
+    }
+
+    unsigned long row = (unsigned long) index.row();
+    if (row >= (unsigned long) personMan->getPersons().size()) {
+        return QJsonObject();
+    }
+    std::shared_ptr<Person> person = (*personMan)[row];
+    return person->getJson();
+}
+
 void PersonTableModel::refreshData() {
     beginResetModel();
     endResetModel();

@@ -52,6 +52,8 @@ class LibItemTableModel : public QAbstractTableModel {
         QMap<ColumnIdentity, QString> getAllColumnNames() const;
         QVector<QString> getDisplayedColumns() const;
 
+        QJsonObject getJsonObject(const QModelIndex& index) const;
+
     public slots:
         void refreshData();
 

@@ -35,6 +35,30 @@ class TransactionTableModel : public QAbstractTableModel {
             MaxColumnIdentity
         };
 
+        // enum ColumnIdentity {
+        //     // column names from transaction.h
+        //     Id,
+        //     LibitemId,
+        //     PersonId,
+        //     Timestamp,
+        //     // column names from libitem
+        //     MediaId,
+        //     AvailableCopies,
+        //     BorrowedCopies,
+        //     Location,
+        //     Condition,
+        //     // most important column names from libitem->media
+        //     Title,
+        //     PublicationDate,
+        //     Publisher,
+        //     // most important column names from person
+        //     FirstName,
+        //     LastName,
+        //     ExtensionName,
+        //     BirthDate,
+        //     MaxColumnIdentity
+        // };
+
         Q_ENUM(ColumnIdentity);
 
         explicit TransactionTableModel(TransactionMan* transactionMan, PersonMan* personMan, LibitemMan* libItemMan, MediaMan* mediaMan, QObject *parent = nullptr);
@@ -54,6 +78,9 @@ class TransactionTableModel : public QAbstractTableModel {
         void setDisplayedColumns(const QVector<QString>& displayedColumns);
         QMap<ColumnIdentity, QString> getAllColumnNames() const;
         QVector<QString> getDisplayedColumns() const;
+
+        // Method to get a json with all informations about the transaction and the objects it refers to
+        QJsonObject getJsonObject(const QModelIndex& index) const;
     
     public slots:
         void refreshData();
