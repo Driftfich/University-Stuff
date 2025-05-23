@@ -64,9 +64,9 @@ QVariant LibItemTableModel::data(const QModelIndex& index, int role) const {
     }
     std::shared_ptr<Libitem> libitem = (*libItemMan)[row];
     std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
-    if (libitem == nullptr || media == nullptr) {
-        return QVariant();
-    }
+    // if (libitem == nullptr || media == nullptr) {
+    //     return QVariant();
+    // }
     ColumnIdentity columnIdentity = displayedColumns[column];
     switch (columnIdentity) {
         case Id:
@@ -82,16 +82,22 @@ QVariant LibItemTableModel::data(const QModelIndex& index, int role) const {
         case Condition:
             return libitem->getCondition();
         case Title:
+            if (!media) return QVariant();
             return media->getTitle();
         case PublicationDate:
+            if (!media) return QVariant();
             return media->getPublicationDate().toString("yyyy-MM-dd");
         case Publisher:
+            if (!media) return QVariant();
             return media->getPublisher();
         case Description:
+            if (!media) return QVariant();
             return media->getDescription();
         case Genre:
+            if (!media) return QVariant();
             return media->getGenre();
         case Languages:
+            if (!media) return QVariant();
             return media->getLanguages().join(", ");
         default:
             return QVariant();

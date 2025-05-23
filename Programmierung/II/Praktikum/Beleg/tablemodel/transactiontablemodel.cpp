@@ -71,9 +71,9 @@ QVariant TransactionTableModel::data(const QModelIndex& index, int role) const {
     std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
     std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
     std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
-    if (transaction == nullptr || libitem == nullptr || media == nullptr || person == nullptr) {
-        return QVariant();
-    }
+    // if (transaction == nullptr || libitem == nullptr || media == nullptr || person == nullptr) {
+    //     return QVariant();
+    // }
     ColumnIdentity columnIdentity = displayedColumns[column];
     switch (columnIdentity) {
         case Id:
@@ -85,20 +85,30 @@ QVariant TransactionTableModel::data(const QModelIndex& index, int role) const {
         case Timestamp:
             return transaction->getTransactionTime().toString("yyyy-MM-dd hh:mm:ss");
         case MediaId:
+            if (!libitem) return QVariant();
             return static_cast<quint64>(libitem->getMediaId());
         case Title:
+            {
+            if (!media) return QVariant();
             return media->getTitle();
+            }
         case PublicationDate:
+            if (!media) return QVariant();
             return media->getPublicationDate().toString("yyyy-MM-dd");
         case Publisher:
+            if (!media) return QVariant();
             return media->getPublisher();
         case FirstName:
+            if (!person) return QVariant();
             return person->getFname();
         case LastName:
+            if (!person) return QVariant();
             return person->getLname();
         case ExtensionName:
+            if (!person) return QVariant();
             return person->getEname();
         case BirthDate:
+            if (!person) return QVariant();
             return person->getBirthday().toString("yyyy-MM-dd");
         default:
             return QVariant();
