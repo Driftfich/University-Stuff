@@ -11,20 +11,21 @@
 #include <QTableView>
 #include <QTabWidget>
 #include <QGridLayout>
+#include <QMainWindow>
 
 #include <QApplication>
 #include <QHeaderView>
 #include <QSizePolicy>
 
 
-class MainWindow : public QWidget
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
     public:
-        MainWindow(QWidget *parent = nullptr) : QWidget(parent)
+        MainWindow(QWidget *parent = nullptr) : QMainWindow(parent)
         {
-            setupUi(this);
+            setupUi();
         }
         ~MainWindow() {}
 
@@ -41,17 +42,19 @@ class MainWindow : public QWidget
 
     // …existing code…
 
-    void setupUi(QWidget *MainWindow)
+    void setupUi()
     {
-        if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(800, 600);
-        mainLayout = new QVBoxLayout(MainWindow);
+        // 1) Eigenes Central Widget erstellen und setzen
+        QWidget *central = new QWidget(this);
+        setCentralWidget(central);
+
+        // 2) Layout jetzt auf das Central Widget anwenden
+        mainLayout = new QVBoxLayout(central);
         mainLayout->setObjectName("mainLayout");
 
         // ---- Toolbar als echtes QWidget ----
         toolbarUi     = new Ui_toolbar();
-        toolbarWidget = new QWidget(MainWindow);
+        toolbarWidget = new QWidget(central);
         toolbarWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
         toolbarWidget->setMaximumHeight(150);
         toolbarUi->setupUi(toolbarWidget);
@@ -59,7 +62,7 @@ class MainWindow : public QWidget
 
         // ---- TableWidget als echtes QWidget ----
         tableWidgetUi     = new Ui_TableWidget();
-        tableWidgetWidget = new QWidget(MainWindow);
+        tableWidgetWidget = new QWidget(central);
         tableWidgetUi->setupUi(tableWidgetWidget);
         mainLayout->addWidget(tableWidgetWidget);
     }
