@@ -243,6 +243,66 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
     return jsonObject;
 }
 
+bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
+    if (!index.isValid()) {
+        return false;
+    }
+
+    unsigned long row = (unsigned long) index.row();
+    if (row >= (unsigned long) transactionMan->getTransactions().size()) {
+        return false;
+    }
+    std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
+    std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
+    std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
+    std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
+
+    if (!transaction) {
+        return false;
+    }
+
+    // Update the transaction from the json object
+    if (transaction->loadLocalParams(jsonObject["Transaction"].toObject()) != 0) {
+        return false;
+    }
+
+    // Update the libitem, media and person if they exist in the json object
+    if (libitem && jsonObject.contains("Libitem")) {
+        if (libitem->loadLocalParams(jsonObject["Libitem"].toObject()) != 0) {
+            return false;
+        }
+    }
+    
+    if (media && jsonObject.contains("Media")) {
+        QJsonObject mediaObject = jsonObject["Media"].toObject();
+        if (media->loadLocalParams(mediaObject) != 0) {
+            return false;
+        }
+        if (mediaObject.contains("subclass_parameters")) {
+            QJsonObject subclassParams = mediaObject["subclass_parameters"].toObject();
+            if (media->loadSubclassParams(subclassParams) != 0) {
+                return false;
+            }
+        }
+    }
+
+    if (person && jsonObject.contains("Person")) {
+        QJsonObject personObject = jsonObject["Person"].toObject();
+        if (person->loadLocalParams(personObject) != 0) {
+            return false;
+        }
+        if (personObject.contains("subclass_parameters")) {
+            QJsonObject subclassParams = personObject["subclass_parameters"].toObject();
+            if (person->loadSubclassParams(subclassParams) != 0) {
+                return false;
+            }
+        }
+    }
+
+    refreshData();
+    return true;
+}
+
 void TransactionTableModel::refreshData() {
     beginResetModel();
     endResetModel();

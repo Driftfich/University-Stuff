@@ -219,6 +219,29 @@ QJsonObject LibItemTableModel::getJsonObject(const QModelIndex& index) const {
     return jsonObject;
 }
 
+bool LibItemTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
+    if (!index.isValid()) {
+        return false;
+    }
+
+    unsigned long row = (unsigned long) index.row();
+    if (row >= (unsigned long) libItemMan->getLibitems().size()) {
+        return false;
+    }
+    std::shared_ptr<Libitem> libitem = (*libItemMan)[row];
+    std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
+
+    if (libitem->loadLocalParams(jsonObject["Libitem"].toObject()) != 0) {
+        return false;
+    }
+    if (media && media->loadLocalParams(jsonObject["Media"].toObject()) != 0 && media->loadSubclassParams(jsonObject["Media"]["subclass_params"].toObject()) != 0) {
+        return false;
+    }
+    emit dataChanged(index, index);
+    return true;
+    
+}
+
 void LibItemTableModel::refreshData() {
     beginResetModel();
     endResetModel();

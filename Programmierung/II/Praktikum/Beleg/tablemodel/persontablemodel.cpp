@@ -173,6 +173,25 @@ QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index) const {
     return person->getJson();
 }
 
+bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
+    if (!index.isValid()) {
+        return false;
+    }
+
+    unsigned long row = (unsigned long) index.row();
+    if (row >= (unsigned long) personMan->getPersons().size()) {
+        return false;
+    }
+    std::shared_ptr<Person> person = (*personMan)[row];
+    QJsonObject personJson = jsonObject["person"].toObject();
+    if (person->loadLocalParams(personJson) != 0 || person->loadSubclassParams(personJson["subclass_params"].toObject()) != 0) {
+        qWarning() << "Failed to update person from JSON object";
+        return false;
+    }
+    refreshData();
+    return true;
+}
+
 void PersonTableModel::refreshData() {
     beginResetModel();
     endResetModel();

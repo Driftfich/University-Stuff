@@ -115,18 +115,18 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
     
     try {
         // Je nach Model-Typ die entsprechende Speicher-Methode aufrufen
-        bool success = true;
+        bool success = false;
         
-        // if (auto *tm = qobject_cast<TransactionTableModel*>(currentEditModel)) {
-        //     // Sie müssten eine setJsonObject-Methode implementieren oder direkt den Manager aufrufen
-        //     success = tm->updateFromJson(currentEditIndex.row(), data);
-        // } 
-        // else if (auto *pm = qobject_cast<PersonTableModel*>(currentEditModel)) {
-        //     success = pm->updateFromJson(currentEditIndex.row(), data);
-        // } 
-        // else if (auto *lm = qobject_cast<LibItemTableModel*>(currentEditModel)) {
-        //     success = lm->updateFromJson(currentEditIndex.row(), data);
-        // }
+        if (auto *tm = qobject_cast<TransactionTableModel*>(currentEditModel)) {
+            // Sie müssten eine setJsonObject-Methode implementieren oder direkt den Manager aufrufen
+            success = tm->updateFromJsonObject(data, currentEditIndex);
+        } 
+        else if (auto *pm = qobject_cast<PersonTableModel*>(currentEditModel)) {
+            success = pm->updateFromJsonObject(data, currentEditIndex);
+        } 
+        else if (auto *lm = qobject_cast<LibItemTableModel*>(currentEditModel)) {
+            success = lm->updateFromJsonObject(data, currentEditIndex);
+        }
         
         if (success) {
             // Model über Änderungen benachrichtigen
