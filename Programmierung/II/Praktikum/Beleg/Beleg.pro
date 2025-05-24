@@ -57,7 +57,7 @@ SOURCES +=  core/artist.cpp \
             tablemodel/libitemtablemodel.cpp \
             tablemodel/persontablemodel.cpp \
             tablemodel/transactiontablemodel.cpp \
-            #ui/mainw.cpp \
+            ui/mainw.cpp \
             #ui/toolbar.cpp \
             #ui/tablewidget.cpp \
             #ui/inputmodel.cpp \

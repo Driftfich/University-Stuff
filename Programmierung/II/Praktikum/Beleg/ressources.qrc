@@ -5,5 +5,8 @@
     <file>icons/trashcan_closed.png</file>
     <file>icons/trashcan_open.png</file>
     <file>icons/lib.png</file>
+    <file>icons/save.png</file>
+    <file>icons/edit.png</file>
+    <file>icons/quit.png</file>
   </qresource>
 </RCC>

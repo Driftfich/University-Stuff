@@ -56,96 +56,13 @@ class MainWindow : public QMainWindow
 
         InfoPanel* infoPanel;
 
-    // …existing code…
+        QAbstractTableModel* currentEditModel = nullptr;
+        QModelIndex currentEditIndex;
 
-    void setupUi()
-    {
-        // 1) Eigenes Central Widget erstellen und setzen
-        QWidget *central = new QWidget(this);
-        setCentralWidget(central);
+    void saveModifiedData(const QJsonObject& modifiedData);
 
-        // 2) Layout jetzt auf das Central Widget anwenden
-        mainLayout = new QVBoxLayout(central);
-        mainLayout->setObjectName("mainLayout");
+    void setupUi();
 
-        // ---- Toolbar als echtes QWidget ----
-        toolbarUi     = new Ui_toolbar();
-        toolbarWidget = new QWidget(central);
-        toolbarWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-        toolbarWidget->setMaximumHeight(150);
-        toolbarUi->setupUi(toolbarWidget);
-        mainLayout->addWidget(toolbarWidget);
-
-        // ---- TableWidget als echtes QWidget ----
-        tableWidgetUi     = new Ui_TableWidget();
-        tableWidgetWidget = new QWidget(central);
-        tableWidgetUi->setupUi(tableWidgetWidget);
-        mainLayout->addWidget(tableWidgetWidget);
-    }
-
-    void setupSideDock()
-    {
-        // Side-Panel instanziieren
-        sidePanelWidget = new QWidget(this);
-        sidePanelUi     = new Ui::Form();
-        sidePanelUi->setupUi(sidePanelWidget);
-
-        // InfoPanel in die infopanel-Seite einfügen
-        infoPanel = new InfoPanel(sidePanelUi->infopanel);
-        auto *infoLayout = new QVBoxLayout(sidePanelUi->infopanel);
-        infoLayout->setContentsMargins(0,0,0,0);
-        infoLayout->addWidget(infoPanel);
-
-        // Dock erstellen und einhängen
-        sideDock = new QDockWidget(tr("Seitenpanel"), this);
-        sideDock->setAllowedAreas(
-            Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-        sideDock->setWidget(sidePanelWidget);
-        addDockWidget(Qt::RightDockWidgetArea, sideDock);
-        sideDock->hide(); // startet ausgeblendet
-
-        // Beispiel: Button aus Toolbar zeigt Add-Panel
-        connect(toolbarUi->add, &QPushButton::clicked, this, [=]() {
-            sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->addpanel);
-            sideDock->show();
-        });
-        
-        // Doppelklick auf Tabelleintrag zeigt Info-Panel
-        auto showInfo = [this](const QModelIndex& index) {
-            // 1) sender() ist das QTableView, das doubleClicked gefeuert hat
-            auto *view = qobject_cast<QTableView*>(sender());
-            if (!view) return;
-
-            // 2) Proxy-Model holen
-            auto *proxy = qobject_cast<QSortFilterProxyModel*>(view->model());
-            if (!proxy) return;
-
-            // 3) Source-Model holen
-            auto *srcModel = qobject_cast<QAbstractTableModel*>(proxy->sourceModel());
-            if (!srcModel) return;
-
-            // 4) auf Source-Index mappen
-            QModelIndex srcIndex = proxy->mapToSource(index);
-
-            // 5) JSON holen je nach Model-Typ
-            QJsonObject info;
-            if (auto *tm = qobject_cast<TransactionTableModel*>(srcModel))
-                info = tm->getJsonObject(srcIndex);
-            else if (auto *pm = qobject_cast<PersonTableModel*>(srcModel))
-                info = pm->getJsonObject(srcIndex);
-            else if (auto *lm = qobject_cast<LibItemTableModel*>(srcModel))
-                info = lm->getJsonObject(srcIndex);
-
-            // 6) anzeigen
-            infoPanel->displayInfo(info);
-            sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->infopanel);
-            sideDock->show();
-        };
-
-        for (auto *tv : { tableWidgetUi->persontab,
-                  tableWidgetUi->itemtab,
-                  tableWidgetUi->transtab })
-        connect(tv, &QTableView::doubleClicked, this, showInfo);
-    }
+    void setupSideDock();
 
 };
