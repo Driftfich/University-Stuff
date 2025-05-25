@@ -3,6 +3,11 @@
 #include <QMainWindow>
 #include <QDockWidget>
 #include <QMessageBox>
+#include <QCompleter>
+#include <QAbstractTableModel>
+#include <QSortFilterProxyModel>
+#include <QStringListModel>
+#include <QTableView>
 #include <iostream>
 
 #include "mainw.h"
@@ -30,6 +35,11 @@ void MainWindow::setupUi()
     tableWidgetWidget = new QWidget(central);
     tableWidgetUi->setupUi(tableWidgetWidget);
     mainLayout->addWidget(tableWidgetWidget);
+
+    setupSearchCompleter();
+    // bei Tab-Wechsel neu füllen
+    connect(tableWidgetUi->TabSelector, &QTabWidget::currentChanged,
+            this, &MainWindow::updateSearchCompleter);
 }
 
 void MainWindow::setupSideDock()
@@ -144,3 +154,58 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
     }
 }
 
+void MainWindow::setupSearchCompleter()
+{
+    searchCompleter = new QCompleter(this);
+    searchCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+    searchCompleter->setFilterMode(Qt::MatchContains);
+    searchCompleter->setMaxVisibleItems(10);
+
+    // set to inital tab
+    updateSearchCompleter();
+
+    // add the completer to the search line edit
+    toolbarUi->searchbar->setCompleter(searchCompleter);
+}
+
+void MainWindow::updateSearchCompleter()
+{
+    QStringList suggestions;
+    int currentTabIdx = tableWidgetUi->TabSelector->currentIndex();
+
+    QTableView* view = nullptr;
+    QSortFilterProxyModel* model = nullptr;
+    switch (currentTabIdx) {
+        case 0:
+            view = tableWidgetUi->persontab;
+            model = qobject_cast<QSortFilterProxyModel*>(view->model());
+            break;
+        case 1:
+            view = tableWidgetUi->itemtab;
+            model = qobject_cast<QSortFilterProxyModel*>(view->model());
+            break;
+        case 2:
+            view = tableWidgetUi->transtab;
+            model = qobject_cast<QSortFilterProxyModel*>(view->model());
+            break;
+        default:
+            break;
+    }
+
+    if (!model || !view) {
+        qDebug() << "No valid model or view found for current tab index:" << currentTabIdx;
+        return;
+    }
+
+    for (int row = 0; row < model->rowCount(); ++row) {
+        for (int col = 0; col < model->columnCount(); ++col) {
+            QString text = model->data(model->index(row, col)).toString();
+            if (!text.isEmpty() && !suggestions.contains(text)) {
+                suggestions << text;
+            }
+        }
+    }
+
+    QStringListModel *stringModel = new QStringListModel(suggestions, searchCompleter);
+    searchCompleter->setModel(stringModel);
+}

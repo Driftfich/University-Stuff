@@ -36,6 +36,7 @@ class MainWindow : public QMainWindow
         {
             setupUi();
             setupSideDock();
+            setWindowTitle(tr("Bibliotheksverwaltung"));
         }
         ~MainWindow() {}
 
@@ -59,10 +60,15 @@ class MainWindow : public QMainWindow
         QAbstractTableModel* currentEditModel = nullptr;
         QModelIndex currentEditIndex;
 
+        QCompleter *searchCompleter;
+
     void saveModifiedData(const QJsonObject& modifiedData);
 
     void setupUi();
 
     void setupSideDock();
+
+    void setupSearchCompleter();
+    void updateSearchCompleter();
 
 };
