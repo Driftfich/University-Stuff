@@ -68,12 +68,19 @@ QVariant TransactionTableModel::data(const QModelIndex& index, int role) const {
         return QVariant();
     }
     std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
+    // qDebug() << "Try to get the libitem\n";
     std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
-    std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
+    // qDebug() << "Got the libitem\n";
+    std::shared_ptr<Media> media;   
+    if (libitem) media = mediaMan->getMedia(libitem->getMediaId());
+    else media = nullptr;
+
+    // qDebug() << "Got the media\n";
     std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
     // if (transaction == nullptr || libitem == nullptr || media == nullptr || person == nullptr) {
     //     return QVariant();
     // }
+    // qDebug() << "Loaded transaction, libitem, media, and person\n";
     ColumnIdentity columnIdentity = displayedColumns[column];
     switch (columnIdentity) {
         case Id:
@@ -219,7 +226,9 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
     }
     std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
     std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
-    std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
+    std::shared_ptr<Media> media;
+    if (!libitem) media = nullptr;
+    else media = mediaMan->getMedia(libitem->getMediaId());
     std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
 
     if (!transaction) {
@@ -256,11 +265,14 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
     if (row >= (unsigned long) transactionMan->getTransactions().size()) {
         return false;
     }
-    qDebug() << "Try to update transaction from json object" << "\n";
+    // qDebug() << "Try to update transaction from json object" << "\n";
     std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
-    qDebug() << "Failed to get the libitem, media or person from the transaction" << "\n";
+    // qDebug() << "Failed to get the libitem, media or person from the transaction" << "\n";
     std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
-    std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
+    std::shared_ptr<Media> media = nullptr;
+    if (libitem) {
+        media = mediaMan->getMedia(libitem->getMediaId());
+    }
     std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
     if (!transaction) {
         return false;
