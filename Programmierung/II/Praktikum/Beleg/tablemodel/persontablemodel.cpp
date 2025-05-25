@@ -67,6 +67,9 @@ QVariant PersonTableModel::data(const QModelIndex& index, int role) const {
     }
     std::shared_ptr<Person> person = (*personMan)[row];
     ColumnIdentity columnIdentity = displayedColumns[column];
+    if (person == nullptr) {
+        return QVariant();
+    }
     switch (columnIdentity) {
         case Id:
             return static_cast<quint64>(person->getId());

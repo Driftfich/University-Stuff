@@ -64,9 +64,9 @@ QVariant LibItemTableModel::data(const QModelIndex& index, int role) const {
     }
     std::shared_ptr<Libitem> libitem = (*libItemMan)[row];
     std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
-    // if (libitem == nullptr || media == nullptr) {
-    //     return QVariant();
-    // }
+    if (libitem == nullptr) {
+        return QVariant();
+    }
     ColumnIdentity columnIdentity = displayedColumns[column];
     switch (columnIdentity) {
         case Id:
@@ -208,7 +208,10 @@ QJsonObject LibItemTableModel::getJsonObject(const QModelIndex& index) const {
     std::shared_ptr<Libitem> libitem = (*libItemMan)[row];
     std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
 
-    QJsonObject jsonObject;
+    QJsonObject jsonObject = QJsonObject();
+    if (!libitem) {
+        return jsonObject;
+    }
     jsonObject["Libitem"] = (*libitem).getJson();
     if (media) {
         jsonObject["Media"] = (*media).getJson();
@@ -232,9 +235,11 @@ bool LibItemTableModel::updateFromJsonObject(const QJsonObject& jsonObject, cons
     std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
 
     if (libitem->loadLocalParams(jsonObject["Libitem"].toObject()) != 0) {
+        emit dataChanged(index, index);
         return false;
     }
     if (media && media->loadLocalParams(jsonObject["Media"].toObject()) != 0 && media->loadSubclassParams(jsonObject["Media"]["subclass_params"].toObject()) != 0) {
+        emit dataChanged(index, index);
         return false;
     }
     emit dataChanged(index, index);

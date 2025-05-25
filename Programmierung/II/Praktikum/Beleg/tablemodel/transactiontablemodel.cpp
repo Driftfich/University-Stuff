@@ -208,7 +208,7 @@ QVector<QString> TransactionTableModel::getDisplayedColumns() const {
 }
 
 QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const {
-    QJsonObject jsonObject;
+    QJsonObject jsonObject = QJsonObject();
     if (!index.isValid()) {
         return jsonObject;
     }
@@ -221,6 +221,10 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
     std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
     std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
     std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
+
+    if (!transaction) {
+        return jsonObject;
+    }
 
     // add the json data to the main json object
     jsonObject["Transaction"] = transaction->getJson();
@@ -252,11 +256,12 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
     if (row >= (unsigned long) transactionMan->getTransactions().size()) {
         return false;
     }
+    qDebug() << "Try to update transaction from json object" << "\n";
     std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
+    qDebug() << "Failed to get the libitem, media or person from the transaction" << "\n";
     std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
     std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
     std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
-
     if (!transaction) {
         return false;
     }
