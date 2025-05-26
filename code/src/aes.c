@@ -73,15 +73,24 @@ unsigned int numRounds(unsigned int keySize) {
 }
 
 unsigned int numKeyWords(unsigned int keySize) {
-    return -1;
+    // switch (keySize) {
+    //     case 128:
+    //         return 4;
+    //     case 192:
+    //         return 6;
+    //     case 256:
+    //         return 8;
+    //     default:
+    //         printf("No valid keysize!");
+    //         exit(1);
+    // }
+    return keySize / 32;
 }
 
 u_int8_t getSBoxValue(u_int8_t num) {
-    // get the x pos in the sbox
     int xpos = num % 16;
     int ypos = num / 16;
     int idx = (16 * ypos) + xpos;
-    // printf("xpos: %d, ypos: %d, idx: %d\n", xpos, ypos, idx);
     if (idx < 0 || idx > 256) exit(2);
     return sbox[idx];
 }
@@ -108,7 +117,7 @@ u_int8_t rc(u_int8_t num) {
 }
 
 void keyExpansion(u_int8_t* key, u_int8_t* roundKeys, unsigned int keySize) {
-    unsigned int Nk = keySize / 32; // Number of 32-bit words in the key
+    unsigned int Nk = numKeyWords(keySize);
     unsigned int Nr = numRounds(keySize); // Number of rounds
     unsigned int Nw = (Nr + 1) * 4; // Number of 32-bit words in the expanded key
     
@@ -229,9 +238,120 @@ void multiply3(u_int8_t* state) {
     }
 }
 
-void mixColumns(u_int8_t* state) {}
+void mixColumns(u_int8_t* state) {
+    u_int8_t orig[16];
+    u_int8_t state2[16];
+    u_int8_t state3[16];
+
+    memcpy(orig, state, 16);
+    memcpy(state2, state, 16);
+    memcpy(state3, state, 16);
+
+    multiply2(state2);
+    multiply3(state3);
+
+    for (int i = 0; i < 4; i++) {
+        state[i * 4] = state2[i * 4] ^ state3[i * 4 + 1] ^ orig[i * 4 + 2] ^ orig[i * 4 + 3];
+        state[i * 4 + 1] = orig[i * 4] ^ state2[i * 4 + 1] ^ state3[i * 4 + 2] ^ orig[i * 4 + 3];
+        state[i * 4 + 2] = orig[i * 4] ^ orig[i * 4 + 1] ^ state2[i * 4 + 2] ^ state3[i * 4 + 3];
+        state[i * 4 + 3] = state3[i * 4] ^ orig[i * 4 + 1] ^ orig[i * 4 + 2] ^ state2[i * 4 + 3];
+    }
+}
+
+void multiply9(u_int8_t* state) {
+    u_int8_t x8[16];
+
+    memcpy(x8, state, 16);
+
+    multiply2(x8);
+    multiply2(x8);
+    multiply2(x8);
+
+    for (int i = 0; i < 16; i++) {
+        state[i] = x8[i] ^ state[i];
+    }
+}
+
+void multiply11(u_int8_t* state) {
+    u_int8_t x9[16];
+    u_int8_t x2[16];
+
+    memcpy(x9, state, 16);
+    memcpy(x2, state, 16);
+
+    multiply2(x2);
+
+    multiply9(x9);
+
+    for (int i = 0; i < 16; i++) {
+        state[i] = x9[i] ^ x2[i];
+    }
+}
+
+void multiply13(u_int8_t* state) {
+    u_int8_t s_x2[16];
+    u_int8_t s_x4[16];
+    u_int8_t s_x8[16];
+
+    memcpy(s_x2, state, 16);
+    multiply2(s_x2);
+
+    memcpy(s_x4, s_x2, 16);
+    multiply2(s_x4);
+
+    memcpy(s_x8, s_x4, 16);
+    multiply2(s_x8);
+
+    for (int i = 0; i < 16; i++) {
+        state[i] = s_x8[i] ^ s_x4[i] ^ state[i];
+    }
+}
+
+void multiply14(u_int8_t* state) {
+    u_int8_t s_x2[16];
+    u_int8_t s_x4[16];
+    u_int8_t s_x8[16];
+
+    memcpy(s_x2, state, 16); 
+    multiply2(s_x2);
+
+    memcpy(s_x4, s_x2, 16);
+    multiply2(s_x4); 
+
+    memcpy(s_x8, s_x4, 16);
+    multiply2(s_x8);
+
+    for (int i = 0; i < 16; i++) {
+        state[i] = s_x8[i] ^ s_x4[i] ^ s_x2[i];
+    }
+}
 
 void invMixColumns(u_int8_t* state) {
+    u_int8_t state9[16];
+    u_int8_t state11[16];
+    u_int8_t state13[16];
+    u_int8_t state14[16];
+
+    memcpy(state9, state, 16);
+    memcpy(state11, state, 16);
+    memcpy(state13, state, 16);
+    memcpy(state14, state, 16);
+
+    multiply9(state9);
+
+    multiply11(state11);
+
+    multiply13(state13);
+
+    multiply14(state14);
+
+    for (int i = 0; i < 4; i++) {
+        state[i * 4] = state14[i * 4] ^ state11[i * 4 + 1] ^ state13[i * 4 + 2] ^ state9[i * 4 + 3];
+        state[i * 4 + 1] = state9[i * 4] ^ state14[i * 4 + 1] ^ state11[i * 4 + 2] ^ state13[i * 4 + 3];
+        state[i * 4 + 2] = state13[i * 4] ^ state9[i * 4 + 1] ^ state14[i * 4 + 2] ^ state11[i * 4 + 3];
+        state[i * 4 + 3] = state11[i * 4] ^ state13[i * 4 + 1] ^ state9[i * 4 + 2] ^ state14[i * 4 + 3];
+    }
+
 }
 
 void printBlock(u_int8_t* block) {
