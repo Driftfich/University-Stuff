@@ -57,12 +57,8 @@ unsigned int numRounds(unsigned int keySize) {
     switch (keySize) {
         case 128:
             return 10;
-        case 160:
-            return 11;
         case 192:
             return 12;
-        case 224:
-            return 13;
         case 256:
             return 14;
         default:
@@ -107,7 +103,7 @@ u_int8_t rc(u_int8_t num) {
 void keyExpansion(u_int8_t* key, u_int8_t* roundKeys, unsigned int keySize) {
     unsigned int Nk = numKeyWords(keySize);
     unsigned int Nr = numRounds(keySize); // Number of rounds
-    unsigned int Nw = (Nr + 1) * 4; // Number of 32-bit words in the expanded key
+    unsigned int Nw = (Nr + 1) * 4; // Number of words in the expanded key
     
     // Copy the original key into the first Nk words of the expanded key
     for (int i = 0; i < Nk; i++) {
@@ -444,16 +440,19 @@ void cbc_encrypt(u_int8_t *content, u_int8_t *key, unsigned int keySize, u_int8_
 
     keyExpansion(key, roundKeys, keySize);
 
+    u_int8_t prevIV[16];
+    memcpy(prevIV, iv, 16);
+
     for (size_t i=0; i<length; i+=16) {
         // xor the content with the iv of the previous block
         for (int j=0; j<16; j++) {
-            content[i + j] ^= iv[j];
+            content[i + j] ^= prevIV[j];
         }
         encrypt(content + i, roundKeys, Nr);
 
         // update the iv to the current block
         for (int j=0; j<16; j++) {
-            iv[j] = content[i + j];
+            prevIV[j] = content[i + j];
         }
     }
 
@@ -466,20 +465,23 @@ void cbc_decrypt(u_int8_t *content, u_int8_t *key, unsigned int keySize, u_int8_
 
     keyExpansion(key, roundKeys, keySize);
 
-    u_int8_t current_block[16];
+    u_int8_t prevIV[16];
+    u_int8_t temp[16];
+    memcpy(prevIV, iv, 16);
+
     for (size_t i=0; i<length; i+=16) {
-        memcpy(current_block, content + i, 16);
+        memcpy(temp, content + i, 16);
 
         decrypt(content + i, roundKeys, Nr);
 
         // xor the content with the iv of the previous block
         for (int j=0; j<16; j++) {
-            content[i + j] ^= iv[j];
+            content[i + j] ^= prevIV[j];
         }
 
         // update the iv to the current block
         for (int j=0; j<16; j++) {
-            iv[j] = current_block[j];
+            prevIV[j] = temp[j];
         }
     }
 
