@@ -54,7 +54,13 @@ int main() {
                             0xf3, 0x24, 0x0f, 0xf4 };
 
     cbc_encrypt(input, key, 192, iv, 64);
-
+    printf("Encrypted:\n");
+    for (int i = 0; i < 64; i++) {
+        if (i % 16 == 0 && i != 0) {
+            printf("\n");
+        }
+        printf("%02x ", input[i]);
+    }
     for (int i = 0; i < 63; i++) {
         {
             if (input[i] != expected[i]) {
@@ -65,9 +71,12 @@ int main() {
             }
         }
     }
-
+    printf("Decrypted:\n");
     cbc_decrypt(input, key, 192, iv, 64);
-
+    // print the whole input array
+    for (int i = 0; i < 64; i++) {
+        printf("%02x ", input[i]);
+    }
     for (int i = 0; i < 63; i++) {
         {
             if (input[i] != source[i]) {

@@ -54,7 +54,6 @@ static const uint8_t rsbox[256] = {
     0x55, 0x21, 0x0c, 0x7d };
 
 unsigned int numRounds(unsigned int keySize) {
-    // Rijndael Algorithm num Rounds depends on Blocksize and Keysize. Because Blocksize in AES is always 128 Bit, the num of Rounds depends just on the keysize
     switch (keySize) {
         case 128:
             return 10;
@@ -73,17 +72,6 @@ unsigned int numRounds(unsigned int keySize) {
 }
 
 unsigned int numKeyWords(unsigned int keySize) {
-    // switch (keySize) {
-    //     case 128:
-    //         return 4;
-    //     case 192:
-    //         return 6;
-    //     case 256:
-    //         return 8;
-    //     default:
-    //         printf("No valid keysize!");
-    //         exit(1);
-    // }
     return keySize / 32;
 }
 
@@ -412,16 +400,88 @@ void invShiftRows(u_int8_t *state) {
 }
 
 void decrypt(u_int8_t* block, u_int8_t* roundKeys, unsigned int rounds) {
+    addRoundKey(block, roundKeys + rounds * 16);
+
+    for (int i=0; i<rounds; i++) {
+        invShiftRows(block);
+        invSubBytes(block);
+        addRoundKey(block, roundKeys + (rounds - i - 1) * 16);
+        if (i < rounds - 1) {
+            invMixColumns(block);
+        }
+    }
 }
 
 void ecb_encrypt(u_int8_t *content, u_int8_t *key, unsigned int keySize, size_t length){
+    unsigned int Nr = numRounds(keySize);
+    u_int8_t *roundKeys = malloc((Nr + 1) * 16 * sizeof(u_int8_t));
+
+    keyExpansion(key, roundKeys, keySize);
+
+    for (size_t i=0; i<length; i+=16) {
+        encrypt(content + i, roundKeys, Nr);
+    }
+
+    free(roundKeys);
 }
 
 void ecb_decrypt(u_int8_t *content, u_int8_t *key, unsigned int keySize, size_t length){
+    unsigned int Nr = numRounds(keySize);
+    u_int8_t *roundKeys = malloc((Nr + 1) * 16 * sizeof(u_int8_t));
+
+    keyExpansion(key, roundKeys, keySize);
+
+    for (size_t i=0; i<length; i+=16) {
+        decrypt(content + i, roundKeys, Nr);
+    }
+
+    free(roundKeys);
 }
 
 void cbc_encrypt(u_int8_t *content, u_int8_t *key, unsigned int keySize, u_int8_t *iv, size_t length) {
+    unsigned int Nr = numRounds(keySize);
+    u_int8_t *roundKeys = malloc((Nr + 1) * 16 * sizeof(u_int8_t));
+
+    keyExpansion(key, roundKeys, keySize);
+
+    for (size_t i=0; i<length; i+=16) {
+        // xor the content with the iv of the previous block
+        for (int j=0; j<16; j++) {
+            content[i + j] ^= iv[j];
+        }
+        encrypt(content + i, roundKeys, Nr);
+
+        // update the iv to the current block
+        for (int j=0; j<16; j++) {
+            iv[j] = content[i + j];
+        }
+    }
+
+    free(roundKeys);
 }
 
 void cbc_decrypt(u_int8_t *content, u_int8_t *key, unsigned int keySize, u_int8_t *iv, size_t length) {
+    unsigned int Nr = numRounds(keySize);
+    u_int8_t *roundKeys = malloc((Nr + 1) * 16 * sizeof(u_int8_t));
+
+    keyExpansion(key, roundKeys, keySize);
+
+    u_int8_t current_block[16];
+    for (size_t i=0; i<length; i+=16) {
+        memcpy(current_block, content + i, 16);
+
+        decrypt(content + i, roundKeys, Nr);
+
+        // xor the content with the iv of the previous block
+        for (int j=0; j<16; j++) {
+            content[i + j] ^= iv[j];
+        }
+
+        // update the iv to the current block
+        for (int j=0; j<16; j++) {
+            iv[j] = current_block[j];
+        }
+    }
+
+    free(roundKeys);
 }

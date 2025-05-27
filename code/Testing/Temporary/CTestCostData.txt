@@ -1,33 +1,27 @@
-numKeyWords 10 0.000218965
-numRounds 72 3.03606e-05
-sboxes 69 3.41129e-05
-rc 14 0.00016385
-keyExpansion 13 0.000190614
-getRoundKey 13 0.000171292
-addRoundKey 47 5.09409e-05
-subBytes 27 6.75722e-05
-shiftRows 23 8.76627e-05
-mul2 34 6.77153e-05
-mul3 28 8.40667e-05
-mixColumns 12 0.000171285
-encrypt 12 0.000184557
-invMixColumns 3 0.000728827
-invSubBytes 26 8.33887e-05
-invShiftRows 19 0.000107716
-decrypt 0 0
-encrypt_decrypt 55 0
-ecb_encrypt 0 0
-ecb_decrypt 0 0
-cbc_encrypt 0 0
-cbc_decrypt 0 0
+numKeyWords 30 4.55174e-05
+numRounds 92 1.13356e-05
+sboxes 89 1.48384e-05
+rc 34 3.58003e-05
+keyExpansion 33 3.52424e-05
+getRoundKey 33 4.05069e-05
+addRoundKey 67 1.6243e-05
+subBytes 47 2.40433e-05
+shiftRows 43 3.18115e-05
+mul2 54 1.84707e-05
+mul3 48 2.31674e-05
+mixColumns 32 3.87539e-05
+encrypt 32 3.16007e-05
+invMixColumns 23 5.09372e-05
+invSubBytes 46 2.26372e-05
+invShiftRows 39 2.60187e-05
+decrypt 17 7.24924e-05
+encrypt_decrypt 72 1.53393e-05
+ecb_encrypt 11 0.000108317
+ecb_decrypt 10 0.000135623
+cbc_encrypt 8 0.000131498
+cbc_decrypt 6 0.000272545
 aes192 0 0
 aes256 0 0
 ---
-decrypt
-encrypt_decrypt
-ecb_encrypt
-ecb_decrypt
-cbc_encrypt
-cbc_decrypt
 aes192
 aes256
