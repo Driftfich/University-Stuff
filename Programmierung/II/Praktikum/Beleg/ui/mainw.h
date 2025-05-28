@@ -61,6 +61,7 @@ class MainWindow : public QMainWindow
         QModelIndex currentEditIndex;
 
         QCompleter *searchCompleter;
+        QString origSearchText;
 
     void saveModifiedData(const QJsonObject& modifiedData);
 
@@ -70,5 +71,7 @@ class MainWindow : public QMainWindow
 
     void setupSearchCompleter();
     void updateSearchCompleter();
+
+    void onCompleterActivated(const QString& suggestion);
 
 };

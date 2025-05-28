@@ -32,6 +32,7 @@ HEADERS +=  core/artist.h \
             tablemodel/libitemtablemodel.h \
             tablemodel/persontablemodel.h \
             tablemodel/transactiontablemodel.h \
+            tablemodel/custfiltproxmodel.h \
             ui/mainw.h \
             ui/toolbar.h \
             ui/tablewidget.h \
@@ -57,6 +58,7 @@ SOURCES +=  core/artist.cpp \
             tablemodel/libitemtablemodel.cpp \
             tablemodel/persontablemodel.cpp \
             tablemodel/transactiontablemodel.cpp \
+            tablemodel/custfiltproxmodel.cpp \
             ui/mainw.cpp \
             #ui/toolbar.cpp \
             #ui/tablewidget.cpp \

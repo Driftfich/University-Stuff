@@ -29,6 +29,7 @@
 #include "persontablemodel.h"
 #include "libitemtablemodel.h"
 #include "transactiontablemodel.h"
+#include "custfiltproxmodel.h"
 // include the variant type
 #include <variant>
 
@@ -337,17 +338,17 @@ int test_ui(int argc, char *argv[]) {
     auto *transactionModel = new TransactionTableModel(lib.getTransactionManager(), lib.getPersonManager(), lib.getLibitemManager(), lib.getMediaManager(), &w);
 
     // 4) Proxy-Models als Filter/Sortierer
-    auto *personProxy = new QSortFilterProxyModel(&w);
+    auto *personProxy = new CustomFilterProxyModel(&w);
     personProxy->setSourceModel(personModel);
     personProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
     personProxy->setDynamicSortFilter(true);
 
-    auto *libitemProxy = new QSortFilterProxyModel(&w);
+    auto *libitemProxy = new CustomFilterProxyModel(&w);
     libitemProxy->setSourceModel(libitemModel);
     libitemProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
     libitemProxy->setDynamicSortFilter(true);
-    
-    auto *transactionProxy = new QSortFilterProxyModel(&w);
+
+    auto *transactionProxy = new CustomFilterProxyModel(&w);
     transactionProxy->setSourceModel(transactionModel);
     transactionProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
     transactionProxy->setDynamicSortFilter(true);
@@ -472,7 +473,7 @@ int test_ui(int argc, char *argv[]) {
     // 2.2) When the sort dropdown is changed, the current proxy model should be sorted by the selected column
     QObject::connect(toolbar->sort, QOverload<int>::of(&QComboBox::activated), [&](int dropdownIndex) {
         // get the current active proxy model e.g. personProxy, libitemProxy, transactionProxy
-        QSortFilterProxyModel *currentProxyModel = nullptr;
+        CustomFilterProxyModel *currentProxyModel = nullptr;
         QTableView *currentTableView = nullptr;
 
         switch(tabWidget->TabSelector->currentIndex()) {
@@ -521,7 +522,7 @@ int test_ui(int argc, char *argv[]) {
     // 3) Toolbar search field connections
     // Hilfs-Lambda, um die Filterlogik zu kapseln, da sie von zwei Signalen verwendet wird
     auto applySearchFilter = [&]() {
-        QSortFilterProxyModel *currentProxyModel = nullptr;
+        CustomFilterProxyModel *currentProxyModel = nullptr;
 
         switch(tabWidget->TabSelector->currentIndex()) {
             case 0: 
@@ -545,34 +546,32 @@ int test_ui(int argc, char *argv[]) {
 
         // get filter string from the search bar
         QString filterString = toolbar->searchbar->text();
-        // escape regex special characters in the filter string
-        QString escapedFilter = filterString;
-        const QString specialChars = "\\^$.|?*+()[{";
-        for (QChar c : specialChars) {
-            escapedFilter.replace(c, QString("\\") + c);
-        }
-        filterString = escapedFilter;
+        // // escape regex special characters in the filter string
+        // QString escapedFilter = filterString;
+        // const QString specialChars = "\\^$.|?*+()[{";
+        // for (QChar c : specialChars) {
+        //     escapedFilter.replace(c, QString("\\") + c);
+        // }
+        // filterString = escapedFilter;
         
-        // std::cout << "Filterstring: " << filterString.toStdString() << std::endl;
-        QStringList filtertokens = filterString.split(" ");
+        // // std::cout << "Filterstring: " << filterString.toStdString() << std::endl;
+        // QStringList filtertokens = filterString.split(" ");
 
-        // remove empty tokens
-        filtertokens.removeAll("");
-        filtertokens.removeAll(" ");
-        // remove duplicates
-        filtertokens.removeDuplicates();
-        QString searchpattern = filtertokens.join("|");
-        QRegularExpression re(searchpattern,
-        QRegularExpression::CaseInsensitiveOption);
+        // // remove empty tokens
+        // filtertokens.removeAll("");
+        // filtertokens.removeAll(" ");
+        // // remove duplicates
+        // filtertokens.removeDuplicates();
+        // QString searchpattern = filtertokens.join("|");
+        // QRegularExpression re(searchpattern,
+        // QRegularExpression::CaseInsensitiveOption);
 
         // filter across all columns
         currentProxyModel->setFilterKeyColumn(-1); 
 
-        // Use setFilterWildcard for a "contains" search across all columns.
-        // The '*' acts as a placeholder for any string.
-        // The already set filterCaseSensitivity ensures a case-insensitive search.
         // std::cout << "Filter: " << searchpattern.toStdString() << std::endl;
-        currentProxyModel->setFilterRegularExpression(searchpattern);
+        // currentProxyModel->setFilterRegularExpression(searchpattern);
+        currentProxyModel->setSearchString(filterString, " ");
     };
 
     // 3.1) Wenn der Tab gewechselt wird, Filter anwenden
@@ -585,7 +584,7 @@ int test_ui(int argc, char *argv[]) {
     QObject::connect(toolbar->deletec, &QPushButton::clicked, [&]() {
         // Bestimme das aktuelle TableView und ProxyModel
         QTableView *currentTableView = nullptr;
-        QSortFilterProxyModel *currentProxyModel = nullptr;
+        CustomFilterProxyModel *currentProxyModel = nullptr;
         QAbstractTableModel *currentSourceModel = nullptr;
 
         switch(tabWidget->TabSelector->currentIndex()) {

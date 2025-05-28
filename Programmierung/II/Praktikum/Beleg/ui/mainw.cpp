@@ -6,10 +6,12 @@
 #include <QCompleter>
 #include <QAbstractTableModel>
 #include <QSortFilterProxyModel>
+#include <QList>
 #include <QStringListModel>
 #include <QTableView>
 #include <iostream>
 
+#include "custfiltproxmodel.h"
 #include "mainw.h"
 
 void MainWindow::setupUi()
@@ -37,9 +39,6 @@ void MainWindow::setupUi()
     mainLayout->addWidget(tableWidgetWidget);
 
     setupSearchCompleter();
-    // bei Tab-Wechsel neu füllen
-    connect(tableWidgetUi->TabSelector, &QTabWidget::currentChanged,
-            this, &MainWindow::updateSearchCompleter);
 }
 
 void MainWindow::setupSideDock()
@@ -159,12 +158,39 @@ void MainWindow::setupSearchCompleter()
     searchCompleter = new QCompleter(this);
     searchCompleter->setCaseSensitivity(Qt::CaseInsensitive);
     searchCompleter->setFilterMode(Qt::MatchContains);
+    searchCompleter->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     searchCompleter->setMaxVisibleItems(10);
 
-    // set to inital tab
-    updateSearchCompleter();
+    // set the origSearchText to an empty string initially for safety
+    origSearchText = QString();
+    
+    connect(searchCompleter, QOverload<const QString&>::of(&QCompleter::highlighted),
+            this, [this](const QString& text) {
+                MainWindow::onCompleterActivated(text);
+            });
 
-    // add the completer to the search line edit
+    connect(searchCompleter, QOverload<const QString&>::of(&QCompleter::activated),
+            this, [this](const QString& text) {
+                // overwrite qt internal logic to complete correctly
+                MainWindow::onCompleterActivated(text);
+                // hide the completer popup after activation
+                searchCompleter->popup()->hide();
+            });
+
+
+    // Bei Tab-Wechsel und Textänderung Completer aktualisieren
+    connect(tableWidgetUi->TabSelector, &QTabWidget::currentChanged,
+            this, [this]() {
+                updateSearchCompleter();
+                searchCompleter->popup()->hide(); // hide the popup on tab change
+            });
+    connect(toolbarUi->searchbar, &QLineEdit::textChanged,
+            this, &MainWindow::updateSearchCompleter);
+
+    // Initiale Befüllung für das aktuelle Tab
+    updateSearchCompleter();
+    
+    // Completer am Suchfeld anbringen
     toolbarUi->searchbar->setCompleter(searchCompleter);
 }
 
@@ -174,19 +200,19 @@ void MainWindow::updateSearchCompleter()
     int currentTabIdx = tableWidgetUi->TabSelector->currentIndex();
 
     QTableView* view = nullptr;
-    QSortFilterProxyModel* model = nullptr;
+    CustomFilterProxyModel* model = nullptr;
     switch (currentTabIdx) {
         case 0:
             view = tableWidgetUi->persontab;
-            model = qobject_cast<QSortFilterProxyModel*>(view->model());
+            model = qobject_cast<CustomFilterProxyModel*>(view->model());
             break;
         case 1:
             view = tableWidgetUi->itemtab;
-            model = qobject_cast<QSortFilterProxyModel*>(view->model());
+            model = qobject_cast<CustomFilterProxyModel*>(view->model());
             break;
         case 2:
             view = tableWidgetUi->transtab;
-            model = qobject_cast<QSortFilterProxyModel*>(view->model());
+            model = qobject_cast<CustomFilterProxyModel*>(view->model());
             break;
         default:
             break;
@@ -197,15 +223,117 @@ void MainWindow::updateSearchCompleter()
         return;
     }
 
-    for (int row = 0; row < model->rowCount(); ++row) {
-        for (int col = 0; col < model->columnCount(); ++col) {
-            QString text = model->data(model->index(row, col)).toString();
-            if (!text.isEmpty() && !suggestions.contains(text)) {
-                suggestions << text;
+    // update the proxy model with the current search string
+    QString filterText = toolbarUi->searchbar->text();
+    this->origSearchText = filterText; // store original search text
+    QString delimiter = " "; // use space as default delimiter
+    model->setSearchString(filterText, delimiter);
+    
+    // get the current searchtokens from the proxy model
+    QList<QRegularExpression> searchTokens = model->getSearchTokens();
+    
+    // extract all the cells from the current model where these tokens occur
+    for (const QRegularExpression& token : searchTokens) {
+        for (int row = 0; row < model->rowCount(); ++row) {
+            for (int col = 0; col < model->columnCount(); ++col) {
+                QString text = model->data(model->index(row, col)).toString();
+                if (token.match(text).hasMatch() && !suggestions.contains(text) && !filterText.contains(text)) {
+                    suggestions << text;
+                }
             }
         }
     }
 
+    // sort suggestions by length (shortest first)
+    std::sort(suggestions.begin(), suggestions.end(),
+              [](const QString& a, const QString& b) {
+                  return a.length() < b.length();
+              });
+
+              
+    QString lastToken = toolbarUi->searchbar->text().split(' ').last();
+    // qDebug() << "Raw suggestions:" << suggestions;
+    // qDebug() << "Last token for completer:" << lastToken;
+              
     QStringListModel *stringModel = new QStringListModel(suggestions, searchCompleter);
     searchCompleter->setModel(stringModel);
+    searchCompleter->setCompletionPrefix(lastToken);
+    searchCompleter->complete(); // Update the popup with new suggestions
+    searchCompleter->popup()->show();
+}
+
+void MainWindow::onCompleterActivated(const QString& suggestion)
+{
+    qDebug() << "Completer activated with suggestion:" << suggestion;
+    if (!toolbarUi || !toolbarUi->searchbar) {
+        qWarning() << "SearchBar UI component not available";
+        return;
+    }
+
+    if (suggestion.isEmpty()) {
+        qDebug() << "Empty suggestion received, ignoring";
+        return;
+    }
+
+    QString currentText = origSearchText;
+    QStringList tokens = currentText.split(' ', Qt::SkipEmptyParts);
+    
+    // Spezialfall: Text endet mit Leerzeichen -> neuer leerer Token
+    if (currentText.endsWith(' ')) {
+        tokens.append(QString());
+    }
+    
+    QString newSearchText;
+    // qDebug() << "Current search text:" << currentText;
+    // qDebug() << "Tokens:" << tokens;
+    if (tokens.isEmpty()) {
+        // Suchfeld war leer oder enthielt nur Leerzeichen
+        newSearchText = suggestion;
+        // qDebug() << "Empty search field, setting to:" << suggestion;
+    }
+    else {
+        QString lastToken = tokens.last();
+        
+        // Prüfe, ob suggestion mit letztem Token beginnt (case-insensitive)
+        bool startsWithLastToken = !lastToken.isEmpty() && 
+                                  suggestion.startsWith(lastToken, Qt::CaseInsensitive);
+
+        qDebug() << startsWithLastToken;
+        
+        if (startsWithLastToken) {
+            // Token-Ersetzung: Ersetze nur den letzten Token
+            tokens[tokens.size() - 1] = suggestion;
+            newSearchText = tokens.join(' ');
+            // qDebug() << "Token replacement:" << lastToken << "->" << suggestion;
+        }
+        else {
+            // // Vollständige Ersetzung des Suchtexts
+            newSearchText = suggestion;
+            // qDebug() << "Complete replacement:" << currentText << "->" << suggestion;
+
+            // Anfügen des neuen Tokens
+            // tokens.append(suggestion);
+            // newSearchText = tokens.join(' ');
+        }
+    }
+    
+    // Text im Suchfeld aktualisieren
+    // blockSignals verhindert rekursive updateSearchCompleter-Aufrufe
+    toolbarUi->searchbar->blockSignals(true);
+    
+    // remove the completer temporarily to avoid that the lineedit gets overwritten by internal qt logic
+    toolbarUi->searchbar->setCompleter(nullptr);
+    
+    toolbarUi->searchbar->setText(newSearchText);
+    
+    // Cursor ans Ende setzen für weitere Eingaben
+    toolbarUi->searchbar->setCursorPosition(newSearchText.length());
+    
+    // Completer wieder anhängen
+    toolbarUi->searchbar->setCompleter(searchCompleter);
+    // make the popup visible again
+    searchCompleter->popup()->show();
+    toolbarUi->searchbar->blockSignals(false);
+    
+    // qDebug() << "Search text updated to:" << newSearchText;
 }
