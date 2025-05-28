@@ -8,6 +8,8 @@
 #include <QVariant>
 #include <QModelIndex>
 #include "personman.h"
+#include <QJsonObject>
+#include "transactionman.h"
 
 class PersonTableModel : public QAbstractTableModel {
     Q_OBJECT
@@ -49,6 +51,7 @@ class PersonTableModel : public QAbstractTableModel {
         QVector<QString> getDisplayedColumns() const;
 
         QJsonObject getJsonObject(const QModelIndex& index) const;
+        QJsonObject getJsonObject(const QModelIndex& index, const TransactionMan* transactionMan) const;
         bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
     
     public slots:

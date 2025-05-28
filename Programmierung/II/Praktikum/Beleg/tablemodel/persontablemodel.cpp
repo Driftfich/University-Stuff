@@ -1,10 +1,15 @@
 #include "persontablemodel.h"
 #include "personman.h"
+#include "transactionman.h"
 
 #include <QAbstractTableModel>
 #include <QVector>
 #include <QVariant>
 #include <QModelIndex>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <iostream>
+#include <QDebug>
 #include "person.h"
 #include "personman.h"
 
@@ -174,6 +179,34 @@ QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index) const {
     }
     std::shared_ptr<Person> person = (*personMan)[row];
     return person->getJson();
+}
+
+QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index, const TransactionMan* transactionMan) const {
+    QJsonObject CompleteJson = getJsonObject(index);
+    if (CompleteJson.isEmpty()) {
+        return QJsonObject();
+    }
+    QJsonObject personJson = CompleteJson["person"].toObject();
+
+    if (personJson.isEmpty()) {
+        return QJsonObject();
+    }
+    qDebug() << "Trying to fetch transactions for person ID:" << personJson["id"].toVariant().toULongLong();
+    if (!transactionMan || !personJson.contains("id")) {
+        return personJson; // Return the person JSON if no transaction manager or id is not present
+    }
+    // debug the json
+    // qDebug() << "Person JSON:" << QJsonDocument(personJson).toJson(QJsonDocument::Indented);
+    // get all transactions for this person | get id from person from json
+    unsigned long personId = personJson["id"].toVariant().toULongLong();
+    QVector<std::shared_ptr<Transaction>> transactions = transactionMan->getTransactionsByPersonId(personId);
+    QJsonArray transactionArray;
+    for (const auto& transaction : transactions) {
+        transactionArray.append(transaction->getJson());
+    }
+    qDebug() << "Found" << transactionArray.size() << "transactions for person ID:" << personId;
+    CompleteJson["transactions"] = transactionArray;
+    return CompleteJson;
 }
 
 bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {

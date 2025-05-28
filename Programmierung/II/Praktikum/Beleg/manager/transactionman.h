@@ -42,6 +42,10 @@ public:
     unsigned long getNextId() const;
     QString getFilename() const;
 
+    // transaction retrieval functions
+    QVector<std::shared_ptr<Transaction>> getTransactionsByLibitemId(unsigned long libitem_id) const;
+    QVector<std::shared_ptr<Transaction>> getTransactionsByPersonId(unsigned long person_id) const;
+
     // transaction management functions
     int removeTransactionId(unsigned long id);
     int removeTransaction(unsigned long index);

@@ -260,6 +260,7 @@ QJsonObject Person::getLocalParams() const {
 QJsonObject Person::getJson() const {
     QJsonObject obj;
     obj["person"] = getLocalParams();
+    // qDebug() << "Person JSON:" << QJsonDocument(obj).toJson(QJsonDocument::Indented);
     obj["subclass_type"] = getSubclassParams().isEmpty() ? QString("Person") : getSubclassType();
     obj["subclass_params"] = getSubclassParams();
     return obj;

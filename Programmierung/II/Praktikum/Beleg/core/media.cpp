@@ -182,6 +182,7 @@ void Media::toFile(QFile& file) const {
 }
 
 int Media::loadLocalParams(const QJsonObject& json) {
+    // qDebug() << json;
     if (json.contains("id")) {
         setId(json["id"].toVariant().toULongLong());
     } else {

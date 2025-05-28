@@ -108,7 +108,7 @@ void MainWindow::setupSideDock()
         if (auto *tm = qobject_cast<TransactionTableModel*>(srcModel))
             info = tm->getJsonObject(srcIndex);
         else if (auto *pm = qobject_cast<PersonTableModel*>(srcModel))
-            info = pm->getJsonObject(srcIndex);
+            info = pm->getJsonObject(srcIndex, lib->getTransactionManager());
         else if (auto *lm = qobject_cast<LibItemTableModel*>(srcModel))
             info = lm->getJsonObject(srcIndex);
 

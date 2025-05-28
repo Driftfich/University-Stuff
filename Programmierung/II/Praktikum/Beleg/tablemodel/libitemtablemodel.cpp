@@ -214,7 +214,7 @@ QJsonObject LibItemTableModel::getJsonObject(const QModelIndex& index) const {
     }
     jsonObject["Libitem"] = (*libitem).getJson();
     if (media) {
-        jsonObject["Media"] = (*media).getJson();
+        jsonObject["Media"] = (*media).getJson()["media"];
     }
     else {
         jsonObject["Media"] = QJsonObject();
@@ -238,7 +238,7 @@ bool LibItemTableModel::updateFromJsonObject(const QJsonObject& jsonObject, cons
         emit dataChanged(index, index);
         return false;
     }
-    if (media && media->loadLocalParams(jsonObject["Media"].toObject()) != 0 && media->loadSubclassParams(jsonObject["Media"]["subclass_params"].toObject()) != 0) {
+    if (media && media->loadLocalParams((jsonObject["Media"]).toObject()) != 0 && media->loadSubclassParams(jsonObject["Media"]["subclass_params"].toObject()) != 0) {
         emit dataChanged(index, index);
         return false;
     }

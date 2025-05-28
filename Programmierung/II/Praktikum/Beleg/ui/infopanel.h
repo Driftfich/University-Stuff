@@ -15,7 +15,7 @@ class InfoPanel : public QWidget {
 
     public slots:
         void displayInfo(const QJsonObject& jsonObject);
-        void addJsonToTree(const QJsonValue& value, QTreeWidgetItem* parent);
+        // void addJsonToTree(const QJsonValue& value, QTreeWidgetItem* parent);
         void enterEditMode();
         void saveChanges();
         void cancelEditMode();
@@ -37,6 +37,14 @@ class InfoPanel : public QWidget {
         QJsonObject collectDataFromTree();
         QJsonValue getValueFromItem(QTreeWidgetItem* item);
         void restoreOriginalData();
+
+        void updateAddButtons(bool enable);
+        void onAddArrayItem();
+        void onAddObjectItem();
+
+        void addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem);
+        bool isLowestCollection(QTreeWidgetItem* item) const;
+        bool isHighestItem(QTreeWidgetItem* item) const;
 
     private slots:
         void onItemChanged(QTreeWidgetItem* item, int column);
