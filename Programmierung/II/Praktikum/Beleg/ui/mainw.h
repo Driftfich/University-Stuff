@@ -6,6 +6,8 @@
 #include "persontablemodel.h"
 #include "libitemtablemodel.h"
 #include "transactiontablemodel.h"
+#include "custfiltproxmodel.h"
+#include "library.h"
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -35,7 +37,10 @@ class MainWindow : public QMainWindow
         MainWindow(QWidget *parent = nullptr) : QMainWindow(parent)
         {
             setupUi();
+            setupDataLayers();
             setupSideDock();
+            setupToolbarConnections();
+            setupSearchCompleter();
             setWindowTitle(tr("Bibliotheksverwaltung"));
         }
         ~MainWindow() {}
@@ -45,33 +50,71 @@ class MainWindow : public QMainWindow
         Ui_TableWidget* getTableWidgetUi() const { return tableWidgetUi; }
 
     private:
+        // UI components
         Ui_toolbar*      toolbarUi;
         QWidget*         toolbarWidget;
         Ui_TableWidget*  tableWidgetUi;
         QWidget*         tableWidgetWidget;
         QVBoxLayout*     mainLayout;
 
+        // side panel ui components
         QDockWidget*   sideDock;
         Ui::Form* sidePanelUi;
         QWidget* sidePanelWidget;
-
         InfoPanel* infoPanel;
 
+        // Models and Proxies for editing in the Infopanel
         QAbstractTableModel* currentEditModel = nullptr;
         QModelIndex currentEditIndex;
 
+        // Search completer objects
         QCompleter *searchCompleter;
         QString origSearchText;
 
-    void saveModifiedData(const QJsonObject& modifiedData);
+        // Data Management
+        Library* lib;
 
-    void setupUi();
+        // Table Models
+        PersonTableModel* personModel;
+        LibItemTableModel* libitemModel;
+        TransactionTableModel* transactionModel;
 
-    void setupSideDock();
+        // Proxy Models
+        CustomFilterProxyModel* personProxy;
+        CustomFilterProxyModel* libitemProxy;
+        CustomFilterProxyModel* transactionProxy;
 
-    void setupSearchCompleter();
-    void updateSearchCompleter();
+        
+        // UI setup methods
+        void setupUi();
+        void setupSideDock();
 
-    void onCompleterActivated(const QString& suggestion);
+        // 
+        void setupDataLayers();
+
+        // setup method for the lib
+        void setupLib();
+
+        // setup method for the table models
+        void setupTableModels();
+        void setupProxyModels();
+        
+        void setupToolbarConnections();
+        void setupColumnsConnections();
+        void setupSortConnections();
+        void setupSearchConnections();
+        void setupDeleteConnections();
+        void setupAddConnections();
+
+        void applySearchFilter();
+        
+        // search completer methods
+        void setupSearchCompleter();
+        void updateSearchCompleter();
+        void onCompleterActivated(const QString& suggestion);
+        
+        // Method to save the modified data from the InfoPanel
+        void saveModifiedData(const QJsonObject& modifiedData);
+
 
 };

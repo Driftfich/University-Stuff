@@ -9,10 +9,18 @@
 #include <QList>
 #include <QStringListModel>
 #include <QTableView>
+#include <QTabWidget>
 #include <iostream>
 
 #include "custfiltproxmodel.h"
 #include "mainw.h"
+#include "infopanel.h"
+#include "library.h"
+#include "persontablemodel.h"
+#include "libitemtablemodel.h"
+#include "transactiontablemodel.h"
+#include "toolbar.h"
+
 
 void MainWindow::setupUi()
 {
@@ -24,8 +32,13 @@ void MainWindow::setupUi()
     mainLayout = new QVBoxLayout(central);
     mainLayout->setObjectName("mainLayout");
 
-    // ---- Toolbar als echtes QWidget ----
-    toolbarUi     = new Ui_toolbar();
+    // 3)
+    setWindowTitle("Library Management System");
+    setMinimumSize(800, 600);
+    setWindowIcon(QIcon(":/icons/lib.png"));
+
+    // ---- toolbarUi als echtes QWidget ----
+    toolbarUi    = new Ui_toolbar();
     toolbarWidget = new QWidget(central);
     toolbarWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     toolbarWidget->setMaximumHeight(150);
@@ -37,8 +50,6 @@ void MainWindow::setupUi()
     tableWidgetWidget = new QWidget(central);
     tableWidgetUi->setupUi(tableWidgetWidget);
     mainLayout->addWidget(tableWidgetWidget);
-
-    setupSearchCompleter();
 }
 
 void MainWindow::setupSideDock()
@@ -62,7 +73,7 @@ void MainWindow::setupSideDock()
     addDockWidget(Qt::RightDockWidgetArea, sideDock);
     sideDock->hide(); // startet ausgeblendet
 
-    // Beispiel: Button aus Toolbar zeigt Add-Panel
+    // Beispiel: Button aus toolbarUi zeigt Add-Panel
     connect(toolbarUi->add, &QPushButton::clicked, this, [=]() {
         sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->addpanel);
         sideDock->show();
@@ -112,6 +123,339 @@ void MainWindow::setupSideDock()
                 tableWidgetUi->transtab })
     connect(tv, &QTableView::doubleClicked, this, showInfo);
 }
+
+void MainWindow::setupDataLayers()
+{
+    setupLib();
+    setupTableModels();
+    setupProxyModels();
+}
+
+void MainWindow::setupLib()
+{
+    lib = new Library(QCoreApplication::applicationDirPath());
+    // load happens directly in the constructor of Library
+}
+
+void MainWindow::setupTableModels()
+{
+    // create table models
+    personModel = new PersonTableModel(lib->getPersonManager(), this);
+    libitemModel = new LibItemTableModel(lib->getLibitemManager(), lib->getMediaManager(), this);
+    transactionModel = new TransactionTableModel(lib->getTransactionManager(), 
+                                                 lib->getPersonManager(), 
+                                                 lib->getLibitemManager(), 
+                                                 lib->getMediaManager(), this);
+
+}
+
+void MainWindow::setupProxyModels()
+{
+    // create proxy models
+    personProxy = new CustomFilterProxyModel(this);
+    personProxy->setSourceModel(personModel);
+    personProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    personProxy->setDynamicSortFilter(true);
+
+    libitemProxy = new CustomFilterProxyModel(this);
+    libitemProxy->setSourceModel(libitemModel);
+    libitemProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    libitemProxy->setDynamicSortFilter(true);
+
+    transactionProxy = new CustomFilterProxyModel(this);
+    transactionProxy->setSourceModel(transactionModel);
+    transactionProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    transactionProxy->setDynamicSortFilter(true);
+
+    // set the proxy models to the table views
+    tableWidgetUi->persontab->setModel(personProxy);
+    tableWidgetUi->persontab->setSortingEnabled(true);
+    tableWidgetUi->persontab->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableWidgetUi->persontab->setSelectionMode(QAbstractItemView::MultiSelection);
+    tableWidgetUi->persontab->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    tableWidgetUi->persontab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    
+    tableWidgetUi->itemtab->setModel(libitemProxy);
+    tableWidgetUi->itemtab->setSortingEnabled(true);
+    tableWidgetUi->itemtab->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableWidgetUi->itemtab->setSelectionMode(QAbstractItemView::MultiSelection);
+    tableWidgetUi->itemtab->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    tableWidgetUi->itemtab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    
+    tableWidgetUi->transtab->setModel(transactionProxy);
+    tableWidgetUi->transtab->setSortingEnabled(true);
+    tableWidgetUi->transtab->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableWidgetUi->transtab->setSelectionMode(QAbstractItemView::MultiSelection);
+    tableWidgetUi->transtab->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    tableWidgetUi->transtab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+
+}
+
+void MainWindow::setupToolbarConnections()
+{
+    setupColumnsConnections();
+    setupSortConnections();
+    setupSearchConnections();
+    setupDeleteConnections();
+    setupAddConnections();
+
+    emit tableWidgetUi->TabSelector->currentChanged(0);
+}
+
+void MainWindow::setupColumnsConnections()
+{
+    // 1) When the tab is changed, the columns dropdown should be updated to the current model columns
+    QObject::connect(tableWidgetUi->TabSelector, &QTabWidget::currentChanged, [&]() {
+        // get the current active abstract table model
+        std::variant<PersonTableModel*,
+               LibItemTableModel*,
+               TransactionTableModel*> model;
+        switch(tableWidgetUi->TabSelector->currentIndex()) {
+            case 0: model = personModel;      break;
+            case 1: model = libitemModel;     break;
+            case 2: model = transactionModel; break;
+            default: return;
+        }
+        toolbarUi->setColumns(model);
+
+    });
+
+    // use the dropdown selection change signal to uncheck/check this item in the columns dropdown
+    QObject::connect(toolbarUi->columns->view(), &QAbstractItemView::pressed,
+                     [&](const QModelIndex &index) {
+        // get the current index of the selected item
+        // int index = toolbarUi->columns->currentIndex();
+        // change the check state of the item
+        // if (toolbarUi->columns->itemData(index, Qt::CheckStateRole).toBool()) {
+        //     toolbarUi->columns->setItemData(index, Qt::Unchecked, Qt::CheckStateRole);
+        // } else {
+        //     toolbarUi->columns->setItemData(index, Qt::Checked, Qt::CheckStateRole);
+        // }
+        std::variant<PersonTableModel*,
+        LibItemTableModel*,
+        TransactionTableModel*> model;
+        switch(tableWidgetUi->TabSelector->currentIndex()) {
+            case 0: model = personModel;      break;
+            case 1: model = libitemModel;     break;
+            case 2: model = transactionModel; break;
+            default: return;
+        }
+        
+        QComboBox *combo = toolbarUi->columns;
+        QAbstractItemModel *m = combo->model();
+        Qt::CheckState cs = static_cast<Qt::CheckState>(
+            m->data(index, Qt::CheckStateRole).toInt());
+            m->setData(index,
+                (cs == Qt::Checked ? Qt::Unchecked : Qt::Checked),
+                Qt::CheckStateRole);
+        combo->showPopup();
+
+        // update the columns in the current model
+        std::visit([&](auto* m) {
+            // Hier rufen wir die andere setColumns-Methode auf, die mit QStringList arbeitet
+            m->setDisplayedColumns(toolbarUi->getCheckedColumns());
+        }, model);
+    });
+}
+
+void MainWindow::setupSortConnections()
+{
+    // 2.1) When the tab is changed, the sort dropdown should be updated to the current model columns
+    QObject::connect(tableWidgetUi->TabSelector, &QTabWidget::currentChanged, [&]() {
+        // get the current active abstract table model
+        std::variant<PersonTableModel*,
+               LibItemTableModel*,
+               TransactionTableModel*> model;
+        switch(tableWidgetUi->TabSelector->currentIndex()) {
+            case 0: model = personModel;      break;
+            case 1: model = libitemModel;     break;
+            case 2: model = transactionModel; break;
+            default: return;
+        }
+
+        // get the previous active sort column from the current selected tab proxy model
+        int sortColumn = 0;
+        switch(tableWidgetUi->TabSelector->currentIndex()) {
+            case 0: sortColumn = personProxy->sortColumn();      break;
+            case 1: sortColumn = libitemProxy->sortColumn();     break;
+            case 2: sortColumn = transactionProxy->sortColumn(); break;
+            default: return;
+        }
+
+        // update the sort dropdown with the current model columns
+        toolbarUi->setSortColumns(model);
+        
+        // update the active sort column to the last used sort column
+        toolbarUi->sort->setCurrentIndex(sortColumn);
+    });
+
+    // 2.2) When the sort dropdown is changed, the current proxy model should be sorted by the selected column
+    QObject::connect(toolbarUi->sort, QOverload<int>::of(&QComboBox::activated), [&](int dropdownIndex) {
+        // get the current active proxy model e.g. personProxy, libitemProxy, transactionProxy
+        CustomFilterProxyModel *currentProxyModel = nullptr;
+        QTableView *currentTableView = nullptr;
+
+        switch(tableWidgetUi->TabSelector->currentIndex()) {
+            case 0: 
+                currentProxyModel = personProxy;
+                currentTableView = tableWidgetUi->persontab;
+                break;
+            case 1: 
+                currentProxyModel = libitemProxy; 
+                currentTableView = tableWidgetUi->itemtab;
+                break;
+            case 2: 
+                currentProxyModel = transactionProxy; 
+                currentTableView = tableWidgetUi->transtab;
+                break;
+            default:
+                qWarning() << "Ungültiger Tab-Index für Sortierung:" << tableWidgetUi->TabSelector->currentIndex();
+                return;
+        }
+
+        if (!currentProxyModel || !currentTableView) {
+            qWarning() << "Konnte ProxyModel oder TableView für Sortierung nicht ermitteln.";
+            return;
+        }
+
+        // Daten aus der ComboBox abrufen. Wir erwarten, dass die ColumnIdentity (als int)
+        // oder der Spaltenindex des Quellmodells als UserData gespeichert ist.
+        // In toolbarUi->setSortColumns wurde die ColumnIdentity als UserData gespeichert.
+        int columnToSort = toolbarUi->sort->itemData(dropdownIndex).toInt();
+        // Aktuelle Sortierspalte und -reihenfolge des Proxy-Modells abrufen
+        int currentSortColumn = currentProxyModel->sortColumn();
+        Qt::SortOrder currentSortOrder = currentProxyModel->sortOrder();
+
+        Qt::SortOrder newSortOrder = Qt::AscendingOrder;
+        // Wenn dieselbe Spalte erneut ausgewählt wird, die Sortierreihenfolge umkehren
+        if (columnToSort == currentSortColumn) {
+            newSortOrder = (currentSortOrder == Qt::AscendingOrder) ? Qt::DescendingOrder : Qt::AscendingOrder;
+        }
+        
+        currentProxyModel->sort(columnToSort, newSortOrder);
+        // Optional: Sicherstellen, dass der Header der TableView die Sortierindikatoren aktualisiert
+        // Dies geschieht normalerweise automatisch, wenn setSortingEnabled(true) gesetzt ist.
+        currentTableView->horizontalHeader()->setSortIndicator(dropdownIndex, newSortOrder);
+    });
+}
+
+void MainWindow::applySearchFilter()
+{
+    CustomFilterProxyModel *currentProxyModel = nullptr;
+
+    switch(tableWidgetUi->TabSelector->currentIndex()) {
+            case 0: 
+                currentProxyModel = personProxy;
+                break;
+            case 1: 
+                currentProxyModel = libitemProxy; 
+                break;
+            case 2: 
+                currentProxyModel = transactionProxy; 
+                break;
+            default:
+                qWarning() << "Ungültiger Tab-Index für Filterung:" << tableWidgetUi->TabSelector->currentIndex();
+                return;
+        }
+
+    if (!currentProxyModel) {
+        qWarning() << "Konnte ProxyModel für Filterung nicht ermitteln.";
+        return;
+    }
+
+    QString filterString = toolbarUi->searchbar->text();
+
+    currentProxyModel->setFilterKeyColumn(-1);
+
+    currentProxyModel->setSearchString(filterString, " ");
+}
+
+void MainWindow::setupSearchConnections()
+{
+    // 3.1) Wenn der Tab gewechselt wird, Filter anwenden
+    QObject::connect(tableWidgetUi->TabSelector, &QTabWidget::currentChanged, [this]()
+    {applySearchFilter();});
+
+    // 3.2) Wenn sich der Text im Suchfeld ändert, Filter anwenden
+    QObject::connect(toolbarUi->searchbar, &QLineEdit::textChanged, [this](const QString&)
+    {applySearchFilter();});
+}
+
+void MainWindow::setupDeleteConnections()
+{
+    // 4) When the deletec button is clicked, the selected rows in the current table view should be deleted
+    QObject::connect(toolbarUi->deletec, &QPushButton::clicked, [&]() {
+        // Bestimme das aktuelle TableView und ProxyModel
+        QTableView *currentTableView = nullptr;
+        CustomFilterProxyModel *currentProxyModel = nullptr;
+        QAbstractTableModel *currentSourceModel = nullptr;
+
+        switch(tableWidgetUi->TabSelector->currentIndex()) {
+            case 0: // Person Tab
+                currentTableView = tableWidgetUi->persontab;
+                currentProxyModel = personProxy;
+                currentSourceModel = personModel;
+                break;
+            case 1: // LibItem Tab
+                currentTableView = tableWidgetUi->itemtab;
+                currentProxyModel = libitemProxy;
+                currentSourceModel = libitemModel;
+                break;
+            case 2: // Transaction Tab
+                currentTableView = tableWidgetUi->transtab;
+                currentProxyModel = transactionProxy;
+                currentSourceModel = transactionModel;
+                break;
+            default:
+                qWarning() << "Ungültiger Tab-Index für Löschvorgang:" << tableWidgetUi->TabSelector->currentIndex();
+                return;
+        }
+
+        if (!currentTableView || !currentProxyModel || !currentSourceModel) {
+            qWarning() << "Konnte TableView, ProxyModel oder SourceModel für Löschvorgang nicht ermitteln.";
+            return;
+        }
+
+        // Hole die ausgewählten Zeilen
+        QModelIndexList selectedIndexes = currentTableView->selectionModel()->selectedRows();
+        
+        if (selectedIndexes.isEmpty()) {
+            QMessageBox::information(this, "Keine Auswahl", "Bitte wählen Sie mindestens eine Zeile zum Löschen aus.");
+            return;
+        }
+
+        // Bestätigungsdialog anzeigen
+        QString message = QString("Möchten Sie wirklich %1 Eintrag/Einträge löschen?").arg(selectedIndexes.size());
+        QMessageBox::StandardButton reply = QMessageBox::question(this, "Löschen bestätigen", message,
+                                                                QMessageBox::Yes | QMessageBox::No);
+        
+        if (reply != QMessageBox::Yes) {
+            return;
+        }
+
+        // Konvertiere Proxy-Indizes zu Source-Indizes
+        QList<int> sourceRows;
+        for (const QModelIndex &proxyIndex : selectedIndexes) {
+            QModelIndex sourceIndex = currentProxyModel->mapToSource(proxyIndex);
+            sourceRows.append(sourceIndex.row());
+        }
+
+        // Sortiere die Zeilen in absteigender Reihenfolge, um beim Löschen keine Indexverschiebungen zu haben
+        std::sort(sourceRows.begin(), sourceRows.end(), std::greater<int>());
+
+        // Lösche die Zeilen aus dem Source-Model
+        for (int row : sourceRows) {
+            // std::cout << "Deleting row: " << row << std::endl;
+            currentSourceModel->removeRow(row);
+        }
+
+        // std::cout << "Gelöscht: " << sourceRows.size() << " Einträge" << std::endl;
+    });
+}
+
+void MainWindow::setupAddConnections()
+{}
 
 void MainWindow::saveModifiedData(const QJsonObject& data) {
     if (!currentEditModel || !currentEditIndex.isValid()) {
@@ -250,7 +594,7 @@ void MainWindow::updateSearchCompleter()
                   return a.length() < b.length();
               });
 
-              
+
     QString lastToken = toolbarUi->searchbar->text().split(' ').last();
     // qDebug() << "Raw suggestions:" << suggestions;
     // qDebug() << "Last token for completer:" << lastToken;
