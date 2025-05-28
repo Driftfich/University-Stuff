@@ -8,5 +8,8 @@
     <file>icons/save.png</file>
     <file>icons/edit.png</file>
     <file>icons/quit.png</file>
-  </qresource>
+</qresource>
+<qresource prefix="/">
+    <file>ui/material.qss</file>
+</qresource>
 </RCC>

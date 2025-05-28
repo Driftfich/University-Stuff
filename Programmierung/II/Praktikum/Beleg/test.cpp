@@ -10,6 +10,7 @@
 #include <QMouseEvent>
 #include <QMessageBox>
 #include <iostream>
+#include <QStyleFactory>
 #include "media.h"
 #include "text.h"
 #include "video.h"
@@ -657,18 +658,31 @@ int test_libitemman() {
 //     return app.exec();
 // }
 
+static void loadQssTheme(QApplication &app, const QString &resourcePath) {
+    QFile f(resourcePath);
+    if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Konnte Theme nicht laden:" << resourcePath;
+        return;
+    }
+    app.setStyleSheet(QString::fromUtf8(f.readAll()));
+}
+
+/**
+ * @brief Startet die MainWindow-UI im modernen Material-Look.
+ * @param argc Anzahl Kommandozeilenargumente.
+ * @param argv Kommandozeilenargumente.
+ * @return app.exec()
+ */
 int test_ui(int argc, char *argv[]) {
     Q_INIT_RESOURCE(ressources);
-    // Initialize the QApplication
-    // Note: The argc and argv parameters are not used in this example, but they are required for QApplication.
-    // If you want to use command line arguments, you can pass them here.
-    // For example: QApplication app(argc, argv);
-    // In this case, we will use an empty argc and argv.
-
     QApplication app(argc, argv);
 
-    // show the main window
-    MainWindow w = MainWindow();
+    // moderner Basis-Style
+    app.setStyle(QStyleFactory::create("Fusion"));
+    // eigenes Material-QSS drüberlegen
+    loadQssTheme(app, ":/ui/material.qss");
+
+    MainWindow w;
     w.show();
     return app.exec();
 }

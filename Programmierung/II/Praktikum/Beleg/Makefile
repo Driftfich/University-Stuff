@@ -930,6 +930,7 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_ressources.cpp
 qrc_ressources.cpp: ressources.qrc \
 		/home/USER/Qt/6.9.0/gcc_64/libexec/rcc \
+		ui/material.qss \
 		icons/lib.png \
 		icons/search.png \
 		icons/trashcan_closed.png \
@@ -2054,14 +2055,18 @@ moc_mainw.cpp: ui/mainw.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidget.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreeview.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		tablemodel/custfiltproxmodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QSortFilterProxyModel \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsortfilterproxymodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qabstractproxymodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
+		manager/library.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QMainWindow \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qmainwindow.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QDockWidget \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qdockwidget.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QSizePolicy \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QSortFilterProxyModel \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsortfilterproxymodel.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qabstractproxymodel.h \
 		moc_predefs.h \
 		/home/USER/Qt/6.9.0/gcc_64/libexec/moc
 	/home/USER/Qt/6.9.0/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/moc_predefs.h -I/home/USER/Qt/6.9.0/gcc_64/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Qt/6.9.0/gcc_64/include -I/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets -I/home/USER/Qt/6.9.0/gcc_64/include/QtGui -I/home/USER/Qt/6.9.0/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ui/mainw.h -o moc_mainw.cpp
@@ -5437,6 +5442,10 @@ mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonObject \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qstyle.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtabbar.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QTabWidget \
+		tablemodel/custfiltproxmodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
 		ui/mainw.h \
 		ui/toolbar.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
@@ -5501,7 +5510,6 @@ mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonObject \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QGridLayout \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QHeaderView \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qheaderview.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QTabWidget \
 		ui/sidepanel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QStackedWidget \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qstackedwidget.h \
@@ -5510,6 +5518,7 @@ mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonObject \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidget.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreeview.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		manager/library.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QSizePolicy
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainw.o ui/mainw.cpp
 
@@ -5981,6 +5990,8 @@ test.o: test.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qmessagebox.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qdialog.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QStyleFactory \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qstylefactory.h \
 		core/media.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonObject \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonobject.h \
@@ -6067,14 +6078,14 @@ test.o: test.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidget.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreeview.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		tablemodel/custfiltproxmodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
+		manager/library.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QMainWindow \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qmainwindow.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QDockWidget \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qdockwidget.h \
-		manager/library.h \
-		tablemodel/custfiltproxmodel.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qdockwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o test.o test.cpp
 
 qrc_ressources.o: qrc_ressources.cpp 
