@@ -6,6 +6,12 @@ QWidget {
     color: #263238; /* Blue Grey 900 - for good contrast */
     font-family: "Roboto", sans-serif;
     font-size: 10pt;
+    border: none;
+}
+
+QFrame {
+    border: none; /* Stellt sicher, dass QFrames keine Ränder haben, außer explizit anders gestylt */
+    background-color: transparent; /* Oft gewünscht, damit sie nicht hervorstechen */
 }
 
 /* Buttons */
