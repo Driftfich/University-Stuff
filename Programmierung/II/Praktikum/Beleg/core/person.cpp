@@ -337,7 +337,7 @@ QJsonObject Person::getSchema() const {
     QJsonObject subclass_schema = getSubclassSchema();
     if (!subclass_schema.isEmpty()) {
         schema.insert("subclass_type", QJsonObject{{"type", "string"}});
-        schema.insert("subclass_params", subclass_schema);
+        schema.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", subclass_schema}});
     }
     return schema;
 }
