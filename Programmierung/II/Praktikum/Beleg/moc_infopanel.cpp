@@ -44,6 +44,7 @@ template <> constexpr inline auto InfoPanel::qt_create_metaobjectdata<qt_meta_ta
         "modifiedData",
         "displayInfo",
         "jsonObject",
+        "schemaObject",
         "enterEditMode",
         "saveChanges",
         "cancelEditMode",
@@ -70,23 +71,27 @@ template <> constexpr inline auto InfoPanel::qt_create_metaobjectdata<qt_meta_ta
         QtMocHelpers::SlotData<void(const QJsonObject &)>(4, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QJsonObject, 5 },
         }}),
+        // Slot 'displayInfo'
+        QtMocHelpers::SlotData<void(const QJsonObject &, const QJsonObject &)>(4, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QJsonObject, 5 }, { QMetaType::QJsonObject, 6 },
+        }}),
         // Slot 'enterEditMode'
-        QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPublic, QMetaType::Void),
-        // Slot 'saveChanges'
         QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPublic, QMetaType::Void),
-        // Slot 'cancelEditMode'
+        // Slot 'saveChanges'
         QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPublic, QMetaType::Void),
+        // Slot 'cancelEditMode'
+        QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'paintDeleteItemButton'
-        QtMocHelpers::SlotData<void(QPainter *, const QStyleOptionViewItem &, const QModelIndex &)>(9, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { 0x80000000 | 10, 11 }, { 0x80000000 | 12, 13 }, { 0x80000000 | 14, 15 },
+        QtMocHelpers::SlotData<void(QPainter *, const QStyleOptionViewItem &, const QModelIndex &)>(10, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { 0x80000000 | 11, 12 }, { 0x80000000 | 13, 14 }, { 0x80000000 | 15, 16 },
         }}),
         // Slot 'onItemChanged'
-        QtMocHelpers::SlotData<void(QTreeWidgetItem *, int)>(16, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { 0x80000000 | 17, 18 }, { QMetaType::Int, 19 },
+        QtMocHelpers::SlotData<void(QTreeWidgetItem *, int)>(17, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { 0x80000000 | 18, 19 }, { QMetaType::Int, 20 },
         }}),
         // Slot 'handleDeleteAction'
-        QtMocHelpers::SlotData<void(QTreeWidgetItem *)>(20, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { 0x80000000 | 17, 18 },
+        QtMocHelpers::SlotData<void(QTreeWidgetItem *)>(21, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { 0x80000000 | 18, 19 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -113,12 +118,13 @@ void InfoPanel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         switch (_id) {
         case 0: _t->saveRequested((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1]))); break;
         case 1: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1]))); break;
-        case 2: _t->enterEditMode(); break;
-        case 3: _t->saveChanges(); break;
-        case 4: _t->cancelEditMode(); break;
-        case 5: _t->paintDeleteItemButton((*reinterpret_cast< std::add_pointer_t<QPainter*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QStyleOptionViewItem>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[3]))); break;
-        case 6: _t->onItemChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
-        case 7: _t->handleDeleteAction((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1]))); break;
+        case 2: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[2]))); break;
+        case 3: _t->enterEditMode(); break;
+        case 4: _t->saveChanges(); break;
+        case 5: _t->cancelEditMode(); break;
+        case 6: _t->paintDeleteItemButton((*reinterpret_cast< std::add_pointer_t<QPainter*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QStyleOptionViewItem>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[3]))); break;
+        case 7: _t->onItemChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
+        case 8: _t->handleDeleteAction((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1]))); break;
         default: ;
         }
     }
@@ -147,14 +153,14 @@ int InfoPanel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 9)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

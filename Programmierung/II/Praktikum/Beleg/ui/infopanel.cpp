@@ -13,6 +13,10 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QStyleOptionViewItem>
+#include <QSpinBox>
+#include <QDateEdit>
+#include <QComboBox>
+
 #include <QEvent>
 #include "infopanel.h"
 
@@ -28,7 +32,98 @@ public:
     {
         if (index.column() == 0)
             return nullptr;
+
+        QString itemType = index.data(SchemaTypeRole).toString();
+        QString itemFormat = index.data(SchemaFormatRole).toString();
+        QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
+
+        if (itemType == "integer") {
+            QSpinBox* editor = new QSpinBox(parent);
+            editor->setFrame(false);
+            editor->setMinimum(-2147483647); // Or from schema
+            editor->setMaximum(2147483647);  // Or from schema
+            return editor;
+        }
+        else if (itemType == "string" && itemFormat == "date") {
+            QDateEdit* editor = new QDateEdit(parent);
+            editor->setFrame(false);
+            editor->setCalendarPopup(true);
+            editor->setDisplayFormat("yyyy-MM-dd"); // Or from schema/locale
+            return editor;
+        }
+        else if (itemType == "boolean") {
+            QComboBox* editor = new QComboBox(parent);
+            editor->addItem(tr("true"), true);
+            editor->addItem(tr("false"), false);
+            editor->setFrame(false);
+            return editor;
+        }
+        else if (itemType == "string" && enumValuesVar.canConvert<QStringList>()) {
+
+            QStringList enumValues = enumValuesVar.toStringList();
+            if (!enumValues.isEmpty()) {
+                QComboBox* editor = new QComboBox(parent);
+                editor->addItems(enumValues);
+                editor->setFrame(false);
+                return editor;
+            }
+        }
+        
+        // Fallback
         return QStyledItemDelegate::createEditor(parent, option, index);
+    }
+
+
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override {
+        QString value = index.model()->data(index, Qt::EditRole).toString();
+        QString itemType = index.data(SchemaTypeRole).toString();
+        QString itemFormat = index.data(SchemaFormatRole).toString();
+
+        if (itemType == "integer") {
+            QSpinBox* spinBox = qobject_cast<QSpinBox*>(editor);
+            if (spinBox) spinBox->setValue(value.toInt());
+        } else if (itemType == "string" && itemFormat == "date") {
+            QDateEdit* dateEdit = qobject_cast<QDateEdit*>(editor);
+            if (dateEdit) dateEdit->setDate(QDate::fromString(value, "yyyy-MM-dd"));
+        } else if (itemType == "boolean") {
+            QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
+            if (comboBox) {
+                if (value.toLower() == "true") comboBox->setCurrentIndex(0);
+                else comboBox->setCurrentIndex(1);
+            }
+        } else if (itemType == "string" && index.data(SchemaEnumValuesRole).canConvert<QStringList>()) {
+            QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
+            if (comboBox) {
+                int enumIdx = comboBox->findText(value);
+                if (enumIdx != -1) comboBox->setCurrentIndex(enumIdx);
+            }
+        }
+        else {
+            QStyledItemDelegate::setEditorData(editor, index);
+        }
+    }
+
+
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override {
+        QString itemType = index.data(SchemaTypeRole).toString();
+        QString itemFormat = index.data(SchemaFormatRole).toString();
+
+        if (itemType == "integer") {
+            QSpinBox* spinBox = qobject_cast<QSpinBox*>(editor);
+            if (spinBox) model->setData(index, spinBox->value(), Qt::EditRole);
+        } else if (itemType == "string" && itemFormat == "date") {
+            QDateEdit* dateEdit = qobject_cast<QDateEdit*>(editor);
+            if (dateEdit) model->setData(index, dateEdit->date().toString("yyyy-MM-dd"), Qt::EditRole);
+        } else if (itemType == "boolean") {
+            QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
+            if (comboBox) model->setData(index, comboBox->currentData().toBool(), Qt::EditRole);
+        } else if (itemType == "string" && index.data(SchemaEnumValuesRole).canConvert<QStringList>()) {
+             QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
+             if (comboBox) model->setData(index, comboBox->currentText(), Qt::EditRole);
+        }
+        else {
+            QStyledItemDelegate::setModelData(editor, model, index);
+        }
     }
 
     void paint(QPainter* painter,
@@ -123,29 +218,93 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
     updateAddButtons(inEditMode);
 }
 
-// void InfoPanel::addJsonToTree(const QJsonValue& value, QTreeWidgetItem* parent) {
-//     if (value.isObject()) {
-//         // Rekursion für verschachtelte Objekte
-//         parent->setData(0, Qt::UserRole, "object"); // Markiere als Gruppe
-//         QJsonObject obj = value.toObject();
-//         for (const QString& key : obj.keys()) {
-//             QTreeWidgetItem* child = new QTreeWidgetItem(parent, {key, ""});
-//             addJsonToTree(obj[key], child);
-//         }
-//     } else if (value.isArray()) {
-//         // Arrays als nummerierte Einträge anzeigen
-//         QJsonArray array = value.toArray();
-//         for (int i = 0; i < array.size(); ++i) {
-//             QTreeWidgetItem* child = new QTreeWidgetItem(parent, {QString("[%1]").arg(i), ""});
-//             addJsonToTree(array[i], child);
-//         }
-//     } else {
-//         // Einfache Werte direkt in die zweite Spalte
-//         parent->setText(1, value.toVariant().toString());
-//         // Markiere als Blatt-Knoten (editierbar)
-//         parent->setData(0, Qt::UserRole, "leaf");
-//     }
-// }
+
+
+void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject) {
+    originalData = jsonObject;
+    currentSchema = schemaObject; // Store the schema
+    treeWidget->clear();
+    hoveredItemForDelete = QPersistentModelIndex();
+
+    saveButton->setEnabled(false);
+    saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
+    editButton->setText(tr("Bearbeiten"));
+    editButton->setIcon(QIcon(":/icons/edit.png"));
+    
+    for (const QString& key : jsonObject.keys()) {
+        QTreeWidgetItem *topLevelItem = new QTreeWidgetItem(treeWidget);
+        topLevelItem->setText(0, key);
+        // Pass the schema definition for this specific key
+        addJsonToTreeRecursive(jsonObject[key], topLevelItem, 0, currentSchema.value(key).toObject());
+    }
+    
+    treeWidget->expandAll();
+    treeWidget->resizeColumnToContents(0);
+    treeWidget->resizeColumnToContents(1);
+
+    setTreeItemsEditable(inEditMode);
+    updateAddButtons(inEditMode);
+}
+
+
+void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth, const QJsonObject& currentItemSchema) {
+    QFont itemFont = calculateFontForDepth(depth);
+    thisItem->setFont(0, itemFont); // Font for key/attribute column
+
+    // Store schema information on the item if schema is provided
+    if (!currentItemSchema.isEmpty()) {
+        if (currentItemSchema.contains("type")) {
+            thisItem->setData(0, SchemaTypeRole, currentItemSchema.value("type").toString());
+        }
+        if (currentItemSchema.contains("format")) {
+            thisItem->setData(0, SchemaFormatRole, currentItemSchema.value("format").toString());
+        }
+        if (currentItemSchema.contains("enum") && currentItemSchema.value("enum").isArray()) {
+            QStringList enumList;
+            QJsonArray enumArray = currentItemSchema.value("enum").toArray();
+            for(const QJsonValue& val : enumArray) {
+                enumList.append(val.toString());
+            }
+            thisItem->setData(0, SchemaEnumValuesRole, enumList);
+        }
+    }
+
+    if (valueForThisItem.isObject()) {
+        thisItem->setData(0, Qt::UserRole, "object"); // General type
+        QJsonObject obj = valueForThisItem.toObject();
+        // For objects, the currentItemSchema might define properties for its children
+        // or it might be a generic object schema.
+        // If currentItemSchema has a "properties" key, use that for children.
+        QJsonObject propertiesSchema = currentItemSchema.value("properties").toObject();
+
+        for (const QString& key : obj.keys()) {
+            QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
+            child->setText(0, key);
+            // Pass the schema for this specific child key
+            QJsonObject childSchema = propertiesSchema.value(key).toObject();
+            if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
+                 // Fallback to schema for additionalProperties if specific property schema not found
+                childSchema = currentItemSchema.value("additionalProperties").toObject();
+            }
+            addJsonToTreeRecursive(obj[key], child, depth + 1, childSchema);
+        }
+    } else if (valueForThisItem.isArray()) {
+        thisItem->setData(0, Qt::UserRole, "array"); // General type
+        QJsonArray array = valueForThisItem.toArray();
+        // For arrays, the schema for items is usually under an "items" key in currentItemSchema
+        QJsonObject itemSchema = currentItemSchema.value("items").toObject();
+        for (int i = 0; i < array.size(); ++i) {
+            QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
+            child->setText(0, QString("[%1]").arg(i));
+            // All items in the array use the same itemSchema
+            addJsonToTreeRecursive(array[i], child, depth + 1, itemSchema);
+        }
+    } else { // Leaf node
+        thisItem->setText(1, valueForThisItem.toVariant().toString());
+        thisItem->setData(0, Qt::UserRole, "leaf"); // General type
+        thisItem->setFont(1, itemFont);
+    }
+}
 
 void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth) {
     QFont itemFont = calculateFontForDepth(depth);

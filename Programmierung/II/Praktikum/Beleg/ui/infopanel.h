@@ -6,6 +6,10 @@
 #include <QJsonObject>
 #include <QPushButton>
 
+const int SchemaTypeRole = Qt::UserRole + 1;
+const int SchemaFormatRole = Qt::UserRole + 2;
+const int SchemaEnumValuesRole = Qt::UserRole + 3;
+
 class InfoPanel : public QWidget {
     Q_OBJECT
 
@@ -15,6 +19,7 @@ class InfoPanel : public QWidget {
 
     public slots:
         void displayInfo(const QJsonObject& jsonObject);
+        void displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject);
         // void addJsonToTree(const QJsonValue& value, QTreeWidgetItem* parent);
         void enterEditMode();
         void saveChanges();
@@ -29,6 +34,7 @@ class InfoPanel : public QWidget {
         QTreeWidget *treeWidget;
         QPushButton *saveButton;
         QPushButton *editButton;
+        QJsonObject currentSchema;
 
         QJsonObject originalData; // original data for quit edit mode without saving
         bool inEditMode;
@@ -57,6 +63,7 @@ class InfoPanel : public QWidget {
         QRect getDeleteButtonRectForItem(const QTreeWidgetItem* item, const QStyleOptionViewItem& option) const;
 
         void addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth = 0);
+        void addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth, const QJsonObject& currentItemSchema);
         bool isLowestCollection(QTreeWidgetItem* item) const;
         bool isHighestItem(QTreeWidgetItem* item) const;
 
