@@ -20,6 +20,7 @@ class InfoPanel : public QWidget {
         void saveChanges();
         void cancelEditMode();
 
+        void paintDeleteItemButton(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index);
     signals:
         // Signal wird ausgelöst, wenn der User Änderungen speichern will
         void saveRequested(const QJsonObject& modifiedData);
@@ -32,6 +33,10 @@ class InfoPanel : public QWidget {
         QJsonObject originalData; // original data for quit edit mode without saving
         bool inEditMode;
 
+        // for delete button at item level
+        QPixmap deleteIcon;
+        QPersistentModelIndex hoveredItemForDelete;
+
         void setTreeItemsEditable(bool editable);
         void setTreeItemEditable(QTreeWidgetItem* item, bool editable);
         QJsonObject collectDataFromTree();
@@ -42,14 +47,19 @@ class InfoPanel : public QWidget {
         void onAddArrayItem();
         void onAddObjectItem();
 
+        bool isItemDeletable(QTreeWidgetItem* item) const;
+        QRect getDeleteButtonRectForItem(const QTreeWidgetItem* item, const QStyleOptionViewItem& option) const;
+
         void addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem);
         bool isLowestCollection(QTreeWidgetItem* item) const;
         bool isHighestItem(QTreeWidgetItem* item) const;
 
     private slots:
         void onItemChanged(QTreeWidgetItem* item, int column);
+        void handleDeleteAction(QTreeWidgetItem* item);
 
-
+    protected:
+        bool eventFilter(QObject* watched, QEvent *event) override;
 };
 
 #endif

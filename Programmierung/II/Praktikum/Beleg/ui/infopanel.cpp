@@ -10,10 +10,17 @@
 #include <QToolButton>
 #include <QInputDialog>
 #include <QLineEdit>
+#include <QPainter>
+#include <QMouseEvent>
+#include <QStyleOptionViewItem>
+#include <QEvent>
 #include "infopanel.h"
 
 class ReadOnlyDelegate : public QStyledItemDelegate {
 public:
+    ReadOnlyDelegate(InfoPanel* panel, QObject* parent = nullptr)
+        : QStyledItemDelegate(parent), infoPanelPtr(panel) {}
+
     using QStyledItemDelegate::QStyledItemDelegate;
     QWidget* createEditor(QWidget* parent,
                           const QStyleOptionViewItem& option,
@@ -23,6 +30,19 @@ public:
             return nullptr;
         return QStyledItemDelegate::createEditor(parent, option, index);
     }
+
+    void paint(QPainter* painter,
+                const QStyleOptionViewItem& option,
+                const QModelIndex& index) const override
+    {
+        QStyledItemDelegate::paint(painter, option, index);
+
+        if (infoPanelPtr && index.column() == 1) {
+            infoPanelPtr->paintDeleteItemButton(painter, option, index);
+        }
+    }
+    private:
+        InfoPanel* infoPanelPtr; // pointer to the InfoPanel instance
 };
 
 InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWidget(this)), inEditMode(false) {
@@ -50,13 +70,24 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
     layout->addLayout(buttonLayout);
     layout->addWidget(treeWidget);
 
-    treeWidget->setItemDelegate(new ReadOnlyDelegate(treeWidget)); 
+    treeWidget->setItemDelegate(new ReadOnlyDelegate(this, treeWidget)); 
 
     // connect signals and slots
     connect(saveButton, &QPushButton::clicked, this, &InfoPanel::saveChanges);
     connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
     connect(treeWidget, &QTreeWidget::itemChanged, this, &InfoPanel::onItemChanged);
 
+    // load the delete icon
+    deleteIcon = QPixmap(":/icons/quit.png");
+    if (deleteIcon.isNull()) {
+        QMessageBox::warning(this, tr("Fehler"), tr("Das Symbol für das Löschen konnte nicht geladen werden."));
+    }
+
+    treeWidget->viewport()->installEventFilter(this); // Install event filter to handle mouse events
+    treeWidget->viewport()->setMouseTracking(true); // Enable mouse tracking for the viewport
+
+    // set the edit mode to false initially
+    inEditMode = false;
 }
 
 InfoPanel::~InfoPanel() {
@@ -66,6 +97,7 @@ InfoPanel::~InfoPanel() {
 void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
     originalData = jsonObject; // Store original data for canceling edits
     treeWidget->clear();
+    hoveredItemForDelete = QPersistentModelIndex(); // Reset the hovered item for delete button
 
     // reset buttons
     saveButton->setEnabled(false);
@@ -87,7 +119,9 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
     treeWidget->resizeColumnToContents(1);
 
     // Initial nicht editierbar
-    setTreeItemsEditable(false);
+    inEditMode = false;
+    setTreeItemsEditable(inEditMode);
+    updateAddButtons(inEditMode);
 }
 
 // void InfoPanel::addJsonToTree(const QJsonValue& value, QTreeWidgetItem* parent) {
@@ -219,6 +253,11 @@ void InfoPanel::saveChanges() {
     
     // QMessageBox::information(this, tr("Gespeichert"), tr("Änderungen wurden übernommen."));
     updateAddButtons(false); // Hide add buttons after saving
+    if (hoveredItemForDelete.isValid()) {
+        // If a delete button was hovered, we need to reset it
+        treeWidget->update(hoveredItemForDelete);
+    }
+    hoveredItemForDelete = QPersistentModelIndex(); // Reset the hovered item for delete button
 }
 
 void InfoPanel::cancelEditMode() {
@@ -228,6 +267,7 @@ void InfoPanel::cancelEditMode() {
     // Edit-Modus verlassen
     inEditMode = false;
     setTreeItemsEditable(false);
+    updateAddButtons(false); // Hide add buttons
     
     // Button-Zustände zurücksetzen
     saveButton->setEnabled(false);
@@ -239,7 +279,11 @@ void InfoPanel::cancelEditMode() {
     disconnect(editButton, &QPushButton::clicked, this, &InfoPanel::cancelEditMode);
     connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
 
-    updateAddButtons(false); // Hide add buttons after canceling
+    // updateAddButtons(false); // Hide add buttons after canceling
+    if (hoveredItemForDelete.isValid()) { // Force repaint
+        treeWidget->update(hoveredItemForDelete);
+    }
+    hoveredItemForDelete = QPersistentModelIndex();
 }
 
 void InfoPanel::setTreeItemsEditable(bool editable) {
@@ -324,6 +368,7 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
         }
         return obj;
     }
+    return QJsonValue(); // Fallback, should not happen
 }
 
 void InfoPanel::restoreOriginalData() {
@@ -369,6 +414,8 @@ void InfoPanel::updateAddButtons(bool show) {
 }
 
 void InfoPanel::onAddArrayItem() {
+    if (!inEditMode) return; // Only allow adding items in edit mode
+
     QToolButton* button = qobject_cast<QToolButton*>(sender());
     if (!button) return;
 
@@ -392,6 +439,8 @@ void InfoPanel::onAddArrayItem() {
 }
 
 void InfoPanel::onAddObjectItem() {
+    if (!inEditMode) return; // Only allow adding items in edit mode
+
     QToolButton* button = qobject_cast<QToolButton*>(sender());
     if (!button) return;
 
@@ -423,4 +472,142 @@ void InfoPanel::onAddObjectItem() {
         }
         onItemChanged(newItem, 1); // Notify that data changed
     }
+}
+
+bool InfoPanel::isItemDeletable(QTreeWidgetItem* item) const {
+    if (!inEditMode || !item || !item->parent()) {
+        return false;
+    }
+    // Only "leaf" items (individual values) are deletable via this hover mechanism.
+    if (item->data(0, Qt::UserRole).toString() != "leaf") {
+        return false;
+    }
+    // The parent of this leaf item must be a "lowest collection" (a simple array or object).
+    return isLowestCollection(item->parent()) && !isHighestItem(item->parent());
+}
+
+QRect InfoPanel::getDeleteButtonRectForItem(const QTreeWidgetItem* item, const QStyleOptionViewItem& option) const {
+    Q_UNUSED(item); // Item might be used for more specific sizing in the future
+    // Place button at the far right of the item's visual rect for column 1
+    // We need the visual rect for column 1. The 'option.rect' is for the whole row if columns are not individually handled by delegate.
+    // For simplicity, let's place it at the end of option.rect for now.
+    // A more precise way would be to get column 1's rect: treeWidget->visualRect(treeWidget->indexFromItem(item, 1))
+    // However, option.rect is what the delegate's paint method gets.
+    
+    int buttonSize = 16; // Size of the delete button
+    // Position it vertically centered, and to the far right of the item's area
+    // A small margin from the right edge
+    int margin = 2; 
+    // Ensure we are using the rect for the correct column if possible, or the whole item rect
+    QRect itemRect = option.rect; // This is the rect for the cell being painted by the delegate
+
+    return QRect(itemRect.right() - buttonSize - margin,
+                 itemRect.top() + (itemRect.height() - buttonSize) / 2,
+                 buttonSize, buttonSize);
+}
+
+void InfoPanel::paintDeleteItemButton(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) {
+    if (index.isValid() && index == hoveredItemForDelete) {
+        QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(index.internalPointer());
+        if (isItemDeletable(item)) {
+            QRect buttonRect = getDeleteButtonRectForItem(item, option);
+            painter->drawPixmap(buttonRect, deleteIcon);
+        }
+    }
+}
+
+void InfoPanel::handleDeleteAction(QTreeWidgetItem* itemToDelete) {
+    if (!itemToDelete || !itemToDelete->parent()) return;
+
+    QTreeWidgetItem* parentItem = itemToDelete->parent();
+    int removedAtIndex = parentItem->indexOfChild(itemToDelete); // Get index before removing
+
+    parentItem->removeChild(itemToDelete);
+    delete itemToDelete; // Crucial: actually delete the item
+
+    // If parent was an array, re-index subsequent siblings
+    if (parentItem->data(0, Qt::UserRole).toString() == "array") {
+        for (int i = 0; i < parentItem->childCount(); ++i) {
+            // Only re-index items that were at or after the removed item's original position
+            // This loop re-indexes all, which is fine and simpler.
+            parentItem->child(i)->setText(0, QString("[%1]").arg(i));
+        }
+    }
+
+    onItemChanged(nullptr, -1); // Indicate a general change
+    updateAddButtons(true);     // Parent might now be empty or its status changed
+    
+    // If the deleted item was hovered, clear the hover state
+    if (hoveredItemForDelete.isValid() && static_cast<QTreeWidgetItem*>(hoveredItemForDelete.internalPointer()) == itemToDelete) {
+        hoveredItemForDelete = QPersistentModelIndex();
+    }
+    treeWidget->update(); // Force repaint of the tree view area
+}
+
+bool InfoPanel::eventFilter(QObject* watched, QEvent* event) {
+    if (watched == treeWidget->viewport()) {
+        if (!inEditMode) { // Only handle hover/delete actions in edit mode
+            if (hoveredItemForDelete.isValid()) { // Clear hover if exiting edit mode while hovering
+                QModelIndex oldHover = hoveredItemForDelete;
+                hoveredItemForDelete = QPersistentModelIndex();
+                treeWidget->update(oldHover);
+            }
+            return QWidget::eventFilter(watched, event);
+        }
+
+        if (event->type() == QEvent::MouseMove || event->type() == QEvent::HoverMove) {
+            QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+            QModelIndex index = treeWidget->indexAt(mouseEvent->pos());
+            QTreeWidgetItem* item = nullptr;
+            if (index.isValid()) {
+                item = static_cast<QTreeWidgetItem*>(index.internalPointer());
+            }
+
+            QModelIndex oldHoveredIndex = hoveredItemForDelete;
+            QPersistentModelIndex newHoverPersistentIndex; // Default to invalid
+
+            if (item && isItemDeletable(item)) {
+                newHoverPersistentIndex = index;
+            }
+            // else: item is not deletable or index is invalid, newHoverPersistentIndex remains invalid
+
+            if (oldHoveredIndex != newHoverPersistentIndex) {
+                hoveredItemForDelete = newHoverPersistentIndex;
+                if (oldHoveredIndex.isValid()) {
+                    treeWidget->update(oldHoveredIndex); // Repaint old hovered item (remove button)
+                }
+                if (hoveredItemForDelete.isValid()) {
+                    treeWidget->update(hoveredItemForDelete); // Repaint new hovered item (add button)
+                }
+            }
+            return true; // Event handled
+        }
+        else if (event->type() == QEvent::HoverLeave || event->type() == QEvent::Leave) {
+             if (hoveredItemForDelete.isValid()) {
+                QModelIndex oldHover = hoveredItemForDelete;
+                hoveredItemForDelete = QPersistentModelIndex();
+                treeWidget->update(oldHover); // Repaint to remove button
+            }
+            return true; // Event handled
+        }
+        else if (event->type() == QEvent::MouseButtonPress) {
+            if (hoveredItemForDelete.isValid()) {
+                QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+                QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(hoveredItemForDelete.internalPointer());
+                // Need QStyleOptionViewItem for the hovered item to get its rect
+                QStyleOptionViewItem option;
+                option.rect = treeWidget->visualRect(hoveredItemForDelete); // Get rect for the specific cell
+                // If the delegate is per-column, this might need to be index for column 1.
+                // For simplicity, assuming option.rect from visualRect(hoveredItemForDelete) is sufficient.
+
+                QRect buttonRect = getDeleteButtonRectForItem(item, option);
+                if (buttonRect.contains(mouseEvent->pos())) {
+                    handleDeleteAction(item);
+                    // hoveredItemForDelete will be cleared in handleDeleteAction if it was the one deleted
+                    return true; // Event handled
+                }
+            }
+        }
+    }
+    return QWidget::eventFilter(watched, event);
 }
