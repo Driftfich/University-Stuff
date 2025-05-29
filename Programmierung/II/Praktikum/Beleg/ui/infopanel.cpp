@@ -16,6 +16,7 @@
 #include <QSpinBox>
 #include <QDateEdit>
 #include <QComboBox>
+#include <QDebug>
 
 #include <QEvent>
 #include "infopanel.h"
@@ -36,6 +37,12 @@ public:
         QString itemType = index.data(SchemaTypeRole).toString();
         QString itemFormat = index.data(SchemaFormatRole).toString();
         QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
+        
+        // Debug output to check what we get from the index
+        qDebug() << "Debug createEditor: row=" << index.row() << "col=" << index.column();
+        qDebug() << "  itemType=" << itemType;
+        qDebug() << "  itemFormat=" << itemFormat;
+        qDebug() << "  enumValues=" << enumValuesVar;
 
         if (itemType == "integer") {
             QSpinBox* editor = new QSpinBox(parent);
@@ -231,13 +238,19 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
     editButton->setText(tr("Bearbeiten"));
     editButton->setIcon(QIcon(":/icons/edit.png"));
     
-    for (const QString& key : jsonObject.keys()) {
-        QTreeWidgetItem *topLevelItem = new QTreeWidgetItem(treeWidget);
-        topLevelItem->setText(0, key);
-        // Pass the schema definition for this specific key
-        addJsonToTreeRecursive(jsonObject[key], topLevelItem, 0, currentSchema.value(key).toObject());
-    }
-    
+    // for (const QString& key : jsonObject.keys()) {
+    //     QTreeWidgetItem *topLevelItem = new QTreeWidgetItem(treeWidget);
+    //     topLevelItem->setText(0, key);
+    //     // Pass the schema definition for this specific key
+    //     addJsonToTreeRecursive(jsonObject[key], topLevelItem, 0, currentSchema.value(key).toObject());
+    // }
+
+    // now recurse once on the invisible root
+    addJsonToTreeRecursive(jsonObject,
+                           treeWidget->invisibleRootItem(),
+                           0,
+                           currentSchema);
+
     treeWidget->expandAll();
     treeWidget->resizeColumnToContents(0);
     treeWidget->resizeColumnToContents(1);
@@ -249,60 +262,55 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
 
 void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth, const QJsonObject& currentItemSchema) {
     QFont itemFont = calculateFontForDepth(depth);
-    thisItem->setFont(0, itemFont); // Font for key/attribute column
-
-    // Store schema information on the item if schema is provided
-    if (!currentItemSchema.isEmpty()) {
-        if (currentItemSchema.contains("type")) {
-            thisItem->setData(0, SchemaTypeRole, currentItemSchema.value("type").toString());
-        }
-        if (currentItemSchema.contains("format")) {
-            thisItem->setData(0, SchemaFormatRole, currentItemSchema.value("format").toString());
-        }
-        if (currentItemSchema.contains("enum") && currentItemSchema.value("enum").isArray()) {
-            QStringList enumList;
-            QJsonArray enumArray = currentItemSchema.value("enum").toArray();
-            for(const QJsonValue& val : enumArray) {
-                enumList.append(val.toString());
-            }
-            thisItem->setData(0, SchemaEnumValuesRole, enumList);
-        }
-    }
+    thisItem->setFont(0, itemFont); // Font for the key column of thisItem (e.g., "person", or "fname")
 
     if (valueForThisItem.isObject()) {
-        thisItem->setData(0, Qt::UserRole, "object"); // General type
+        thisItem->setData(0, Qt::UserRole, "object"); // 'thisItem' (e.g., "person", "subclass_params") represents an object.
         QJsonObject obj = valueForThisItem.toObject();
-        // For objects, the currentItemSchema might define properties for its children
-        // or it might be a generic object schema.
-        // If currentItemSchema has a "properties" key, use that for children.
-        QJsonObject propertiesSchema = currentItemSchema.value("properties").toObject();
 
+        QJsonObject propertiesSchema;
+        if (currentItemSchema.value("type").toString() == "object" && currentItemSchema.contains("properties")) {
+            propertiesSchema = currentItemSchema.value("properties").toObject();
+        }
+        qDebug() << "Current item schema for object:" << currentItemSchema;
+        qDebug() << "propertiesSchema for" << thisItem->text(0) << "->" << propertiesSchema;
         for (const QString& key : obj.keys()) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
-            // Pass the schema for this specific child key
             QJsonObject childSchema = propertiesSchema.value(key).toObject();
+            qDebug() << key << "->" << childSchema;
             if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
-                 // Fallback to schema for additionalProperties if specific property schema not found
                 childSchema = currentItemSchema.value("additionalProperties").toObject();
             }
             addJsonToTreeRecursive(obj[key], child, depth + 1, childSchema);
         }
     } else if (valueForThisItem.isArray()) {
-        thisItem->setData(0, Qt::UserRole, "array"); // General type
+        thisItem->setData(0, Qt::UserRole, "array"); // 'thisItem' (e.g., "transactions", "artist_ids") represents an array.
         QJsonArray array = valueForThisItem.toArray();
-        // For arrays, the schema for items is usually under an "items" key in currentItemSchema
-        QJsonObject itemSchema = currentItemSchema.value("items").toObject();
+
+        QJsonObject itemSchema; // Schema for individual items in the array
+        if (currentItemSchema.value("type").toString() == "array" && currentItemSchema.contains("items")) {
+            itemSchema = currentItemSchema.value("items").toObject();
+        }
+
         for (int i = 0; i < array.size(); ++i) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, QString("[%1]").arg(i));
-            // All items in the array use the same itemSchema
             addJsonToTreeRecursive(array[i], child, depth + 1, itemSchema);
         }
-    } else { // Leaf node
+    } 
+    else { // Leaf node
         thisItem->setText(1, valueForThisItem.toVariant().toString());
-        thisItem->setData(0, Qt::UserRole, "leaf"); // General type
-        thisItem->setFont(1, itemFont);
+        thisItem->setData(0, Qt::UserRole, "leaf");
+        thisItem->setFont(1, calculateFontForDepth(depth));
+
+        // set the schema type and format for the item
+        QString itemType = currentItemSchema.value("type").toString();
+        QString itemFormat = currentItemSchema.value("format").toString();
+        QStringList enumValues = currentItemSchema.value("enum").toVariant().toStringList();
+        thisItem->setData(1, SchemaTypeRole, itemType);
+        thisItem->setData(1, SchemaFormatRole, itemFormat);
+        thisItem->setData(1, SchemaEnumValuesRole, enumValues);
     }
 }
 

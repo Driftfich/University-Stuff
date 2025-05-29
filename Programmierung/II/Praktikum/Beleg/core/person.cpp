@@ -309,6 +309,39 @@ std::shared_ptr<Person> Person::PersonFactory(const QJsonObject& json) {
     }
 }
 
+// schema methods
+QJsonObject Person::getLocalSchema() const {
+    QJsonObject schema;
+
+    schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}};
+    schema["fname"] = QJsonObject{{"type", "string"}};
+    schema["lname"] = QJsonObject{{"type", "string"}};
+    schema["ename"] = QJsonObject{{"type", "string"}};
+    schema["birthday"] = QJsonObject{{"type", "string"}, {"format", "date"}};
+    schema["gender"] = QJsonObject{
+        {"type", "string"},
+        {"enum", QJsonArray{"Female", "Male", "Diverse", "Unknown"}}
+    };
+    schema["note"] = QJsonObject{{"type", "string"}};
+    schema["location"] = QJsonObject{{"type", "string"}};
+    schema["email"] = QJsonObject{{"type", "string"}, {"format", "email"}};
+    schema["tel"] = QJsonObject{{"type", "string"}, {"format", "tel"}};
+
+    return schema;
+}
+
+QJsonObject Person::getSchema() const {
+    QJsonObject schema;
+    schema.insert("type", "object");
+    schema.insert("person", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
+    QJsonObject subclass_schema = getSubclassSchema();
+    if (!subclass_schema.isEmpty()) {
+        schema.insert("subclass_type", QJsonObject{{"type", "string"}});
+        schema.insert("subclass_params", subclass_schema);
+    }
+    return schema;
+}
+
 
 void Person::printbase(std::ostream& os) const {
     os << "ID: " << id << "\n"

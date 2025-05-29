@@ -209,6 +209,29 @@ QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index, const Tran
     return CompleteJson;
 }
 
+QJsonObject PersonTableModel::getSchemaObject(const QModelIndex& index) const {
+    if (!index.isValid()) {
+        return QJsonObject();
+    }
+    
+    unsigned long row = (unsigned long) index.row();
+    if (row >= (unsigned long) personMan->getPersons().size()) {
+        return QJsonObject();
+    }
+
+    std::shared_ptr<Person> person = (*personMan)[row];
+    if (!person) {
+        return QJsonObject();
+    }
+
+    QJsonObject rootSchema;
+    QJsonObject schema = person->getSchema();
+
+    rootSchema.insert("type", QStringLiteral("object"));
+    rootSchema.insert("properties", schema);
+    return rootSchema;
+}
+
 bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
     if (!index.isValid()) {
         return false;

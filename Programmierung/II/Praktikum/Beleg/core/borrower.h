@@ -71,6 +71,7 @@ class Borrower: public Person {
         QString getSubclassType() const override { return "Borrower"; }
         QJsonObject getSubclassParams() const override;
         int loadSubclassParams(const QJsonObject& json) override;
+        QJsonObject getSubclassSchema() const override;
         Borrower(const QJsonObject& json) : Person(json) {
             if (loadSubclassParams(json) != 0) {
                 throw std::runtime_error("Failed to load Borrower parameters");

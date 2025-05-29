@@ -137,6 +137,11 @@ class Media {
         // factory method to create the correct subclass object
         static std::shared_ptr<Media> MediaFactory(const QJsonObject& json);
 
+        // schema methods
+        QJsonObject getLocalSchema() const;
+        virtual QJsonObject getSubclassSchema() const { return QJsonObject(); }
+        QJsonObject getSchema() const;
+
         // print methods
         void printbase(std::ostream& os) const;
         virtual void printsubclass(std::ostream& os) const;

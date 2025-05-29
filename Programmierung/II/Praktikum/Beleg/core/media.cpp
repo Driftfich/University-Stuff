@@ -338,6 +338,29 @@ std::ostream& operator<<(std::ostream& os, const Media& media) {
     return os;
 }
 
+// schema methods
+QJsonObject Media::getLocalSchema() const {
+    QJsonObject schema;
+    schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}};
+    schema["title"] = QJsonObject{{"type", "string"}};
+    schema["publication_date"] = QJsonObject{{"type", "string"}, {"format", "date"}};
+    schema["artist_ids"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "integer"}}}};
+    schema["publisher"] = QJsonObject{{"type", "string"}};
+    schema["description"] = QJsonObject{{"type", "string"}};
+    schema["genre"] = QJsonObject{{"type", "string"}};
+    schema["languages"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "string"}}}};
+    schema["metadata"] = QJsonObject{{"type", "object"}};
+    return schema;
+}
+
+QJsonObject Media::getSchema() const {
+    QJsonObject schema;
+    schema["media"] = getLocalSchema();
+    schema["subclass_type"] = QJsonObject{{"type", "string"}};
+    schema["subclass_params"] = getSubclassSchema();
+    return schema;
+}
+
 
 
 

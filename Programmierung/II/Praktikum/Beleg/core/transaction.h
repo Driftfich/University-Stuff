@@ -75,6 +75,10 @@ class Transaction {
         static std::shared_ptr<Transaction> fromFile(QFile& file);
         static std::shared_ptr<Transaction> TransactionFactory(const QJsonObject& json);
         
+        // schema methods
+        QJsonObject getLocalSchema() const;
+        QJsonObject getSchema() const;
+
         // print method
         friend std::ostream& operator<<(std::ostream& os, const Transaction& transaction) {
             os << "Transaction ID: " << transaction.id << "\n"

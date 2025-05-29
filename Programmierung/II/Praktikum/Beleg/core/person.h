@@ -109,6 +109,11 @@ class Person {
         static std::shared_ptr<Person> fromFile(QFile& file);
         static std::shared_ptr<Person> PersonFactory(const QJsonObject& json);
 
+        // schema methods
+        QJsonObject getLocalSchema() const;
+        virtual QJsonObject getSubclassSchema() const { return QJsonObject(); }
+        QJsonObject getSchema() const;
+
         // print methods
         friend std::ostream& operator<<(std::ostream& os, const Person& person);
         void printbase(std::ostream& os) const;

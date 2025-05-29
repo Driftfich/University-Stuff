@@ -112,3 +112,21 @@ std::ostream& operator<<(std::ostream& os, const Libitem& libitem) {
        << "------------------------\n";
     return os;
 }
+
+// schema methods
+QJsonObject Libitem::getLocalSchema() const {
+    QJsonObject schema;
+    schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}};
+    schema["media_id"] = QJsonObject{{"type", "integer"}};
+    schema["available_copies"] = QJsonObject{{"type", "integer"}};
+    schema["borrowed_copies"] = QJsonObject{{"type", "integer"}};
+    schema["location"] = QJsonObject{{"type", "string"}};
+    schema["condition"] = QJsonObject{{"type", "string"}};
+    return schema;
+}
+
+QJsonObject Libitem::getSchema() const {
+    QJsonObject schema;
+    schema["libitem"] = getLocalSchema();
+    return schema;
+}

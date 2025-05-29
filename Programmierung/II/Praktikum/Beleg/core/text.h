@@ -29,6 +29,8 @@ class Text : public Media {
 
         QJsonObject getSubclassParams() const override;
 
+        QJsonObject getSubclassSchema() const override;
+
         int loadSubclassParams(const QJsonObject& json) override;
 
 

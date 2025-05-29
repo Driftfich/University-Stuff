@@ -67,6 +67,8 @@ class Artist : public Person {
         QJsonObject getSubclassParams() const override;
         int loadSubclassParams(const QJsonObject& json) override;
 
+        QJsonObject getSubclassSchema() const override;
+
         Artist(const QJsonObject& json) : Person(json) {
             if (loadSubclassParams(json["subclass_params"].toObject()) != 0) {
                 throw std::runtime_error("Issue loading subclass parameters for Artist");

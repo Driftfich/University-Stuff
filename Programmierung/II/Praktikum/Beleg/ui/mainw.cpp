@@ -105,15 +105,25 @@ void MainWindow::setupSideDock()
 
         // 5) JSON holen je nach Model-Typ
         QJsonObject info;
+        QJsonObject schema = QJsonObject(); // Schema-Objekt, falls verfügbar
         if (auto *tm = qobject_cast<TransactionTableModel*>(srcModel))
             info = tm->getJsonObject(srcIndex);
         else if (auto *pm = qobject_cast<PersonTableModel*>(srcModel))
-            info = pm->getJsonObject(srcIndex, lib->getTransactionManager());
+            {info = pm->getJsonObject(srcIndex, lib->getTransactionManager());
+            schema = pm->getSchemaObject(srcIndex);}
         else if (auto *lm = qobject_cast<LibItemTableModel*>(srcModel))
             info = lm->getJsonObject(srcIndex);
 
         // 6) anzeigen
-        infoPanel->displayInfo(info);
+        // if schema available use it
+        if (!schema.isEmpty()) {
+            qDebug() << "Using schema:\n" << schema;
+            qDebug() << "Displaying info:\n" << info;
+            infoPanel->displayInfo(info, schema);
+        } else {
+            infoPanel->displayInfo(info);
+        }
+        // infoPanel->displayInfo(info);
         sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->infopanel);
         sideDock->show();
     };
@@ -608,7 +618,7 @@ void MainWindow::updateSearchCompleter()
 
 void MainWindow::onCompleterActivated(const QString& suggestion)
 {
-    qDebug() << "Completer activated with suggestion:" << suggestion;
+    // qDebug() << "Completer activated with suggestion:" << suggestion;
     if (!toolbarUi || !toolbarUi->searchbar) {
         qWarning() << "SearchBar UI component not available";
         return;
@@ -642,7 +652,7 @@ void MainWindow::onCompleterActivated(const QString& suggestion)
         bool startsWithLastToken = !lastToken.isEmpty() && 
                                   suggestion.startsWith(lastToken, Qt::CaseInsensitive);
 
-        qDebug() << startsWithLastToken;
+        // qDebug() << startsWithLastToken;
         
         if (startsWithLastToken) {
             // Token-Ersetzung: Ersetze nur den letzten Token

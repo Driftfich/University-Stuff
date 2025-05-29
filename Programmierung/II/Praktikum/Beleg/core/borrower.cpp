@@ -10,6 +10,13 @@ QJsonObject Borrower::getSubclassParams() const {
     return json;
 }
 
+QJsonObject Borrower::getSubclassSchema() const {
+    QJsonObject schema;
+    schema["limit"] = QJsonObject{{"type", "integer"}, {"minimum", 0}, {"maximum", MAX_ITEMS_PER_BORROWER_HARD}};
+    schema["bow_id"] = QJsonObject{{"type", "integer"}, {"minimum", 0}};
+    return schema;
+}
+
 int Borrower::loadSubclassParams(const QJsonObject& json) {
     if (json.contains("limit")) {
         setLimit(static_cast<unsigned int>(json["limit"].toVariant().toLongLong()));

@@ -3,6 +3,7 @@
 #include <vector>
 #include <QString>
 #include <QVector>
+#include <QJsonObject>
 #include "media.h"
 #include "artist.h"
 
@@ -25,6 +26,21 @@ QJsonObject Artist::getSubclassParams() const {
     }
     json["media_ids"] = arr;
     return json;
+}
+
+
+QJsonObject Artist::getSubclassSchema() const {
+    QJsonObject schema;
+    // artist_type: string
+    schema.insert("artist_type", QJsonObject{{"type", "string"}});
+    // media_ids: array, dessen items jeweils integer sind
+    QJsonObject itemsSchema{{"type", "integer"}};
+    QJsonObject mediaIdsSchema{
+        {"type", "array"},
+        {"items", itemsSchema}
+    };
+    schema.insert("media_ids", mediaIdsSchema);
+    return schema;
 }
 
 int Artist::loadSubclassParams(const QJsonObject& json) {
