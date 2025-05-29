@@ -45,7 +45,9 @@ public:
         InfoPanel* infoPanelPtr; // pointer to the InfoPanel instance
 };
 
-InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWidget(this)), inEditMode(false) {
+InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWidget(this)), inEditMode(false),
+    m_baseFontSize(15), m_fontScaleFactor(0.9), m_minFontSize(7), m_maxFontSize(15) // Initialize font params
+{
     treeWidget->setHeaderLabels({tr("Attribut"), tr("Wert")});
     QVBoxLayout *layout = new QVBoxLayout(this);
     
@@ -85,9 +87,6 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
 
     treeWidget->viewport()->installEventFilter(this); // Install event filter to handle mouse events
     treeWidget->viewport()->setMouseTracking(true); // Enable mouse tracking for the viewport
-
-    // set the edit mode to false initially
-    inEditMode = false;
 }
 
 InfoPanel::~InfoPanel() {
@@ -148,14 +147,17 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
 //     }
 // }
 
-void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem) {
+void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth) {
+    QFont itemFont = calculateFontForDepth(depth);
+    thisItem->setFont(0, itemFont);
+    thisItem->setFont(1, itemFont);
     if (valueForThisItem.isObject()) {
         thisItem->setData(0, Qt::UserRole, "object");
         QJsonObject obj = valueForThisItem.toObject();
         for (const QString& key : obj.keys()) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
-            addJsonToTreeRecursive(obj[key], child);
+            addJsonToTreeRecursive(obj[key], child, depth + 1);
         }
     } else if (valueForThisItem.isArray()) {
         thisItem->setData(0, Qt::UserRole, "array");
@@ -163,7 +165,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         for (int i = 0; i < array.size(); ++i) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, QString("[%1]").arg(i));
-            addJsonToTreeRecursive(array[i], child);
+            addJsonToTreeRecursive(array[i], child, depth + 1);
         }
     } else { // Leaf node
         thisItem->setText(1, valueForThisItem.toVariant().toString());
@@ -430,6 +432,11 @@ void InfoPanel::onAddArrayItem() {
     newItem->setText(1, ""); // Default empty value
     newItem->setData(0, Qt::UserRole, "leaf");
 
+    int depth = getItemDepth(newItem);
+    QFont itemFont = calculateFontForDepth(depth);
+    newItem->setFont(0, itemFont);
+    newItem->setFont(1, itemFont);
+
     if (inEditMode) {
         setTreeItemEditable(newItem, true);
         treeWidget->setCurrentItem(newItem, 1);
@@ -465,6 +472,11 @@ void InfoPanel::onAddObjectItem() {
         newItem->setText(1, ""); // Default empty value
         newItem->setData(0, Qt::UserRole, "leaf");
 
+        int depth = getItemDepth(newItem);
+        QFont itemFont = calculateFontForDepth(depth);
+        newItem->setFont(0, itemFont);
+        newItem->setFont(1, itemFont);
+
         if (inEditMode) {
             setTreeItemEditable(newItem, true);
             treeWidget->setCurrentItem(newItem, 1);
@@ -472,6 +484,34 @@ void InfoPanel::onAddObjectItem() {
         }
         onItemChanged(newItem, 1); // Notify that data changed
     }
+}
+
+QFont InfoPanel::calculateFontForDepth(int depth) const {
+    double scaledSize = static_cast<double>(m_baseFontSize);
+    if (depth > 0) { // Apply scaling factor for items deeper than top-level
+        scaledSize *= std::pow(m_fontScaleFactor, depth);
+    }
+
+    // Clamp the font size
+    double finalSize = std::max(static_cast<double>(m_minFontSize),
+                                std::min(scaledSize, static_cast<double>(m_maxFontSize)));
+
+    QFont font = treeWidget->font(); // Start with the tree widget's default font to inherit family etc.
+    font.setPointSizeF(finalSize);   // Use setPointSizeF for potentially fractional sizes
+    return font;
+}
+
+int InfoPanel::getItemDepth(QTreeWidgetItem* item) const {
+    if (!item) {
+        return 0; // Or handle as an error, though 0 is safe for font calculation
+    }
+    int depth = 0;
+    QTreeWidgetItem* currentParent = item->parent();
+    while (currentParent && currentParent != treeWidget->invisibleRootItem()) {
+        depth++;
+        currentParent = currentParent->parent();
+    }
+    return depth;
 }
 
 bool InfoPanel::isItemDeletable(QTreeWidgetItem* item) const {

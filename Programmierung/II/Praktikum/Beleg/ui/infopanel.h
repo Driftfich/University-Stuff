@@ -37,6 +37,12 @@ class InfoPanel : public QWidget {
         QPixmap deleteIcon;
         QPersistentModelIndex hoveredItemForDelete;
 
+        // Font configuration
+        int m_baseFontSize;
+        double m_fontScaleFactor;
+        int m_minFontSize;
+        int m_maxFontSize;
+
         void setTreeItemsEditable(bool editable);
         void setTreeItemEditable(QTreeWidgetItem* item, bool editable);
         QJsonObject collectDataFromTree();
@@ -50,9 +56,12 @@ class InfoPanel : public QWidget {
         bool isItemDeletable(QTreeWidgetItem* item) const;
         QRect getDeleteButtonRectForItem(const QTreeWidgetItem* item, const QStyleOptionViewItem& option) const;
 
-        void addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem);
+        void addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth = 0);
         bool isLowestCollection(QTreeWidgetItem* item) const;
         bool isHighestItem(QTreeWidgetItem* item) const;
+
+        QFont calculateFontForDepth(int depth) const;
+        int getItemDepth(QTreeWidgetItem* item) const;
 
     private slots:
         void onItemChanged(QTreeWidgetItem* item, int column);
