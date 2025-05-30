@@ -112,7 +112,8 @@ void MainWindow::setupSideDock()
             {info = pm->getJsonObject(srcIndex, lib->getTransactionManager());
             schema = pm->getSchemaObject(srcIndex);}
         else if (auto *lm = qobject_cast<LibItemTableModel*>(srcModel))
-            info = lm->getJsonObject(srcIndex);
+            {info = lm->getJsonObject(srcIndex);
+            schema = lm->getSchemaObject(srcIndex);}
 
         // 6) anzeigen
         // if schema available use it

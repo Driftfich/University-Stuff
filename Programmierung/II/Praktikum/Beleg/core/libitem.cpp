@@ -127,6 +127,7 @@ QJsonObject Libitem::getLocalSchema() const {
 
 QJsonObject Libitem::getSchema() const {
     QJsonObject schema;
-    schema["libitem"] = getLocalSchema();
+    schema["properties"] = getLocalSchema();
+    schema["type"] = "object";
     return schema;
 }

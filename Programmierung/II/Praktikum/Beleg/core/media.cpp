@@ -349,18 +349,24 @@ QJsonObject Media::getLocalSchema() const {
     schema["description"] = QJsonObject{{"type", "string"}};
     schema["genre"] = QJsonObject{{"type", "string"}};
     schema["languages"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "string"}}}};
-    schema["metadata"] = QJsonObject{{"type", "object"}};
+    schema["metadata"] = QJsonObject{{"type", "object"}, {"items", QJsonObject{{"type", "string"}}}};
     return schema;
 }
 
 QJsonObject Media::getSchema() const {
     QJsonObject schema;
-    schema["media"] = getLocalSchema();
-    schema["subclass_type"] = QJsonObject{{"type", "string"}};
-    schema["subclass_params"] = getSubclassSchema();
+    // schema["media"] = getLocalSchema();
+    // schema["subclass_type"] = QJsonObject{{"type", "string"}};
+    // schema["subclass_params"] = getSubclassSchema();
+    // return schema;
+    schema.insert("type", "object");
+    QJsonObject subclass_schema = getSubclassSchema();
+    QJsonObject properties;
+    if (!subclass_schema.isEmpty()) {
+        properties.insert("subclass_type", QJsonObject{{"type", "string"}});
+        properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", subclass_schema}});
+    }
+    properties.insert("media", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
+    schema.insert("properties", properties);
     return schema;
 }
-
-
-
-

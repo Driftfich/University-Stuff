@@ -206,20 +206,49 @@ QJsonObject LibItemTableModel::getJsonObject(const QModelIndex& index) const {
         return QJsonObject();
     }
     std::shared_ptr<Libitem> libitem = (*libItemMan)[row];
+    if (!libitem) {
+        return QJsonObject();
+    }
     std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
 
     QJsonObject jsonObject = QJsonObject();
-    if (!libitem) {
-        return jsonObject;
-    }
-    jsonObject["Libitem"] = (*libitem).getJson();
+    jsonObject["libitem"] = (*libitem).getJson();
     if (media) {
-        jsonObject["Media"] = (*media).getJson()["media"];
+        jsonObject["media"] = (*media).getJson();
     }
     else {
-        jsonObject["Media"] = QJsonObject();
+        jsonObject["media"] = QJsonObject();
     }
     return jsonObject;
+}
+
+QJsonObject LibItemTableModel::getSchemaObject(const QModelIndex& index) const {
+    if (!index.isValid()) {
+        return QJsonObject();
+    }
+
+    unsigned long row = (unsigned long) index.row();
+    if (row >= (unsigned long) libItemMan->getLibitems().size()) {
+        return QJsonObject();
+    }
+    std::shared_ptr<Libitem> libitem = (*libItemMan)[row];
+    if (!libitem) {
+        return QJsonObject();
+    }
+    std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
+
+    QJsonObject rootSchema;
+    rootSchema.insert("type", "object");
+    QJsonObject properties;
+    properties.insert("type", "object");
+    properties.insert("libitem", libitem->getSchema());
+    if (media) {
+        properties.insert("media", media->getSchema());
+    } else {
+        properties.insert("media", QJsonObject());
+    }
+    rootSchema.insert("properties", properties);
+    return rootSchema;
 }
 
 bool LibItemTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
