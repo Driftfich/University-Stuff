@@ -186,7 +186,7 @@ int Media::loadLocalParams(const QJsonObject& json) {
     if (json.contains("id")) {
         setId(json["id"].toVariant().toULongLong());
     } else {
-        std::cerr << "Error: Missing 'id' in JSON object\n";
+        std::cerr << "Error: Missing 'id' in media JSON object\n";
         return -1;
     }
 

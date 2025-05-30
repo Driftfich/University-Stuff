@@ -29,10 +29,11 @@ void Libitem::toFile(QFile& file) const {
 
 // load json object from file
 int Libitem::loadLocalParams(const QJsonObject& json) {
+    qDebug() << json;
     if (json.contains("id")) {
         setId(json["id"].toVariant().toULongLong());
     } else {
-        std::cerr << "Error: Missing 'id' in JSON object\n";
+        std::cerr << "Error: Missing 'id' in libitem JSON object\n";
         return -1;
     }
 

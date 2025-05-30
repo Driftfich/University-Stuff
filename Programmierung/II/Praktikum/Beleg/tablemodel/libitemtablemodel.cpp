@@ -263,11 +263,11 @@ bool LibItemTableModel::updateFromJsonObject(const QJsonObject& jsonObject, cons
     std::shared_ptr<Libitem> libitem = (*libItemMan)[row];
     std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
 
-    if (libitem->loadLocalParams(jsonObject["Libitem"].toObject()) != 0) {
+    if (libitem->loadLocalParams(jsonObject["libitem"].toObject()) != 0) {
         emit dataChanged(index, index);
         return false;
     }
-    if (media && media->loadLocalParams((jsonObject["Media"]).toObject()) != 0 && media->loadSubclassParams(jsonObject["Media"]["subclass_params"].toObject()) != 0) {
+    if (media && media->loadLocalParams((jsonObject["media"]["media"]).toObject()) != 0 && media->loadSubclassParams(jsonObject["media"]["subclass_params"].toObject()) != 0) {
         emit dataChanged(index, index);
         return false;
     }
