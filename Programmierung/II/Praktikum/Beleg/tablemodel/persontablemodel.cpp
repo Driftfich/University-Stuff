@@ -224,12 +224,7 @@ QJsonObject PersonTableModel::getSchemaObject(const QModelIndex& index) const {
         return QJsonObject();
     }
 
-    QJsonObject rootSchema;
-    QJsonObject schema = person->getSchema();
-
-    rootSchema.insert("type", QStringLiteral("object"));
-    rootSchema.insert("properties", schema);
-    return rootSchema;
+    return person->getSchema();
 }
 
 bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {

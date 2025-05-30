@@ -330,15 +330,28 @@ QJsonObject Person::getLocalSchema() const {
     return schema;
 }
 
+// QJsonObject Person::getSchema() const {
+//     QJsonObject schema;
+//     schema.insert("type", "object");
+//     schema.insert("person", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
+//     QJsonObject subclass_schema = getSubclassSchema();
+//     if (!subclass_schema.isEmpty()) {
+//         schema.insert("subclass_type", QJsonObject{{"type", "string"}});
+//         schema.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", subclass_schema}});
+//     }
+//     return schema;
+// }
+
 QJsonObject Person::getSchema() const {
     QJsonObject schema;
+    QJsonObject properties;
     schema.insert("type", "object");
-    schema.insert("person", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
-    QJsonObject subclass_schema = getSubclassSchema();
-    if (!subclass_schema.isEmpty()) {
-        schema.insert("subclass_type", QJsonObject{{"type", "string"}});
-        schema.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", subclass_schema}});
+    properties.insert("person", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
+    if (!getSubclassParams().isEmpty()) {
+        properties.insert("subclass_type", QJsonObject{{"type", "string"}});
+        properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", getSubclassSchema()}});
     }
+    schema.insert("properties", properties);
     return schema;
 }
 
