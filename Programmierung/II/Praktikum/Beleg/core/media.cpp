@@ -364,7 +364,7 @@ QJsonObject Media::getSchema() const {
     QJsonObject properties;
     if (!subclass_schema.isEmpty()) {
         properties.insert("subclass_type", QJsonObject{{"type", "string"}});
-        properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", subclass_schema}});
+        properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", getSubclassSchema()}});
     }
     properties.insert("media", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
     schema.insert("properties", properties);
