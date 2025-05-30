@@ -256,6 +256,50 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
     return jsonObject;
 }
 
+QJsonObject TransactionTableModel::getSchemaObject(const QModelIndex& index) const {
+    if (!index.isValid()) {
+        return QJsonObject();
+    }
+
+    unsigned long row = (unsigned long) index.row();
+    if (row >= (unsigned long) transactionMan->getTransactions().size()) {
+        return QJsonObject();
+    }
+
+    std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
+    if (!transaction) {
+        return QJsonObject();
+    }
+    std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
+    std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
+    std::shared_ptr<Media> media;
+    if (!libitem) media = nullptr;
+    else media = mediaMan->getMedia(libitem->getMediaId());
+
+    QJsonObject rootSchema;
+    rootSchema.insert("type", "object");
+    QJsonObject properties;
+    properties.insert("type", "object");
+    properties.insert("Transaction", transaction->getSchema());
+    if (libitem) {
+        properties.insert("Libitem", libitem->getSchema());
+    } else {
+        properties.insert("Libitem", QJsonObject());
+    }
+    if (media) {
+        properties.insert("Media", media->getSchema());
+    } else {
+        properties.insert("Media", QJsonObject());
+    }
+    if (person) {
+        properties.insert("Person", person->getSchema());
+    } else {
+        properties.insert("Person", QJsonObject());
+    }
+    rootSchema.insert("properties", properties);
+    return rootSchema;
+}
+
 bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
     if (!index.isValid()) {
         return false;

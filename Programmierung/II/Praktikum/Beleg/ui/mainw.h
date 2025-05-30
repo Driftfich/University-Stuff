@@ -49,6 +49,9 @@ class MainWindow : public QMainWindow
         Ui_toolbar* getToolbarUi() const { return toolbarUi; }
         Ui_TableWidget* getTableWidgetUi() const { return tableWidgetUi; }
 
+    protected:
+        void closeEvent(QCloseEvent *event) override;
+
     private:
         // UI components
         Ui_toolbar*      toolbarUi;

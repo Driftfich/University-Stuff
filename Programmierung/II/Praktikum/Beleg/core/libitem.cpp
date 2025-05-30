@@ -121,7 +121,8 @@ QJsonObject Libitem::getLocalSchema() const {
     schema["available_copies"] = QJsonObject{{"type", "integer"}};
     schema["borrowed_copies"] = QJsonObject{{"type", "integer"}};
     schema["location"] = QJsonObject{{"type", "string"}};
-    schema["condition"] = QJsonObject{{"type", "string"}};
+    // schema["condition"] = QJsonObject{{"type", "string"}};
+    schema["condition"] = QJsonObject{{"type", "string"}, {"enum", QJsonArray{"new", "good", "acceptable", "poor"}}};
     return schema;
 }
 

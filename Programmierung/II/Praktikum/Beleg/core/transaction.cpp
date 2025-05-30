@@ -76,12 +76,15 @@ QJsonObject Transaction::getLocalSchema() const {
     schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}};
     schema["libitem_id"] = QJsonObject{{"type", "integer"}};
     schema["borrower_id"] = QJsonObject{{"type", "integer"}};
-    schema["transaction_time"] = QJsonObject{{"type", "string"}, {"format", "date-time"}};
+    schema["transaction_time"] = QJsonObject{{"type", "string"}, {"format", "datetime"}};
     return schema;
 }
 
 QJsonObject Transaction::getSchema() const {
     QJsonObject schema;
-    schema["transaction"] = getLocalSchema();
+    // schema["transaction"] = getLocalSchema();
+    // return schema;
+    schema.insert("type", "object");
+    schema.insert("properties", getLocalSchema());
     return schema;
 }

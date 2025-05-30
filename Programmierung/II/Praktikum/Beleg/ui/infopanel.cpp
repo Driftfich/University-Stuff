@@ -51,11 +51,19 @@ public:
             editor->setMaximum(2147483647);  // Or from schema
             return editor;
         }
-        else if (itemType == "string" && itemFormat == "date") {
+        else if (itemType == "string" && (itemFormat.contains("date") || itemFormat.contains("time"))) {
             QDateEdit* editor = new QDateEdit(parent);
             editor->setFrame(false);
             editor->setCalendarPopup(true);
-            editor->setDisplayFormat("yyyy-MM-dd"); // Or from schema/locale
+            if (itemFormat == "datetime") {
+                editor->setDisplayFormat("yyyy-MM-dd HH:mm:ss"); // Or from schema/locale
+            }
+            else if (itemFormat == "date") {
+                editor->setDisplayFormat("yyyy-MM-dd"); // Or from schema/locale
+            }
+            else if (itemFormat == "time") {
+                editor->setDisplayFormat("HH:mm:ss"); // Or from schema/locale
+            }
             return editor;
         }
         else if (itemType == "boolean") {
@@ -65,7 +73,7 @@ public:
             editor->setFrame(false);
             return editor;
         }
-        else if (itemType == "string" && enumValuesVar.canConvert<QStringList>()) {
+        else if (itemType == "string" && enumValuesVar.canConvert<QStringList>() && !enumValuesVar.toStringList().isEmpty()) {
 
             QStringList enumValues = enumValuesVar.toStringList();
             if (!enumValues.isEmpty()) {
@@ -77,7 +85,13 @@ public:
         }
         
         // Fallback
-        return QStyledItemDelegate::createEditor(parent, option, index);
+        // return QStyledItemDelegate::createEditor(parent, option, index);
+        QLineEdit* editor = new QLineEdit(parent);
+        editor->setFrame(false);
+        // use the current text from the model as initial value
+        QString initialText = index.model()->data(index, Qt::EditRole).toString();
+        editor->setText(initialText);
+        return editor;
     }
 
 
@@ -85,20 +99,29 @@ public:
         QString value = index.model()->data(index, Qt::EditRole).toString();
         QString itemType = index.data(SchemaTypeRole).toString();
         QString itemFormat = index.data(SchemaFormatRole).toString();
+        QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
 
         if (itemType == "integer") {
             QSpinBox* spinBox = qobject_cast<QSpinBox*>(editor);
             if (spinBox) spinBox->setValue(value.toInt());
-        } else if (itemType == "string" && itemFormat == "date") {
+        } else if (itemType == "string" && (itemFormat.contains("date") || itemFormat.contains("time"))) {
             QDateEdit* dateEdit = qobject_cast<QDateEdit*>(editor);
-            if (dateEdit) dateEdit->setDate(QDate::fromString(value, "yyyy-MM-dd"));
+            if (dateEdit) {
+                if (itemFormat == "datetime") {
+                    dateEdit->setDateTime(QDateTime::fromString(value, "yyyy-MM-dd HH:mm:ss"));
+                } else if (itemFormat == "date") {
+                    dateEdit->setDate(QDate::fromString(value, "yyyy-MM-dd"));
+                } else if (itemFormat == "time") {
+                    dateEdit->setTime(QTime::fromString(value, "HH:mm:ss"));
+                }
+            }
         } else if (itemType == "boolean") {
             QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
             if (comboBox) {
                 if (value.toLower() == "true") comboBox->setCurrentIndex(0);
                 else comboBox->setCurrentIndex(1);
             }
-        } else if (itemType == "string" && index.data(SchemaEnumValuesRole).canConvert<QStringList>()) {
+        } else if (itemType == "string" && index.data(SchemaEnumValuesRole).canConvert<QStringList>() && !enumValuesVar.toStringList().isEmpty()) {
             QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
             if (comboBox) {
                 int enumIdx = comboBox->findText(value);
@@ -106,7 +129,11 @@ public:
             }
         }
         else {
-            QStyledItemDelegate::setEditorData(editor, index);
+            // QStyledItemDelegate::setEditorData(editor, index);
+            QLineEdit* lineEdit = qobject_cast<QLineEdit*>(editor);
+            if (lineEdit) {
+                lineEdit->setText(value);
+            }
         }
     }
 
@@ -114,22 +141,35 @@ public:
     void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override {
         QString itemType = index.data(SchemaTypeRole).toString();
         QString itemFormat = index.data(SchemaFormatRole).toString();
-
+        QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
+        qDebug() << "Update model data for index:" << index.row() << index.column() << " Type:" << itemType << " Format:" << itemFormat;
         if (itemType == "integer") {
             QSpinBox* spinBox = qobject_cast<QSpinBox*>(editor);
             if (spinBox) model->setData(index, spinBox->value(), Qt::EditRole);
-        } else if (itemType == "string" && itemFormat == "date") {
+        } 
+        else if (itemType == "string" && (itemFormat.contains("date") || itemFormat.contains("time"))) {
             QDateEdit* dateEdit = qobject_cast<QDateEdit*>(editor);
-            if (dateEdit) model->setData(index, dateEdit->date().toString("yyyy-MM-dd"), Qt::EditRole);
+            if (dateEdit) {
+                if (itemFormat == "datetime") {
+                    model->setData(index, dateEdit->dateTime().toString("yyyy-MM-dd HH:mm:ss"), Qt::EditRole);
+                } else if (itemFormat == "date") {
+                    model->setData(index, dateEdit->date().toString("yyyy-MM-dd"), Qt::EditRole);
+                } else if (itemFormat == "time") {
+                    model->setData(index, dateEdit->time().toString("HH:mm:ss"), Qt::EditRole);
+                }
+            }
         } else if (itemType == "boolean") {
             QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
             if (comboBox) model->setData(index, comboBox->currentData().toBool(), Qt::EditRole);
-        } else if (itemType == "string" && index.data(SchemaEnumValuesRole).canConvert<QStringList>()) {
+        } else if (itemType == "string" && index.data(SchemaEnumValuesRole).canConvert<QStringList>() && !enumValuesVar.toStringList().isEmpty()) {
+            qDebug() << "Update ComboBox data";
              QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
              if (comboBox) model->setData(index, comboBox->currentText(), Qt::EditRole);
-        }
-        else {
-            QStyledItemDelegate::setModelData(editor, model, index);
+        } else {
+            qDebug() << "Update LineEdit data";
+            // Handle regular string values (and fallback for other types)
+            QLineEdit* lineEdit = qobject_cast<QLineEdit*>(editor);
+            if (lineEdit) model->setData(index, lineEdit->text(), Qt::EditRole);
         }
     }
 
@@ -196,6 +236,8 @@ InfoPanel::~InfoPanel() {
 }
 
 void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
+    inEditMode = false; // Ensure we are not in edit mode
+    resetButtons(); // Reset buttons to initial state
     originalData = jsonObject; // Store original data for canceling edits
     treeWidget->clear();
     hoveredItemForDelete = QPersistentModelIndex(); // Reset the hovered item for delete button
@@ -228,6 +270,8 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
 
 
 void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject) {
+    inEditMode = false; // Ensure we are not in edit mode
+    resetButtons(); 
     originalData = jsonObject;
     currentSchema = schemaObject; // Store the schema
     treeWidget->clear();
@@ -272,13 +316,13 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         if (currentItemSchema.value("type").toString() == "object" && currentItemSchema.contains("properties")) {
             propertiesSchema = currentItemSchema.value("properties").toObject();
         }
-        qDebug() << "Current item schema for object:" << currentItemSchema << "\n";
-        qDebug() << "propertiesSchema from" << thisItem->text(0) << "->" << propertiesSchema << "\n";
+        // qDebug() << "Current item schema for object:" << currentItemSchema << "\n";
+        // qDebug() << "propertiesSchema from" << thisItem->text(0) << "->" << propertiesSchema << "\n";
         for (const QString& key : obj.keys()) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
             QJsonObject childSchema = propertiesSchema.value(key).toObject();
-            qDebug() << key << "->" << childSchema;
+            // qDebug() << key << "->" << childSchema;
             if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
                 childSchema = currentItemSchema.value("additionalProperties").toObject();
             }
@@ -438,21 +482,35 @@ void InfoPanel::cancelEditMode() {
     setTreeItemsEditable(false);
     updateAddButtons(false); // Hide add buttons
     
-    // Button-Zustände zurücksetzen
-    saveButton->setEnabled(false);
-    saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
-    editButton->setText(tr("Bearbeiten"));
-    editButton->setIcon(QIcon(":/icons/edit.png"));
+    // // Button-Zustände zurücksetzen
+    // saveButton->setEnabled(false);
+    // saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
+    // editButton->setText(tr("Bearbeiten"));
+    // editButton->setIcon(QIcon(":/icons/edit.png"));
     
-    // Signal-Verbindungen zurücksetzen
-    disconnect(editButton, &QPushButton::clicked, this, &InfoPanel::cancelEditMode);
-    connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
+    // // Signal-Verbindungen zurücksetzen
+    // disconnect(editButton, &QPushButton::clicked, this, &InfoPanel::cancelEditMode);
+    // connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
+
+    resetButtons(); // Reset buttons to initial state
 
     // updateAddButtons(false); // Hide add buttons after canceling
     if (hoveredItemForDelete.isValid()) { // Force repaint
         treeWidget->update(hoveredItemForDelete);
     }
     hoveredItemForDelete = QPersistentModelIndex();
+}
+
+void InfoPanel::resetButtons() {
+    // Reset the buttons to their initial state
+    saveButton->setEnabled(false);
+    saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
+    editButton->setText(tr("Bearbeiten"));
+    editButton->setIcon(QIcon(":/icons/edit.png"));
+
+    // Signal-Verbindungen zurücksetzen
+    disconnect(editButton, &QPushButton::clicked, this, &InfoPanel::cancelEditMode);
+    connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
 }
 
 void InfoPanel::setTreeItemsEditable(bool editable) {
@@ -542,7 +600,12 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
 
 void InfoPanel::restoreOriginalData() {
     // Einfach die ursprünglichen Daten neu anzeigen
-    displayInfo(originalData);
+    if (currentSchema.isEmpty()) {
+        displayInfo(originalData);
+    } else {
+        // Wenn ein Schema vorhanden ist, verwenden wir es
+        displayInfo(originalData, currentSchema);
+    }
 }
 
 void InfoPanel::updateAddButtons(bool show) {

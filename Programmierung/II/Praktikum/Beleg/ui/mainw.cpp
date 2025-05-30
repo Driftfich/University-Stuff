@@ -107,7 +107,8 @@ void MainWindow::setupSideDock()
         QJsonObject info;
         QJsonObject schema = QJsonObject(); // Schema-Objekt, falls verfügbar
         if (auto *tm = qobject_cast<TransactionTableModel*>(srcModel))
-            info = tm->getJsonObject(srcIndex);
+            {info = tm->getJsonObject(srcIndex);
+            schema = tm->getSchemaObject(srcIndex);}
         else if (auto *pm = qobject_cast<PersonTableModel*>(srcModel))
             {info = pm->getJsonObject(srcIndex, lib->getTransactionManager());
             schema = pm->getSchemaObject(srcIndex);}
@@ -118,8 +119,8 @@ void MainWindow::setupSideDock()
         // 6) anzeigen
         // if schema available use it
         if (!schema.isEmpty()) {
-            qDebug() << "Using schema:\n" << schema;
-            qDebug() << "Displaying info:\n" << info;
+            // qDebug() << "Using schema:\n" << schema;
+            // qDebug() << "Displaying info:\n" << info;
             infoPanel->displayInfo(info, schema);
         } else {
             infoPanel->displayInfo(info);
@@ -691,4 +692,10 @@ void MainWindow::onCompleterActivated(const QString& suggestion)
     toolbarUi->searchbar->blockSignals(false);
     
     // qDebug() << "Search text updated to:" << newSearchText;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (lib) lib->save(); // Save the library data on close
+    QMainWindow::closeEvent(event);
 }

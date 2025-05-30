@@ -24,6 +24,7 @@ class InfoPanel : public QWidget {
         void enterEditMode();
         void saveChanges();
         void cancelEditMode();
+        void resetButtons();
 
         void paintDeleteItemButton(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index);
     signals:
