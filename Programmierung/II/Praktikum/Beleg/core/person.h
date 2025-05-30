@@ -36,7 +36,8 @@ class Person {
     QString lname;
     QString ename;
     QDate birthday;
-    Gender gender;
+    // Gender gender;
+    QString gender;
     QString note;
     QString location;
     QString email;
@@ -49,7 +50,8 @@ class Person {
         int setLname(const QString& lname);
         int setEname(const QString& ename);
         int setBirthday(const QDate birthday);
-        int setGender(const Gender gender);
+        // int setGender(const Gender gender);
+        int setGender(const QString& gender);
         int setNote(const QString& note);
         int setLocation(const QString& location);
         int setEmail(const QString& email);
@@ -61,7 +63,8 @@ class Person {
         QString getLname() const {return this->lname;}
         QString getEname() const {return this->ename;}
         QDate getBirthday() const {return this->birthday;}
-        Gender getGender() const {return this->gender;}
+        // Gender getGender() const {return this->gender;}
+        QString getGender() const {return this->gender;}
         QString getGenderString() const;
         QString getNote() const {return this->note;}
         QString getLocation() const {return this->location;}
@@ -70,7 +73,7 @@ class Person {
 
         // constructor using setters
         Person(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
-                const QDate birthday, Gender gender, const QString& note,
+                const QDate birthday, const QString& gender, const QString& note,
                 const QString& location, const QString& email, const QString& tel) {
             setId(id);
             setFname(fname);

@@ -30,7 +30,7 @@ class Artist : public Person {
 
         // constructor using setters
         Artist(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
-               const QDate birthday, Gender gender, const QString& note,
+               const QDate birthday, const QString& gender, const QString& note,
                 const QString& location, const QString& email, const QString& tel,
                const QString& artist_type, const QVector<unsigned long>& media_ids) :
                Person(id, fname, lname, ename, birthday, gender, note, location, email, tel) {

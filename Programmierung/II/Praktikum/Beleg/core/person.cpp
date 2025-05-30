@@ -104,19 +104,18 @@ int Person::setBirthday(const QDate birthday) {
     return 0;
 }
 
-int Person::setGender(const Gender gender) {
+// int Person::setGender(const Gender gender) {
+//     this->gender = gender;
+//     return 0;
+// }
+
+int Person::setGender(const QString& gender) {
     this->gender = gender;
     return 0;
 }
 
 QString Person::getGenderString() const  {
-    switch (gender) {
-        case Gender::female: return "Female";
-        case Gender::male: return "Male";
-        case Gender::diverse: return "Diverse";
-        case Gender::unknown: return "Unknown";
-    }
-    return "Unknown";
+    return this->gender;
 }
 
 int Person::setNote(const QString& note) {
@@ -249,7 +248,7 @@ QJsonObject Person::getLocalParams() const {
     json["lname"] = lname;
     json["ename"] = ename;
     json["birthday"] = birthday.toString(Qt::ISODate);
-    json["gender"] = static_cast<int>(gender);
+    json["gender"] = gender;
     json["note"] = note;
     json["location"] = location;
     json["email"] = email;
@@ -278,7 +277,7 @@ int Person::loadLocalParams(const QJsonObject& json) {
     if (json.contains("lname")) lname = json["lname"].toString();
     if (json.contains("ename")) ename = json["ename"].toString();
     if (json.contains("birthday")) birthday = QDate::fromString(json["birthday"].toString(), Qt::ISODate);
-    if (json.contains("gender")) gender = static_cast<Gender>(json["gender"].toInt());
+    if (json.contains("gender")) gender = json["gender"].toString();
     if (json.contains("note")) note = json["note"].toString();
     if (json.contains("location")) location = json["location"].toString();
     if (json.contains("email")) email = json["email"].toString();
@@ -362,7 +361,7 @@ void Person::printbase(std::ostream& os) const {
     << "Last Name: " << lname.toStdString() << "\n"
     << "E(xtension)Name: " << ename.toStdString() << "\n"
     << "Birthday: " << birthday.toString(Qt::ISODate).toStdString() << "\n"
-    << "Gender: " << (gender == Gender::male ? "Male" : gender == Gender::female ? "Female" : "Diverse") << "\n"
+    << "Gender: " << gender.toStdString() << "\n"
     << "Note: " << note.toStdString() << "\n"
     << "Location: " << location.toStdString() << "\n"
     << "Email: " << email.toStdString() << "\n"

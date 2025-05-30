@@ -16,7 +16,7 @@ class Borrower: public Person {
     public:
         // constructor with member initializer list
         Borrower(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
-                 const QDate& birthday, Gender gender, const QString& note,
+                 const QDate& birthday, const QString& gender, const QString& note,
                  const QString& location, const QString& email, const QString& tel,
                 unsigned int limit, unsigned long bow_id)
             : Person(id, fname, lname, ename, birthday, gender, note, location, email, tel) {

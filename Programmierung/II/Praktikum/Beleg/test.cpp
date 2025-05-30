@@ -91,9 +91,9 @@ int test_media_file_management() {
 int test_person_file_management() {
     // Test the Person class
     // Create a Person object
-    Person p1 = Person((unsigned long) 1, QString("John"), QString("Doe"), QString(""), QDate::currentDate(), Gender::male, QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789"));
-    Borrower b1 = Borrower((unsigned long) 1, QString("John"), QString("Doe"), QString(""), QDate::currentDate(), Gender::male, QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789"), (unsigned int) 5, (unsigned long) 1);
-    Artist a1 = Artist((unsigned long) 1, QString("John"), QString("Doe"), QString(""), QDate::currentDate(), Gender::male, QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789"), QString("Test Art Style"), QVector<unsigned long>{1, 2});
+    Person p1 = Person((unsigned long) 1, QString("John"), QString("Doe"), QString(""), QDate::currentDate(), QString("Male"), QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789"));
+    Borrower b1 = Borrower((unsigned long) 1, QString("John"), QString("Doe"), QString(""), QDate::currentDate(), QString("Male"), QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789"), (unsigned int) 5, (unsigned long) 1);
+    Artist a1 = Artist((unsigned long) 1, QString("John"), QString("Doe"), QString(""), QDate::currentDate(), QString("Male"), QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789"), QString("Test Art Style"), QVector<unsigned long>{1, 2});
 
     // create a magic pointer array on the p1 and b1 objects
     std::shared_ptr<Person> personPtr1 = std::make_shared<Person>(p1);
@@ -296,7 +296,7 @@ int test_personman() {
     std::cout << pm << std::endl;
 
     // add a new person
-    std::shared_ptr<Person> p1 = std::make_shared<Person>(Person(pm.getNextId(), QString("John"), QString("Doe"), QString(""), QDate::currentDate(), Gender::male, QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789")));
+    std::shared_ptr<Person> p1 = std::make_shared<Person>(Person(pm.getNextId(), QString("John"), QString("Doe"), QString(""), QDate::currentDate(), QString("Male"), QString("Test Note"), QString("Test Location"), QString("john.doe@example.com"), QString("+123456789")));
     pm.addPerson(p1);
 
     return 0;
