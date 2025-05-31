@@ -147,7 +147,7 @@ public:
         QString itemType = index.data(SchemaTypeRole).toString();
         QString itemFormat = index.data(SchemaFormatRole).toString();
         QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
-        bool isRequired = index.data(SchemaRequiredRole).toBool();
+        // bool isRequired = index.data(SchemaRequiredRole).toBool();
         QString newValue;
         qDebug() << "Update model data for index:" << index.row() << index.column() << " Type:" << itemType << " Format:" << itemFormat;
         if (itemType == "integer") {
@@ -189,19 +189,8 @@ public:
             }
         }
 
-        if (isRequired && newValue.trimmed().isEmpty()) {         
-            // InfoPanel über ungültiges Feld benachrichtigen
-            if (infoPanelPtr) {
-                infoPanelPtr->setFieldValidationState(index, false);
-            }
-        } else {
-            // Normale Darstellung wiederherstellen
-            editor->setStyleSheet("");
-            
-            // InfoPanel über gültiges Feld benachrichtigen
-            if (infoPanelPtr) {
-                infoPanelPtr->setFieldValidationState(index, true);
-            }
+        if (infoPanelPtr) {
+            infoPanelPtr->updateFieldValidationState(index);
         }
     }
 
@@ -961,17 +950,17 @@ bool InfoPanel::eventFilter(QObject* watched, QEvent* event) {
     return QWidget::eventFilter(watched, event);
 }
 
-void InfoPanel::setFieldValidationState(const QModelIndex& index, bool isValid) {
-    QPersistentModelIndex persistentIndex(index);
+// void InfoPanel::setFieldValidationState(const QModelIndex& index, bool isValid) {
+//     QPersistentModelIndex persistentIndex(index);
     
-    if (isValid) {
-        invalidRequiredFields.remove(persistentIndex);
-    } else {
-        invalidRequiredFields.insert(persistentIndex);
-    }
+//     if (isValid) {
+//         invalidRequiredFields.remove(persistentIndex);
+//     } else {
+//         invalidRequiredFields.insert(persistentIndex);
+//     }
     
-    updateSaveButtonState();
-}
+//     updateSaveButtonState();
+// }
 
 void InfoPanel::updateSaveButtonState() {
     if (!inEditMode) return;
@@ -983,8 +972,8 @@ void InfoPanel::updateSaveButtonState() {
         saveButton->setStyleSheet("QPushButton { background-color: #ffcccc; color: #666; }");
         saveButton->setToolTip(tr("Bitte füllen Sie alle Pflichtfelder aus"));
     } else {
-        saveButton->setEnabled(true);
-        saveButton->setStyleSheet("QPushButton { background-color: orange; }");
+        saveButton->setEnabled(false);
+        saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
         saveButton->setToolTip("");
     }
 }
@@ -1004,20 +993,72 @@ void InfoPanel::validateRequiredFieldsRecursive(QTreeWidgetItem* item) {
         QTreeWidgetItem* child = item->child(i);
         
         if (child->data(0, Qt::UserRole).toString() == "leaf") {
-            bool isRequired = child->data(1, SchemaRequiredRole).toBool();
-            QString value = child->text(1).trimmed();
-            
-            if (isRequired && value.isEmpty()) {
-                QModelIndex childIndex = treeWidget->indexFromItem(child, 1);
-                invalidRequiredFields.insert(QPersistentModelIndex(childIndex));
-            }
+            QModelIndex childIndex = treeWidget->indexFromItem(child, 1);
+            updateFieldValidationState(childIndex); // Zentrale Methode verwenden
         } else {
             validateRequiredFieldsRecursive(child);
         }
     }
 }
 
-bool InfoPanel::isFieldInvalid(const QModelIndex& index) const {
+// bool InfoPanel::isFieldInvalid(const QModelIndex& index) const {
+//     QPersistentModelIndex persistentIndex(index);
+//     return invalidRequiredFields.contains(persistentIndex);
+// }
+
+bool InfoPanel::isFieldValid(const QModelIndex& index) const {
+    if (!index.isValid()) return true;
+
+    QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(index.internalPointer());
+    bool isRequired = item->data(1, SchemaRequiredRole).toBool();
+    
+    if (!validateRequiredField(item)) {
+        return false; // Required field is empty
+    }
+    if (!validateFieldPattern(item)) {
+        return false; // Pattern validation failed
+    }
+
+    return true;
+}
+
+bool InfoPanel::validateRequiredField(const QTreeWidgetItem* item) const {
+    if (!item) return true; // No item to validate
+
+    bool isRequired = item->data(1, SchemaRequiredRole).toBool();
+    QString value = item->text(1).trimmed();
+    
+    if (isRequired && value.isEmpty()) {
+        return false; // Required field is empty
+    }
+    
+    return true;
+}
+
+bool InfoPanel::validateFieldPattern(const QTreeWidgetItem* item) const {
+    QString pattern = item->data(1, SchemaPatternRole).toString(); // Neue Role hinzufügen
+    if (pattern.isEmpty()) return true;
+
+    QString value = item->text(1).trimmed();
+
+    QRegularExpression regex(pattern);
+    return regex.match(value).hasMatch();
+}
+
+void InfoPanel::updateFieldValidationState(const QModelIndex& index) {
+    if (!index.isValid()) return;
+    
+    bool isValid = isFieldValid(index);
     QPersistentModelIndex persistentIndex(index);
-    return invalidRequiredFields.contains(persistentIndex);
+    
+    if (isValid) {
+        invalidRequiredFields.remove(persistentIndex);
+    } else {
+        invalidRequiredFields.insert(persistentIndex);
+    }
+    
+    updateSaveButtonState();
+    
+    // Visuelle Aktualisierung
+    treeWidget->update(index);
 }

@@ -11,7 +11,9 @@ const int SchemaFormatRole = Qt::UserRole + 2;
 const int SchemaEnumValuesRole = Qt::UserRole + 3;
 const int SchemaReadonlyRole = Qt::UserRole + 4;
 const int SchemaRequiredRole = Qt::UserRole + 5;
-
+const int SchemaPatternRole = Qt::UserRole + 6;
+const int SchemaMinRole = Qt::UserRole + 7;
+const int SchemaMaxRole = Qt::UserRole + 8;
 
 class InfoPanel : public QWidget {
     Q_OBJECT
@@ -19,6 +21,10 @@ class InfoPanel : public QWidget {
     public:
         explicit InfoPanel(QWidget *parent = nullptr);
         ~InfoPanel() override;
+
+        bool isFieldValid(const QModelIndex& index) const;
+        bool isFieldInvalid(const QModelIndex& index) const { return !isFieldValid(index); }
+        void updateFieldValidationState(const QModelIndex& index);
 
     public slots:
         void displayInfo(const QJsonObject& jsonObject);
@@ -31,8 +37,7 @@ class InfoPanel : public QWidget {
 
         void paintDeleteItemButton(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index);
 
-        void setFieldValidationState(const QModelIndex& index, bool isValid);
-        bool isFieldInvalid(const QModelIndex& index) const;
+        // void setFieldValidationState(const QModelIndex& index, bool isValid);
     signals:
         // Signal wird ausgelöst, wenn der User Änderungen speichern will
         void saveRequested(const QJsonObject& modifiedData);
@@ -81,6 +86,8 @@ class InfoPanel : public QWidget {
         void updateSaveButtonState();
         void validateAllRequiredFieldsOnLoad();
         void validateRequiredFieldsRecursive(QTreeWidgetItem* item);
+        bool validateRequiredField(const QTreeWidgetItem* item) const;
+        bool validateFieldPattern(const QTreeWidgetItem* item) const;
 
     private slots:
         void onItemChanged(QTreeWidgetItem* item, int column);

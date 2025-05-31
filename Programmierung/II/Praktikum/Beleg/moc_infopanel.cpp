@@ -56,9 +56,6 @@ static constexpr auto qt_meta_stringdata_CLASSInfoPanelENDCLASS = QtMocHelpers::
     "option",
     "QModelIndex",
     "index",
-    "setFieldValidationState",
-    "isValid",
-    "isFieldInvalid",
     "onItemChanged",
     "QTreeWidgetItem*",
     "item",
@@ -67,7 +64,7 @@ static constexpr auto qt_meta_stringdata_CLASSInfoPanelENDCLASS = QtMocHelpers::
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSInfoPanelENDCLASS_t {
-    uint offsetsAndSizes[52];
+    uint offsetsAndSizes[46];
     char stringdata0[10];
     char stringdata1[14];
     char stringdata2[1];
@@ -86,14 +83,11 @@ struct qt_meta_stringdata_CLASSInfoPanelENDCLASS_t {
     char stringdata15[7];
     char stringdata16[12];
     char stringdata17[6];
-    char stringdata18[24];
-    char stringdata19[8];
-    char stringdata20[15];
-    char stringdata21[14];
-    char stringdata22[17];
-    char stringdata23[5];
-    char stringdata24[7];
-    char stringdata25[19];
+    char stringdata18[14];
+    char stringdata19[17];
+    char stringdata20[5];
+    char stringdata21[7];
+    char stringdata22[19];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSInfoPanelENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -117,14 +111,11 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSInfoPanelENDCLASS_t qt_meta_str
         QT_MOC_LITERAL(189, 6),  // "option"
         QT_MOC_LITERAL(196, 11),  // "QModelIndex"
         QT_MOC_LITERAL(208, 5),  // "index"
-        QT_MOC_LITERAL(214, 23),  // "setFieldValidationState"
-        QT_MOC_LITERAL(238, 7),  // "isValid"
-        QT_MOC_LITERAL(246, 14),  // "isFieldInvalid"
-        QT_MOC_LITERAL(261, 13),  // "onItemChanged"
-        QT_MOC_LITERAL(275, 16),  // "QTreeWidgetItem*"
-        QT_MOC_LITERAL(292, 4),  // "item"
-        QT_MOC_LITERAL(297, 6),  // "column"
-        QT_MOC_LITERAL(304, 18)   // "handleDeleteAction"
+        QT_MOC_LITERAL(214, 13),  // "onItemChanged"
+        QT_MOC_LITERAL(228, 16),  // "QTreeWidgetItem*"
+        QT_MOC_LITERAL(245, 4),  // "item"
+        QT_MOC_LITERAL(250, 6),  // "column"
+        QT_MOC_LITERAL(257, 18)   // "handleDeleteAction"
     },
     "InfoPanel",
     "saveRequested",
@@ -144,9 +135,6 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSInfoPanelENDCLASS_t qt_meta_str
     "option",
     "QModelIndex",
     "index",
-    "setFieldValidationState",
-    "isValid",
-    "isFieldInvalid",
     "onItemChanged",
     "QTreeWidgetItem*",
     "item",
@@ -163,7 +151,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSInfoPanelENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -171,20 +159,18 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSInfoPanelENDCLASS[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    1,   86,    2, 0x06,    1 /* Public */,
+       1,    1,   74,    2, 0x06,    1 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       4,    1,   89,    2, 0x0a,    3 /* Public */,
-       4,    2,   92,    2, 0x0a,    5 /* Public */,
-       7,    0,   97,    2, 0x0a,    8 /* Public */,
-       8,    0,   98,    2, 0x0a,    9 /* Public */,
-       9,    0,   99,    2, 0x0a,   10 /* Public */,
-      10,    0,  100,    2, 0x0a,   11 /* Public */,
-      11,    3,  101,    2, 0x0a,   12 /* Public */,
-      18,    2,  108,    2, 0x0a,   16 /* Public */,
-      20,    1,  113,    2, 0x10a,   19 /* Public | MethodIsConst  */,
-      21,    2,  116,    2, 0x08,   21 /* Private */,
-      25,    1,  121,    2, 0x08,   24 /* Private */,
+       4,    1,   77,    2, 0x0a,    3 /* Public */,
+       4,    2,   80,    2, 0x0a,    5 /* Public */,
+       7,    0,   85,    2, 0x0a,    8 /* Public */,
+       8,    0,   86,    2, 0x0a,    9 /* Public */,
+       9,    0,   87,    2, 0x0a,   10 /* Public */,
+      10,    0,   88,    2, 0x0a,   11 /* Public */,
+      11,    3,   89,    2, 0x0a,   12 /* Public */,
+      18,    2,   96,    2, 0x08,   16 /* Private */,
+      22,    1,  101,    2, 0x08,   19 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QJsonObject,    3,
@@ -197,10 +183,8 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSInfoPanelENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 12, 0x80000000 | 14, 0x80000000 | 16,   13,   15,   17,
-    QMetaType::Void, 0x80000000 | 16, QMetaType::Bool,   17,   19,
-    QMetaType::Bool, 0x80000000 | 16,   17,
-    QMetaType::Void, 0x80000000 | 22, QMetaType::Int,   23,   24,
-    QMetaType::Void, 0x80000000 | 22,   23,
+    QMetaType::Void, 0x80000000 | 19, QMetaType::Int,   20,   21,
+    QMetaType::Void, 0x80000000 | 19,   20,
 
        0        // eod
 };
@@ -237,13 +221,6 @@ Q_CONSTINIT const QMetaObject InfoPanel::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<QPainter *, std::false_type>,
         QtPrivate::TypeAndForceComplete<const QStyleOptionViewItem &, std::false_type>,
         QtPrivate::TypeAndForceComplete<const QModelIndex &, std::false_type>,
-        // method 'setFieldValidationState'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QModelIndex &, std::false_type>,
-        QtPrivate::TypeAndForceComplete<bool, std::false_type>,
-        // method 'isFieldInvalid'
-        QtPrivate::TypeAndForceComplete<bool, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QModelIndex &, std::false_type>,
         // method 'onItemChanged'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QTreeWidgetItem *, std::false_type>,
@@ -269,11 +246,8 @@ void InfoPanel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 5: _t->cancelEditMode(); break;
         case 6: _t->resetButtons(); break;
         case 7: _t->paintDeleteItemButton((*reinterpret_cast< std::add_pointer_t<QPainter*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QStyleOptionViewItem>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[3]))); break;
-        case 8: _t->setFieldValidationState((*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<bool>>(_a[2]))); break;
-        case 9: { bool _r = _t->isFieldInvalid((*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
-        case 10: _t->onItemChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
-        case 11: _t->handleDeleteAction((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1]))); break;
+        case 8: _t->onItemChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
+        case 9: _t->handleDeleteAction((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -307,13 +281,13 @@ int InfoPanel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 10;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 10)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 12;
+        _id -= 10;
     }
     return _id;
 }
