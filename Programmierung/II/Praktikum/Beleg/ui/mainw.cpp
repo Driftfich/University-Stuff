@@ -73,12 +73,6 @@ void MainWindow::setupSideDock()
     addDockWidget(Qt::RightDockWidgetArea, sideDock);
     sideDock->hide(); // startet ausgeblendet
 
-    // Beispiel: Button aus toolbarUi zeigt Add-Panel
-    connect(toolbarUi->add, &QPushButton::clicked, this, [=]() {
-        sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->addpanel);
-        sideDock->show();
-    });
-
     // Signal vom InfoPanel verbinden
     connect(infoPanel, &InfoPanel::saveRequested, this, &MainWindow::saveModifiedData);
     
@@ -136,6 +130,20 @@ void MainWindow::setupSideDock()
     connect(tv, &QTableView::doubleClicked, this, showInfo);
 }
 
+void MainWindow::setupAddPanel()
+{
+    addPanel = new InfoPanel(sidePanelUi->addpanel);
+    auto *addLayout = new QVBoxLayout(sidePanelUi->addpanel);
+    addLayout->addWidget(addPanel);
+    addPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    // Beispiel: Button aus toolbarUi zeigt Add-Panel
+    connect(toolbarUi->add, &QPushButton::clicked, this, [=]() {
+        sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->addpanel);
+        sideDock->show();
+    });
+    
+}
 void MainWindow::setupDataLayers()
 {
     setupLib();

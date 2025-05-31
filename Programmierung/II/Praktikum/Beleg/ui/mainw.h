@@ -39,6 +39,7 @@ class MainWindow : public QMainWindow
             setupUi();
             setupDataLayers();
             setupSideDock();
+            setupAddPanel();
             setupToolbarConnections();
             setupSearchCompleter();
             setWindowTitle(tr("Bibliotheksverwaltung"));
@@ -65,6 +66,7 @@ class MainWindow : public QMainWindow
         Ui::Form* sidePanelUi;
         QWidget* sidePanelWidget;
         InfoPanel* infoPanel;
+        InfoPanel* addPanel;
 
         // Models and Proxies for editing in the Infopanel
         QAbstractTableModel* currentEditModel = nullptr;
@@ -91,6 +93,7 @@ class MainWindow : public QMainWindow
         // UI setup methods
         void setupUi();
         void setupSideDock();
+        void setupAddPanel();
 
         // 
         void setupDataLayers();

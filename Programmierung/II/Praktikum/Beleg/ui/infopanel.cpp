@@ -34,6 +34,11 @@ public:
         if (index.column() == 0)
             return nullptr;
 
+        bool isReadOnly = index.data(SchemaReadonlyRole).toBool();
+        if(isReadOnly) {
+            return nullptr; // No editor for read-only items
+        }
+
         QString itemType = index.data(SchemaTypeRole).toString();
         QString itemFormat = index.data(SchemaFormatRole).toString();
         QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
@@ -142,34 +147,61 @@ public:
         QString itemType = index.data(SchemaTypeRole).toString();
         QString itemFormat = index.data(SchemaFormatRole).toString();
         QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
+        bool isRequired = index.data(SchemaRequiredRole).toBool();
+        QString newValue;
         qDebug() << "Update model data for index:" << index.row() << index.column() << " Type:" << itemType << " Format:" << itemFormat;
         if (itemType == "integer") {
             QSpinBox* spinBox = qobject_cast<QSpinBox*>(editor);
-            if (spinBox) model->setData(index, spinBox->value(), Qt::EditRole);
+            newValue = QString::number(spinBox->value());
+            if (spinBox) model->setData(index, newValue, Qt::EditRole);
         } 
         else if (itemType == "string" && (itemFormat.contains("date") || itemFormat.contains("time"))) {
             QDateEdit* dateEdit = qobject_cast<QDateEdit*>(editor);
             if (dateEdit) {
                 if (itemFormat == "datetime") {
-                    model->setData(index, dateEdit->dateTime().toString("yyyy-MM-dd HH:mm:ss"), Qt::EditRole);
+                    newValue = dateEdit->dateTime().toString("yyyy-MM-dd HH:mm:ss");
+                    model->setData(index, newValue, Qt::EditRole);
                 } else if (itemFormat == "date") {
-                    model->setData(index, dateEdit->date().toString("yyyy-MM-dd"), Qt::EditRole);
+                    newValue = dateEdit->date().toString("yyyy-MM-dd");
+                    model->setData(index, newValue, Qt::EditRole);
                 } else if (itemFormat == "time") {
-                    model->setData(index, dateEdit->time().toString("HH:mm:ss"), Qt::EditRole);
+                    newValue = dateEdit->time().toString("HH:mm:ss");
+                    model->setData(index, newValue, Qt::EditRole);
                 }
             }
         } else if (itemType == "boolean") {
             QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
-            if (comboBox) model->setData(index, comboBox->currentData().toBool(), Qt::EditRole);
+            if (comboBox) {
+                newValue = comboBox->currentData().toBool() ? "true" : "false";
+                model->setData(index, comboBox->currentData().toBool(), Qt::EditRole);
+            }
         } else if (itemType == "string" && index.data(SchemaEnumValuesRole).canConvert<QStringList>() && !enumValuesVar.toStringList().isEmpty()) {
-            qDebug() << "Update ComboBox data";
-             QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
-             if (comboBox) model->setData(index, comboBox->currentText(), Qt::EditRole);
+            QComboBox* comboBox = qobject_cast<QComboBox*>(editor);
+            if (comboBox) {
+                newValue = comboBox->currentText();
+                model->setData(index, newValue, Qt::EditRole);
+            }
         } else {
-            qDebug() << "Update LineEdit data";
-            // Handle regular string values (and fallback for other types)
             QLineEdit* lineEdit = qobject_cast<QLineEdit*>(editor);
-            if (lineEdit) model->setData(index, lineEdit->text(), Qt::EditRole);
+            if (lineEdit) {
+                newValue = lineEdit->text();
+                model->setData(index, newValue, Qt::EditRole);
+            }
+        }
+
+        if (isRequired && newValue.trimmed().isEmpty()) {         
+            // InfoPanel über ungültiges Feld benachrichtigen
+            if (infoPanelPtr) {
+                infoPanelPtr->setFieldValidationState(index, false);
+            }
+        } else {
+            // Normale Darstellung wiederherstellen
+            editor->setStyleSheet("");
+            
+            // InfoPanel über gültiges Feld benachrichtigen
+            if (infoPanelPtr) {
+                infoPanelPtr->setFieldValidationState(index, true);
+            }
         }
     }
 
@@ -177,7 +209,25 @@ public:
                 const QStyleOptionViewItem& option,
                 const QModelIndex& index) const override
     {
-        QStyledItemDelegate::paint(painter, option, index);
+        QStyleOptionViewItem modifiedOption = option;
+
+        // Prüfen ob das Feld ungültig ist
+        if (index.column() == 1 && infoPanelPtr) {
+            bool isInvalid = infoPanelPtr->isFieldInvalid(index);
+            if (isInvalid) {
+                // Roten Hintergrund für ungültige Felder setzen
+                modifiedOption.backgroundBrush = QBrush(QColor(255, 238, 238)); // Light red
+                modifiedOption.palette.setColor(QPalette::Base, QColor(255, 238, 238));
+                
+                // Roten Rahmen zeichnen
+                painter->save();
+                painter->setPen(QPen(QColor(255, 0, 0), 2));
+                painter->drawRect(option.rect.adjusted(1, 1, -1, -1));
+                painter->restore();
+            }
+        }
+
+        QStyledItemDelegate::paint(painter, modifiedOption, index);
 
         if (infoPanelPtr && index.column() == 1) {
             infoPanelPtr->paintDeleteItemButton(painter, option, index);
@@ -307,6 +357,16 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
 void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth, const QJsonObject& currentItemSchema) {
     QFont itemFont = calculateFontForDepth(depth);
     thisItem->setFont(0, itemFont); // Font for the key column of thisItem (e.g., "person", or "fname")
+    QString nameOverride = currentItemSchema.value("rename").toString();
+    QString description = currentItemSchema.value("description").toString();
+    if (!nameOverride.isEmpty()) {
+        // use the rename value from the schema to override the text of the key
+        thisItem->setText(0, nameOverride);
+    }
+    if (!description.isEmpty()) {
+        // use the description from the schema to set the tooltip of the key
+        thisItem->setToolTip(0, description);
+    }
 
     if (valueForThisItem.isObject()) {
         thisItem->setData(0, Qt::UserRole, "object"); // 'thisItem' (e.g., "person", "subclass_params") represents an object.
@@ -352,9 +412,13 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         QString itemType = currentItemSchema.value("type").toString();
         QString itemFormat = currentItemSchema.value("format").toString();
         QStringList enumValues = currentItemSchema.value("enum").toVariant().toStringList();
+        bool isReadOnly = currentItemSchema.value("readonly").toBool(false);
+        bool isRequired = currentItemSchema.value("required").toBool(false);
         thisItem->setData(1, SchemaTypeRole, itemType);
         thisItem->setData(1, SchemaFormatRole, itemFormat);
         thisItem->setData(1, SchemaEnumValuesRole, enumValues);
+        thisItem->setData(1, SchemaReadonlyRole, isReadOnly);
+        thisItem->setData(1, SchemaRequiredRole, isRequired);
     }
 }
 
@@ -362,6 +426,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
     QFont itemFont = calculateFontForDepth(depth);
     thisItem->setFont(0, itemFont);
     thisItem->setFont(1, itemFont);
+
     if (valueForThisItem.isObject()) {
         thisItem->setData(0, Qt::UserRole, "object");
         QJsonObject obj = valueForThisItem.toObject();
@@ -425,6 +490,8 @@ void InfoPanel::enterEditMode() {
     
     // TreeWidget editierbar machen
     setTreeItemsEditable(true);
+
+    updateSaveButtonState();
     
     // Button-Zustände ändern
     saveButton->setEnabled(true);
@@ -439,16 +506,26 @@ void InfoPanel::enterEditMode() {
     connect(editButton, &QPushButton::clicked, this, &InfoPanel::cancelEditMode);
 
     updateAddButtons(true);
+    validateAllRequiredFieldsOnLoad();
 }
 
 void InfoPanel::saveChanges() {
     if (!inEditMode) return;
+
+    if (!invalidRequiredFields.isEmpty()) {
+        QMessageBox::warning(this, tr("Validierungsfehler"), 
+                           tr("Bitte füllen Sie alle rot markierten Pflichtfelder aus."));
+        return;
+    }
     
     // Daten aus Tree sammeln
     QJsonObject modifiedData = collectDataFromTree();
     
     // Signal aussenden
     emit saveRequested(modifiedData);
+
+    // update the original data with the modified data
+    originalData = modifiedData; // Update original data with the modified data
     
     // Edit-Modus verlassen
     inEditMode = false;
@@ -474,6 +551,8 @@ void InfoPanel::saveChanges() {
 }
 
 void InfoPanel::cancelEditMode() {
+    invalidRequiredFields.clear();
+
     // Originaldaten wiederherstellen
     restoreOriginalData();
     
@@ -880,4 +959,65 @@ bool InfoPanel::eventFilter(QObject* watched, QEvent* event) {
         }
     }
     return QWidget::eventFilter(watched, event);
+}
+
+void InfoPanel::setFieldValidationState(const QModelIndex& index, bool isValid) {
+    QPersistentModelIndex persistentIndex(index);
+    
+    if (isValid) {
+        invalidRequiredFields.remove(persistentIndex);
+    } else {
+        invalidRequiredFields.insert(persistentIndex);
+    }
+    
+    updateSaveButtonState();
+}
+
+void InfoPanel::updateSaveButtonState() {
+    if (!inEditMode) return;
+    
+    bool hasInvalidFields = !invalidRequiredFields.isEmpty();
+    
+    if (hasInvalidFields) {
+        saveButton->setEnabled(false);
+        saveButton->setStyleSheet("QPushButton { background-color: #ffcccc; color: #666; }");
+        saveButton->setToolTip(tr("Bitte füllen Sie alle Pflichtfelder aus"));
+    } else {
+        saveButton->setEnabled(true);
+        saveButton->setStyleSheet("QPushButton { background-color: orange; }");
+        saveButton->setToolTip("");
+    }
+}
+
+void InfoPanel::validateAllRequiredFieldsOnLoad() {
+    if (!inEditMode) return;
+    
+    invalidRequiredFields.clear();
+    validateRequiredFieldsRecursive(treeWidget->invisibleRootItem());
+    updateSaveButtonState();
+}
+
+void InfoPanel::validateRequiredFieldsRecursive(QTreeWidgetItem* item) {
+    if (!item) return;
+    
+    for (int i = 0; i < item->childCount(); ++i) {
+        QTreeWidgetItem* child = item->child(i);
+        
+        if (child->data(0, Qt::UserRole).toString() == "leaf") {
+            bool isRequired = child->data(1, SchemaRequiredRole).toBool();
+            QString value = child->text(1).trimmed();
+            
+            if (isRequired && value.isEmpty()) {
+                QModelIndex childIndex = treeWidget->indexFromItem(child, 1);
+                invalidRequiredFields.insert(QPersistentModelIndex(childIndex));
+            }
+        } else {
+            validateRequiredFieldsRecursive(child);
+        }
+    }
+}
+
+bool InfoPanel::isFieldInvalid(const QModelIndex& index) const {
+    QPersistentModelIndex persistentIndex(index);
+    return invalidRequiredFields.contains(persistentIndex);
 }
