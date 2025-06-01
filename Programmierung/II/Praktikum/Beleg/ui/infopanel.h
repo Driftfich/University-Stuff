@@ -14,6 +14,7 @@ const int SchemaRequiredRole = Qt::UserRole + 5;
 const int SchemaPatternRole = Qt::UserRole + 6;
 const int SchemaMinRole = Qt::UserRole + 7;
 const int SchemaMaxRole = Qt::UserRole + 8;
+const int SchemaOriginalKeyRole = Qt::UserRole + 9;
 
 class InfoPanel : public QWidget {
     Q_OBJECT
@@ -83,13 +84,12 @@ class InfoPanel : public QWidget {
         int getItemDepth(QTreeWidgetItem* item) const;
 
         QSet<QPersistentModelIndex> invalidRequiredFields;
-        bool hasUnsavedChanges = false;
         void updateSaveButtonState();
         void validateAllRequiredFieldsOnLoad();
         void validateRequiredFieldsRecursive(QTreeWidgetItem* item);
         bool validateRequiredField(const QTreeWidgetItem* item) const;
         bool validateFieldPattern(const QTreeWidgetItem* item) const;
-        bool JsonChanged();
+        // bool JsonChanged();
 
     private slots:
         void onItemChanged(QTreeWidgetItem* item, int column);

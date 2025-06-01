@@ -29,7 +29,7 @@ void Libitem::toFile(QFile& file) const {
 
 // load json object from file
 int Libitem::loadLocalParams(const QJsonObject& json) {
-    qDebug() << json;
+    // qDebug() << json;
     if (json.contains("id")) {
         setId(json["id"].toVariant().toULongLong());
     } else {

@@ -346,8 +346,15 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
 void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth, const QJsonObject& currentItemSchema) {
     QFont itemFont = calculateFontForDepth(depth);
     thisItem->setFont(0, itemFont); // Font for the key column of thisItem (e.g., "person", or "fname")
+
     QString nameOverride = currentItemSchema.value("rename").toString();
     QString description = currentItemSchema.value("description").toString();
+    QString originalKey = thisItem->text(0);
+
+    if (!originalKey.isEmpty()) {
+        thisItem->setData(0, SchemaOriginalKeyRole, originalKey);
+    }
+
     if (!nameOverride.isEmpty()) {
         // use the rename value from the schema to override the text of the key
         thisItem->setText(0, nameOverride);
@@ -365,13 +372,13 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         if (currentItemSchema.value("type").toString() == "object" && currentItemSchema.contains("properties")) {
             propertiesSchema = currentItemSchema.value("properties").toObject();
         }
-        qDebug() << "Current item schema for object:" << currentItemSchema << "\n";
-        qDebug() << "propertiesSchema from" << thisItem->text(0) << "->" << propertiesSchema << "\n";
+        // qDebug() << "Current item schema for object:" << currentItemSchema << "\n";
+        // qDebug() << "propertiesSchema from" << thisItem->text(0) << "->" << propertiesSchema << "\n";
         for (const QString& key : obj.keys()) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
             QJsonObject childSchema = propertiesSchema.value(key).toObject();
-            qDebug() << key << "->" << childSchema;
+            // qDebug() << key << "->" << childSchema;
             if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
                 childSchema = currentItemSchema.value("additionalProperties").toObject();
             }
@@ -476,7 +483,6 @@ bool InfoPanel::isHighestItem(QTreeWidgetItem* item) const {
 
 void InfoPanel::enterEditMode() {
     inEditMode = true;
-    hasUnsavedChanges = false;
     
     // TreeWidget editierbar machen
     setTreeItemsEditable(true);
@@ -507,8 +513,6 @@ void InfoPanel::saveChanges() {
                            tr("Bitte füllen Sie alle rot markierten Pflichtfelder aus."));
         return;
     }
-
-    hasUnsavedChanges = false;
     
     // Daten aus Tree sammeln
     QJsonObject modifiedData = collectDataFromTree();
@@ -550,7 +554,6 @@ void InfoPanel::cancelEditMode() {
     
     // Edit-Modus verlassen
     inEditMode = false;
-    hasUnsavedChanges = false;
     setTreeItemsEditable(false);
     updateAddButtons(false); // Hide add buttons
     
@@ -621,28 +624,38 @@ void InfoPanel::onItemChanged(QTreeWidgetItem* item, int column) {
     // // The itemChanged signal is quite broad; this simple check is a starting point.
     // saveButton->setEnabled(true);
     // saveButton->setStyleSheet("QPushButton { background-color: orange; }");
-    qDebug() << "Item changed in edit mode, enabling save button.";
-    hasUnsavedChanges = true;
+    // qDebug() << "Item changed in edit mode, enabling save button.";
     updateSaveButtonState();
 }
 
 QJsonObject InfoPanel::collectDataFromTree() {
-    QJsonObject result;
-    
-    for (int i = 0; i < treeWidget->topLevelItemCount(); ++i) {
-        QTreeWidgetItem* topItem = treeWidget->topLevelItem(i);
-        QString groupName = topItem->text(0);
-        QJsonValue groupValue = getValueFromItem(topItem);
-        result[groupName] = groupValue;
-    }
-    
-    return result;
+    return getValueFromItem(treeWidget->invisibleRootItem()).toObject(); // Collect data from the invisible root item
 }
 
 QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
     QString itemType = item->data(0, Qt::UserRole).toString();
 
-    if (itemType == "leaf" || item->childCount() == 0) { // Leaf or no children implies direct value
+    if (itemType == "array") {
+        QJsonArray array = QJsonArray();
+        for (int i = 0; i < item->childCount(); ++i) {
+            array.append(getValueFromItem(item->child(i)));
+        }
+        return array;
+    } else if (itemType == "object") { // Default to object if it has children and is not explicitly an array or leaf
+        // debug type of subclass_params key
+        if (item->text(0) == "subclass_params") {
+            qDebug() << "Item type for subclass_params:" << itemType;
+        }
+        QJsonObject obj = QJsonObject();
+        for (int i = 0; i < item->childCount(); ++i) {
+            QTreeWidgetItem* child = item->child(i);
+            QString originalKey = child->data(0, SchemaOriginalKeyRole).toString();
+            QString keyToUse = originalKey.isEmpty() ? child->text(0) : originalKey;
+            obj[keyToUse] = getValueFromItem(child);
+        }
+        return obj;
+    }
+    else if (itemType == "leaf" || item->childCount() == 0) { // Leaf or no children implies direct value
         QString text = item->text(1);
         bool ok;
         int intVal = text.toInt(&ok);
@@ -655,20 +668,6 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
         if (text.toLower() == "false") return false;
         
         return text;
-    } else if (itemType == "array") {
-        QJsonArray array;
-        for (int i = 0; i < item->childCount(); ++i) {
-            array.append(getValueFromItem(item->child(i)));
-        }
-        return array;
-    } else { // Default to object if it has children and is not explicitly an array or leaf
-        QJsonObject obj;
-        for (int i = 0; i < item->childCount(); ++i) {
-            QTreeWidgetItem* child = item->child(i);
-            QString key = child->text(0);
-            obj[key] = getValueFromItem(child);
-        }
-        return obj;
     }
     return QJsonValue(); // Fallback, should not happen
 }
@@ -973,29 +972,26 @@ void InfoPanel::updateSaveButtonState() {
     if (!inEditMode) return;
     
     bool hasInvalidFields = !invalidRequiredFields.isEmpty();
-    qDebug() << hasUnsavedChanges;
+    qDebug() << "Old data:" << originalData;
+    qDebug() << "Current data:" << collectDataFromTree();
     if (hasInvalidFields) {
         saveButton->setEnabled(false);
         saveButton->setStyleSheet("QPushButton { background-color: #ffcccc; color: #666; }");
         saveButton->setToolTip(tr("Bitte füllen Sie alle Pflichtfelder aus"));
+        return;
     }
-    else if (hasUnsavedChanges) {
+    else if (originalData != collectDataFromTree()) {
         saveButton->setEnabled(true);
         saveButton->setStyleSheet("QPushButton { background-color: orange; }");
         saveButton->setToolTip(tr("Änderungen speichern"));
-    } else {
+        return;
+    }
+    else {
         saveButton->setEnabled(false);
         saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
         saveButton->setToolTip(tr("Keine Änderungen zum Speichern"));
     }
 }
-
-// bool InfoPanel::JsonChanged() {
-//     if (!inEditMode) return false; // No changes if not in edit mode
-//     QJsonObject currentData = collectDataFromTree();
-//     // deep compare currentData with originalData
-//     return currentData != originalData; // Returns true if there are changes
-// }
 
 void InfoPanel::validateAllRequiredFieldsOnLoad() {
     if (!inEditMode) return;
