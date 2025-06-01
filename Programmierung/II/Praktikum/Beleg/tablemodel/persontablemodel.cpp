@@ -246,6 +246,22 @@ bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const
     return true;
 }
 
+// QJsonObject PersonTableModel::getDefaultSchemaObject() const {
+//     QJsonObject defaultJson;
+//     defaultJson["subclass_type"] = QJsonObject{
+//         {"type", "string"},
+//         {"rename", "Subclass Type"},
+//         {"enum", QJsonArray{"Person", "Artist", "Borrower"}},
+//         {"description", "Type of the subclass (e.g. Person, Artist, Borrower)"}
+//     };
+
+//     return defaultJson;
+// }
+
+// QJsonObject PersonTableModel::getDefaultJsonObject(const QJsonObject& jsonObject) const {
+    
+// }
+
 void PersonTableModel::refreshData() {
     beginResetModel();
     endResetModel();

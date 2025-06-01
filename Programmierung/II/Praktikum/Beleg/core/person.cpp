@@ -348,11 +348,34 @@ QJsonObject Person::getSchema() const {
     schema.insert("type", "object");
     properties.insert("person", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
     if (!getSubclassParams().isEmpty()) {
-        properties.insert("subclass_type", QJsonObject{{"type", "string"}});
+        properties.insert("subclass_type", QJsonObject{{"type", "string"}, {"enum", QJsonArray{"Person", "Artist", "Borrower"}}, {"rename", "Subclass Type"}, {"description", "Type of the subclass (e.g. Person, Artist, Borrower)"}});
         properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", getSubclassSchema()}});
     }
     schema.insert("properties", properties);
     return schema;
+}
+
+QJsonObject Person::getLocalDefaultParams() const {
+    // get default keys for new person object with empty values
+    QJsonObject defaultJson;
+    defaultJson["id"] = 0;
+    defaultJson["fname"] = "";
+    defaultJson["lname"] = "";
+    defaultJson["ename"] = "";
+    defaultJson["birthday"] = "";
+    defaultJson["gender"] = "";
+    defaultJson["note"] = "";
+    defaultJson["location"] = "";
+    defaultJson["email"] = "";
+    defaultJson["tel"] = "";
+    return defaultJson;
+}
+
+QJsonObject Person::getDefaultJson() const {
+    QJsonObject defaultJson = getLocalDefaultParams();
+    defaultJson["subclass_type"] = getSubclassType();
+    defaultJson["subclass_params"] = getSubclassDefaultParams();
+    return defaultJson;
 }
 
 

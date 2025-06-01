@@ -104,8 +104,11 @@ class Person {
 
         // serialization methods
         QJsonObject getLocalParams() const;
+        QJsonObject getLocalDefaultParams() const;
         virtual QJsonObject getSubclassParams() const { return QJsonObject(); }
+        virtual QJsonObject getSubclassDefaultParams() const { return QJsonObject(); }
         QJsonObject getJson() const;
+        QJsonObject getDefaultJson() const;
         void toFile(QFile& file) const;
         int loadLocalParams(const QJsonObject& json);
         virtual int loadSubclassParams(const QJsonObject& json) { Q_UNUSED(json); return 0; }
