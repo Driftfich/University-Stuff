@@ -83,11 +83,13 @@ class InfoPanel : public QWidget {
         int getItemDepth(QTreeWidgetItem* item) const;
 
         QSet<QPersistentModelIndex> invalidRequiredFields;
+        bool hasUnsavedChanges = false;
         void updateSaveButtonState();
         void validateAllRequiredFieldsOnLoad();
         void validateRequiredFieldsRecursive(QTreeWidgetItem* item);
         bool validateRequiredField(const QTreeWidgetItem* item) const;
         bool validateFieldPattern(const QTreeWidgetItem* item) const;
+        bool JsonChanged();
 
     private slots:
         void onItemChanged(QTreeWidgetItem* item, int column);

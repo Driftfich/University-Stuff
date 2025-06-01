@@ -476,6 +476,7 @@ bool InfoPanel::isHighestItem(QTreeWidgetItem* item) const {
 
 void InfoPanel::enterEditMode() {
     inEditMode = true;
+    hasUnsavedChanges = false;
     
     // TreeWidget editierbar machen
     setTreeItemsEditable(true);
@@ -506,6 +507,8 @@ void InfoPanel::saveChanges() {
                            tr("Bitte füllen Sie alle rot markierten Pflichtfelder aus."));
         return;
     }
+
+    hasUnsavedChanges = false;
     
     // Daten aus Tree sammeln
     QJsonObject modifiedData = collectDataFromTree();
@@ -547,6 +550,7 @@ void InfoPanel::cancelEditMode() {
     
     // Edit-Modus verlassen
     inEditMode = false;
+    hasUnsavedChanges = false;
     setTreeItemsEditable(false);
     updateAddButtons(false); // Hide add buttons
     
@@ -613,10 +617,13 @@ void InfoPanel::onItemChanged(QTreeWidgetItem* item, int column) {
     Q_UNUSED(column); // Column might be useful
     if (!inEditMode) return; // Only react to changes if in edit mode
     
-    // Enable save button and change style if any relevant item changed.
-    // The itemChanged signal is quite broad; this simple check is a starting point.
-    saveButton->setEnabled(true);
-    saveButton->setStyleSheet("QPushButton { background-color: orange; }");
+    // // Enable save button and change style if any relevant item changed.
+    // // The itemChanged signal is quite broad; this simple check is a starting point.
+    // saveButton->setEnabled(true);
+    // saveButton->setStyleSheet("QPushButton { background-color: orange; }");
+    qDebug() << "Item changed in edit mode, enabling save button.";
+    hasUnsavedChanges = true;
+    updateSaveButtonState();
 }
 
 QJsonObject InfoPanel::collectDataFromTree() {
@@ -966,17 +973,29 @@ void InfoPanel::updateSaveButtonState() {
     if (!inEditMode) return;
     
     bool hasInvalidFields = !invalidRequiredFields.isEmpty();
-    
+    qDebug() << hasUnsavedChanges;
     if (hasInvalidFields) {
         saveButton->setEnabled(false);
         saveButton->setStyleSheet("QPushButton { background-color: #ffcccc; color: #666; }");
         saveButton->setToolTip(tr("Bitte füllen Sie alle Pflichtfelder aus"));
+    }
+    else if (hasUnsavedChanges) {
+        saveButton->setEnabled(true);
+        saveButton->setStyleSheet("QPushButton { background-color: orange; }");
+        saveButton->setToolTip(tr("Änderungen speichern"));
     } else {
         saveButton->setEnabled(false);
         saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
-        saveButton->setToolTip("");
+        saveButton->setToolTip(tr("Keine Änderungen zum Speichern"));
     }
 }
+
+// bool InfoPanel::JsonChanged() {
+//     if (!inEditMode) return false; // No changes if not in edit mode
+//     QJsonObject currentData = collectDataFromTree();
+//     // deep compare currentData with originalData
+//     return currentData != originalData; // Returns true if there are changes
+// }
 
 void InfoPanel::validateAllRequiredFieldsOnLoad() {
     if (!inEditMode) return;
@@ -1007,7 +1026,7 @@ void InfoPanel::validateRequiredFieldsRecursive(QTreeWidgetItem* item) {
 // }
 
 bool InfoPanel::isFieldValid(const QModelIndex& index) const {
-    if (!index.isValid()) return true;
+    if (!inEditMode || !index.isValid()) return true; // Not in edit mode or invalid index
 
     QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(index.internalPointer());
     bool isRequired = item->data(1, SchemaRequiredRole).toBool();
