@@ -186,7 +186,7 @@ QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index, const Tran
     if (CompleteJson.isEmpty()) {
         return QJsonObject();
     }
-    QJsonObject personJson = CompleteJson["person"].toObject();
+    QJsonObject personJson = CompleteJson;
 
     if (personJson.isEmpty()) {
         return QJsonObject();
