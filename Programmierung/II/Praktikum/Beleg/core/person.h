@@ -20,8 +20,8 @@
 #include <QJsonArray>
 #include <QVariant>
 #include "config.h"
-
-
+#include "artist.h"
+#include "borrower.h"
 
 enum class Gender {
     female,
@@ -43,6 +43,9 @@ class Person {
     QString email;
     QString tel;
 
+    std::unique_ptr<Artist> artist;
+    std::unique_ptr<Borrower> borrower;
+
     public:
         // setter methods
         void setId(unsigned long id) {this->id = id;}
@@ -56,6 +59,16 @@ class Person {
         int setLocation(const QString& location);
         int setEmail(const QString& email);
         int setTel(const QString& tel);
+
+        int setArtist(std::unique_ptr<Artist> artist) {
+            this->artist = std::move(artist);
+            return 0;
+        }
+
+        int setBorrower(std::unique_ptr<Borrower> borrower) {
+            this->borrower = std::move(borrower);
+            return 0;
+        }
 
         // getter methods
         unsigned long getId() const {return this->id;}
@@ -71,6 +84,21 @@ class Person {
         QString getEmail() const {return this->email;}
         QString getTel() const {return this->tel;}
 
+        Artist* getArtist() const { return artist.get(); }
+        Borrower* getBorrower() const { return borrower.get(); }
+
+        // Role management convenience methods
+        bool isArtist() const { return artist != nullptr; }
+        bool isBorrower() const { return borrower != nullptr; }
+        
+        // Create role with default parameters
+        int createArtistRole(const QString& artist_type = "", const QVector<unsigned long>& media_ids = {});
+        int createBorrowerRole(unsigned int limit = MAX_ITEMS_PER_BORROWER_DEFAULT);
+        
+        // Remove roles
+        int removeArtistRole() { artist.reset(); return 0; }
+        int removeBorrowerRole() { borrower.reset(); return 0; }
+
         // constructor using setters
         Person(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
                 const QDate birthday, const QString& gender, const QString& note,
@@ -85,6 +113,9 @@ class Person {
             setLocation(location);
             setEmail(email);
             setTel(tel);
+
+            this->artist = nullptr;
+            this->borrower = nullptr;
         }
 
         // constructor for loading from JSON
@@ -103,28 +134,28 @@ class Person {
         virtual QString getSubclassType() const { return "Person"; } // used to identify it is a person
 
         // serialization methods
-        QJsonObject getLocalParams() const;
-        QJsonObject getLocalDefaultParams() const;
-        virtual QJsonObject getSubclassParams() const { return QJsonObject(); }
-        virtual QJsonObject getSubclassDefaultParams() const { return QJsonObject(); }
+        // QJsonObject getLocalParams() const;
+        // QJsonObject getLocalDefaultParams() const;
+        // virtual QJsonObject getSubclassParams() const { return QJsonObject(); }
+        // virtual QJsonObject getSubclassDefaultParams() const { return QJsonObject(); }
         QJsonObject getJson() const;
-        QJsonObject getDefaultJson() const;
+        // QJsonObject getDefaultJson() const;
         void toFile(QFile& file) const;
         int loadLocalParams(const QJsonObject& json);
-        virtual int loadSubclassParams(const QJsonObject& json) { Q_UNUSED(json); return 0; }
+        // virtual int loadSubclassParams(const QJsonObject& json) { Q_UNUSED(json); return 0; }
         static std::shared_ptr<Person> fromFile(QFile& file);
         static std::shared_ptr<Person> PersonFactory(const QJsonObject& json);
 
         // schema methods
         QJsonObject getLocalSchema() const;
-        virtual QJsonObject getSubclassSchema() const { return QJsonObject(); }
+        // virtual QJsonObject getSubclassSchema() const { return QJsonObject(); }
         QJsonObject getSchema() const;
 
         // print methods
         friend std::ostream& operator<<(std::ostream& os, const Person& person);
         void printbase(std::ostream& os) const;
         void print(std::ostream& os) const;
-        void printSubclass(std::ostream& os) const;
+        // void printSubclass(std::ostream& os) const;
 };
 
 

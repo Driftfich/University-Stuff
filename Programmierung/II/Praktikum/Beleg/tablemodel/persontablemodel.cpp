@@ -238,7 +238,7 @@ bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const
     }
     std::shared_ptr<Person> person = (*personMan)[row];
     QJsonObject personJson = jsonObject["person"].toObject();
-    if (person->loadLocalParams(personJson) != 0 || person->loadSubclassParams(personJson["subclass_params"].toObject()) != 0) {
+    if (person->loadLocalParams(personJson) != 0) { //  || person->loadSubclassParams(personJson["subclass_params"].toObject()) != 0
         qWarning() << "Failed to update person from JSON object";
         return false;
     }

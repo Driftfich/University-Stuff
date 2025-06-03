@@ -352,12 +352,12 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
         if (person->loadLocalParams(personObject) != 0) {
             return false;
         }
-        if (personObject.contains("subclass_parameters")) {
-            QJsonObject subclassParams = personObject["subclass_parameters"].toObject();
-            if (person->loadSubclassParams(subclassParams) != 0) {
-                return false;
-            }
-        }
+        // if (personObject.contains("subclass_parameters")) {
+        //     QJsonObject subclassParams = personObject["subclass_parameters"].toObject();
+        //     if (person->loadSubclassParams(subclassParams) != 0) {
+        //         return false;
+        //     }
+        // }
     }
 
     refreshData();

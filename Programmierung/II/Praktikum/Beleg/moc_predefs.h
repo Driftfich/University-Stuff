@@ -41,6 +41,7 @@
 #define __FLT32X_MAX_EXP__ 1024
 #define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_1 1
 #define __FLT32_HAS_DENORM__ 1
+#define __INT_LEAST16_TYPE__ short int
 #define __UINT_FAST8_MAX__ 0xff
 #define __cpp_rvalue_reference 200610L
 #define __cpp_nested_namespace_definitions 201411L
@@ -250,7 +251,6 @@
 #define __UINT32_TYPE__ unsigned int
 #define __BFLT16_HAS_QUIET_NAN__ 1
 #define __FLT_RADIX__ 2
-#define __INT_LEAST16_TYPE__ short int
 #define __LDBL_EPSILON__ 1.08420217248550443400745280086994171e-19L
 #define __UINTMAX_C(c) c ## UL
 #define __FLT16_DIG__ 3

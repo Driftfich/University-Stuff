@@ -177,22 +177,6 @@ int Person::setTel(const QString& tel) {
     return 0;
 }
 
-// constructor using setters
-// Person::Person(unsigned long id, const QString& fname, const QString& lname, const QString& ename,
-//                const QDate birthday, Gender gender, const QString& note,
-//                const QString& location, const QString& email, const QString& tel) {
-//     setId(id);
-//     setFname(fname);
-//     setLname(lname);
-//     setEname(ename);
-//     setBirthday(birthday);
-//     setGender(gender);
-//     setNote(note);
-//     setLocation(location);
-//     setEmail(email);
-//     setTel(tel);
-// }
-
 // copy constructor
 Person::Person(const Person& other) {
     // deep copy is handled by the copy constructor of the QString class
@@ -207,6 +191,8 @@ Person::Person(const Person& other) {
     this->location = other.location;
     this->email = other.email;
     this->tel = other.tel;
+    this->artist = other.artist ? std::make_unique<Artist>(*other.artist) : nullptr;
+    this->borrower = other.borrower ? std::make_unique<Borrower>(*other.borrower) : nullptr;
 }
 
 // constructor for loading from JSON
@@ -232,6 +218,8 @@ Person& Person::operator=(const Person& other) {
         this->location = other.location;
         this->email = other.email;
         this->tel = other.tel;
+        this->artist = other.artist ? std::make_unique<Artist>(*other.artist) : nullptr;
+        this->borrower = other.borrower ? std::make_unique<Borrower>(*other.borrower) : nullptr;
     }
     return *this;
 }
@@ -241,7 +229,7 @@ Person::~Person() {
     // no need to delete anything as QString and QDate are handled by the C++ standard library
 }
 
-QJsonObject Person::getLocalParams() const {
+QJsonObject Person::getJson() const {
     QJsonObject json;
     json["id"] = static_cast<qint64>(id);
     json["fname"] = fname;
@@ -253,16 +241,13 @@ QJsonObject Person::getLocalParams() const {
     json["location"] = location;
     json["email"] = email;
     json["tel"] = tel;
+    if (artist) {
+        json["artist"] = artist->getSubclassParams();
+    }
+    if (borrower) {
+        json["borrower"] = borrower->getSubclassParams();
+    }
     return json;
-}
-
-QJsonObject Person::getJson() const {
-    QJsonObject obj;
-    obj["person"] = getLocalParams();
-    // qDebug() << "Person JSON:" << QJsonDocument(obj).toJson(QJsonDocument::Indented);
-    obj["subclass_type"] = getSubclassParams().isEmpty() ? QString("Person") : getSubclassType();
-    obj["subclass_params"] = getSubclassParams();
-    return obj;
 }
 
 void Person::toFile(QFile& file) const {
@@ -282,6 +267,18 @@ int Person::loadLocalParams(const QJsonObject& json) {
     if (json.contains("location")) location = json["location"].toString();
     if (json.contains("email")) email = json["email"].toString();
     if (json.contains("tel")) tel = json["tel"].toString();
+    if (json.contains("artist")) {
+        QJsonObject artistJson = json["artist"].toObject();
+        artist = std::make_unique<Artist>(artistJson);
+    } else {
+        artist = nullptr;
+    }
+    if (json.contains("borrower")) {
+        QJsonObject borrowerJson = json["borrower"].toObject();
+        borrower = std::make_unique<Borrower>(borrowerJson);
+    } else {
+        borrower = nullptr;
+    }
     return 0;
 }
 
@@ -293,19 +290,20 @@ std::shared_ptr<Person> Person::fromFile(QFile& file) {
 }
 
 std::shared_ptr<Person> Person::PersonFactory(const QJsonObject& json) {
-    auto base = json["person"].toObject();
-    auto type = json["subclass_type"].toString();
-    if (type == "Artist") {
-        return std::make_shared<Artist>(json);
-    } else if (type == "Borrower") {
-        return std::make_shared<Borrower>(json);
-    }
-    else if (type == "Person") {
-        return std::make_shared<Person>(base);
-    }
-    else {
-        throw std::runtime_error("Unknown subclass type: " + type.toStdString());
-    }
+    // auto base = json["person"].toObject();
+    // auto type = json["subclass_type"].toString();
+    // if (type == "Artist") {
+    //     return std::make_shared<Artist>(json);
+    // } else if (type == "Borrower") {
+    //     return std::make_shared<Borrower>(json);
+    // }
+    // else if (type == "Person") {
+    //     return std::make_shared<Person>(base);
+    // }
+    // else {
+    //     throw std::runtime_error("Unknown subclass type: " + type.toStdString());
+    // }
+    return std::make_shared<Person>(json);
 }
 
 // schema methods
@@ -326,58 +324,28 @@ QJsonObject Person::getLocalSchema() const {
     schema["location"] = QJsonObject{{"type", "string"}, {"rename", "Location"}, {"description", "Location of the person"}};
     schema["email"] = QJsonObject{{"type", "string"}, {"format", "email"}, {"readonly", true}, {"rename", "Email"}, {"description", "Email address of the person"}};
     schema["tel"] = QJsonObject{{"type", "string"}, {"format", "tel"}, {"rename", "Telephone"}, {"description", "Telephone number of the person"}};
+    if (artist) {
+        schema["artist"] = artist->getSubclassSchema();
+    }
+    if (borrower) {
+        schema["borrower"] = borrower->getSubclassSchema();
+    }
 
     return schema;
 }
-
-// QJsonObject Person::getSchema() const {
-//     QJsonObject schema;
-//     schema.insert("type", "object");
-//     schema.insert("person", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
-//     QJsonObject subclass_schema = getSubclassSchema();
-//     if (!subclass_schema.isEmpty()) {
-//         schema.insert("subclass_type", QJsonObject{{"type", "string"}});
-//         schema.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", subclass_schema}});
-//     }
-//     return schema;
-// }
 
 QJsonObject Person::getSchema() const {
     QJsonObject schema;
     QJsonObject properties;
     schema.insert("type", "object");
-    properties.insert("person", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
-    if (!getSubclassParams().isEmpty()) {
-        properties.insert("subclass_type", QJsonObject{{"type", "string"}, {"enum", QJsonArray{"Person", "Artist", "Borrower"}}, {"rename", "Subclass Type"}, {"description", "Type of the subclass (e.g. Person, Artist, Borrower)"}});
-        properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", getSubclassSchema()}});
-    }
-    schema.insert("properties", properties);
+    // properties.insert("person", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
+    // if (!getSubclassParams().isEmpty()) {
+    //     properties.insert("subclass_type", QJsonObject{{"type", "string"}, {"enum", QJsonArray{"Person", "Artist", "Borrower"}}, {"rename", "Subclass Type"}, {"description", "Type of the subclass (e.g. Person, Artist, Borrower)"}});
+    //     properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", getSubclassSchema()}});
+    // }
+    schema.insert("properties", getLocalSchema());
     return schema;
 }
-
-QJsonObject Person::getLocalDefaultParams() const {
-    // get default keys for new person object with empty values
-    QJsonObject defaultJson;
-    defaultJson["id"] = 0;
-    defaultJson["fname"] = "";
-    defaultJson["lname"] = "";
-    defaultJson["ename"] = "";
-    defaultJson["birthday"] = "";
-    defaultJson["gender"] = "";
-    defaultJson["note"] = "";
-    defaultJson["location"] = "";
-    defaultJson["email"] = "";
-    defaultJson["tel"] = "";
-    return defaultJson;
-}
-
-QJsonObject Person::getDefaultJson() const {
-    QJsonObject defaultJson = getLocalDefaultParams();
-    defaultJson["subclass_type"] = getSubclassType();
-    defaultJson["subclass_params"] = getSubclassDefaultParams();
-    return defaultJson;
-}
-
 
 void Person::printbase(std::ostream& os) const {
     os << "ID: " << id << "\n"
@@ -390,20 +358,23 @@ void Person::printbase(std::ostream& os) const {
     << "Location: " << location.toStdString() << "\n"
     << "Email: " << email.toStdString() << "\n"
     << "Telephone: " << tel.toStdString() << "\n";
-}
-
-void Person::printSubclass(std::ostream& os) const {
-    // iterate over the map from the subclass parameters
-    os << "Subclass type: " << getSubclassType().toStdString() << "\n";
-    QJsonObject subclass_params = getSubclassParams();
-    for (auto it = subclass_params.begin(); it != subclass_params.end(); ++it) {
-        os << it.key().toStdString() << ": " << it.value().toVariant().toString().toStdString() << "\n";
+    if (artist) {
+        os << "Artist Type: " << artist->getArtistType().toStdString() << "\n";
+        os << "Media IDs: ";
+        for (const auto& media_id : artist->getMediaIds()) {
+            os << media_id << " ";
+        }
+        os << "\n";
     }
-} 
+    if (borrower) {
+        os << "Borrower Limit: " << borrower->getLimit() << "\n";
+        os << "\n";
+    }
+}
 
 void Person::print(std::ostream& os) const {
     printbase(os);
-    printSubclass(os);
+    // printSubclass(os);
     os << "----------------------------------------" << "\n";
 }
 
@@ -411,4 +382,23 @@ void Person::print(std::ostream& os) const {
 std::ostream& operator<<(std::ostream& os, const Person& person) {
     person.print(os);
     return os;
+}
+
+// Role management method implementations
+int Person::createArtistRole(const QString& artist_type, const QVector<unsigned long>& media_ids) {
+    try {
+        artist = std::make_unique<Artist>(artist_type, media_ids);
+        return 0;
+    } catch (...) {
+        return -1;
+    }
+}
+
+int Person::createBorrowerRole(unsigned int limit) {
+    try {
+        borrower = std::make_unique<Borrower>(limit);
+        return 0;
+    } catch (...) {
+        return -1;
+    }
 }
