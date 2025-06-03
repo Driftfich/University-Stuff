@@ -42,6 +42,8 @@ class InfoPanel : public QWidget {
     signals:
         // Signal wird ausgelöst, wenn der User Änderungen speichern will
         void saveRequested(const QJsonObject& modifiedData);
+        // Signal wird ausgelöst, wenn Cancel-Button im Edit-Modus gedrückt wird
+        void editModeCancelled();
 
     private:
         QTreeWidget *treeWidget;

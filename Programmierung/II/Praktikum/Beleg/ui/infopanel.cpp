@@ -574,6 +574,8 @@ void InfoPanel::cancelEditMode() {
         treeWidget->update(hoveredItemForDelete);
     }
     hoveredItemForDelete = QPersistentModelIndex();
+
+    emit editModeCancelled();
 }
 
 void InfoPanel::resetButtons() {

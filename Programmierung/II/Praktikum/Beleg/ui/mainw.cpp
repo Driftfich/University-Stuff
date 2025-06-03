@@ -20,6 +20,7 @@
 #include "libitemtablemodel.h"
 #include "transactiontablemodel.h"
 #include "toolbar.h"
+#include "jsonschemautils.h"
 
 
 void MainWindow::setupUi()
@@ -137,13 +138,43 @@ void MainWindow::setupAddPanel()
     addLayout->addWidget(addPanel);
     addPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    // enter Edit Mode directly at beginning
+    addPanel->enterEditMode();
+
     // Beispiel: Button aus toolbarUi zeigt Add-Panel
     connect(toolbarUi->add, &QPushButton::clicked, this, [=]() {
         sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->addpanel);
         sideDock->show();
     });
-    
+
+    // connection: when the cancel button in the add panel is clicked, enter Edit Mode again
+    connect(addPanel, &InfoPanel::editModeCancelled, addPanel, &InfoPanel::enterEditMode);
+
+    // when the tab is changed, the default json object for the current tab should be set
+    connect(tableWidgetUi->TabSelector, &QTabWidget::currentChanged, this, [=]() {
+        // get the current index of the tab
+        int currentIndex = tableWidgetUi->TabSelector->currentIndex();
+        // depending on the index, set the default json object for the add panel
+        QJsonObject defaultJson;
+        switch(currentIndex) {
+            case 0: // Person tab
+                defaultJson = lib->getPersonManager()->getDefaultJsonObject();
+                break;
+            case 1: // LibItem tab  
+                defaultJson = lib->getLibitemManager()->getDefaultJsonObject();
+                break;
+            case 2: // Transaction tab  
+                defaultJson = lib->getTransactionManager()->getDefaultJsonObject();
+                break;
+            default:
+                return; // No valid tab selected
+        }
+
+        // set the default json object for the add panel
+        addPanel->displayInfo(defaultJson);
+    });
 }
+
 void MainWindow::setupDataLayers()
 {
     setupLib();

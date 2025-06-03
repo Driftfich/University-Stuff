@@ -6,6 +6,13 @@ TEMPLATE = app
 TARGET = Beleg
 INCLUDEPATH += .
 
+# Build-Verzeichnis-Konfiguration für saubere Projektstruktur
+OBJECTS_DIR = build/obj     # .o Dateien
+MOC_DIR = build/moc         # moc_*.cpp Dateien
+RCC_DIR = build/rcc         # qrc_*.cpp Dateien  
+UI_DIR = build/ui           # ui_*.h Dateien
+DESTDIR = build/bin         # Ziel-Executable
+
 # You can make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # Please consult the documentation of the deprecated API in order to know
@@ -39,7 +46,8 @@ HEADERS +=  core/artist.h \
             ui/sidepanel.h \
             ui/input.h \
             #ui/inputmodel.h \
-            ui/infopanel.h
+            ui/infopanel.h \
+            utils/jsonschemautils.h
 
 SOURCES +=  core/artist.cpp \
             core/audio.cpp \
@@ -64,12 +72,14 @@ SOURCES +=  core/artist.cpp \
             #ui/tablewidget.cpp \
             #ui/inputmodel.cpp \
             ui/infopanel.cpp \
+            utils/jsonschemautils.cpp \
             test.cpp
 
 INCLUDEPATH += $$PWD/core
 INCLUDEPATH += $$PWD/manager
 INCLUDEPATH += $$PWD/tablemodel
 INCLUDEPATH += $$PWD/ui
+INCLUDEPATH += $$PWD/utils
 
 RESOURCES = ressources.qrc
 
