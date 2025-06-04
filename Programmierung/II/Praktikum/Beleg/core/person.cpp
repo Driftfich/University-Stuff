@@ -307,14 +307,14 @@ std::shared_ptr<Person> Person::PersonFactory(const QJsonObject& json) {
 }
 
 // schema methods
-QJsonObject Person::getLocalSchema() const {
+QJsonObject Person::getLocalSchema() {
     QJsonObject schema;
 
     schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"rename", "ID"}, {"description", "Unique identifier for the person"}, {"required", true}};
-    schema["fname"] = QJsonObject{{"type", "string"}, {"rename", "First Name"}, {"description", "First name of the person"}};
-    schema["lname"] = QJsonObject{{"type", "string"} , {"rename", "Last Name"}, {"description", "Last name of the person"}};
-    schema["ename"] = QJsonObject{{"type", "string"}, {"rename", "Extension Name"}, {"description", "Extension name of the person"}, {"required", true}};
-    schema["birthday"] = QJsonObject{{"type", "string"}, {"format", "date"}, {"rename", "Birthday"}, {"description", "Birthday of the person"}};
+    schema["fname"] = QJsonObject{{"type", "string"}, {"rename", "First Name"}, {"description", "First name of the person"}, {"required", true}};
+    schema["lname"] = QJsonObject{{"type", "string"} , {"rename", "Last Name"}, {"description", "Last name of the person"}, {"required", true}};
+    schema["ename"] = QJsonObject{{"type", "string"}, {"rename", "Extension Name"}, {"description", "Extension name of the person"}};
+    schema["birthday"] = QJsonObject{{"type", "string"}, {"format", "date"}, {"rename", "Birthday"}, {"description", "Birthday of the person"}, {"required", true}};
     schema["gender"] = QJsonObject{
         {"type", "string"},
         {"enum", QJsonArray{"Female", "Male", "Diverse", "Unknown"}},
@@ -322,19 +322,15 @@ QJsonObject Person::getLocalSchema() const {
         {"description", "Gender of the person"}};
     schema["note"] = QJsonObject{{"type", "string"}, {"rename", "Note"}, {"description", "Note about the person"}};
     schema["location"] = QJsonObject{{"type", "string"}, {"rename", "Location"}, {"description", "Location of the person"}};
-    schema["email"] = QJsonObject{{"type", "string"}, {"format", "email"}, {"readonly", true}, {"rename", "Email"}, {"description", "Email address of the person"}};
+    schema["email"] = QJsonObject{{"type", "string"}, {"format", "email"}, {"rename", "Email"}, {"description", "Email address of the person"}};
     schema["tel"] = QJsonObject{{"type", "string"}, {"format", "tel"}, {"rename", "Telephone"}, {"description", "Telephone number of the person"}};
-    if (artist) {
-        schema["artist"] = artist->getSubclassSchema();
-    }
-    if (borrower) {
-        schema["borrower"] = borrower->getSubclassSchema();
-    }
+    schema["artist"] = Artist::getSubclassSchema();
+    schema["borrower"] = Borrower::getSubclassSchema();
 
     return schema;
 }
 
-QJsonObject Person::getSchema() const {
+QJsonObject Person::getSchema() {
     QJsonObject schema;
     QJsonObject properties;
     schema.insert("type", "object");

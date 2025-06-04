@@ -222,6 +222,10 @@ QJsonObject LibItemTableModel::getJsonObject(const QModelIndex& index) const {
     return jsonObject;
 }
 
+QJsonObject LibItemTableModel::getDefaultJsonObject() const {
+    return QJsonObject();
+}
+
 QJsonObject LibItemTableModel::getSchemaObject(const QModelIndex& index) const {
     if (!index.isValid()) {
         return QJsonObject();

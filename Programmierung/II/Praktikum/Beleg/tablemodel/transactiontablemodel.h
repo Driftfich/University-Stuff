@@ -81,6 +81,7 @@ class TransactionTableModel : public QAbstractTableModel {
 
         // Method to get a json with all informations about the transaction and the objects it refers to
         QJsonObject getJsonObject(const QModelIndex& index) const;
+        QJsonObject getDefaultJsonObject() const;
         QJsonObject getSchemaObject(const QModelIndex& index) const;
         bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
     

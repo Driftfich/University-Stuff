@@ -372,13 +372,13 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         if (currentItemSchema.value("type").toString() == "object" && currentItemSchema.contains("properties")) {
             propertiesSchema = currentItemSchema.value("properties").toObject();
         }
-        qDebug() << "Current item schema for object:" << currentItemSchema << "\n";
-        qDebug() << "propertiesSchema from" << thisItem->text(0) << "->" << propertiesSchema << "\n";
+        // qDebug() << "Current item schema for object:" << currentItemSchema << "\n";
+        // qDebug() << "propertiesSchema from" << thisItem->text(0) << "->" << propertiesSchema << "\n";
         for (const QString& key : obj.keys()) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
             QJsonObject childSchema = propertiesSchema.value(key).toObject();
-            qDebug() << key << "->" << childSchema;
+            // qDebug() << key << "->" << childSchema;
             if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
                 childSchema = currentItemSchema.value("additionalProperties").toObject();
             }

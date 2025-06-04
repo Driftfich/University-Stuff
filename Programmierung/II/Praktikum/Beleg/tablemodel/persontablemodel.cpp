@@ -12,6 +12,7 @@
 #include <QDebug>
 #include "person.h"
 #include "personman.h"
+#include "jsonschemautils.h"
 
 
 PersonTableModel::PersonTableModel(PersonMan* personMan, QObject *parent)
@@ -209,6 +210,19 @@ QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index, const Tran
     return CompleteJson;
 }
 
+QJsonObject PersonTableModel::getDefaultJsonObject() const {
+    qDebug() << "Default Schema for Person Table Model: " << Person::getSchema() << "\n";
+    QJsonObject defaultJson = createDefaultJsonFromSchema(Person::getSchema());
+    qDebug() << "Default JSON object for Person Table Model: " << defaultJson << "\n";
+    defaultJson["id"] = QJsonValue::fromVariant(static_cast<quint64>(personMan->getNextId()));
+
+    return defaultJson;
+}
+
+QJsonObject PersonTableModel::getDefaultSchema() const {
+    return Person::getSchema();
+}
+
 QJsonObject PersonTableModel::getSchemaObject(const QModelIndex& index) const {
     if (!index.isValid()) {
         return QJsonObject();
@@ -242,6 +256,22 @@ bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const
         qWarning() << "Failed to update person from JSON object";
         return false;
     }
+    refreshData();
+    return true;
+}
+
+bool PersonTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
+    if (!jsonObject.contains("person")) {
+        qWarning() << "JSON object does not contain 'person' key";
+        return false;
+    }
+    QJsonObject personJson = jsonObject["person"].toObject();
+    std::shared_ptr<Person> person = Person::PersonFactory(personJson);
+    if (!person) {
+        qWarning() << "Failed to create person from JSON object";
+        return false;
+    }
+    personMan->addPerson(person);
     refreshData();
     return true;
 }

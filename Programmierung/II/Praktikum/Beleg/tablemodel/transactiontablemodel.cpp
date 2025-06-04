@@ -256,6 +256,10 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
     return jsonObject;
 }
 
+QJsonObject TransactionTableModel::getDefaultJsonObject() const {
+    return QJsonObject();
+}
+
 QJsonObject TransactionTableModel::getSchemaObject(const QModelIndex& index) const {
     if (!index.isValid()) {
         return QJsonObject();

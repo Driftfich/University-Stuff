@@ -29,17 +29,21 @@ QJsonObject Artist::getSubclassParams() const {
 }
 
 
-QJsonObject Artist::getSubclassSchema() const {
-    QJsonObject schema;
+QJsonObject Artist::getSubclassSchema() {
+    QJsonObject properties;
     // artist_type: string
-    schema.insert("artist_type", QJsonObject{{"type", "string"}});
+    properties.insert("artist_type", QJsonObject{{"type", "string"}});
     // media_ids: array, dessen items jeweils integer sind
     QJsonObject itemsSchema{{"type", "integer"}};
     QJsonObject mediaIdsSchema{
         {"type", "array"},
         {"items", itemsSchema}
     };
-    schema.insert("media_ids", mediaIdsSchema);
+    properties.insert("media_ids", mediaIdsSchema);
+    QJsonObject schema;
+    schema.insert("type", "object");
+    schema.insert("properties", properties);
+
     return schema;
 }
 

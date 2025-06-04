@@ -34,9 +34,9 @@ QJsonObject createDefaultJsonFromSchema(const QJsonObject& schemaObject) {
         QJsonObject fieldSchemaObj = fieldSchema.toObject();
         
         // Überspringe readonly Felder (meist auto-generierte IDs)
-        if (fieldSchemaObj.contains("readonly") && fieldSchemaObj["readonly"].toBool()) {
-            continue;
-        }
+        // if (fieldSchemaObj.contains("readonly") && fieldSchemaObj["readonly"].toBool()) {
+        //     continue;
+        // }
         
         // Bestimme den Standard-Wert basierend auf dem Typ
         QJsonValue defaultValue = createDefaultValueFromFieldSchema(fieldSchemaObj);

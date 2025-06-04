@@ -11,7 +11,7 @@ OBJECTS_DIR = build/obj     # .o Dateien
 MOC_DIR = build/moc         # moc_*.cpp Dateien
 RCC_DIR = build/rcc         # qrc_*.cpp Dateien  
 UI_DIR = build/ui           # ui_*.h Dateien
-DESTDIR = build/bin         # Ziel-Executable
+#DESTDIR = build/bin         # Ziel-Executable
 
 # You can make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.

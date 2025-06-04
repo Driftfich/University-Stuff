@@ -147,9 +147,9 @@ class Person {
         static std::shared_ptr<Person> PersonFactory(const QJsonObject& json);
 
         // schema methods
-        QJsonObject getLocalSchema() const;
+        static QJsonObject getLocalSchema();
         // virtual QJsonObject getSubclassSchema() const { return QJsonObject(); }
-        QJsonObject getSchema() const;
+        static QJsonObject getSchema();
 
         // print methods
         friend std::ostream& operator<<(std::ostream& os, const Person& person);

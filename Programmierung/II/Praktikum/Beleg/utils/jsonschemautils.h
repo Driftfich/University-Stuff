@@ -6,7 +6,7 @@
 #include <QJsonArray>
 #include <QString>
 
-static QJsonObject createDefaultJsonFromSchema(const QJsonObject& schemaObject);
-static QJsonValue createDefaultValueFromFieldSchema(const QJsonObject& fieldSchema);
+QJsonObject createDefaultJsonFromSchema(const QJsonObject& schemaObject);
+QJsonValue createDefaultValueFromFieldSchema(const QJsonObject& fieldSchema);
 
 #endif // JSONSCHEMAUTILS_H

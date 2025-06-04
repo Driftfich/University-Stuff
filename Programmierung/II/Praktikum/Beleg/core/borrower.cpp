@@ -10,10 +10,13 @@ QJsonObject Borrower::getSubclassParams() const {
     return json;
 }
 
-QJsonObject Borrower::getSubclassSchema() const {
+QJsonObject Borrower::getSubclassSchema() {
+    QJsonObject properties;
+    properties["limit"] = QJsonObject{{"type", "integer"}, {"minimum", 0}, {"maximum", MAX_ITEMS_PER_BORROWER_HARD}};
+    // properties["bow_id"] = QJsonObject{{"type", "integer"}, {"minimum", 0}};
     QJsonObject schema;
-    schema["limit"] = QJsonObject{{"type", "integer"}, {"minimum", 0}, {"maximum", MAX_ITEMS_PER_BORROWER_HARD}};
-    // schema["bow_id"] = QJsonObject{{"type", "integer"}, {"minimum", 0}};
+    schema.insert("type", "object");
+    schema.insert("properties", properties);
     return schema;
 }
 

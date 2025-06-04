@@ -52,8 +52,11 @@ class PersonTableModel : public QAbstractTableModel {
 
         QJsonObject getJsonObject(const QModelIndex& index) const;
         QJsonObject getJsonObject(const QModelIndex& index, const TransactionMan* transactionMan) const;
+        QJsonObject getDefaultJsonObject() const;
         QJsonObject getSchemaObject(const QModelIndex& index) const;
+        QJsonObject getDefaultSchema() const;
         bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
+        bool saveFromJsonObject(const QJsonObject& jsonObject);
     
     public slots:
         void refreshData();
