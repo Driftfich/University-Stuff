@@ -166,12 +166,35 @@ void MainWindow::setupAddPanel()
             default:
                 return; // No valid tab selected
         }
-
+        // qDebug() << schemaJson;
         // set the default json object for the add panel
         addPanel->displayInfo(defaultJson, schemaJson);
         addPanel->enterEditMode();
         // change the title of the side dock
         sideDock->setWindowTitle(tr("Add New Item"));
+    });
+
+    // when the save button in the add panel is clicked, save the new item, enter edit mode again
+    connect(addPanel, &InfoPanel::saveRequested, this, [=](const QJsonObject& modifiedData) {
+        // depending on the current tab, save the data to the correct model
+        int currentIndex = tableWidgetUi->TabSelector->currentIndex();
+        qDebug() << "Saving data for tab index:" << currentIndex;
+        switch(currentIndex) {
+            case 0: // Person tab
+                personModel->saveFromJsonObject(modifiedData);
+                break;
+            case 1: // LibItem tab  
+                // libitemModel->saveFromJsonObject(modifiedData);
+                break;
+            case 2: // Transaction tab
+                // transactionModel->saveFromJsonObject(modifiedData);
+                break;
+            default:
+                return; // No valid tab selected
+        }
+
+        // reset the add panel and enter edit mode again
+        emit tableWidgetUi->TabSelector->currentChanged(currentIndex);
     });
 
     // connection: when the cancel button in the add panel is clicked, enter Edit Mode again
@@ -183,12 +206,15 @@ void MainWindow::setupAddPanel()
         int currentIndex = tableWidgetUi->TabSelector->currentIndex();
         // depending on the index, set the default json object for the add panel
         QJsonObject defaultJson;
+        QJsonObject schemaJson = QJsonObject(); // Schema object, if available
         switch(currentIndex) {
             case 0: // Person tab
                 defaultJson = personModel->getDefaultJsonObject();
+                schemaJson = personModel->getDefaultSchema();
                 break;
             case 1: // LibItem tab  
                 defaultJson = libitemModel->getDefaultJsonObject();
+                // schemaJson = libitemModel->getDefaultSchema(); // No schema for LibItem yet
                 break;
             case 2: // Transaction tab
                 defaultJson = transactionModel->getDefaultJsonObject();
@@ -198,7 +224,7 @@ void MainWindow::setupAddPanel()
         }
 
         // set the default json object for the add panel
-        addPanel->displayInfo(defaultJson); 
+        addPanel->displayInfo(defaultJson, schemaJson);
         addPanel->enterEditMode();
 
         // // change the title of the side dock

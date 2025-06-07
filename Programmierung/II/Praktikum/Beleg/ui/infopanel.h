@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <QJsonObject>
 #include <QPushButton>
+#include <QCheckBox>
+#include <QMap>
 
 const int SchemaTypeRole = Qt::UserRole + 1;
 const int SchemaFormatRole = Qt::UserRole + 2;
@@ -15,6 +17,7 @@ const int SchemaPatternRole = Qt::UserRole + 6;
 const int SchemaMinRole = Qt::UserRole + 7;
 const int SchemaMaxRole = Qt::UserRole + 8;
 const int SchemaOriginalKeyRole = Qt::UserRole + 9;
+const int SchemaOptionalRole = Qt::UserRole + 10;
 
 class InfoPanel : public QWidget {
     Q_OBJECT
@@ -64,6 +67,10 @@ class InfoPanel : public QWidget {
         int m_minFontSize;
         int m_maxFontSize;
 
+        // Optional field management
+        QMap<QTreeWidgetItem*, QCheckBox*> optionalCheckboxes;
+        QMap<QTreeWidgetItem*, bool> optionalFieldStates;
+
         void setTreeItemsEditable(bool editable);
         void setTreeItemEditable(QTreeWidgetItem* item, bool editable);
         QJsonObject collectDataFromTree();
@@ -92,6 +99,13 @@ class InfoPanel : public QWidget {
         bool validateRequiredField(const QTreeWidgetItem* item) const;
         bool validateFieldPattern(const QTreeWidgetItem* item) const;
         // bool JsonChanged();
+
+        // Optional field management
+        void createOptionalCheckbox(QTreeWidgetItem* item);
+        void onOptionalCheckboxToggled(bool checked);
+        void updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visible);
+        void setOptionalFieldsVisibility();
+        bool isOptionalFieldEnabled(QTreeWidgetItem* item) const;
 
     private slots:
         void onItemChanged(QTreeWidgetItem* item, int column);

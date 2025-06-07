@@ -942,7 +942,8 @@ build/rcc/qrc_ressources.cpp: ressources.qrc \
 		icons/trashcan_open.png \
 		icons/add.png \
 		icons/quit.png \
-		icons/edit.png
+		icons/edit.png \
+		icons/add2.png
 	/home/USER/Qt/6.9.0/gcc_64/libexec/rcc -name ressources ressources.qrc -o build/rcc/qrc_ressources.cpp
 
 compiler_moc_predefs_make_all: build/moc/moc_predefs.h
@@ -2074,6 +2075,8 @@ build/moc/moc_mainw.cpp: ui/mainw.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidget.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreeview.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QCheckBox \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qcheckbox.h \
 		tablemodel/custfiltproxmodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QSortFilterProxyModel \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsortfilterproxymodel.h \
@@ -2320,6 +2323,9 @@ build/moc/moc_infopanel.cpp: ui/infopanel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QPushButton \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qpushbutton.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QCheckBox \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qcheckbox.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
 		build/moc/moc_predefs.h \
 		/home/USER/Qt/6.9.0/gcc_64/libexec/moc
 	/home/USER/Qt/6.9.0/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/home/USER/Qt/6.9.0/gcc_64/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/home/USER/Qt/6.9.0/gcc_64/include -I/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets -I/home/USER/Qt/6.9.0/gcc_64/include/QtGui -I/home/USER/Qt/6.9.0/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ui/infopanel.h -o build/moc/moc_infopanel.cpp
@@ -5570,6 +5576,8 @@ build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonO
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidget.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreeview.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QCheckBox \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qcheckbox.h \
 		manager/library.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QSizePolicy \
 		utils/jsonschemautils.h \
@@ -5842,8 +5850,11 @@ build/obj/infopanel.o: ui/infopanel.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtWid
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QComboBox \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qcombobox.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDebug \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QCheckBox \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qcheckbox.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QEvent \
-		ui/infopanel.h
+		ui/infopanel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/infopanel.o ui/infopanel.cpp
 
 build/obj/jsonschemautils.o: utils/jsonschemautils.cpp utils/jsonschemautils.h \
@@ -6302,6 +6313,8 @@ build/obj/test.o: test.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidget.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreeview.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QCheckBox \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qcheckbox.h \
 		tablemodel/custfiltproxmodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \

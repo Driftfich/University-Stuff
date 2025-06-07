@@ -43,6 +43,7 @@ QJsonObject Artist::getSubclassSchema() {
     QJsonObject schema;
     schema.insert("type", "object");
     schema.insert("properties", properties);
+    schema.insert("optional", "true");
 
     return schema;
 }

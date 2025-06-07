@@ -17,6 +17,7 @@
 #include <QDateEdit>
 #include <QComboBox>
 #include <QDebug>
+#include <QCheckBox>
 
 #include <QEvent>
 #include "infopanel.h"
@@ -271,6 +272,13 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
 }
 
 InfoPanel::~InfoPanel() {
+    // Clean up optional checkboxes
+    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
+        delete it.value();
+    }
+    optionalCheckboxes.clear();
+    optionalFieldStates.clear();
+    
     delete treeWidget;
 }
 
@@ -278,6 +286,14 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
     inEditMode = false; // Ensure we are not in edit mode
     resetButtons(); // Reset buttons to initial state
     originalData = jsonObject; // Store original data for canceling edits
+    
+    // Clear optional field data
+    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
+        delete it.value();
+    }
+    optionalCheckboxes.clear();
+    optionalFieldStates.clear();
+    
     treeWidget->clear();
     hoveredItemForDelete = QPersistentModelIndex(); // Reset the hovered item for delete button
 
@@ -313,6 +329,14 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
     resetButtons(); 
     originalData = jsonObject;
     currentSchema = schemaObject; // Store the schema
+    
+    // Clear optional field data
+    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
+        delete it.value();
+    }
+    optionalCheckboxes.clear();
+    optionalFieldStates.clear();
+    
     treeWidget->clear();
     hoveredItemForDelete = QPersistentModelIndex();
 
@@ -378,7 +402,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
             QJsonObject childSchema = propertiesSchema.value(key).toObject();
-            // qDebug() << key << "->" << childSchema;
+            qDebug() << key << "->" << childSchema;
             if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
                 childSchema = currentItemSchema.value("additionalProperties").toObject();
             }
@@ -410,11 +434,20 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         QStringList enumValues = currentItemSchema.value("enum").toVariant().toStringList();
         bool isReadOnly = currentItemSchema.value("readonly").toBool(false);
         bool isRequired = currentItemSchema.value("required").toBool(false);
+        bool isOptional = currentItemSchema.value("optional").toBool(false);
+        qDebug() << "String val: " << currentItemSchema.value("optional") << " isOptional: " << isOptional;
         thisItem->setData(1, SchemaTypeRole, itemType);
         thisItem->setData(1, SchemaFormatRole, itemFormat);
         thisItem->setData(1, SchemaEnumValuesRole, enumValues);
         thisItem->setData(1, SchemaReadonlyRole, isReadOnly);
         thisItem->setData(1, SchemaRequiredRole, isRequired);
+        thisItem->setData(1, SchemaOptionalRole, isOptional);
+        
+        // Create checkbox for optional fields
+        if (isOptional) {
+            qDebug() << "Creating optional checkbox for item:" << thisItem->text(0);
+            createOptionalCheckbox(thisItem);
+        }
     }
 }
 
@@ -487,6 +520,9 @@ void InfoPanel::enterEditMode() {
     // TreeWidget editierbar machen
     setTreeItemsEditable(true);
 
+    // Apply optional field visibility settings
+    setOptionalFieldsVisibility();
+
     updateSaveButtonState();
     
     // Button-Zustände ändern
@@ -516,9 +552,6 @@ void InfoPanel::saveChanges() {
     
     // Daten aus Tree sammeln
     QJsonObject modifiedData = collectDataFromTree();
-    
-    // Signal aussenden
-    emit saveRequested(modifiedData);
 
     // update the original data with the modified data
     originalData = modifiedData; // Update original data with the modified data
@@ -544,6 +577,9 @@ void InfoPanel::saveChanges() {
         treeWidget->update(hoveredItemForDelete);
     }
     hoveredItemForDelete = QPersistentModelIndex(); // Reset the hovered item for delete button
+
+    // Signal aussenden
+    emit saveRequested(modifiedData);
 }
 
 void InfoPanel::cancelEditMode() {
@@ -555,6 +591,10 @@ void InfoPanel::cancelEditMode() {
     // Edit-Modus verlassen
     inEditMode = false;
     setTreeItemsEditable(false);
+    
+    // Apply optional field visibility settings
+    setOptionalFieldsVisibility();
+    
     updateAddButtons(false); // Hide add buttons
     
     // // Button-Zustände zurücksetzen
@@ -640,7 +680,12 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
     if (itemType == "array") {
         QJsonArray array = QJsonArray();
         for (int i = 0; i < item->childCount(); ++i) {
-            array.append(getValueFromItem(item->child(i)));
+            QTreeWidgetItem* child = item->child(i);
+            // Skip disabled optional fields
+            if (!isOptionalFieldEnabled(child)) {
+                continue;
+            }
+            array.append(getValueFromItem(child));
         }
         return array;
     } else if (itemType == "object") { // Default to object if it has children and is not explicitly an array or leaf
@@ -651,6 +696,10 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
         QJsonObject obj = QJsonObject();
         for (int i = 0; i < item->childCount(); ++i) {
             QTreeWidgetItem* child = item->child(i);
+            // Skip disabled optional fields
+            if (!isOptionalFieldEnabled(child)) {
+                continue;
+            }
             QString originalKey = child->data(0, SchemaOriginalKeyRole).toString();
             QString keyToUse = originalKey.isEmpty() ? child->text(0) : originalKey;
             obj[keyToUse] = getValueFromItem(child);
@@ -696,7 +745,7 @@ void InfoPanel::updateAddButtons(bool show) {
         if (shouldHaveButton) {
             if (!currentWidget) { // Add button only if one doesn't exist
                 QToolButton* addButton = new QToolButton();
-                addButton->setIcon(QIcon(":/icons/add.png")); // Ensure this icon exists
+                addButton->setIcon(QIcon(":/icons/add2.png")); // Ensure this icon exists
                 QString itemType = item->data(0, Qt::UserRole).toString();
                 addButton->setToolTip(itemType == "array" ? tr("Neues Element zum Array hinzufügen") : tr("Neues Attribut zum Objekt hinzufügen"));
                 addButton->setAutoRaise(true);
@@ -1078,4 +1127,141 @@ void InfoPanel::updateFieldValidationState(const QModelIndex& index) {
     
     // Visuelle Aktualisierung
     treeWidget->update(index);
+}
+
+/**
+ * @brief Creates a checkbox for an optional field
+ * @param item The tree widget item representing the optional field
+ * 
+ * Creates a checkbox that controls whether the optional field is enabled.
+ * When checked, the field and its subcomponents are available for editing.
+ * When unchecked, the field is hidden/unavailable.
+ */
+void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item) {
+    if (!item) return;
+    qDebug() << "Creating checkbox for optional field:" << item->text(0);
+    QCheckBox* checkbox = new QCheckBox();
+    checkbox->setChecked(true); // Default to enabled
+    checkbox->setToolTip("Enable/disable this optional field");
+    
+    // Store the checkbox reference
+    optionalCheckboxes[item] = checkbox;
+    optionalFieldStates[item] = true;
+    
+    // Set the checkbox as the widget for column 0 (key column)
+    treeWidget->setItemWidget(item, 0, checkbox);
+    
+    // Connect checkbox toggle to handler
+    connect(checkbox, &QCheckBox::toggled, this, &InfoPanel::onOptionalCheckboxToggled);
+}
+
+/**
+ * @brief Handles checkbox toggle events for optional fields
+ * @param checked Whether the checkbox is checked
+ * 
+ * When an optional field checkbox is toggled, this method updates the visibility
+ * of the associated field and all its subcomponents.
+ */
+void InfoPanel::onOptionalCheckboxToggled(bool checked) {
+    QCheckBox* checkbox = qobject_cast<QCheckBox*>(sender());
+    if (!checkbox) return;
+    
+    // Find the item associated with this checkbox
+    QTreeWidgetItem* item = nullptr;
+    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
+        if (it.value() == checkbox) {
+            item = it.key();
+            break;
+        }
+    }
+    
+    if (!item) return;
+    
+    // Update the field state
+    optionalFieldStates[item] = checked;
+    
+    // Update visibility of the field and its children
+    updateOptionalFieldVisibility(item, checked);
+}
+
+/**
+ * @brief Updates the visibility of an optional field and its children
+ * @param item The tree widget item to update
+ * @param visible Whether the field should be visible/enabled
+ * 
+ * Recursively updates the visibility of the field and all its subcomponents.
+ * Hidden fields are excluded from data collection.
+ */
+void InfoPanel::updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visible) {
+    if (!item) return;
+    
+    // Update visibility of the value column (column 1)
+    if (visible) {
+        item->setHidden(false);
+        item->setFlags(item->flags() | Qt::ItemIsEnabled);
+        
+        // Restore original text if it was cleared
+        QString originalValue = item->data(1, Qt::UserRole + 20).toString(); // Use a custom role for backup
+        if (!originalValue.isEmpty()) {
+            item->setText(1, originalValue);
+            item->setData(1, Qt::UserRole + 20, QVariant()); // Clear backup
+        }
+    } else {
+        // Backup current value before hiding
+        QString currentValue = item->text(1);
+        if (!currentValue.isEmpty()) {
+            item->setData(1, Qt::UserRole + 20, currentValue); // Backup the value
+        }
+        
+        item->setHidden(true);
+        item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+    }
+    
+    // Recursively update all children
+    for (int i = 0; i < item->childCount(); ++i) {
+        QTreeWidgetItem* child = item->child(i);
+        updateOptionalFieldVisibility(child, visible);
+    }
+}
+
+/**
+ * @brief Sets the visibility of all optional fields based on their checkbox states
+ * 
+ * This method is called during mode switches (edit/view) to ensure all optional
+ * field visibilities are correctly applied.
+ */
+void InfoPanel::setOptionalFieldsVisibility() {
+    for (auto it = optionalFieldStates.constBegin(); it != optionalFieldStates.constEnd(); ++it) {
+        QTreeWidgetItem* item = it.key();
+        bool enabled = it.value();
+        updateOptionalFieldVisibility(item, enabled);
+    }
+}
+
+/**
+ * @brief Checks if an optional field is currently enabled
+ * @param item The tree widget item to check
+ * @return True if the field is enabled or not optional, false if disabled
+ * 
+ * Returns the current state of an optional field. Non-optional fields
+ * always return true.
+ */
+bool InfoPanel::isOptionalFieldEnabled(QTreeWidgetItem* item) const {
+    if (!item) return true;
+    
+    // Check if this item has an optional checkbox
+    if (optionalFieldStates.contains(item)) {
+        return optionalFieldStates.value(item);
+    }
+    
+    // Check if any parent is an optional field that's disabled
+    QTreeWidgetItem* parent = item->parent();
+    while (parent) {
+        if (optionalFieldStates.contains(parent)) {
+            return optionalFieldStates.value(parent);
+        }
+        parent = parent->parent();
+    }
+    
+    return true; // Default to enabled for non-optional fields
 }
