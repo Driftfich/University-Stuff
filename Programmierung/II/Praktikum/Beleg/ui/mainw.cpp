@@ -189,7 +189,7 @@ void MainWindow::setupAddPanel()
                 // libitemModel->saveFromJsonObject(modifiedData);
                 break;
             case 2: // Transaction tab
-                // transactionModel->saveFromJsonObject(modifiedData);
+                transactionModel->saveFromJsonObject(modifiedData);
                 break;
             default:
                 return; // No valid tab selected

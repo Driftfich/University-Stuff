@@ -332,6 +332,19 @@ QJsonObject TransactionTableModel::getDefaultSchema() const {
     return defaultSchema;
 }
 
+bool TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
+    std::shared_ptr<Transaction> transaction = Transaction::TransactionFactory(jsonObject);
+
+    if (!transaction) {
+        return false;
+    }
+
+    // Add the new transaction
+    transactionMan->addTransaction(transaction);
+    refreshData();
+    return true;
+}
+
 bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
     if (!index.isValid()) {
         return false;
