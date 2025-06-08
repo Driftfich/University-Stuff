@@ -341,15 +341,15 @@ std::ostream& operator<<(std::ostream& os, const Media& media) {
 // schema methods
 QJsonObject Media::getLocalSchema() const {
     QJsonObject schema;
-    schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}};
-    schema["title"] = QJsonObject{{"type", "string"}};
-    schema["publication_date"] = QJsonObject{{"type", "string"}, {"format", "date"}};
-    schema["artist_ids"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "integer"}}}};
-    schema["publisher"] = QJsonObject{{"type", "string"}};
-    schema["description"] = QJsonObject{{"type", "string"}};
-    schema["genre"] = QJsonObject{{"type", "string"}};
-    schema["languages"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "string"}}}};
-    schema["metadata"] = QJsonObject{{"type", "object"}, {"items", QJsonObject{{"type", "string"}}}};
+    schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Media ID"}, {"description", "Unique identifier for the media"}};
+    schema["title"] = QJsonObject{{"type", "string"}, {"minLength", MIN_TITLE_LENGTH}, {"maxLength", MAX_TITLE_LENGTH}, {"rename", "Title"}, {"description", "Title of the media"}};
+    schema["publication_date"] = QJsonObject{{"type", "string"}, {"format", "date"}, {"rename", "Publication Date"}, {"description", "Date when the media was published"}};
+    schema["artist_ids"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "integer"}}}, {"rename", "Artist IDs"}, {"description", "List of artist IDs associated with the media"}};
+    schema["publisher"] = QJsonObject{{"type", "string"}, {"rename", "Publisher"}, {"description", "Publisher of the media"}};
+    schema["description"] = QJsonObject{{"type", "string"}, {"rename", "Description"}, {"description", "Description of the media"}};
+    schema["genre"] = QJsonObject{{"type", "string"}, {"rename", "Genre"}, {"description", "Genre of the media"}};
+    schema["languages"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "string"}}}, {"rename", "Languages"}, {"description", "List of languages the media is available in"}};
+    schema["metadata"] = QJsonObject{{"type", "object"}, {"items", QJsonObject{{"type", "string"}}}, {"rename", "Metadata"}, {"description", "Additional metadata for the media"}};
     return schema;
 }
 

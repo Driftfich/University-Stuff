@@ -269,7 +269,6 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
     treeWidget->header()->setSectionsClickable(true);
     treeWidget->header()->setDefaultSectionSize(100);
     connect(treeWidget->header(), &QHeaderView::sectionClicked, this, &InfoPanel::onHeaderSectionClicked);
-    qDebug() << "Header click signal connected successfully";
 
     // load the delete icon
     deleteIcon = QPixmap(":/icons/quit.png");
@@ -1319,7 +1318,7 @@ bool InfoPanel::isOptionalFieldEnabled(QTreeWidgetItem* item) const {
  * @purpose Provides user-friendly way to collapse/expand entire tree with header click
  */
 void InfoPanel::onHeaderSectionClicked(int logicalIndex) {
-    qDebug() << "Header section clicked! Index:" << logicalIndex;
+    // qDebug() << "Header section clicked! Index:" << logicalIndex;
     
     // Only respond to clicks on column 0 (the "Attribut" column)
     if (logicalIndex != 0) {

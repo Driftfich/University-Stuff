@@ -117,13 +117,13 @@ std::ostream& operator<<(std::ostream& os, const Libitem& libitem) {
 // schema methods
 QJsonObject Libitem::getLocalSchema() const {
     QJsonObject schema;
-    schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}};
-    schema["media_id"] = QJsonObject{{"type", "integer"}};
-    schema["available_copies"] = QJsonObject{{"type", "integer"}};
-    schema["borrowed_copies"] = QJsonObject{{"type", "integer"}};
-    schema["location"] = QJsonObject{{"type", "string"}};
+    schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Libitem ID"}, {"description", "Unique identifier for the library item"}};
+    schema["media_id"] = QJsonObject{{"type", "integer"}, {"required", true}, {"rename", "Media ID"}, {"description", "Unique identifier for the media"}};
+    schema["available_copies"] = QJsonObject{{"type", "integer"}, {"rename", "Available Copies"}, {"description", "Number of available copies"}};
+    schema["borrowed_copies"] = QJsonObject{{"type", "integer"}, {"rename", "Borrowed Copies"}, {"description", "Number of borrowed copies"}};
+    schema["location"] = QJsonObject{{"type", "string"}, {"rename", "Location"}, {"description", "Location of the library item"}};
     // schema["condition"] = QJsonObject{{"type", "string"}};
-    schema["condition"] = QJsonObject{{"type", "string"}, {"enum", QJsonArray{"new", "good", "acceptable", "poor"}}};
+    schema["condition"] = QJsonObject{{"type", "string"}, {"enum", QJsonArray{"new", "good", "acceptable", "poor"}}, {"rename", "Condition"}, {"description", "Condition of the library item"}};
     return schema;
 }
 

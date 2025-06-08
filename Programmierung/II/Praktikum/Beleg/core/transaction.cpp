@@ -73,10 +73,10 @@ std::shared_ptr<Transaction> Transaction::TransactionFactory(const QJsonObject& 
 // schema methods
 QJsonObject Transaction::getLocalSchema() {
     QJsonObject schema;
-    schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}};
-    schema["libitem_id"] = QJsonObject{{"type", "integer"}, {"required", true}};
-    schema["borrower_id"] = QJsonObject{{"type", "integer"}, {"required", true}};
-    schema["transaction_time"] = QJsonObject{{"type", "string"}, {"format", "datetime"}, {"required", true}};
+    schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Transaction ID"}, {"description", "Unique identifier for the transaction"}};
+    schema["libitem_id"] = QJsonObject{{"type", "integer"}, {"required", true}, {"rename", "Library Item ID"}, {"description", "Unique identifier for the library item"}};
+    schema["borrower_id"] = QJsonObject{{"type", "integer"}, {"required", true}, {"rename", "Borrower ID"}, {"description", "Unique identifier for the borrower"}};
+    schema["transaction_time"] = QJsonObject{{"type", "string"}, {"format", "datetime"}, {"required", true}, {"rename", "Transaction Time"}, {"description", "Time when the transaction occurred"}};
     return schema;
 }
 
