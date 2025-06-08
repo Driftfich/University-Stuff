@@ -18,6 +18,8 @@
 #include <QComboBox>
 #include <QDebug>
 #include <QCheckBox>
+#include <QHBoxLayout>
+#include <QLabel>
 
 #include <QEvent>
 #include "infopanel.h"
@@ -322,8 +324,6 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
     updateAddButtons(inEditMode);
 }
 
-
-
 void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject) {
     inEditMode = false; // Ensure we are not in edit mode
     resetButtons(); 
@@ -388,6 +388,14 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         thisItem->setToolTip(0, description);
     }
 
+    // Check for optional flag for all types (objects, arrays, and leaf nodes)
+    qDebug() << "Current item schema for key:" << thisItem->text(0) << "->" << currentItemSchema;
+    bool isOptional = currentItemSchema.value("optional").toBool(false);
+    if (isOptional) {
+        qDebug() << "Creating optional checkbox for item:" << thisItem->text(0) << " (type: " << currentItemSchema.value("type").toString() << ")";
+        createOptionalCheckbox(thisItem);
+    }
+
     if (valueForThisItem.isObject()) {
         thisItem->setData(0, Qt::UserRole, "object"); // 'thisItem' (e.g., "person", "subclass_params") represents an object.
         QJsonObject obj = valueForThisItem.toObject();
@@ -402,7 +410,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
             QJsonObject childSchema = propertiesSchema.value(key).toObject();
-            qDebug() << key << "->" << childSchema;
+            // qDebug() << key << "->" << childSchema;
             if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
                 childSchema = currentItemSchema.value("additionalProperties").toObject();
             }
@@ -434,20 +442,13 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         QStringList enumValues = currentItemSchema.value("enum").toVariant().toStringList();
         bool isReadOnly = currentItemSchema.value("readonly").toBool(false);
         bool isRequired = currentItemSchema.value("required").toBool(false);
-        bool isOptional = currentItemSchema.value("optional").toBool(false);
-        qDebug() << "String val: " << currentItemSchema.value("optional") << " isOptional: " << isOptional;
+        // qDebug() << "Key" << thisItem->text(0) << " -> Current Schema" << currentItemSchema << " String val: " << currentItemSchema.value("optional") << " isOptional: " << isOptional;
         thisItem->setData(1, SchemaTypeRole, itemType);
         thisItem->setData(1, SchemaFormatRole, itemFormat);
         thisItem->setData(1, SchemaEnumValuesRole, enumValues);
         thisItem->setData(1, SchemaReadonlyRole, isReadOnly);
         thisItem->setData(1, SchemaRequiredRole, isRequired);
         thisItem->setData(1, SchemaOptionalRole, isOptional);
-        
-        // Create checkbox for optional fields
-        if (isOptional) {
-            qDebug() << "Creating optional checkbox for item:" << thisItem->text(0);
-            createOptionalCheckbox(thisItem);
-        }
     }
 }
 
@@ -1140,16 +1141,36 @@ void InfoPanel::updateFieldValidationState(const QModelIndex& index) {
 void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item) {
     if (!item) return;
     qDebug() << "Creating checkbox for optional field:" << item->text(0);
+    
+    // Create a container widget to hold both checkbox and label
+    QWidget* containerWidget = new QWidget();
+    QHBoxLayout* layout = new QHBoxLayout(containerWidget);
+    layout->setContentsMargins(0, 0, 0, 0); // Remove margins for tight layout
+    layout->setSpacing(5); // Small spacing between checkbox and text
+    
+    // Create the checkbox
     QCheckBox* checkbox = new QCheckBox();
     checkbox->setChecked(true); // Default to enabled
     checkbox->setToolTip("Enable/disable this optional field");
+    
+    // Create a label with the item's text
+    QLabel* textLabel = new QLabel(item->text(0));
+    textLabel->setStyleSheet("QLabel { background: transparent; }"); // Transparent background
+    
+    // Add both to the layout
+    layout->addWidget(checkbox);
+    layout->addWidget(textLabel);
+    layout->addStretch(); // Push everything to the left
     
     // Store the checkbox reference
     optionalCheckboxes[item] = checkbox;
     optionalFieldStates[item] = true;
     
-    // Set the checkbox as the widget for column 0 (key column)
-    treeWidget->setItemWidget(item, 0, checkbox);
+    // Clear the item's text since we're showing it in the label
+    item->setText(0, "");
+    
+    // Set the container widget for column 0 (key column)
+    treeWidget->setItemWidget(item, 0, containerWidget);
     
     // Connect checkbox toggle to handler
     connect(checkbox, &QCheckBox::toggled, this, &InfoPanel::onOptionalCheckboxToggled);
@@ -1181,7 +1202,7 @@ void InfoPanel::onOptionalCheckboxToggled(bool checked) {
     optionalFieldStates[item] = checked;
     
     // Update visibility of the field and its children
-    updateOptionalFieldVisibility(item, checked);
+    updateOptionalFieldVisibility(item, checked, 0);
 }
 
 /**
@@ -1192,7 +1213,7 @@ void InfoPanel::onOptionalCheckboxToggled(bool checked) {
  * Recursively updates the visibility of the field and all its subcomponents.
  * Hidden fields are excluded from data collection.
  */
-void InfoPanel::updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visible) {
+void InfoPanel::updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visible, int depth) {
     if (!item) return;
     
     // Update visibility of the value column (column 1)
@@ -1206,7 +1227,7 @@ void InfoPanel::updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visibl
             item->setText(1, originalValue);
             item->setData(1, Qt::UserRole + 20, QVariant()); // Clear backup
         }
-    } else {
+    } else if (depth > 0) { // Only hide if not the root item
         // Backup current value before hiding
         QString currentValue = item->text(1);
         if (!currentValue.isEmpty()) {
@@ -1220,7 +1241,7 @@ void InfoPanel::updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visibl
     // Recursively update all children
     for (int i = 0; i < item->childCount(); ++i) {
         QTreeWidgetItem* child = item->child(i);
-        updateOptionalFieldVisibility(child, visible);
+        updateOptionalFieldVisibility(child, visible, depth + 1);
     }
 }
 
@@ -1234,7 +1255,7 @@ void InfoPanel::setOptionalFieldsVisibility() {
     for (auto it = optionalFieldStates.constBegin(); it != optionalFieldStates.constEnd(); ++it) {
         QTreeWidgetItem* item = it.key();
         bool enabled = it.value();
-        updateOptionalFieldVisibility(item, enabled);
+        updateOptionalFieldVisibility(item, enabled, 0);
     }
 }
 

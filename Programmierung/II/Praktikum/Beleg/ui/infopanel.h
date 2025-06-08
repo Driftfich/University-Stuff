@@ -103,7 +103,7 @@ class InfoPanel : public QWidget {
         // Optional field management
         void createOptionalCheckbox(QTreeWidgetItem* item);
         void onOptionalCheckboxToggled(bool checked);
-        void updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visible);
+        void updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visible, int depth = 0);
         void setOptionalFieldsVisibility();
         bool isOptionalFieldEnabled(QTreeWidgetItem* item) const;
 
