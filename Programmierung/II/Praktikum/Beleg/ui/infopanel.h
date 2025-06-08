@@ -57,6 +57,9 @@ class InfoPanel : public QWidget {
         QJsonObject originalData; // original data for quit edit mode without saving
         bool inEditMode;
 
+        // Tree collapse/expand state management
+        bool m_treeExpandedState; ///< Tracks whether tree is currently expanded (true) or collapsed (false)
+
         // for delete button at item level
         QPixmap deleteIcon;
         QPersistentModelIndex hoveredItemForDelete;
@@ -110,6 +113,7 @@ class InfoPanel : public QWidget {
     private slots:
         void onItemChanged(QTreeWidgetItem* item, int column);
         void handleDeleteAction(QTreeWidgetItem* item);
+        void onHeaderSectionClicked(int logicalIndex); ///< Handles clicks on header sections, specifically column 0 for collapse/expand all
 
     protected:
         bool eventFilter(QObject* watched, QEvent *event) override;

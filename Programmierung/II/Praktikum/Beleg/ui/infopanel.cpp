@@ -20,6 +20,7 @@
 #include <QCheckBox>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QHeaderView>
 
 #include <QEvent>
 #include "infopanel.h"
@@ -230,7 +231,8 @@ public:
 };
 
 InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWidget(this)), inEditMode(false),
-    m_baseFontSize(15), m_fontScaleFactor(0.9), m_minFontSize(7), m_maxFontSize(15) // Initialize font params
+    m_baseFontSize(15), m_fontScaleFactor(0.9), m_minFontSize(7), m_maxFontSize(15), // Initialize font params
+    m_treeExpandedState(false) // Initialize to collapsed state (default after displayInfo)
 {
     treeWidget->setHeaderLabels({tr("Attribut"), tr("Wert")});
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -262,6 +264,12 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
     connect(saveButton, &QPushButton::clicked, this, &InfoPanel::saveChanges);
     connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
     connect(treeWidget, &QTreeWidget::itemChanged, this, &InfoPanel::onItemChanged);
+    
+    // Enable header clicking and connect header click signal for collapse/expand functionality
+    treeWidget->header()->setSectionsClickable(true);
+    treeWidget->header()->setDefaultSectionSize(100);
+    connect(treeWidget->header(), &QHeaderView::sectionClicked, this, &InfoPanel::onHeaderSectionClicked);
+    qDebug() << "Header click signal connected successfully";
 
     // load the delete icon
     deleteIcon = QPixmap(":/icons/quit.png");
@@ -315,6 +323,7 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
     addJsonToTreeRecursive(jsonObject, treeWidget->invisibleRootItem());
     
     treeWidget->expandAll();
+    m_treeExpandedState = false; // Reset to collapsed state after displaying new data
     treeWidget->resizeColumnToContents(0);
     treeWidget->resizeColumnToContents(1);
 
@@ -359,6 +368,7 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
                            currentSchema);
 
     treeWidget->expandAll();
+    m_treeExpandedState = false; // Reset to collapsed state after displaying new data
     treeWidget->resizeColumnToContents(0);
     treeWidget->resizeColumnToContents(1);
 
@@ -1296,4 +1306,36 @@ bool InfoPanel::isOptionalFieldEnabled(QTreeWidgetItem* item) const {
     }
     
     return true; // Default to enabled for non-optional fields
+}
+
+/**
+ * @brief Handles header section clicks, specifically for column 0 to toggle collapse/expand all
+ * @param logicalIndex The logical index of the clicked header section (0 = "Attribut", 1 = "Wert")
+ * 
+ * When column 0 ("Attribut") header is clicked, toggles between expanding all tree branches 
+ * and collapsing all tree branches. Clicking on other columns has no effect.
+ * 
+ * @exception None
+ * @purpose Provides user-friendly way to collapse/expand entire tree with header click
+ */
+void InfoPanel::onHeaderSectionClicked(int logicalIndex) {
+    qDebug() << "Header section clicked! Index:" << logicalIndex;
+    
+    // Only respond to clicks on column 0 (the "Attribut" column)
+    if (logicalIndex != 0) {
+        qDebug() << "Ignoring click on column" << logicalIndex << "(only column 0 supported)";
+        return;
+    }
+    // Toggle the expanded state
+    m_treeExpandedState = !m_treeExpandedState;
+    
+    if (m_treeExpandedState) {
+        treeWidget->expandAll();
+    } else {
+        treeWidget->collapseAll();
+    }
+    
+    // Resize columns to fit content after expand/collapse
+    treeWidget->resizeColumnToContents(0);
+    treeWidget->resizeColumnToContents(1);
 }
