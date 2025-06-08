@@ -143,7 +143,7 @@ void MainWindow::setupAddPanel()
     // enter Edit Mode directly at beginning
     addPanel->enterEditMode();
 
-    // Beispiel: Button aus toolbarUi zeigt Add-Panel
+    // Button aus toolbarUi zeigt Add-Panel
     connect(toolbarUi->add, &QPushButton::clicked, this, [=]() {
         sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->addpanel);
         sideDock->show();
@@ -178,7 +178,7 @@ void MainWindow::setupAddPanel()
     connect(addPanel, &InfoPanel::saveRequested, this, [=](const QJsonObject& modifiedData) {
         // depending on the current tab, save the data to the correct model
         int currentIndex = tableWidgetUi->TabSelector->currentIndex();
-        qDebug() << "Saving data for tab index:" << currentIndex;
+        qDebug() << "Modified Data:" << modifiedData;
         switch(currentIndex) {
             case 0: // Person tab
                 personModel->saveFromJsonObject(modifiedData);

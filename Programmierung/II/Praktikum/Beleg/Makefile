@@ -5852,6 +5852,10 @@ build/obj/infopanel.o: ui/infopanel.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtWid
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDebug \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QCheckBox \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qcheckbox.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QHBoxLayout \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QLabel \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qlabel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtGui/qpicture.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QEvent \
 		ui/infopanel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap

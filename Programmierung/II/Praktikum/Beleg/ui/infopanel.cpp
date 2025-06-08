@@ -152,7 +152,7 @@ public:
         QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
         // bool isRequired = index.data(SchemaRequiredRole).toBool();
         QString newValue;
-        qDebug() << "Update model data for index:" << index.row() << index.column() << " Type:" << itemType << " Format:" << itemFormat;
+        // qDebug() << "Update model data for index:" << index.row() << index.column() << " Type:" << itemType << " Format:" << itemFormat;
         if (itemType == "integer") {
             QSpinBox* spinBox = qobject_cast<QSpinBox*>(editor);
             newValue = QString::number(spinBox->value());
@@ -389,10 +389,10 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
     }
 
     // Check for optional flag for all types (objects, arrays, and leaf nodes)
-    qDebug() << "Current item schema for key:" << thisItem->text(0) << "->" << currentItemSchema;
+    // qDebug() << "Current item schema for key:" << thisItem->text(0) << "->" << currentItemSchema;
     bool isOptional = currentItemSchema.value("optional").toBool(false);
     if (isOptional) {
-        qDebug() << "Creating optional checkbox for item:" << thisItem->text(0) << " (type: " << currentItemSchema.value("type").toString() << ")";
+        // qDebug() << "Creating optional checkbox for item:" << thisItem->text(0) << " (type: " << currentItemSchema.value("type").toString() << ")";
         createOptionalCheckbox(thisItem);
     }
 
@@ -1140,7 +1140,7 @@ void InfoPanel::updateFieldValidationState(const QModelIndex& index) {
  */
 void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item) {
     if (!item) return;
-    qDebug() << "Creating checkbox for optional field:" << item->text(0);
+    // qDebug() << "Creating checkbox for optional field:" << item->text(0);
     
     // Create a container widget to hold both checkbox and label
     QWidget* containerWidget = new QWidget();
@@ -1151,7 +1151,7 @@ void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item) {
     // Create the checkbox
     QCheckBox* checkbox = new QCheckBox();
     checkbox->setChecked(true); // Default to enabled
-    checkbox->setToolTip("Enable/disable this optional field");
+    checkbox->setToolTip("Enable/disable this optional field (only in edit mode)");
     
     // Create a label with the item's text
     QLabel* textLabel = new QLabel(item->text(0));
@@ -1181,11 +1181,22 @@ void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item) {
  * @param checked Whether the checkbox is checked
  * 
  * When an optional field checkbox is toggled, this method updates the visibility
- * of the associated field and all its subcomponents.
+ * of the associated field and all its subcomponents. If not in edit mode, 
+ * the toggle is reverted.
  */
 void InfoPanel::onOptionalCheckboxToggled(bool checked) {
     QCheckBox* checkbox = qobject_cast<QCheckBox*>(sender());
     if (!checkbox) return;
+    
+    // If not in edit mode, revert the checkbox state and return
+    if (!inEditMode) {
+        // Temporarily disconnect the signal to avoid infinite recursion
+        disconnect(checkbox, &QCheckBox::toggled, this, &InfoPanel::onOptionalCheckboxToggled);
+        checkbox->setChecked(!checked); // Revert the toggle
+        // Reconnect the signal
+        connect(checkbox, &QCheckBox::toggled, this, &InfoPanel::onOptionalCheckboxToggled);
+        return;
+    }
     
     // Find the item associated with this checkbox
     QTreeWidgetItem* item = nullptr;
