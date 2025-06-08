@@ -83,6 +83,7 @@ class TransactionTableModel : public QAbstractTableModel {
         QJsonObject getJsonObject(const QModelIndex& index) const;
         QJsonObject getDefaultJsonObject() const;
         QJsonObject getSchemaObject(const QModelIndex& index) const;
+        QJsonObject getDefaultSchema() const;
         bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
     
     public slots:

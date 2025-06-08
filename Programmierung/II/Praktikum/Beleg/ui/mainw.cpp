@@ -159,9 +159,11 @@ void MainWindow::setupAddPanel()
                 break;
             case 1: // LibItem tab  
                 defaultJson = libitemModel->getDefaultJsonObject();
+                // schemaJson = libitemModel->getDefaultSchema(); // No schema for LibItem yet
                 break;
             case 2: // Transaction tab
                 defaultJson = transactionModel->getDefaultJsonObject();
+                schemaJson = transactionModel->getDefaultSchema();
                 break;
             default:
                 return; // No valid tab selected
@@ -218,6 +220,7 @@ void MainWindow::setupAddPanel()
                 break;
             case 2: // Transaction tab
                 defaultJson = transactionModel->getDefaultJsonObject();
+                schemaJson = transactionModel->getDefaultSchema();
                 break;
             default:
                 return; // No valid tab selected

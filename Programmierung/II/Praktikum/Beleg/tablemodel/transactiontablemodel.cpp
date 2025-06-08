@@ -5,6 +5,7 @@
 #include <QDate>
 #include <QDateTime>
 #include "transactiontablemodel.h"
+#include "jsonschemautils.h"
 #include <transactionman.h>
 #include <mediaman.h>
 #include <libitemman.h>
@@ -257,7 +258,9 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
 }
 
 QJsonObject TransactionTableModel::getDefaultJsonObject() const {
-    return QJsonObject();
+    QJsonObject defaultJsonObject = createDefaultJsonFromSchema(getDefaultSchema());
+    defaultJsonObject["id"] = QJsonValue::fromVariant(static_cast<quint64>(transactionMan->getNextId()));
+    return defaultJsonObject;
 }
 
 QJsonObject TransactionTableModel::getSchemaObject(const QModelIndex& index) const {
@@ -302,6 +305,31 @@ QJsonObject TransactionTableModel::getSchemaObject(const QModelIndex& index) con
     }
     rootSchema.insert("properties", properties);
     return rootSchema;
+}
+
+QJsonObject TransactionTableModel::getDefaultSchema() const {
+    QJsonObject defaultSchema = Transaction::getSchema();
+    
+    // Get the properties object
+    QJsonObject properties = defaultSchema["properties"].toObject();
+    // qDebug() << "Properties of Transaction Schema: " << properties << "\n";
+    // Modify libitem_id field to make it not required
+    if (properties.contains("libitem_id")) {
+        QJsonObject libitemField = properties["libitem_id"].toObject();
+        libitemField["readonly"] = false;
+        properties["libitem_id"] = libitemField;
+    }
+    
+    // Modify borrower_id field to make it not required
+    if (properties.contains("borrower_id")) {
+        QJsonObject borrowerField = properties["borrower_id"].toObject();
+        borrowerField["readonly"] = false;
+        properties["borrower_id"] = borrowerField;
+    }
+    // qDebug() << "Modified Properties of Transaction Schema: " << properties << "\n";
+    // Put the modified properties back
+    defaultSchema["properties"] = properties;
+    return defaultSchema;
 }
 
 bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {

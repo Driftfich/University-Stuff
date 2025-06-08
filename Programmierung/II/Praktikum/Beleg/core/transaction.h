@@ -76,8 +76,8 @@ class Transaction {
         static std::shared_ptr<Transaction> TransactionFactory(const QJsonObject& json);
         
         // schema methods
-        QJsonObject getLocalSchema() const;
-        QJsonObject getSchema() const;
+        static QJsonObject getLocalSchema();
+        static QJsonObject getSchema();
 
         // print method
         friend std::ostream& operator<<(std::ostream& os, const Transaction& transaction) {

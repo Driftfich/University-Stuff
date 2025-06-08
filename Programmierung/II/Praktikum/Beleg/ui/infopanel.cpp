@@ -410,7 +410,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
             QJsonObject childSchema = propertiesSchema.value(key).toObject();
-            // qDebug() << key << "->" << childSchema;
+            qDebug() << key << "->" << childSchema;
             if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
                 childSchema = currentItemSchema.value("additionalProperties").toObject();
             }
@@ -644,7 +644,7 @@ void InfoPanel::setTreeItemEditable(QTreeWidgetItem* item, bool editable) {
     bool isLeaf = item->data(0, Qt::UserRole).toString() == "leaf";
     QString itemKey = item->text(0).toLower();
     
-    if (isLeaf && editable && !itemKey.contains("id")) {
+    if (isLeaf && editable) {
         // Nur Spalte 1 (Wert) editierbar machen
         item->setFlags(item->flags() | Qt::ItemIsEditable);
     } else {
