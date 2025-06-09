@@ -52,7 +52,7 @@ int Video::loadSubclassParams(const QJsonObject& json) {
     return 0;
 }
 
-QJsonObject Video::getSubclassSchema() const {
+QJsonObject Video::getSubclassSchema() {
     QJsonObject schema;
     schema["duration"] = QJsonObject{{"type", "integer"}};
     schema["type"] = QJsonObject{{"type", "string"}};
@@ -60,5 +60,13 @@ QJsonObject Video::getSubclassSchema() const {
     schema["codec"] = QJsonObject{{"type", "string"}};
     schema["aspect_ratio"] = QJsonObject{{"type", "string"}};
     schema["audio_channels"] = QJsonObject{{"type", "string"}};
+    return schema;
+}
+
+QJsonObject Video::getSchema() {
+    QJsonObject schema = Media::getSchema();
+    QJsonObject subclassParams = schema["subclass_params"].toObject();
+    subclassParams["properties"] = getSubclassSchema();
+    schema["subclass_params"] = subclassParams;
     return schema;
 }

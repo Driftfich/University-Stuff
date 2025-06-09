@@ -5121,7 +5121,9 @@ build/obj/transactiontablemodel.o: tablemodel/transactiontablemodel.cpp /home/US
 		json.hpp \
 		manager/mediaman.h \
 		manager/libitemman.h \
-		manager/personman.h
+		manager/personman.h \
+		utils/jsonschemautils.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonValue
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/transactiontablemodel.o tablemodel/transactiontablemodel.cpp
 
 build/obj/custfiltproxmodel.o: tablemodel/custfiltproxmodel.cpp tablemodel/custfiltproxmodel.h \
@@ -5856,6 +5858,8 @@ build/obj/infopanel.o: ui/infopanel.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtWid
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QLabel \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qlabel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtGui/qpicture.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QHeaderView \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qheaderview.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QEvent \
 		ui/infopanel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap

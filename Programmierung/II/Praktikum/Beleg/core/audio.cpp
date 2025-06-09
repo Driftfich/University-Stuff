@@ -81,7 +81,7 @@ int Audio::loadSubclassParams(const QJsonObject& json) {
     return 0;
 }
 
-QJsonObject Audio::getSubclassSchema() const {
+QJsonObject Audio::getSubclassSchema() {
     QJsonObject schema;
     schema["duration"] = QJsonObject{{"type", "integer"}};
     schema["type"] = QJsonObject{{"type", "string"}};
@@ -91,6 +91,14 @@ QJsonObject Audio::getSubclassSchema() const {
     schema["codec"] = QJsonObject{{"type", "string"}};
     schema["album"] = QJsonObject{{"type", "string"}};
     schema["tracks"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "string"}}}};
+    return schema;
+}
+
+QJsonObject Audio::getSchema() {
+    QJsonObject schema = Media::getSchema();
+    QJsonObject subclassParams = schema["subclass_params"].toObject();
+    subclassParams["properties"] = getSubclassSchema();
+    schema["subclass_params"] = subclassParams;
     return schema;
 }
 

@@ -53,9 +53,14 @@ class LibItemTableModel : public QAbstractTableModel {
         QVector<QString> getDisplayedColumns() const;
 
         QJsonObject getJsonObject(const QModelIndex& index) const;
-        QJsonObject getDefaultJsonObject() const;
         QJsonObject getSchemaObject(const QModelIndex& index) const;
         bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
+
+        QJsonObject getDefaultSchema(QString mediaType) const;
+        QJsonObject getDefaultSchema() const;
+        QJsonObject getDefaultJsonObject(QString mediaType) const;
+        QJsonObject getDefaultJsonObject() const;
+        bool saveFromJsonObject(const QJsonObject& jsonObject) const;
 
     public slots:
         void refreshData();

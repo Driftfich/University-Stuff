@@ -101,7 +101,8 @@ class Audio : public Media {
 
         QJsonObject getSubclassParams() const override;
 
-        QJsonObject getSubclassSchema() const override;
+        static QJsonObject getSchema();
+        static QJsonObject getSubclassSchema();
 
         int loadSubclassParams(const QJsonObject& json) override;
 };

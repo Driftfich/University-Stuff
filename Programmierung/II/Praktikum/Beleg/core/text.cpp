@@ -75,11 +75,19 @@ int Text::loadSubclassParams(const QJsonObject& json) {
     return 0;
 }
 
-QJsonObject Text::getSubclassSchema() const {
+QJsonObject Text::getSubclassSchema() {
     QJsonObject schema;
     schema["pages"] = QJsonObject{{"type", "integer"}};
     schema["isbn"] = QJsonObject{{"type", "string"}};
     schema["bindingType"] = QJsonObject{{"type", "string"}};
     schema["textFormat"] = QJsonObject{{"type", "string"}};
+    return schema;
+}
+
+QJsonObject Text::getSchema() {
+    QJsonObject schema = Media::getSchema();
+    QJsonObject subclassParams = schema["subclass_params"].toObject();
+    subclassParams["properties"] = getSubclassSchema();
+    schema["subclass_params"] = subclassParams;
     return schema;
 }

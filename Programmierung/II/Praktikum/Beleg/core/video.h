@@ -86,7 +86,8 @@ class Video : public Media {
 
         QJsonObject getSubclassParams() const override;
 
-        QJsonObject getSubclassSchema() const override;
+        static QJsonObject getSubclassSchema();
+        static QJsonObject getSchema();
 
         int loadSubclassParams(const QJsonObject& json) override;
 };

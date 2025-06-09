@@ -339,7 +339,7 @@ std::ostream& operator<<(std::ostream& os, const Media& media) {
 }
 
 // schema methods
-QJsonObject Media::getLocalSchema() const {
+QJsonObject Media::getLocalSchema() {
     QJsonObject schema;
     schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Media ID"}, {"description", "Unique identifier for the media"}};
     schema["title"] = QJsonObject{{"type", "string"}, {"minLength", MIN_TITLE_LENGTH}, {"maxLength", MAX_TITLE_LENGTH}, {"rename", "Title"}, {"description", "Title of the media"}};
@@ -353,20 +353,15 @@ QJsonObject Media::getLocalSchema() const {
     return schema;
 }
 
-QJsonObject Media::getSchema() const {
+QJsonObject Media::getSchema() {
     QJsonObject schema;
-    // schema["media"] = getLocalSchema();
-    // schema["subclass_type"] = QJsonObject{{"type", "string"}};
-    // schema["subclass_params"] = getSubclassSchema();
-    // return schema;
     schema.insert("type", "object");
-    QJsonObject subclass_schema = getSubclassSchema();
     QJsonObject properties;
-    if (!subclass_schema.isEmpty()) {
-        properties.insert("subclass_type", QJsonObject{{"type", "string"}});
-        properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", getSubclassSchema()}});
-    }
-    properties.insert("media", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
+    QJsonObject local_schema = getLocalSchema();
+    // local_schema.insert("subclass_type", QJsonObject{{"type", "string"}, {"enum", QJsonArray{"Unknown", "Text", "Audio", "Video"}}, {"rename", "Media Type"}, {"description", "Type of the Media (e.g. Text, Audio, Video, Media)"}});
+    properties.insert("media", QJsonObject{{"type", "object"}, {"properties", local_schema}, {"rename", "Base Information"}, {"description", "Base information about the media"}});
+    properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", QJsonObject{{"readonly", true}}}, {"rename", "Extended Information"}, {"readonly", true}}); // 
+    properties.insert("subclass_type", QJsonObject{{"type", "string"}, {"enum", QJsonArray{"Unknown", "Text", "Audio", "Video"}}, {"rename", "Media Type"}, {"description", "Type of the Media (e.g. Text, Audio, Video, Media)"}});
     schema.insert("properties", properties);
     return schema;
 }

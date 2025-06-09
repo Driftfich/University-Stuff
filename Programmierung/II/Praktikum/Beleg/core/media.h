@@ -138,9 +138,9 @@ class Media {
         static std::shared_ptr<Media> MediaFactory(const QJsonObject& json);
 
         // schema methods
-        QJsonObject getLocalSchema() const;
-        virtual QJsonObject getSubclassSchema() const { return QJsonObject(); }
-        QJsonObject getSchema() const;
+        static QJsonObject getLocalSchema();
+        // virtual QJsonObject getSubclassSchema() { return QJsonObject(); }
+        static QJsonObject getSchema();
 
         // print methods
         void printbase(std::ostream& os) const;

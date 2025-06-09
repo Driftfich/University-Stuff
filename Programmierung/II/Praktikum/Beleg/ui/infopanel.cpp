@@ -385,6 +385,8 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
     bool isReadOnly = currentItemSchema.value("readonly").toBool(false);
     QString originalKey = thisItem->text(0);
 
+    if (isReadOnly) qDebug() << "Item is read-only:" << originalKey;
+
     if (!originalKey.isEmpty()) {
         thisItem->setData(0, SchemaOriginalKeyRole, originalKey);
     }
@@ -416,9 +418,11 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         }
         // qDebug() << "Current item schema for object:" << currentItemSchema << "\n";
         // qDebug() << "propertiesSchema from" << thisItem->text(0) << "->" << propertiesSchema << "\n";
+        thisItem->setData(0, SchemaReadonlyRole, isReadOnly);
         for (const QString& key : obj.keys()) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
+            // child->setData(0, SchemaReadonlyRole, isReadOnly);
             QJsonObject childSchema = propertiesSchema.value(key).toObject();
             // qDebug() << key << "->" << childSchema;
             if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
@@ -458,6 +462,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         thisItem->setData(1, SchemaFormatRole, itemFormat);
         thisItem->setData(1, SchemaEnumValuesRole, enumValues);
         thisItem->setData(1, SchemaReadonlyRole, isReadOnly);
+        thisItem->setData(0, SchemaReadonlyRole, isReadOnly);
         thisItem->setData(1, SchemaRequiredRole, isRequired);
         thisItem->setData(1, SchemaOptionalRole, isOptional);
     }
@@ -756,7 +761,7 @@ void InfoPanel::updateAddButtons(bool show) {
         bool readonly = readonlyVariant.isValid() ? readonlyVariant.toBool() : false;
         bool shouldHaveButton = show && isLowestCollection(item) && !isHighestItem(item) && !readonly;
 
-        // qDebug() << "Adding add button for item:" << item->text(0) << "Readonly:" << readonly;
+        qDebug() << "Adding add button for item:" << item->text(0) << "Readonly:" << readonly;
         if (shouldHaveButton) {
             if (!currentWidget) { // Add button only if one doesn't exist
                 QToolButton* addButton = new QToolButton();

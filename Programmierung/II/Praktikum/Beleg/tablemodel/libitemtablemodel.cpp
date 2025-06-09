@@ -4,10 +4,14 @@
 #include <QVariant>
 #include <QModelIndex>
 
+#include "jsonschemautils.h"
 #include "libitemtablemodel.h"
 #include "libitemman.h"
 #include "libitem.h"
 #include "media.h"
+#include "video.h"
+#include "text.h"
+#include "audio.h"
 
 LibItemTableModel::LibItemTableModel(LibitemMan* libItemMan, MediaMan* mediaMan, QObject *parent)
     : QAbstractTableModel(parent), libItemMan(libItemMan), mediaMan(mediaMan) {
@@ -214,16 +218,16 @@ QJsonObject LibItemTableModel::getJsonObject(const QModelIndex& index) const {
     QJsonObject jsonObject = QJsonObject();
     jsonObject["libitem"] = (*libitem).getJson();
     if (media) {
-        jsonObject["media"] = (*media).getJson();
+        QJsonObject mediaJson = (*media).getJson();
+        if (mediaJson.contains("subclass_params") && mediaJson["subclass_params"].toObject().isEmpty()) {
+            mediaJson.remove("subclass_params");
+        }
+        jsonObject["media"] = mediaJson;
     }
     else {
         jsonObject["media"] = QJsonObject();
     }
     return jsonObject;
-}
-
-QJsonObject LibItemTableModel::getDefaultJsonObject() const {
-    return QJsonObject();
 }
 
 QJsonObject LibItemTableModel::getSchemaObject(const QModelIndex& index) const {
@@ -278,6 +282,54 @@ bool LibItemTableModel::updateFromJsonObject(const QJsonObject& jsonObject, cons
     emit dataChanged(index, index);
     return true;
     
+}
+
+QJsonObject LibItemTableModel::getDefaultSchema(QString mediaType) const {
+    QJsonObject defaultSchema;
+    defaultSchema.insert("type", "object");
+    QJsonObject properties;
+    properties.insert("libitem", Libitem::getSchema());
+    mediaType = mediaType.toLower();
+    if (mediaType == "audio") {
+        properties.insert("media", Audio::getSchema());
+    } else if (mediaType == "video") {
+        properties.insert("media", Video::getSchema());
+    } else if (mediaType == "text") {
+        properties.insert("media", Text::getSchema());
+    } else {
+        properties.insert("media", Media::getSchema());
+    }
+    defaultSchema.insert("properties", properties);
+    return defaultSchema;
+}
+
+QJsonObject LibItemTableModel::getDefaultJsonObject(QString mediaType) const {
+    QJsonObject defaultJsonObject = createDefaultJsonFromSchema(getDefaultSchema(mediaType));
+    if (defaultJsonObject.contains("libitem")) {
+        QJsonObject libitemObject = defaultJsonObject["libitem"].toObject();
+        libitemObject["id"] = QJsonValue::fromVariant(static_cast<quint64>(libItemMan->getNextId()));
+        defaultJsonObject["libitem"] = libitemObject;
+    }
+    if (defaultJsonObject.contains("media")) {
+        QJsonObject mediaObject = defaultJsonObject["media"].toObject();
+        if (mediaObject.contains("subclass_params") && mediaObject["subclass_params"].toObject().isEmpty()) {
+            mediaObject.remove("subclass_params");
+        }
+
+        QJsonObject baseObject = mediaObject["media"].toObject();
+        baseObject["id"] = QJsonValue::fromVariant(static_cast<quint64>(mediaMan->getNextId()));
+        mediaObject["media"] = baseObject;
+        defaultJsonObject["media"] = mediaObject;
+    }
+    return defaultJsonObject;
+}
+
+QJsonObject LibItemTableModel::getDefaultSchema() const {
+    return getDefaultSchema("media");
+}
+
+QJsonObject LibItemTableModel::getDefaultJsonObject() const {
+    return getDefaultJsonObject("media");
 }
 
 void LibItemTableModel::refreshData() {
