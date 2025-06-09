@@ -339,7 +339,7 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
         qDebug() << "Resetting edit mode in InfoPanel";
     }
 
-    treeWidget->blockSignals(true); // Temporarily block signals to prevent unnecessary updates
+    // treeWidget->blockSignals(true); // Temporarily block signals to prevent unnecessary updates
 
     originalData = jsonObject;
     currentSchema = schemaObject; // Store the schema
@@ -383,7 +383,7 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
 
     qDebug() << "Added JSON to tree recursively in InfoPanel";
 
-    treeWidget->blockSignals(false); // Unblock signals after updates
+    // treeWidget->blockSignals(false); // Unblock signals after updates
 
     if (resetEditMode) {
 
@@ -701,13 +701,13 @@ void InfoPanel::onItemChanged(QTreeWidgetItem* item, int column) {
     // Store new value for next comparison
     if (item) {
         // Block signals on the tree widget to prevent recursion
-        // treeWidget->blockSignals(true);
+        treeWidget->blockSignals(true);
 
         // Update the item with the new value
         item->setData(1, Qt::UserRole + 30, newValue);
 
         // Unblock signals after updating
-        // treeWidget->blockSignals(false);
+        treeWidget->blockSignals(false);
     }
     
     // Emit the field change signal with all necessary information
