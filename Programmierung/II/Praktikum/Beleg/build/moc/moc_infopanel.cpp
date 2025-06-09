@@ -89,16 +89,8 @@ template <> constexpr inline auto InfoPanel::qt_create_metaobjectdata<qt_meta_ta
             { QMetaType::QJsonObject, 14 }, { QMetaType::Bool, 15 },
         }}),
         // Slot 'displayInfo'
-        QtMocHelpers::SlotData<void(const QJsonObject &)>(13, 2, QMC::AccessPublic | QMC::MethodCloned, QMetaType::Void, {{
-            { QMetaType::QJsonObject, 14 },
-        }}),
-        // Slot 'displayInfo'
         QtMocHelpers::SlotData<void(const QJsonObject &, const QJsonObject &, bool)>(13, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QJsonObject, 14 }, { QMetaType::QJsonObject, 16 }, { QMetaType::Bool, 15 },
-        }}),
-        // Slot 'displayInfo'
-        QtMocHelpers::SlotData<void(const QJsonObject &, const QJsonObject &)>(13, 2, QMC::AccessPublic | QMC::MethodCloned, QMetaType::Void, {{
-            { QMetaType::QJsonObject, 14 }, { QMetaType::QJsonObject, 16 },
         }}),
         // Slot 'enterEditMode'
         QtMocHelpers::SlotData<void()>(17, 2, QMC::AccessPublic, QMetaType::Void),
@@ -151,17 +143,15 @@ void InfoPanel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 1: _t->editModeCancelled(); break;
         case 2: _t->fieldChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<QVariant>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<QVariant>>(_a[5]))); break;
         case 3: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<bool>>(_a[2]))); break;
-        case 4: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1]))); break;
-        case 5: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<bool>>(_a[3]))); break;
-        case 6: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[2]))); break;
-        case 7: _t->enterEditMode(); break;
-        case 8: _t->saveChanges(); break;
-        case 9: _t->cancelEditMode(); break;
-        case 10: _t->resetButtons(); break;
-        case 11: _t->paintDeleteItemButton((*reinterpret_cast< std::add_pointer_t<QPainter*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QStyleOptionViewItem>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[3]))); break;
-        case 12: _t->onItemChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
-        case 13: _t->handleDeleteAction((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1]))); break;
-        case 14: _t->onHeaderSectionClicked((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 4: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<bool>>(_a[3]))); break;
+        case 5: _t->enterEditMode(); break;
+        case 6: _t->saveChanges(); break;
+        case 7: _t->cancelEditMode(); break;
+        case 8: _t->resetButtons(); break;
+        case 9: _t->paintDeleteItemButton((*reinterpret_cast< std::add_pointer_t<QPainter*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QStyleOptionViewItem>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[3]))); break;
+        case 10: _t->onItemChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
+        case 11: _t->handleDeleteAction((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1]))); break;
+        case 12: _t->onHeaderSectionClicked((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         default: ;
         }
     }
@@ -194,14 +184,14 @@ int InfoPanel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 15)
+        if (_id < 13)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 13;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 15)
+        if (_id < 13)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 15;
+        _id -= 13;
     }
     return _id;
 }
