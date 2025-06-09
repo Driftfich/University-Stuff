@@ -122,5 +122,7 @@ class MainWindow : public QMainWindow
         // Method to save the modified data from the InfoPanel
         void saveModifiedData(const QJsonObject& modifiedData);
 
+        void updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
+
 
 };

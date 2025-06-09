@@ -26,6 +26,10 @@ QJsonObject createDefaultJsonFromSchema(const QJsonObject& schemaObject) {
     for (auto it = properties.constBegin(); it != properties.constEnd(); ++it) {
         const QString& fieldName = it.key();
         const QJsonValue& fieldSchema = it.value();
+
+        if (fieldName == "subclass_params") {
+            qDebug() << "subclass_params: " << fieldSchema;
+        }
         
         if (!fieldSchema.isObject()) {
             continue; // Überspringe nicht-objekt Schemas

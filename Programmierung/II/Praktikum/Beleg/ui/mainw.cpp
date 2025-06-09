@@ -35,7 +35,7 @@ void MainWindow::setupUi()
 
     // 3)
     setWindowTitle("Library Management System");
-    setMinimumSize(800, 600);
+    setMinimumSize(1200, 600);
     setWindowIcon(QIcon(":/icons/lib.png"));
 
     // ---- toolbarUi als echtes QWidget ----
@@ -51,6 +51,43 @@ void MainWindow::setupUi()
     tableWidgetWidget = new QWidget(central);
     tableWidgetUi->setupUi(tableWidgetWidget);
     mainLayout->addWidget(tableWidgetWidget);
+}
+
+void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
+{
+    // qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
+    // get the index of the current active tab
+    int currentIndex = tableWidgetUi->TabSelector->currentIndex();
+    if (fieldName == "subclass_type" && oldValue != newValue && currentIndex == 1 && oldValue.toString() != "") {
+        qDebug() << "subclass_type changed from" << oldValue.toString() << "to" << newValue.toString();
+        
+        // get the updated json object from the info panel
+        QJsonObject modifiedData = infoPanel->collectDataFromTree();
+        QJsonObject mediaBaseData = modifiedData.value("media").toObject().value("media").toObject();
+        
+        // get the new matching default json object and default schema from the libitemModel
+        QJsonObject defaultJson = libitemModel->getDefaultJsonObject(newValue.toString());
+        QJsonObject defaultMediaJson = defaultJson.value("media").toObject();
+        defaultMediaJson["subclass_type"] = newValue.toString();
+        defaultMediaJson["media"] = mediaBaseData; // Preserve the base media data
+        defaultJson["media"] = defaultMediaJson; // Update the media object with the new subclass_type
+        QJsonObject defaultSchema = libitemModel->getDefaultSchema(newValue.toString());
+        
+        // disconnect the fieldChanged signal to prevent recursion
+        disconnect(infoPanel, &InfoPanel::fieldChanged, this, &MainWindow::updateSubclassType);
+
+        // update the info panel with the new default json object and schema
+        qDebug() << "New default JSON for subclass_type:" << defaultJson;
+        qDebug() << "New default schema for subclass_type:" << defaultSchema;
+        infoPanel->displayInfo(defaultJson, defaultSchema, false);
+
+        // connect again the fieldChanged signal
+        // connect(infoPanel, &InfoPanel::fieldChanged, this, 
+        //     [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
+        //         // Check if the changed field is subclass_type
+        //         updateSubclassType(item, column, fieldName, oldValue, newValue);
+        //     });
+    }
 }
 
 void MainWindow::setupSideDock()
@@ -76,6 +113,13 @@ void MainWindow::setupSideDock()
 
     // Signal vom InfoPanel verbinden
     connect(infoPanel, &InfoPanel::saveRequested, this, &MainWindow::saveModifiedData);
+    
+    // Connect to field change signal to detect subclass_type changes
+    connect(infoPanel, &InfoPanel::fieldChanged, this, 
+        [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
+            // Check if the changed field is subclass_type
+            updateSubclassType(item, column, fieldName, oldValue, newValue);
+        });
     
     // Doppelklick auf Tabelleintrag zeigt Info-Panel
     auto showInfo = [this](const QModelIndex& index) {

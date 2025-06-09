@@ -291,12 +291,14 @@ QJsonObject LibItemTableModel::getDefaultSchema(QString mediaType) const {
     properties.insert("libitem", Libitem::getSchema());
     mediaType = mediaType.toLower();
     if (mediaType == "audio") {
+        // qDebug() << "Using Audio schema for media type:" << mediaType;
         properties.insert("media", Audio::getSchema());
     } else if (mediaType == "video") {
         properties.insert("media", Video::getSchema());
     } else if (mediaType == "text") {
         properties.insert("media", Text::getSchema());
     } else {
+        // qDebug() << "Using default media schema for media type:" << mediaType;
         properties.insert("media", Media::getSchema());
     }
     defaultSchema.insert("properties", properties);
@@ -304,7 +306,14 @@ QJsonObject LibItemTableModel::getDefaultSchema(QString mediaType) const {
 }
 
 QJsonObject LibItemTableModel::getDefaultJsonObject(QString mediaType) const {
-    QJsonObject defaultJsonObject = createDefaultJsonFromSchema(getDefaultSchema(mediaType));
+    // qDebug() << "Creating default JSON object for media type:" << mediaType;
+    QJsonObject defaultSchema = getDefaultSchema(mediaType);
+    // qDebug() << "Default schema created for media type:" << mediaType;
+    qDebug() << "Default schema:" << defaultSchema;
+    qDebug() << "Subclass params:" << defaultSchema["properties"].toObject()["media"].toObject()["properties"].toObject()["subclass_params"].toObject();
+    QJsonObject defaultJsonObject = createDefaultJsonFromSchema(defaultSchema);
+    // qDebug() << "Default JSON object created for media type:" << mediaType;
+    qDebug() << "Default JSON object:" << defaultJsonObject;
     if (defaultJsonObject.contains("libitem")) {
         QJsonObject libitemObject = defaultJsonObject["libitem"].toObject();
         libitemObject["id"] = QJsonValue::fromVariant(static_cast<quint64>(libItemMan->getNextId()));

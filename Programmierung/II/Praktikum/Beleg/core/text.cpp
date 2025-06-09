@@ -86,8 +86,10 @@ QJsonObject Text::getSubclassSchema() {
 
 QJsonObject Text::getSchema() {
     QJsonObject schema = Media::getSchema();
-    QJsonObject subclassParams = schema["subclass_params"].toObject();
+    QJsonObject properties = schema["properties"].toObject();
+    QJsonObject subclassParams = properties["subclass_params"].toObject();
     subclassParams["properties"] = getSubclassSchema();
-    schema["subclass_params"] = subclassParams;
+    properties["subclass_params"] = subclassParams;
+    schema["properties"] = properties;
     return schema;
 }

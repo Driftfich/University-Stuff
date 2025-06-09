@@ -29,10 +29,11 @@ class InfoPanel : public QWidget {
         bool isFieldValid(const QModelIndex& index) const;
         bool isFieldInvalid(const QModelIndex& index) const { return !isFieldValid(index); }
         void updateFieldValidationState(const QModelIndex& index);
+        QJsonObject collectDataFromTree();
 
     public slots:
-        void displayInfo(const QJsonObject& jsonObject);
-        void displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject);
+        void displayInfo(const QJsonObject& jsonObject, bool resetEditMode = true);
+        void displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject, bool resetEditMode = true);
         // void addJsonToTree(const QJsonValue& value, QTreeWidgetItem* parent);
         void enterEditMode();
         void saveChanges();
@@ -47,6 +48,8 @@ class InfoPanel : public QWidget {
         void saveRequested(const QJsonObject& modifiedData);
         // Signal wird ausgelöst, wenn Cancel-Button im Edit-Modus gedrückt wird
         void editModeCancelled();
+        // Signal wird ausgelöst, wenn ein beliebiges Feld geändert wird
+        void fieldChanged(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
 
     private:
         QTreeWidget *treeWidget;
@@ -76,7 +79,6 @@ class InfoPanel : public QWidget {
 
         void setTreeItemsEditable(bool editable);
         void setTreeItemEditable(QTreeWidgetItem* item, bool editable);
-        QJsonObject collectDataFromTree();
         QJsonValue getValueFromItem(QTreeWidgetItem* item);
         void restoreOriginalData();
 

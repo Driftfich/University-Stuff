@@ -291,9 +291,11 @@ InfoPanel::~InfoPanel() {
     delete treeWidget;
 }
 
-void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
-    inEditMode = false; // Ensure we are not in edit mode
-    resetButtons(); // Reset buttons to initial state
+void InfoPanel::displayInfo(const QJsonObject& jsonObject, bool resetEditMode) {
+    if (resetEditMode) {
+        inEditMode = false;
+        resetButtons();
+    }
     originalData = jsonObject; // Store original data for canceling edits
     
     // Clear optional field data
@@ -307,36 +309,42 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject) {
     hoveredItemForDelete = QPersistentModelIndex(); // Reset the hovered item for delete button
 
     // reset buttons
-    saveButton->setEnabled(false);
-    saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
-    editButton->setText(tr("Bearbeiten"));
-    editButton->setIcon(QIcon(":/icons/edit.png"));
-    
-    // Für jedes Top-Level-Objekt einen Haupteintrag erstellen
-    // for (const QString& key : jsonObject.keys()) {
-    //     QTreeWidgetItem *topItem = new QTreeWidgetItem(treeWidget, {key, ""});
-    //     topItem->setFirstColumnSpanned(true); // Nur der Schlüssel wird angezeigt
-    //     addJsonToTreeRecursive(jsonObject[key], topItem);
-    //     treeWidget->addTopLevelItem(topItem);
-    // }
+    if (resetEditMode) {
+        saveButton->setEnabled(false);
+        saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
+        editButton->setText(tr("Bearbeiten"));
+        editButton->setIcon(QIcon(":/icons/edit.png"));
+    }
+
     addJsonToTreeRecursive(jsonObject, treeWidget->invisibleRootItem());
     
-    treeWidget->expandAll();
-    m_treeExpandedState = false; // Reset to collapsed state after displaying new data
-    treeWidget->resizeColumnToContents(0);
-    treeWidget->resizeColumnToContents(1);
+    if (resetEditMode) {
+        treeWidget->expandAll();
+        m_treeExpandedState = false; // Reset to collapsed state after displaying new data
+        treeWidget->resizeColumnToContents(0);
+        treeWidget->resizeColumnToContents(1);
 
-    // Initial nicht editierbar
-    inEditMode = false;
+        // Initial nicht editierbar
+        inEditMode = false;
+    }
     setTreeItemsEditable(inEditMode);
     updateAddButtons(inEditMode);
 }
 
-void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject) {
-    inEditMode = false; // Ensure we are not in edit mode
-    resetButtons(); 
+void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject, bool resetEditMode) {
+    // debug test
+    if (resetEditMode) {
+        inEditMode = false;
+        resetButtons();
+        qDebug() << "Resetting edit mode in InfoPanel";
+    }
+
+    treeWidget->blockSignals(true); // Temporarily block signals to prevent unnecessary updates
+
     originalData = jsonObject;
     currentSchema = schemaObject; // Store the schema
+
+    qDebug() << "Updated original data and schema in InfoPanel";
     
     // Clear optional field data
     for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
@@ -344,21 +352,28 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
     }
     optionalCheckboxes.clear();
     optionalFieldStates.clear();
+    invalidRequiredFields.clear();
+
+    qDebug() << "Cleared optional checkboxes and states in InfoPanel";
     
     treeWidget->clear();
+    if (hoveredItemForDelete.isValid()) { // Force repaint
+        treeWidget->update(hoveredItemForDelete);
+    }
     hoveredItemForDelete = QPersistentModelIndex();
 
-    saveButton->setEnabled(false);
-    saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
-    editButton->setText(tr("Bearbeiten"));
-    editButton->setIcon(QIcon(":/icons/edit.png"));
-    
-    // for (const QString& key : jsonObject.keys()) {
-    //     QTreeWidgetItem *topLevelItem = new QTreeWidgetItem(treeWidget);
-    //     topLevelItem->setText(0, key);
-    //     // Pass the schema definition for this specific key
-    //     addJsonToTreeRecursive(jsonObject[key], topLevelItem, 0, currentSchema.value(key).toObject());
-    // }
+    setOptionalFieldsVisibility();
+
+    qDebug() << "Cleared treeWidget and hovered item in InfoPanel";
+    qDebug() << "resetEditMode:" << resetEditMode;
+    if (resetEditMode) {
+        saveButton->setEnabled(false);
+        saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
+        editButton->setText(tr("Bearbeiten"));
+        editButton->setIcon(QIcon(":/icons/edit.png"));
+
+        qDebug() << "Reset buttons in InfoPanel";
+    }
 
     // now recurse once on the invisible root
     addJsonToTreeRecursive(jsonObject,
@@ -366,13 +381,24 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
                            0,
                            currentSchema);
 
-    treeWidget->expandAll();
-    m_treeExpandedState = false; // Reset to collapsed state after displaying new data
-    treeWidget->resizeColumnToContents(0);
-    treeWidget->resizeColumnToContents(1);
+    qDebug() << "Added JSON to tree recursively in InfoPanel";
 
-    setTreeItemsEditable(inEditMode);
-    updateAddButtons(inEditMode);
+    treeWidget->blockSignals(false); // Unblock signals after updates
+
+    if (resetEditMode) {
+
+        qDebug() << "Expanding treeWidget and resizing columns in InfoPanel";
+
+        treeWidget->expandAll();
+        m_treeExpandedState = false; // Reset to collapsed state after displaying new data
+        treeWidget->resizeColumnToContents(0);
+        treeWidget->resizeColumnToContents(1);
+
+        setTreeItemsEditable(inEditMode);
+        updateAddButtons(inEditMode);
+    }
+
+    qDebug() << "Finished displaying info in InfoPanel";
 }
 
 
@@ -385,7 +411,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
     bool isReadOnly = currentItemSchema.value("readonly").toBool(false);
     QString originalKey = thisItem->text(0);
 
-    if (isReadOnly) qDebug() << "Item is read-only:" << originalKey;
+    // if (isReadOnly) qDebug() << "Item is read-only:" << originalKey;
 
     if (!originalKey.isEmpty()) {
         thisItem->setData(0, SchemaOriginalKeyRole, originalKey);
@@ -613,16 +639,6 @@ void InfoPanel::cancelEditMode() {
     setOptionalFieldsVisibility();
     
     updateAddButtons(false); // Hide add buttons
-    
-    // // Button-Zustände zurücksetzen
-    // saveButton->setEnabled(false);
-    // saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
-    // editButton->setText(tr("Bearbeiten"));
-    // editButton->setIcon(QIcon(":/icons/edit.png"));
-    
-    // // Signal-Verbindungen zurücksetzen
-    // disconnect(editButton, &QPushButton::clicked, this, &InfoPanel::cancelEditMode);
-    // connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
 
     resetButtons(); // Reset buttons to initial state
 
@@ -675,15 +691,28 @@ void InfoPanel::setTreeItemEditable(QTreeWidgetItem* item, bool editable) {
 }
 
 void InfoPanel::onItemChanged(QTreeWidgetItem* item, int column) {
-    Q_UNUSED(item); // Item might be useful for more granular change tracking later
-    Q_UNUSED(column); // Column might be useful
     if (!inEditMode) return; // Only react to changes if in edit mode
     
-    // // Enable save button and change style if any relevant item changed.
-    // // The itemChanged signal is quite broad; this simple check is a starting point.
-    // saveButton->setEnabled(true);
-    // saveButton->setStyleSheet("QPushButton { background-color: orange; }");
-    // qDebug() << "Item changed in edit mode, enabling save button.";
+    // Extract field information from the item
+    QString originalKey = item ? item->data(0, SchemaOriginalKeyRole).toString() : QString();
+    QVariant oldValue = item ? item->data(1, Qt::UserRole + 30) : QVariant(); // Store old value in custom role
+    QVariant newValue = item ? item->text(1) : QVariant();
+    
+    // Store new value for next comparison
+    if (item) {
+        // Block signals on the tree widget to prevent recursion
+        // treeWidget->blockSignals(true);
+
+        // Update the item with the new value
+        item->setData(1, Qt::UserRole + 30, newValue);
+
+        // Unblock signals after updating
+        // treeWidget->blockSignals(false);
+    }
+    
+    // Emit the field change signal with all necessary information
+    emit fieldChanged(item, column, originalKey, oldValue, newValue);
+    
     updateSaveButtonState();
 }
 
@@ -761,7 +790,7 @@ void InfoPanel::updateAddButtons(bool show) {
         bool readonly = readonlyVariant.isValid() ? readonlyVariant.toBool() : false;
         bool shouldHaveButton = show && isLowestCollection(item) && !isHighestItem(item) && !readonly;
 
-        qDebug() << "Adding add button for item:" << item->text(0) << "Readonly:" << readonly;
+        // qDebug() << "Adding add button for item:" << item->text(0) << "Readonly:" << readonly;
         if (shouldHaveButton) {
             if (!currentWidget) { // Add button only if one doesn't exist
                 QToolButton* addButton = new QToolButton();
