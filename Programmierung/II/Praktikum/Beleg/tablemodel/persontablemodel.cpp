@@ -179,22 +179,24 @@ QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index) const {
         return QJsonObject();
     }
     std::shared_ptr<Person> person = (*personMan)[row];
-    return person->getJson();
+    if (!person) {
+        return QJsonObject();
+    }
+
+    QJsonObject completeJson = QJsonObject();
+    completeJson["person"] = person->getJson();
+    return completeJson;
 }
 
 QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index, const TransactionMan* transactionMan) const {
-    QJsonObject CompleteJson = getJsonObject(index);
-    if (CompleteJson.isEmpty()) {
+    QJsonObject completeJson = getJsonObject(index);
+    if (completeJson.isEmpty()) {
         return QJsonObject();
     }
-    QJsonObject personJson = CompleteJson;
-
-    if (personJson.isEmpty()) {
-        return QJsonObject();
-    }
+    QJsonObject personJson = completeJson["person"].toObject();
     // qDebug() << "Trying to fetch transactions for person ID:" << personJson["id"].toVariant().toULongLong();
     if (!transactionMan || !personJson.contains("id")) {
-        return personJson; // Return the person JSON if no transaction manager or id is not present
+        return completeJson; // Return the person JSON if no transaction manager or id is not present
     }
     // debug the json
     // qDebug() << "Person JSON:" << QJsonDocument(personJson).toJson(QJsonDocument::Indented);
@@ -206,8 +208,8 @@ QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index, const Tran
         transactionArray.append(transaction->getJson());
     }
     // qDebug() << "Found" << transactionArray.size() << "transactions for person ID:" << personId;
-    CompleteJson["transactions"] = transactionArray;
-    return CompleteJson;
+    completeJson["transactions"] = transactionArray;
+    return completeJson;
 }
 
 QJsonObject PersonTableModel::getDefaultJsonObject() const {
@@ -216,11 +218,33 @@ QJsonObject PersonTableModel::getDefaultJsonObject() const {
     // qDebug() << "Default JSON object for Person Table Model: " << defaultJson << "\n";
     defaultJson["id"] = QJsonValue::fromVariant(static_cast<quint64>(personMan->getNextId()));
 
-    return defaultJson;
+    return QJsonObject{
+        {"person", defaultJson}
+    };
 }
 
 QJsonObject PersonTableModel::getDefaultSchema() const {
-    return Person::getSchema();
+    QJsonObject transaction = Transaction::getSchema();
+    // make the transaction object readonly
+    transaction["readonly"] = true;
+    return QJsonObject{
+        {"type", "object"},
+        {"properties", QJsonObject{
+            {"person", QJsonObject{
+                {"type", "object"},
+                {"rename", "Person"},
+                {"description", "Person object containing personal information"},
+                {"properties", Person::getSchema().value("properties").toObject()}
+            }},
+            {"transactions", QJsonObject{
+                {"type", "array"},
+                {"rename", "Transactions"},
+                {"description", "List of transactions for this person"},
+                {"readonly", true},
+                {"items", Transaction::getSchema()}
+            }}
+        }}
+    };
 }
 
 QJsonObject PersonTableModel::getSchemaObject(const QModelIndex& index) const {
@@ -238,7 +262,34 @@ QJsonObject PersonTableModel::getSchemaObject(const QModelIndex& index) const {
         return QJsonObject();
     }
 
-    return person->getSchema();
+    // QJsonObject completeSchema = QJsonObject();
+    // completeSchema["type"] = "object";
+    // completeSchema["properties"] = QJsonObject{
+    //     {"person", QJsonObject{
+    //         {"type", "object"},
+    //         {"rename", "Person"},
+    //         {"description", "Person object containing personal information"},
+    //         {"properties", person->getSchema().value("properties").toObject()}
+    //     }},
+    //     {"transactions", QJsonObject{
+    //         {"type", "array"},
+    //         {"rename", "Transactions"},
+    //         {"description", "List of transactions for this person"},
+    //         {"items", QJsonObject{
+    //             {"type", "object"},
+    //             {"properties", QJsonObject{
+    //                 {"id", QJsonObject{{"type", "integer"}}},
+    //                 {"libitem_id", QJsonObject{{"type", "integer"}}},
+    //                 {"borrower_id", QJsonObject{{"type", "integer"}}},
+    //                 {"transaction_time", QJsonObject{{"type", "string"}, {"format", "date-time"}}}
+    //             }},
+    //         }}
+    //     }}
+    // };
+    // qDebug() << "Person Schema Object: " << completeSchema;
+
+    // return completeSchema;
+    return getDefaultSchema();
 }
 
 bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
@@ -251,16 +302,33 @@ bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const
         return false;
     }
     std::shared_ptr<Person> person = (*personMan)[row];
-    if (person->loadLocalParams(jsonObject) != 0) { //  || person->loadSubclassParams(personJson["subclass_params"].toObject()) != 0
+
+    if (!person) {
+        qWarning() << "Failed to get person from index";
+        return false;
+    }
+
+    if (!jsonObject.contains("person")) {
+        qWarning() << "JSON object does not contain 'person' key";
+        return false;
+    }
+
+    if (person->loadLocalParams(jsonObject["person"].toObject()) != 0) { //  || person->loadSubclassParams(personJson["subclass_params"].toObject()) != 0
         qWarning() << "Failed to update person from JSON object";
         return false;
     }
+    qDebug() << "Currently transactions isnt updated from JSON object";
     refreshData();
     return true;
 }
 
 bool PersonTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
-    std::shared_ptr<Person> person = Person::PersonFactory(jsonObject);
+    if (!jsonObject.contains("person")) {
+        qWarning() << "JSON object does not contain 'person' key";
+        return false;
+    }
+
+    std::shared_ptr<Person> person = Person::PersonFactory(jsonObject["person"].toObject());
     if (!person) {
         qWarning() << "Failed to create person from JSON object";
         return false;

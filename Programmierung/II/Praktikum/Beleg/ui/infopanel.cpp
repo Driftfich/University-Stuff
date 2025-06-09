@@ -382,6 +382,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
 
     QString nameOverride = currentItemSchema.value("rename").toString();
     QString description = currentItemSchema.value("description").toString();
+    bool isReadOnly = currentItemSchema.value("readonly").toBool(false);
     QString originalKey = thisItem->text(0);
 
     if (!originalKey.isEmpty()) {
@@ -437,6 +438,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         for (int i = 0; i < array.size(); ++i) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, QString("[%1]").arg(i));
+            child->setData(0, SchemaReadonlyRole, isReadOnly);
             addJsonToTreeRecursive(array[i], child, depth + 1, itemSchema);
         }
     } 
@@ -449,7 +451,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         QString itemType = currentItemSchema.value("type").toString();
         QString itemFormat = currentItemSchema.value("format").toString();
         QStringList enumValues = currentItemSchema.value("enum").toVariant().toStringList();
-        bool isReadOnly = currentItemSchema.value("readonly").toBool(false);
+        // bool isReadOnly = currentItemSchema.value("readonly").toBool(false);
         bool isRequired = currentItemSchema.value("required").toBool(false);
         // qDebug() << "Key" << thisItem->text(0) << " -> Current Schema" << currentItemSchema << " String val: " << currentItemSchema.value("optional") << " isOptional: " << isOptional;
         thisItem->setData(1, SchemaTypeRole, itemType);
@@ -750,8 +752,11 @@ void InfoPanel::updateAddButtons(bool show) {
         
         // First, always try to remove existing widget if we are hiding or if it's not eligible
         QWidget* currentWidget = treeWidget->itemWidget(item, 1);
-        bool shouldHaveButton = show && isLowestCollection(item) && !isHighestItem(item);
+        QVariant readonlyVariant = item->data(0, SchemaReadonlyRole);
+        bool readonly = readonlyVariant.isValid() ? readonlyVariant.toBool() : false;
+        bool shouldHaveButton = show && isLowestCollection(item) && !isHighestItem(item) && !readonly;
 
+        // qDebug() << "Adding add button for item:" << item->text(0) << "Readonly:" << readonly;
         if (shouldHaveButton) {
             if (!currentWidget) { // Add button only if one doesn't exist
                 QToolButton* addButton = new QToolButton();

@@ -103,8 +103,8 @@ class Libitem {
         static std::shared_ptr<Libitem> LibitemFactory(const QJsonObject& json);
 
         // schema methods
-        QJsonObject getLocalSchema() const;
-        QJsonObject getSchema() const;
+        static QJsonObject getLocalSchema();
+        static QJsonObject getSchema();
 
         // print method
         friend std::ostream& operator<<(std::ostream& os, const Libitem& libitem);

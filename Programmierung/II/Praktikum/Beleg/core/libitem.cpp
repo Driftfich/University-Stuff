@@ -115,7 +115,7 @@ std::ostream& operator<<(std::ostream& os, const Libitem& libitem) {
 }
 
 // schema methods
-QJsonObject Libitem::getLocalSchema() const {
+QJsonObject Libitem::getLocalSchema() {
     QJsonObject schema;
     schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Libitem ID"}, {"description", "Unique identifier for the library item"}};
     schema["media_id"] = QJsonObject{{"type", "integer"}, {"required", true}, {"rename", "Media ID"}, {"description", "Unique identifier for the media"}};
@@ -127,7 +127,7 @@ QJsonObject Libitem::getLocalSchema() const {
     return schema;
 }
 
-QJsonObject Libitem::getSchema() const {
+QJsonObject Libitem::getSchema() {
     QJsonObject schema;
     schema["properties"] = getLocalSchema();
     schema["type"] = "object";
