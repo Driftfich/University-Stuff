@@ -59,7 +59,6 @@ void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QSt
     // get the index of the current active tab
     int currentIndex = tableWidgetUi->TabSelector->currentIndex();
     if (fieldName == "subclass_type" && oldValue != newValue && currentIndex == 1 && oldValue.toString() != "") {
-        qDebug() << "subclass_type changed from" << oldValue.toString() << "to" << newValue.toString();
         
         // get the updated json object from the info panel
         QJsonObject modifiedData = infoPanel->collectDataFromTree();
@@ -77,8 +76,6 @@ void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QSt
         disconnect(infoPanel, &InfoPanel::fieldChanged, this, &MainWindow::updateSubclassType);
 
         // update the info panel with the new default json object and schema
-        qDebug() << "New default JSON for subclass_type:" << defaultJson;
-        qDebug() << "New default schema for subclass_type:" << defaultSchema;
         infoPanel->displayInfo(defaultJson, defaultSchema, false);
 
         // connect again the fieldChanged signal
@@ -160,9 +157,9 @@ void MainWindow::setupSideDock()
         if (!schema.isEmpty()) {
             // qDebug() << "Using schema:\n" << schema;
             // qDebug() << "Displaying info:\n" << info;
-            infoPanel->displayInfo(info, schema);
+            infoPanel->displayInfo(info, schema, true);
         } else {
-            infoPanel->displayInfo(info);
+            infoPanel->displayInfo(info, true);
         }
         // infoPanel->displayInfo(info);
         sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->infopanel);
@@ -214,7 +211,7 @@ void MainWindow::setupAddPanel()
         }
         // qDebug() << schemaJson;
         // set the default json object for the add panel
-        addPanel->displayInfo(defaultJson, schemaJson);
+        addPanel->displayInfo(defaultJson, schemaJson, true);
         addPanel->enterEditMode();
         // change the title of the side dock
         sideDock->setWindowTitle(tr("Add New Item"));
@@ -271,7 +268,7 @@ void MainWindow::setupAddPanel()
         }
 
         // set the default json object for the add panel
-        addPanel->displayInfo(defaultJson, schemaJson);
+        addPanel->displayInfo(defaultJson, schemaJson, true);
         addPanel->enterEditMode();
 
         // // change the title of the side dock

@@ -32,8 +32,8 @@ class InfoPanel : public QWidget {
         QJsonObject collectDataFromTree();
 
     public slots:
-        void displayInfo(const QJsonObject& jsonObject, bool resetEditMode = true);
-        void displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject, bool resetEditMode = true);
+        void displayInfo(const QJsonObject& jsonObject, bool resetEditMode);
+        void displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject, bool resetEditMode);
         // void addJsonToTree(const QJsonValue& value, QTreeWidgetItem* parent);
         void enterEditMode();
         void saveChanges();

@@ -772,10 +772,10 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
 void InfoPanel::restoreOriginalData() {
     // Einfach die ursprünglichen Daten neu anzeigen
     if (currentSchema.isEmpty()) {
-        displayInfo(originalData);
+        displayInfo(originalData, true);
     } else {
         // Wenn ein Schema vorhanden ist, verwenden wir es
-        displayInfo(originalData, currentSchema);
+        displayInfo(originalData, currentSchema, true);
     }
 }
 
