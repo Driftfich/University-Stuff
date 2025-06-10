@@ -22,6 +22,11 @@
 #include "toolbar.h"
 #include "jsonschemautils.h"
 
+#include "media.h"
+#include "text.h"
+#include "audio.h"
+#include "video.h"
+
 
 void MainWindow::setupUi()
 {
@@ -53,22 +58,92 @@ void MainWindow::setupUi()
     mainLayout->addWidget(tableWidgetWidget);
 }
 
+void MainWindow::changedMediaId(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
+{
+    qDebug() << "Updating media id in InfoPanel...";
+    int currentIndex = tableWidgetUi->TabSelector->currentIndex();
+    qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
+    if (fieldName != "media_id" || currentIndex != 1 || oldValue.toString() == newValue.toString())
+    {
+        qDebug() << fieldName << "\t" << currentIndex << "\t" << (oldValue.toString() == newValue.toString());
+        return;
+    }
+    // get the original data from the info panel
+    QJsonObject originalData = addPanel->getOriginalData();
+    QJsonObject originalSchema = addPanel->getCurrentSchema();
+
+    QJsonObject newJson = addPanel->collectDataFromTree();
+
+    qDebug() << "Updating media id in InfoPanel...";
+    // get the current id from the item as unsigned long
+    unsigned long currentIdValue = newValue.toString().toULongLong();
+
+    // try to find the media item with the new id in the media manager
+    // Media* mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
+    qDebug() << "Searching for media item with id:" << currentIdValue;
+    std::shared_ptr<Media> mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
+    if (!mediaItem) {
+        qDebug() << "Media item with id" << currentIdValue << "not found in MediaManager.";
+        // // NEED TO DISBLAY DEFAULT MEDIA ITEM
+        // newJson["media"] = originalData.value("media").toObject();
+        // QString media_type = newJson["media"].toObject().value("media_type").toString().toLower();
+        // qDebug() << "Using default media item for media_type:" << media_type;
+        // QJsonObject newMediaSchema = libitemModel->getDefaultSchema(media_type)["properties"].toObject()["media"].toObject();
+        
+        // // Properly update nested JSON structure
+        // QJsonObject properties = originalSchema.value("properties").toObject();
+        // QJsonObject mediaSchema = properties.value("media").toObject();
+        // mediaSchema = newMediaSchema; // Update the media schema with the default one
+        // properties["media"] = mediaSchema; // Update the properties with the new media schema
+        // originalSchema["properties"] = properties; // Update the original schema with the new properties
+        
+        // qDebug() << "Using schema: " << originalSchema;
+        return;
+    }
+    else {
+        // update the original media with the new media json object
+        newJson["media"] = mediaItem->getJson();
+        // // update the original schema
+        // originalSchema["media"] = mediaItem->getSchema();
+        QJsonObject properties = originalSchema.value("properties").toObject();
+        QJsonObject mediaSchema = properties.value("media").toObject();
+        mediaSchema = mediaItem->getSchema();
+        properties["media"] = mediaSchema; // Update the properties with the new media schema
+        originalSchema["properties"] = properties; // Update the original schema with the new properties
+    }
+
+    // qDebug() << "New json: " << newJson;
+    qDebug() << "Original schema: " << originalSchema;
+
+    // update the info panel with the new media json object and schema
+    addPanel->displayInfo(newJson, originalSchema, true);
+    addPanel->setOriginalData(originalData);
+    // addPanel->enterEditMode(); // Enter edit mode to allow further modifications
+    qDebug() << "New json object for media:" << newJson;    
+}
+
 void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
 {
-    qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
+    qDebug() << "Updating subclass type in InfoPanel...";
+    // qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
     // get the index of the current active tab
     int currentIndex = tableWidgetUi->TabSelector->currentIndex();
     
     if (fieldName != "subclass_type" || 
-        oldValue == newValue || 
+        oldValue.toString() == newValue.toString() || 
         currentIndex != 1 || 
         oldValue.toString().isEmpty()) {
+        // qDebug() << (oldValue.toString() == newValue.toString()) << "\t" << currentIndex << "\t" << oldValue.toString().isEmpty();
         return;
     }
 
     // get the updated json object from the info panel
-    QJsonObject modifiedData = infoPanel->collectDataFromTree();
+    QJsonObject modifiedData = addPanel->collectDataFromTree();
     QJsonObject mediaBaseData = modifiedData.value("media").toObject().value("media").toObject();
+    QJsonObject libitemBaseData = modifiedData.value("libitem").toObject();
+
+    QJsonObject originalData = addPanel->getOriginalData();
+    QJsonObject originalSchema = addPanel->getCurrentSchema();
     
     // get the new matching default json object and default schema from the libitemModel
     QJsonObject defaultJson = libitemModel->getDefaultJsonObject(newValue.toString());
@@ -76,25 +151,68 @@ void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QSt
     defaultMediaJson["subclass_type"] = newValue.toString();
     defaultMediaJson["media"] = mediaBaseData; // Preserve the base media data
     defaultJson["media"] = defaultMediaJson; // Update the media object with the new subclass_type
+    defaultJson["libitem"] = libitemBaseData; // Preserve the base libitem data
     QJsonObject defaultSchema = libitemModel->getDefaultSchema(newValue.toString());
-    
-    // disconnect the fieldChanged signal to prevent recursion
-    disconnect(infoPanel, &InfoPanel::fieldChanged, this, nullptr);
 
     // update the info panel with the new default json object and schema
-    qDebug() << "=== UPDATING THE INFO PANEL ===";
-    infoPanel->displayInfo(defaultJson, defaultSchema, false);
-    infoPanel->enterEditMode();
-    qDebug() << "=== Updated info panel with new subclass_type:" << newValue.toString() << "===";
+    addPanel->displayInfo(defaultJson, defaultSchema, false);
+    addPanel->setOriginalData(originalData);
+}
 
-    // connect again the fieldChanged signal
-    connect(infoPanel, &InfoPanel::fieldChanged, this, 
-        [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
-            // Check if the changed field is subclass_type
-            updateSubclassType(item, column, fieldName, oldValue, newValue);
-        });
-    // QTimer::singleShot(0, this, [this, newValue]() {
-    // });
+void MainWindow::setupUnifiedFieldChangeHandler()
+{
+    try {
+        // STEP 1: Clean slate - disconnect any existing field change connections
+        disconnect(addPanel, &InfoPanel::fieldChanged, this, nullptr);
+        
+        // STEP 2: Single unified connection that handles ALL field types
+        connect(addPanel, &InfoPanel::fieldChanged, this, 
+            [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
+                
+                qDebug() << "Unified field change handler triggered:" << fieldName 
+                         << "from" << oldValue.toString() << "to" << newValue.toString();
+                
+                // Prevent recursion during field updates
+                static bool isProcessingFieldChange = false;
+                if (isProcessingFieldChange) {
+                    qDebug() << "Ignoring recursive field change for:" << fieldName;
+                    return;
+                }
+                
+                // Set processing flag
+                isProcessingFieldChange = true;
+                
+                try {
+                    // Route to appropriate handler based on field type
+                    if (fieldName == "subclass_type") {
+                        qDebug() << "Routing to updateSubclassType for:" << fieldName;
+                        updateSubclassType(item, column, fieldName, oldValue, newValue);
+                    } 
+                    else if (fieldName == "media_id") {
+                        qDebug() << "Routing to changedMediaId for:" << fieldName;
+                        changedMediaId(item, column, fieldName, oldValue, newValue);
+                    }
+                    else {
+                        qDebug() << "No specific handler for field:" << fieldName;
+                    }
+                    
+                } catch (const std::exception& e) {
+                    qCritical() << "Exception in unified field change handler:" << e.what();
+                } catch (...) {
+                    qCritical() << "Unknown exception in unified field change handler";
+                }
+                
+                // Clear processing flag
+                isProcessingFieldChange = false;
+            });
+            
+        qDebug() << "Successfully established unified field change handler";
+        
+    } catch (const std::exception& e) {
+        qCritical() << "Failed to setup unified field change handler:" << e.what();
+    } catch (...) {
+        qCritical() << "Unknown exception setting up unified field change handler";
+    }
 }
 
 void MainWindow::setupSideDock()
@@ -120,13 +238,6 @@ void MainWindow::setupSideDock()
 
     // Signal vom InfoPanel verbinden
     connect(infoPanel, &InfoPanel::saveRequested, this, &MainWindow::saveModifiedData);
-    
-    // Connect to field change signal to detect subclass_type changes
-    connect(infoPanel, &InfoPanel::fieldChanged, this, 
-        [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
-            // Check if the changed field is subclass_type
-            updateSubclassType(item, column, fieldName, oldValue, newValue);
-        });
     
     // Doppelklick auf Tabelleintrag zeigt Info-Panel
     auto showInfo = [this](const QModelIndex& index) {
@@ -210,7 +321,7 @@ void MainWindow::setupAddPanel()
                 break;
             case 1: // LibItem tab  
                 defaultJson = libitemModel->getDefaultJsonObject();
-                schemaJson = libitemModel->getDefaultSchema(); // No schema for LibItem yet
+                schemaJson = libitemModel->getDefaultSchema();
                 break;
             case 2: // Transaction tab
                 defaultJson = transactionModel->getDefaultJsonObject();
@@ -267,7 +378,7 @@ void MainWindow::setupAddPanel()
                 break;
             case 1: // LibItem tab  
                 defaultJson = libitemModel->getDefaultJsonObject();
-                schemaJson = libitemModel->getDefaultSchema(); // No schema for LibItem yet
+                schemaJson = libitemModel->getDefaultSchema(); 
                 break;
             case 2: // Transaction tab
                 defaultJson = transactionModel->getDefaultJsonObject();
@@ -276,6 +387,28 @@ void MainWindow::setupAddPanel()
             default:
                 return; // No valid tab selected
         }
+
+        // Connect to field change signal to detect subclass_type changes
+        // connect(addPanel, &InfoPanel::fieldChanged, this, 
+        //     [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
+        //         // disconnect the fieldChanged signal to prevent recursion
+        //         disconnect(addPanel, &InfoPanel::fieldChanged, this, nullptr);
+        //         // qDebug() << "Field changed in add panel:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
+        //         // Check if the changed field is subclass_type
+        //         updateSubclassType(item, column, fieldName, oldValue, newValue);
+        //         // Check if the changed field is media id
+        //         qDebug() << "Checking for media_id change in add panel...";
+        //         changedMediaId(item, column, fieldName, oldValue, newValue);
+
+        //         // connect again the fieldChanged signal
+        //         connect(addPanel, &InfoPanel::fieldChanged, this, 
+        //             [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
+        //                 // Check if the changed field is subclass_type
+        //                 updateSubclassType(item, column, fieldName, oldValue, newValue);
+        //             });
+        //     });
+
+        setupUnifiedFieldChangeHandler();
 
         // set the default json object for the add panel
         addPanel->displayInfo(defaultJson, schemaJson, true);

@@ -48,10 +48,10 @@ public:
         QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
         
         // Debug output to check what we get from the index
-        qDebug() << "Debug createEditor: row=" << index.row() << "col=" << index.column();
-        qDebug() << "  itemType=" << itemType;
-        qDebug() << "  itemFormat=" << itemFormat;
-        qDebug() << "  enumValues=" << enumValuesVar;
+        // qDebug() << "Debug createEditor: row=" << index.row() << "col=" << index.column();
+        // qDebug() << "  itemType=" << itemType;
+        // qDebug() << "  itemFormat=" << itemFormat;
+        // qDebug() << "  enumValues=" << enumValuesVar;
 
         if (itemType == "integer") {
             QSpinBox* editor = new QSpinBox(parent);
@@ -296,109 +296,89 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, bool resetEditMode) {
         inEditMode = false;
         resetButtons();
     }
-    originalData = jsonObject; // Store original data for canceling edits
-    
-    // Clear optional field data
-    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
-        delete it.value();
-    }
-    optionalCheckboxes.clear();
-    optionalFieldStates.clear();
-    
-    treeWidget->clear();
-    hoveredItemForDelete = QPersistentModelIndex(); // Reset the hovered item for delete button
 
-    // reset buttons
-    if (resetEditMode) {
-        saveButton->setEnabled(false);
-        saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
-        editButton->setText(tr("Bearbeiten"));
-        editButton->setIcon(QIcon(":/icons/edit.png"));
-    }
-
-    addJsonToTreeRecursive(jsonObject, treeWidget->invisibleRootItem());
-    
-    if (resetEditMode) {
-        treeWidget->expandAll();
-        m_treeExpandedState = false; // Reset to collapsed state after displaying new data
-        treeWidget->resizeColumnToContents(0);
-        treeWidget->resizeColumnToContents(1);
-
-        // Initial nicht editierbar
-        inEditMode = false;
-    }
-    setTreeItemsEditable(inEditMode);
-    updateAddButtons(inEditMode);
-}
-
-void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject, bool resetEditMode) {
-    // debug test
-    if (resetEditMode) {
-        inEditMode = false;
-        resetButtons();
-        qDebug() << "Resetting edit mode in InfoPanel";
-    }
-
-    // treeWidget->blockSignals(true); // Temporarily block signals to prevent unnecessary updates
-
+    // Store new data and schema
     originalData = jsonObject;
-    currentSchema = schemaObject; // Store the schema
-
-    qDebug() << "Updated original data and schema in InfoPanel";
+    currentSchema = QJsonObject(); // No schema provided in this overload, so set to empty object
     
-    // Clear optional field data
-    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
-        delete it.value();
-    }
-    optionalCheckboxes.clear();
-    optionalFieldStates.clear();
+    // Safe cleanup of optional field components to prevent paint engine errors
+    clearOptionalFieldComponentsSafely();
+    
+    // Clear validation state
     invalidRequiredFields.clear();
-
-    qDebug() << "Cleared optional checkboxes and states in InfoPanel";
     
+    // Block all tree widget signals during reconstruction
+    QSignalBlocker treeBlocker(treeWidget);
+    QSignalBlocker viewportBlocker(treeWidget->viewport());
+    
+    // Clear tree and reset hover state
     treeWidget->clear();
-    if (hoveredItemForDelete.isValid()) { // Force repaint
+    if (hoveredItemForDelete.isValid()) {
         treeWidget->update(hoveredItemForDelete);
     }
     hoveredItemForDelete = QPersistentModelIndex();
+    
+    if (resetEditMode) {
+        resetButtons();
+    }
 
+    // Reconstruct tree with new data
+    addJsonToTreeRecursive(jsonObject, treeWidget->invisibleRootItem(), 0);
+
+    treeWidget->expandAll();
+    m_treeExpandedState = false;
+    treeWidget->resizeColumnToContents(0);
+    treeWidget->resizeColumnToContents(1);
+    setTreeItemsEditable(inEditMode);
+    updateAddButtons(inEditMode);
+
+    // Apply optional field visibility settings
     setOptionalFieldsVisibility();
+}
 
-    qDebug() << "Cleared treeWidget and hovered item in InfoPanel";
-    qDebug() << "resetEditMode:" << resetEditMode;
+void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject, bool resetEditMode) {
     if (resetEditMode) {
-        saveButton->setEnabled(false);
-        saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
-        editButton->setText(tr("Bearbeiten"));
-        editButton->setIcon(QIcon(":/icons/edit.png"));
-
-        qDebug() << "Reset buttons in InfoPanel";
+        inEditMode = false;
+        resetButtons();
     }
 
-    // now recurse once on the invisible root
-    addJsonToTreeRecursive(jsonObject,
-                           treeWidget->invisibleRootItem(),
-                           0,
-                           currentSchema);
-
-    qDebug() << "Added JSON to tree recursively in InfoPanel";
-
-    // treeWidget->blockSignals(false); // Unblock signals after updates
-
+    // Store new data and schema
+    originalData = jsonObject;
+    currentSchema = schemaObject;
+    
+    // Safe cleanup of optional field components to prevent paint engine errors
+    clearOptionalFieldComponentsSafely();
+    
+    // Clear validation state
+    invalidRequiredFields.clear();
+    
+    // Block all tree widget signals during reconstruction
+    QSignalBlocker treeBlocker(treeWidget);
+    QSignalBlocker viewportBlocker(treeWidget->viewport());
+    
+    // Clear tree and reset hover state
+    treeWidget->clear();
+    if (hoveredItemForDelete.isValid()) {
+        treeWidget->update(hoveredItemForDelete);
+    }
+    hoveredItemForDelete = QPersistentModelIndex();
+    
     if (resetEditMode) {
-
-        qDebug() << "Expanding treeWidget and resizing columns in InfoPanel";
-
-        treeWidget->expandAll();
-        m_treeExpandedState = false; // Reset to collapsed state after displaying new data
-        treeWidget->resizeColumnToContents(0);
-        treeWidget->resizeColumnToContents(1);
-
-        setTreeItemsEditable(inEditMode);
-        updateAddButtons(inEditMode);
+        resetButtons();
     }
 
-    qDebug() << "Finished displaying info in InfoPanel";
+    // Reconstruct tree with new data
+    addJsonToTreeRecursive(jsonObject, treeWidget->invisibleRootItem(), 0, currentSchema);
+
+    treeWidget->expandAll();
+    m_treeExpandedState = false;
+    treeWidget->resizeColumnToContents(0);
+    treeWidget->resizeColumnToContents(1);
+    setTreeItemsEditable(inEditMode);
+    updateAddButtons(inEditMode);
+
+    // Apply optional field visibility settings
+    setOptionalFieldsVisibility();
 }
 
 
@@ -491,6 +471,8 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         thisItem->setData(0, SchemaReadonlyRole, isReadOnly);
         thisItem->setData(1, SchemaRequiredRole, isRequired);
         thisItem->setData(1, SchemaOptionalRole, isOptional);
+        // save current value for the item
+        thisItem->setData(1, Qt::UserRole + 30, thisItem->text(1));
     }
 }
 
@@ -518,6 +500,8 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
     } else { // Leaf node
         thisItem->setText(1, valueForThisItem.toVariant().toString());
         thisItem->setData(0, Qt::UserRole, "leaf");
+        // save current value for the item
+        thisItem->setData(1, Qt::UserRole + 30, thisItem->text(1));
     }
 }
 
@@ -582,6 +566,7 @@ void InfoPanel::enterEditMode() {
 
     updateAddButtons(true);
     validateAllRequiredFieldsOnLoad();
+    qDebug() << "Entered edit mode in InfoPanel";
 }
 
 void InfoPanel::saveChanges() {
@@ -626,29 +611,35 @@ void InfoPanel::saveChanges() {
 }
 
 void InfoPanel::cancelEditMode() {
+    qDebug() << "Canceling edit mode in InfoPanel";
+    
+    // Clear validation state
     invalidRequiredFields.clear();
 
-    // Originaldaten wiederherstellen
+    // Safe cleanup before restoring data
+    clearOptionalFieldComponentsSafely();
+    
+    // Restore original data
     restoreOriginalData();
     
-    // Edit-Modus verlassen
+    // Exit edit mode
     inEditMode = false;
     setTreeItemsEditable(false);
     
     // Apply optional field visibility settings
     setOptionalFieldsVisibility();
     
-    updateAddButtons(false); // Hide add buttons
+    updateAddButtons(false);
+    resetButtons();
 
-    resetButtons(); // Reset buttons to initial state
-
-    // updateAddButtons(false); // Hide add buttons after canceling
-    if (hoveredItemForDelete.isValid()) { // Force repaint
+    // Clear hover state safely
+    if (hoveredItemForDelete.isValid()) {
         treeWidget->update(hoveredItemForDelete);
     }
     hoveredItemForDelete = QPersistentModelIndex();
 
     emit editModeCancelled();
+    qDebug() << "Edit mode canceled successfully";
 }
 
 void InfoPanel::resetButtons() {
@@ -736,9 +727,9 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
         return array;
     } else if (itemType == "object") { // Default to object if it has children and is not explicitly an array or leaf
         // debug type of subclass_params key
-        if (item->text(0) == "subclass_params") {
-            qDebug() << "Item type for subclass_params:" << itemType;
-        }
+        // if (item->text(0) == "subclass_params") {
+        //     qDebug() << "Item type for subclass_params:" << itemType;
+        // }
         QJsonObject obj = QJsonObject();
         for (int i = 0; i < item->childCount(); ++i) {
             QTreeWidgetItem* child = item->child(i);
@@ -1187,30 +1178,36 @@ void InfoPanel::updateFieldValidationState(const QModelIndex& index) {
  * When unchecked, the field is hidden/unavailable.
  */
 void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item) {
-    if (!item) return;
-    // qDebug() << "Creating checkbox for optional field:" << item->text(0);
+    if (!item) {
+        qDebug() << "Cannot create checkbox for null item";
+        return;
+    }
+    
+    qDebug() << "Creating checkbox for optional field:" << item->text(0);
     
     // Create a container widget to hold both checkbox and label
-    QWidget* containerWidget = new QWidget();
-    QHBoxLayout* layout = new QHBoxLayout(containerWidget);
-    layout->setContentsMargins(0, 0, 0, 0); // Remove margins for tight layout
-    layout->setSpacing(5); // Small spacing between checkbox and text
+    QWidget* containerWidget = new QWidget(treeWidget); // Set parent for proper cleanup
+    containerWidget->setAttribute(Qt::WA_DeleteOnClose, false); // Prevent auto-deletion
     
-    // Create the checkbox
-    QCheckBox* checkbox = new QCheckBox();
-    checkbox->setChecked(true); // Default to enabled
+    QHBoxLayout* layout = new QHBoxLayout(containerWidget);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(5);
+    
+    // Create the checkbox with proper parent
+    QCheckBox* checkbox = new QCheckBox(containerWidget);
+    checkbox->setChecked(true);
     checkbox->setToolTip("Enable/disable this optional field (only in edit mode)");
     
     // Create a label with the item's text
-    QLabel* textLabel = new QLabel(item->text(0));
-    textLabel->setStyleSheet("QLabel { background: transparent; }"); // Transparent background
+    QLabel* textLabel = new QLabel(item->text(0), containerWidget);
+    textLabel->setStyleSheet("QLabel { background: transparent; }");
     
     // Add both to the layout
     layout->addWidget(checkbox);
     layout->addWidget(textLabel);
-    layout->addStretch(); // Push everything to the left
+    layout->addStretch();
     
-    // Store the checkbox reference
+    // Store the checkbox reference BEFORE setting the widget
     optionalCheckboxes[item] = checkbox;
     optionalFieldStates[item] = true;
     
@@ -1220,8 +1217,10 @@ void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item) {
     // Set the container widget for column 0 (key column)
     treeWidget->setItemWidget(item, 0, containerWidget);
     
-    // Connect checkbox toggle to handler
-    connect(checkbox, &QCheckBox::toggled, this, &InfoPanel::onOptionalCheckboxToggled);
+    // Connect checkbox toggle to handler with proper connection type
+    connect(checkbox, &QCheckBox::toggled, this, &InfoPanel::onOptionalCheckboxToggled, Qt::DirectConnection);
+    
+    qDebug() << "Successfully created checkbox for optional field:" << textLabel->text();
 }
 
 /**
@@ -1376,4 +1375,45 @@ void InfoPanel::onHeaderSectionClicked(int logicalIndex) {
     // Resize columns to fit content after expand/collapse
     treeWidget->resizeColumnToContents(0);
     treeWidget->resizeColumnToContents(1);
+}
+
+void InfoPanel::clearOptionalFieldComponentsSafely() {
+    qDebug() << "Starting safe cleanup of optional field components";
+    
+    // Phase 1: Remove all item widgets from the tree to prevent Qt from trying to paint them
+    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
+        QTreeWidgetItem* item = it.key();
+        if (item) {
+            // Remove the widget from the tree widget BEFORE deleting it
+            QWidget* containerWidget = treeWidget->itemWidget(item, 0);
+            if (containerWidget) {
+                treeWidget->removeItemWidget(item, 0);
+                // Do NOT delete here yet - Qt might still have references
+            }
+        }
+    }
+    
+    // Phase 2: Force Qt to process any pending paint events with the removed widgets
+    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    
+    // Phase 3: Now safely delete the container widgets
+    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
+        QTreeWidgetItem* item = it.key();
+        if (item) {
+            // The widget should already be removed from the tree, now safe to delete
+            QWidget* containerWidget = qobject_cast<QWidget*>(it.value()->parent());
+            if (containerWidget) {
+                containerWidget->deleteLater(); // Use deleteLater for safer cleanup
+            }
+        }
+    }
+    
+    // Phase 4: Clear all tracking data structures
+    optionalCheckboxes.clear();
+    optionalFieldStates.clear();
+    
+    // Phase 5: Force another event processing cycle to ensure deleteLater is processed
+    QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    
+    qDebug() << "Completed safe cleanup of optional field components";
 }

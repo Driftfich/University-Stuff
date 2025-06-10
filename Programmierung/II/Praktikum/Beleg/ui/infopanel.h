@@ -30,6 +30,15 @@ class InfoPanel : public QWidget {
         bool isFieldInvalid(const QModelIndex& index) const { return !isFieldValid(index); }
         void updateFieldValidationState(const QModelIndex& index);
         QJsonObject collectDataFromTree();
+        QJsonObject getOriginalData() const { return originalData; }
+        QJsonObject getCurrentSchema() const { return currentSchema; }
+        void setOriginalData(const QJsonObject& data) {
+            originalData = data;
+        }
+        void setCurrentSchema(const QJsonObject& schema) {
+            currentSchema = schema;
+            validateAllRequiredFieldsOnLoad();
+        }
 
     public slots:
         void displayInfo(const QJsonObject& jsonObject, bool resetEditMode);
@@ -111,6 +120,7 @@ class InfoPanel : public QWidget {
         void updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visible, int depth = 0);
         void setOptionalFieldsVisibility();
         bool isOptionalFieldEnabled(QTreeWidgetItem* item) const;
+        void clearOptionalFieldComponentsSafely();
 
     private slots:
         void onItemChanged(QTreeWidgetItem* item, int column);

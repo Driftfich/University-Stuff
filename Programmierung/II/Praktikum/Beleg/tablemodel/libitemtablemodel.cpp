@@ -275,7 +275,7 @@ bool LibItemTableModel::updateFromJsonObject(const QJsonObject& jsonObject, cons
         emit dataChanged(index, index);
         return false;
     }
-    if (media && media->loadLocalParams((jsonObject["media"]["media"]).toObject()) != 0 && media->loadSubclassParams(jsonObject["media"]["subclass_params"].toObject()) != 0) {
+    if (!media || media->loadLocalParams((jsonObject["media"]["media"]).toObject()) != 0 || media->loadSubclassParams(jsonObject["media"]["subclass_params"].toObject()) != 0) {
         emit dataChanged(index, index);
         return false;
     }
