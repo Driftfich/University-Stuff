@@ -118,7 +118,7 @@ void MainWindow::changedMediaId(QTreeWidgetItem* item, int column, const QString
     // update the info panel with the new media json object and schema
     addPanel->displayInfo(newJson, originalSchema, true);
     addPanel->setOriginalData(originalData);
-    // addPanel->enterEditMode(); // Enter edit mode to allow further modifications
+    addPanel->enterEditMode(); // Enter edit mode to allow further modifications
     qDebug() << "New json object for media:" << newJson;    
 }
 
