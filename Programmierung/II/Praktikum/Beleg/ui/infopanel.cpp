@@ -541,15 +541,49 @@ bool InfoPanel::isHighestItem(QTreeWidgetItem* item) const {
     
 }
 
+/**
+ * @brief Enters edit mode with comprehensive UI state reset
+ * 
+ * Ensures all UI components are properly reset and configured for editing:
+ * - Resets hover states and delete button interactions
+ * - Clears any stale validation states  
+ * - Properly manages optional field checkboxes and visibility
+ * - Uses signal blocking to prevent race conditions during state transitions
+ * - Validates all required fields and updates button states
+ * 
+ * @exception None
+ * @purpose Provides safe transition to edit mode with complete UI reset
+ */
 void InfoPanel::enterEditMode() {
+    qDebug() << "Entering edit mode with comprehensive reset";
+    
+    // Block signals during state transition to prevent race conditions
+    QSignalBlocker treeBlocker(treeWidget);
+    QSignalBlocker viewportBlocker(treeWidget->viewport());
+    
+    // Reset hover state for delete buttons to prevent stale UI interactions
+    if (hoveredItemForDelete.isValid()) {
+        treeWidget->update(hoveredItemForDelete);
+        hoveredItemForDelete = QPersistentModelIndex();
+    }
+    
+    // Clear any stale validation state from previous edit sessions
+    invalidRequiredFields.clear();
+    
+    // Set edit mode state
     inEditMode = true;
     
     // TreeWidget editierbar machen
     setTreeItemsEditable(true);
 
-    // Apply optional field visibility settings
+    // Apply optional field visibility settings with proper state management
     setOptionalFieldsVisibility();
 
+    // Re-enable signal processing after state setup is complete
+    treeBlocker.unblock();
+    viewportBlocker.unblock();
+    
+    // Update save button state based on current data validity
     updateSaveButtonState();
     
     // Button-Zustände ändern
@@ -564,11 +598,28 @@ void InfoPanel::enterEditMode() {
     disconnect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
     connect(editButton, &QPushButton::clicked, this, &InfoPanel::cancelEditMode);
 
+    // Enable add buttons for dynamic content modification
     updateAddButtons(true);
+    
+    // Validate all required fields to ensure proper initial state
     validateAllRequiredFieldsOnLoad();
-    qDebug() << "Entered edit mode in InfoPanel";
+    
+    qDebug() << "Edit mode entered successfully with complete UI reset";
 }
 
+/**
+ * @brief Saves changes with comprehensive UI state cleanup
+ * 
+ * Ensures complete UI reset after saving changes:
+ * - Validates all required fields before saving
+ * - Clears validation state and optional field components
+ * - Resets all button states and hover interactions
+ * - Applies proper optional field visibility
+ * - Uses proper signal management for state transitions
+ * 
+ * @exception None - Shows warning for validation errors
+ * @purpose Provides safe save operation with complete UI cleanup
+ */
 void InfoPanel::saveChanges() {
     if (!inEditMode) return;
 
@@ -578,15 +629,26 @@ void InfoPanel::saveChanges() {
         return;
     }
     
+    qDebug() << "Saving changes with comprehensive UI cleanup";
+    
     // Daten aus Tree sammeln
     QJsonObject modifiedData = collectDataFromTree();
 
     // update the original data with the modified data
     originalData = modifiedData; // Update original data with the modified data
     
+    // Clear validation state to prevent stale error indicators
+    invalidRequiredFields.clear();
+    
+    // Safe cleanup of optional field components to prevent memory leaks
+    clearOptionalFieldComponentsSafely();
+    
     // Edit-Modus verlassen
     inEditMode = false;
     setTreeItemsEditable(false);
+    
+    // Apply optional field visibility settings for view mode
+    setOptionalFieldsVisibility();
     
     // Button-Zustände zurücksetzen
     saveButton->setEnabled(false);
@@ -598,16 +660,18 @@ void InfoPanel::saveChanges() {
     disconnect(editButton, &QPushButton::clicked, this, &InfoPanel::cancelEditMode);
     connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
     
-    // QMessageBox::information(this, tr("Gespeichert"), tr("Änderungen wurden übernommen."));
+    // Hide add buttons and reset hover state
     updateAddButtons(false); // Hide add buttons after saving
     if (hoveredItemForDelete.isValid()) {
         // If a delete button was hovered, we need to reset it
         treeWidget->update(hoveredItemForDelete);
+        hoveredItemForDelete = QPersistentModelIndex(); // Reset the hovered item for delete button
     }
-    hoveredItemForDelete = QPersistentModelIndex(); // Reset the hovered item for delete button
 
     // Signal aussenden
     emit saveRequested(modifiedData);
+    
+    qDebug() << "Changes saved successfully with complete UI cleanup";
 }
 
 void InfoPanel::cancelEditMode() {
