@@ -22,6 +22,9 @@
 #include <QLabel>
 #include <QHeaderView>
 
+#include <QEventLoop>
+#include <QCoreApplication>
+
 #include <QEvent>
 #include "infopanel.h"
 
@@ -292,15 +295,17 @@ InfoPanel::~InfoPanel() {
 }
 
 void InfoPanel::displayInfo(const QJsonObject& jsonObject, bool resetEditMode) {
+    qDebug() << "Displaying new info without schema, resetEditMode:" << resetEditMode;
     if (resetEditMode) {
         inEditMode = false;
         resetButtons();
     }
 
     // Store new data and schema
-    originalData = jsonObject;
-    currentSchema = QJsonObject(); // No schema provided in this overload, so set to empty object
-    
+    setOriginalData(jsonObject);
+    setOriginalSchema(QJsonObject());
+    setCurrentSchema(QJsonObject()); // No schema provided in this overload, so set to empty object
+
     // Safe cleanup of optional field components to prevent paint engine errors
     clearOptionalFieldComponentsSafely();
     
@@ -337,15 +342,17 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, bool resetEditMode) {
 }
 
 void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject, bool resetEditMode) {
+    qDebug() << "Displaying new info with schema, resetEditMode:" << resetEditMode;
     if (resetEditMode) {
         inEditMode = false;
         resetButtons();
     }
 
     // Store new data and schema
-    originalData = jsonObject;
-    currentSchema = schemaObject;
-    
+    setOriginalData(jsonObject);
+    setOriginalSchema(schemaObject);
+    setCurrentSchema(schemaObject);
+
     // Safe cleanup of optional field components to prevent paint engine errors
     clearOptionalFieldComponentsSafely();
     
@@ -635,7 +642,8 @@ void InfoPanel::saveChanges() {
     QJsonObject modifiedData = collectDataFromTree();
 
     // update the original data with the modified data
-    originalData = modifiedData; // Update original data with the modified data
+    setOriginalData(modifiedData);
+    setOriginalSchema(currentSchema);
     
     // Clear validation state to prevent stale error indicators
     invalidRequiredFields.clear();
@@ -826,12 +834,13 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
 
 void InfoPanel::restoreOriginalData() {
     // Einfach die ursprünglichen Daten neu anzeigen
-    if (currentSchema.isEmpty()) {
-        displayInfo(originalData, true);
-    } else {
-        // Wenn ein Schema vorhanden ist, verwenden wir es
-        displayInfo(originalData, currentSchema, true);
-    }
+    // if (currentSchema.isEmpty()) {
+    //     displayInfo(originalData, true);
+    // } else {
+    //     // Wenn ein Schema vorhanden ist, verwenden wir es
+    //     displayInfo(originalData, currentSchema, true);
+    // }
+    displayInfo(originalData, originalSchema, true);
 }
 
 void InfoPanel::updateAddButtons(bool show) {
@@ -1135,7 +1144,7 @@ void InfoPanel::updateSaveButtonState() {
         saveButton->setToolTip(tr("Bitte füllen Sie alle Pflichtfelder aus"));
         return;
     }
-    else if (originalData != collectDataFromTree()) {
+    else if (getOriginalData() != collectDataFromTree()) {
         saveButton->setEnabled(true);
         saveButton->setStyleSheet("QPushButton { background-color: orange; }");
         saveButton->setToolTip(tr("Änderungen speichern"));

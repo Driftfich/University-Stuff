@@ -33,12 +33,17 @@ class InfoPanel : public QWidget {
         QJsonObject getOriginalData() const { return originalData; }
         QJsonObject getCurrentSchema() const { return currentSchema; }
         void setOriginalData(const QJsonObject& data) {
+            qDebug() << "Setting original data in InfoPanel";
             originalData = data;
         }
         void setCurrentSchema(const QJsonObject& schema) {
             currentSchema = schema;
             validateAllRequiredFieldsOnLoad();
         }
+        void setOriginalSchema(const QJsonObject& schema) {
+            originalSchema = schema;
+        }
+        QJsonObject getOriginalSchema() const { return originalSchema; }
 
     public slots:
         void displayInfo(const QJsonObject& jsonObject, bool resetEditMode);
@@ -67,6 +72,7 @@ class InfoPanel : public QWidget {
         QJsonObject currentSchema;
 
         QJsonObject originalData; // original data for quit edit mode without saving
+        QJsonObject originalSchema;
         bool inEditMode;
 
         // Tree collapse/expand state management

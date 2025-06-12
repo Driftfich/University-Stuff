@@ -70,9 +70,10 @@ void MainWindow::changedMediaId(QTreeWidgetItem* item, int column, const QString
     }
     // get the original data from the info panel
     QJsonObject originalData = addPanel->getOriginalData();
-    QJsonObject originalSchema = addPanel->getCurrentSchema();
+    QJsonObject originalSchema = addPanel->getOriginalSchema();
 
     QJsonObject newJson = addPanel->collectDataFromTree();
+    QJsonObject newSchema = originalSchema;
 
     qDebug() << "Updating media id in InfoPanel...";
     // get the current id from the item as unsigned long
@@ -84,42 +85,35 @@ void MainWindow::changedMediaId(QTreeWidgetItem* item, int column, const QString
     std::shared_ptr<Media> mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
     if (!mediaItem) {
         qDebug() << "Media item with id" << currentIdValue << "not found in MediaManager.";
-        // // NEED TO DISBLAY DEFAULT MEDIA ITEM
-        // newJson["media"] = originalData.value("media").toObject();
-        // QString media_type = newJson["media"].toObject().value("media_type").toString().toLower();
-        // qDebug() << "Using default media item for media_type:" << media_type;
-        // QJsonObject newMediaSchema = libitemModel->getDefaultSchema(media_type)["properties"].toObject()["media"].toObject();
-        
-        // // Properly update nested JSON structure
-        // QJsonObject properties = originalSchema.value("properties").toObject();
-        // QJsonObject mediaSchema = properties.value("media").toObject();
-        // mediaSchema = newMediaSchema; // Update the media schema with the default one
-        // properties["media"] = mediaSchema; // Update the properties with the new media schema
-        // originalSchema["properties"] = properties; // Update the original schema with the new properties
-        
-        // qDebug() << "Using schema: " << originalSchema;
-        return;
+        // set the media id in the new media json object
+        QJsonObject mediaJson = originalData.value("media").toObject();
+        QJsonObject baseinfo = mediaJson.value("media").toObject();
+        baseinfo["id"] = QString::number(currentIdValue); // Set the media_id to the original value
+        mediaJson["media"] = baseinfo; // Update the media object with the base info
+        newJson["media"] = mediaJson; // Update the media object in the new json
+        // schema is already the original schema
+        qDebug() << newJson;
     }
     else {
         // update the original media with the new media json object
         newJson["media"] = mediaItem->getJson();
         // // update the original schema
         // originalSchema["media"] = mediaItem->getSchema();
-        QJsonObject properties = originalSchema.value("properties").toObject();
+        QJsonObject properties = newSchema.value("properties").toObject();
         QJsonObject mediaSchema = properties.value("media").toObject();
         mediaSchema = mediaItem->getSchema();
         properties["media"] = mediaSchema; // Update the properties with the new media schema
-        originalSchema["properties"] = properties; // Update the original schema with the new properties
+        newSchema["properties"] = properties; // Update the original schema with the new properties
     }
 
-    // qDebug() << "New json: " << newJson;
-    qDebug() << "Original schema: " << originalSchema;
-
     // update the info panel with the new media json object and schema
-    addPanel->displayInfo(newJson, originalSchema, true);
-    addPanel->setOriginalData(originalData);
-    addPanel->enterEditMode(); // Enter edit mode to allow further modifications
-    qDebug() << "New json object for media:" << newJson;    
+    QTimer::singleShot(0, [this, newJson, newSchema, originalData, originalSchema]() {
+        addPanel->displayInfo(newJson, newSchema, false);
+        addPanel->setOriginalData(originalData);
+        addPanel->setOriginalSchema(originalSchema);
+    });
+
+    qDebug() << "AddPanel original data:" << originalData;
 }
 
 void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
@@ -143,7 +137,7 @@ void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QSt
     QJsonObject libitemBaseData = modifiedData.value("libitem").toObject();
 
     QJsonObject originalData = addPanel->getOriginalData();
-    QJsonObject originalSchema = addPanel->getCurrentSchema();
+    QJsonObject originalSchema = addPanel->getOriginalSchema();
     
     // get the new matching default json object and default schema from the libitemModel
     QJsonObject defaultJson = libitemModel->getDefaultJsonObject(newValue.toString());
@@ -157,6 +151,7 @@ void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QSt
     // update the info panel with the new default json object and schema
     addPanel->displayInfo(defaultJson, defaultSchema, false);
     addPanel->setOriginalData(originalData);
+    addPanel->setOriginalSchema(originalSchema);
 }
 
 void MainWindow::setupUnifiedFieldChangeHandler()
@@ -274,15 +269,7 @@ void MainWindow::setupSideDock()
             schema = lm->getSchemaObject(srcIndex);}
 
         // 6) anzeigen
-        // if schema available use it
-        if (!schema.isEmpty()) {
-            // qDebug() << "Using schema:\n" << schema;
-            // qDebug() << "Displaying info:\n" << info;
-            infoPanel->displayInfo(info, schema, true);
-        } else {
-            infoPanel->displayInfo(info, true);
-        }
-        // infoPanel->displayInfo(info);
+        infoPanel->displayInfo(info, schema, true);
         sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->infopanel);
         sideDock->show();
         // change the title of the side dock

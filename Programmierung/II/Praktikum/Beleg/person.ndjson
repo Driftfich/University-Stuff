@@ -2,3 +2,4 @@
 {"birthday":"2025-06-03","borrower":{"limit":2},"email":"jane.smith@example.com","ename":"Ms.","fname":"Jane","gender":"Female","id":2,"lname":"Smith","location":"Test Location","note":"Test Note","tel":"+987654321"}
 {"artist":{"artist_type":"Painter","media_ids":[1,2]},"birthday":"2025-06-03","email":"alice.johnson@example.com","ename":"Dr.","fname":"Hanna","gender":"Unknown","id":3,"lname":"Johnson","location":"Test Location","note":"Test Note","tel":""}
 {"birthday":"2000-01-01","email":"","ename":"","fname":"Hanna","gender":"Female","id":4,"lname":"Montana","location":"","note":"","tel":""}
+{"artist":{"artist_type":"","media_ids":[]},"birthday":"2000-01-01","borrower":{"limit":0},"email":"","ename":"","fname":"Schlumpfine","gender":"Female","id":5,"lname":"Hastig","location":"","note":"","tel":""}
