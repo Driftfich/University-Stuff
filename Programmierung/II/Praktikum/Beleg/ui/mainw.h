@@ -123,7 +123,7 @@ class MainWindow : public QMainWindow
         void saveModifiedData(const QJsonObject& modifiedData);
 
         void updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
-        void changedMediaId(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
+        void changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
         void setupUnifiedFieldChangeHandler();
 
 

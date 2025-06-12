@@ -58,7 +58,7 @@ void MainWindow::setupUi()
     mainLayout->addWidget(tableWidgetWidget);
 }
 
-void MainWindow::changedMediaId(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
+void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
 {
     qDebug() << "Updating media id in InfoPanel...";
     int currentIndex = tableWidgetUi->TabSelector->currentIndex();
@@ -69,10 +69,10 @@ void MainWindow::changedMediaId(QTreeWidgetItem* item, int column, const QString
         return;
     }
     // get the original data from the info panel
-    QJsonObject originalData = addPanel->getOriginalData();
-    QJsonObject originalSchema = addPanel->getOriginalSchema();
+    QJsonObject originalData = panel->getOriginalData();
+    QJsonObject originalSchema = panel->getOriginalSchema();
 
-    QJsonObject newJson = addPanel->collectDataFromTree();
+    QJsonObject newJson = panel->collectDataFromTree();
     QJsonObject newSchema = originalSchema;
 
     qDebug() << "Updating media id in InfoPanel...";
@@ -107,10 +107,10 @@ void MainWindow::changedMediaId(QTreeWidgetItem* item, int column, const QString
     }
 
     // update the info panel with the new media json object and schema
-    QTimer::singleShot(0, [this, newJson, newSchema, originalData, originalSchema]() {
-        addPanel->displayInfo(newJson, newSchema, false);
-        addPanel->setOriginalData(originalData);
-        addPanel->setOriginalSchema(originalSchema);
+    QTimer::singleShot(0, [this, panel, newJson, newSchema, originalData, originalSchema]() {
+        panel->displayInfo(newJson, newSchema, false);
+        panel->setOriginalData(originalData);
+        panel->setOriginalSchema(originalSchema);
     });
 
     qDebug() << "AddPanel original data:" << originalData;
@@ -185,7 +185,7 @@ void MainWindow::setupUnifiedFieldChangeHandler()
                     } 
                     else if (fieldName == "media_id") {
                         qDebug() << "Routing to changedMediaId for:" << fieldName;
-                        changedMediaId(item, column, fieldName, oldValue, newValue);
+                        changedMediaId(addPanel, item, column, fieldName, oldValue, newValue);
                     }
                     else {
                         qDebug() << "No specific handler for field:" << fieldName;
@@ -233,6 +233,11 @@ void MainWindow::setupSideDock()
 
     // Signal vom InfoPanel verbinden
     connect(infoPanel, &InfoPanel::saveRequested, this, &MainWindow::saveModifiedData);
+
+    // try the changeMediaId on the info panel
+    connect(infoPanel, &InfoPanel::fieldChanged, this, [=](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
+        changedMediaId(infoPanel, item, column, fieldName, oldValue, newValue);
+    });
     
     // Doppelklick auf Tabelleintrag zeigt Info-Panel
     auto showInfo = [this](const QModelIndex& index) {
