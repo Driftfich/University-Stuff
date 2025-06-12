@@ -299,6 +299,16 @@ QJsonObject LibItemTableModel::getDefaultSchema(QString mediaType) const {
     } else {
         properties.insert("media", Media::getSchema());
     }
+
+    // make the subclass_type readonly false
+    QJsonObject mediaSchema = properties["media"].toObject();
+    QJsonObject mediaProperties = mediaSchema["properties"].toObject();
+    QJsonObject subclassType = mediaProperties["subclass_type"].toObject();
+    subclassType["readonly"] = false; // make it editable
+    mediaProperties["subclass_type"] = subclassType;
+    mediaSchema["properties"] = mediaProperties;
+    properties["media"] = mediaSchema;
+    // qDebug() << properties;
     defaultSchema.insert("properties", properties);
     return defaultSchema;
 }
