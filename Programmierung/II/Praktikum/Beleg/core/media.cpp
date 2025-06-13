@@ -366,3 +366,19 @@ QJsonObject Media::getSchema() {
     schema.insert("rename", "Media");
     return schema;
 }
+
+QJsonObject Media::getSchemaByType(QString mediaType) const {
+    mediaType = mediaType.trimmed().toLower();
+    if (mediaType == "Text") {
+        return Text::getSchema();
+    }
+    else if (mediaType == "Audio") {
+        return Audio::getSchema();
+    }
+    else if (mediaType == "Video") {
+        return Video::getSchema();
+    }
+    else {
+        return getSchema();
+    }
+}

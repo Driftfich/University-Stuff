@@ -54,7 +54,10 @@ class LibItemTableModel : public QAbstractTableModel {
 
         QJsonObject getJsonObject(const QModelIndex& index) const;
         QJsonObject getSchemaObject(const QModelIndex& index) const;
+        int updateMediaFromJsonObject(const QJsonObject& jsonObject);
+        bool updateLibitemFromJsonObject(const QJsonObject& jsonObject);
         bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
+        bool saveFromJsonObject(const QJsonObject& jsonObject);
 
         QJsonObject getDefaultSchema(QString mediaType) const;
         QJsonObject getDefaultSchema() const;

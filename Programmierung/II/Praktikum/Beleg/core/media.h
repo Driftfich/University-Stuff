@@ -141,6 +141,7 @@ class Media {
         static QJsonObject getLocalSchema();
         // virtual QJsonObject getSubclassSchema() { return QJsonObject(); }
         static QJsonObject getSchema();
+        QJsonObject getSchemaByType(QString mediaType) const;
 
         // print methods
         void printbase(std::ostream& os) const;

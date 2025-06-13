@@ -219,6 +219,10 @@ void MainWindow::setupUnifiedFieldChangeHandler()
     }
 }
 
+// void MainWindow::addPanelSave() {
+
+// }
+
 void MainWindow::setupSideDock()
 {
     // Side-Panel instanziieren
@@ -280,7 +284,8 @@ void MainWindow::setupSideDock()
             schema = pm->getSchemaObject(srcIndex);}
         else if (auto *lm = qobject_cast<LibItemTableModel*>(srcModel))
             {info = lm->getJsonObject(srcIndex);
-            schema = lm->getSchemaObject(srcIndex);}
+            schema = lm->getSchemaObject(srcIndex);
+        }
 
         // 6) anzeigen
         infoPanel->displayInfo(info, schema, true);
@@ -339,28 +344,7 @@ void MainWindow::setupAddPanel()
         sideDock->setWindowTitle(tr("Add New Item"));
     });
 
-    // when the save button in the add panel is clicked, save the new item, enter edit mode again
-    connect(addPanel, &InfoPanel::saveRequested, this, [=](const QJsonObject& modifiedData) {
-        // depending on the current tab, save the data to the correct model
-        int currentIndex = tableWidgetUi->TabSelector->currentIndex();
-        qDebug() << "Modified Data:" << modifiedData;
-        switch(currentIndex) {
-            case 0: // Person tab
-                personModel->saveFromJsonObject(modifiedData);
-                break;
-            case 1: // LibItem tab  
-                // libitemModel->saveFromJsonObject(modifiedData);
-                break;
-            case 2: // Transaction tab
-                transactionModel->saveFromJsonObject(modifiedData);
-                break;
-            default:
-                return; // No valid tab selected
-        }
-
-        // reset the add panel and enter edit mode again
-        emit tableWidgetUi->TabSelector->currentChanged(currentIndex);
-    });
+    connect(addPanel, &InfoPanel::saveRequested, this, &MainWindow::saveNewData);
 
     // connection: when the cancel button in the add panel is clicked, enter Edit Mode again
     connect(addPanel, &InfoPanel::editModeCancelled, addPanel, &InfoPanel::enterEditMode);
@@ -389,36 +373,16 @@ void MainWindow::setupAddPanel()
                 return; // No valid tab selected
         }
 
-        // Connect to field change signal to detect subclass_type changes
-        // connect(addPanel, &InfoPanel::fieldChanged, this, 
-        //     [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
-        //         // disconnect the fieldChanged signal to prevent recursion
-        //         disconnect(addPanel, &InfoPanel::fieldChanged, this, nullptr);
-        //         // qDebug() << "Field changed in add panel:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
-        //         // Check if the changed field is subclass_type
-        //         updateSubclassType(item, column, fieldName, oldValue, newValue);
-        //         // Check if the changed field is media id
-        //         qDebug() << "Checking for media_id change in add panel...";
-        //         changedMediaId(item, column, fieldName, oldValue, newValue);
-
-        //         // connect again the fieldChanged signal
-        //         connect(addPanel, &InfoPanel::fieldChanged, this, 
-        //             [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
-        //                 // Check if the changed field is subclass_type
-        //                 updateSubclassType(item, column, fieldName, oldValue, newValue);
-        //             });
-        //     });
-
-        setupUnifiedFieldChangeHandler();
-
+        
         // set the default json object for the add panel
         addPanel->displayInfo(defaultJson, schemaJson, true);
         addPanel->enterEditMode();
-
+        
         // // change the title of the side dock
         // sideDock->setWindowTitle(tr("Add New Item"));
     });
     
+    setupUnifiedFieldChangeHandler();
 }
 
 void MainWindow::setupDataLayers()
@@ -495,7 +459,7 @@ void MainWindow::setupToolbarConnections()
     setupSortConnections();
     setupSearchConnections();
     setupDeleteConnections();
-    setupAddConnections();
+    // setupAddConnections();
 
     emit tableWidgetUi->TabSelector->currentChanged(0);
 }
@@ -751,8 +715,8 @@ void MainWindow::setupDeleteConnections()
     });
 }
 
-void MainWindow::setupAddConnections()
-{}
+// void MainWindow::setupAddConnections()
+// {}
 
 void MainWindow::saveModifiedData(const QJsonObject& data) {
     if (!currentEditModel || !currentEditIndex.isValid()) {
@@ -790,6 +754,42 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
     } 
     catch (const std::exception& e) {
         QMessageBox::critical(this, tr("Fehler"), 
+                            tr("Unerwarteter Fehler: %1").arg(e.what()));
+    }
+}
+
+void MainWindow::saveNewData(const QJsonObject& data) {
+    try {
+        bool success = false;
+
+        int currentIndex = tableWidgetUi->TabSelector->currentIndex();
+        switch(currentIndex) {
+            case 0: // Person tab
+                success = personModel->saveFromJsonObject(data);
+                break;
+            case 1: // LibItem tab
+                success = libitemModel->saveFromJsonObject(data);
+                break;
+            case 2: // Transaction tab
+                success = transactionModel->saveFromJsonObject(data);
+                break;
+            default:
+                return; // No valid tab selected
+        }
+
+        // reset the add panel and enter edit mode again
+        emit tableWidgetUi->TabSelector->currentChanged(currentIndex);
+
+        if (success) {
+            QMessageBox::information(this, tr("Gespeichert"),
+                                   tr("Neuer Eintrag wurde erfolgreich gespeichert."));
+        } else {
+            QMessageBox::warning(this, tr("Fehler"),
+                               tr("Fehler beim Speichern des neuen Eintrags."));
+        }
+    }
+    catch (const std::exception& e) {
+        QMessageBox::critical(this, tr("Fehler"),
                             tr("Unerwarteter Fehler: %1").arg(e.what()));
     }
 }

@@ -110,7 +110,7 @@ class MainWindow : public QMainWindow
         void setupSortConnections();
         void setupSearchConnections();
         void setupDeleteConnections();
-        void setupAddConnections();
+        // void setupAddConnections();
 
         void applySearchFilter();
         
@@ -119,12 +119,15 @@ class MainWindow : public QMainWindow
         void updateSearchCompleter();
         void onCompleterActivated(const QString& suggestion);
         
-        // Method to save the modified data from the InfoPanel
+        // Method to save the modified data from the InfoPanel &  addPanel
         void saveModifiedData(const QJsonObject& modifiedData);
+        void saveNewData(const QJsonObject& newData);
+
 
         void updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
         void changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
         void setupUnifiedFieldChangeHandler();
+        void addPanelSave();
 
 
 };
