@@ -131,5 +131,7 @@ QJsonObject Libitem::getSchema() {
     QJsonObject schema;
     schema["properties"] = getLocalSchema();
     schema["type"] = "object";
+    schema["rename"] = "Library Item";
+    schema["description"] = "A library item that can be borrowed by users. It contains a reference to a media item and additional information about its condition and availability.";
     return schema;
 }

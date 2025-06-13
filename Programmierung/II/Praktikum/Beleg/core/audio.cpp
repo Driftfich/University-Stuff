@@ -83,14 +83,14 @@ int Audio::loadSubclassParams(const QJsonObject& json) {
 
 QJsonObject Audio::getSubclassSchema() {
     QJsonObject schema;
-    schema["duration"] = QJsonObject{{"type", "integer"}};
-    schema["type"] = QJsonObject{{"type", "string"}};
-    schema["bitrate"] = QJsonObject{{"type", "integer"}};
-    schema["sample_rate"] = QJsonObject{{"type", "integer"}};
-    schema["channels"] = QJsonObject{{"type", "string"}};
-    schema["codec"] = QJsonObject{{"type", "string"}};
-    schema["album"] = QJsonObject{{"type", "string"}};
-    schema["tracks"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "string"}}}};
+    schema["duration"] = QJsonObject{{"type", "integer"},  {"rename", "Duration"}, {"description", "The duration of the audio in seconds"}, {"minimum", 0}};
+    schema["type"] = QJsonObject{{"type", "string"}, {"rename", "Type"}, {"description", "The type of the audio (e.g. podcast, audiobook, music)"}};
+    schema["bitrate"] = QJsonObject{{"type", "integer"}, {"rename", "Bitrate"}, {"description", "The bitrate of the audio in kbps"}, {"minimum", 0}};
+    schema["sample_rate"] = QJsonObject{{"type", "integer"}, {"rename", "Sample Rate"}, {"description", "The sample rate of the audio in Hz"}, {"minimum", 0}};
+    schema["channels"] = QJsonObject{{"type", "string"}, {"rename", "Channels"}, {"description", "The number of channels in the audio (e.g. mono, stereo)"}};
+    schema["codec"] = QJsonObject{{"type", "string"}, {"rename", "Codec"}, {"description", "The codec used for the audio"}};
+    schema["album"] = QJsonObject{{"type", "string"}, {"rename", "Album"}, {"description", "The album the audio belongs to"}};
+    schema["tracks"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "string"}}}, {"rename", "Tracks"}, {"description", "The tracks in the audio"}};
     return schema;
 }
 

@@ -363,5 +363,6 @@ QJsonObject Media::getSchema() {
     properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", QJsonObject{{"readonly", true}}}, {"rename", "Extended Information"}, {"readonly", true}}); // 
     properties.insert("subclass_type", QJsonObject{{"type", "string"}, {"enum", QJsonArray{"Unknown", "Text", "Audio", "Video"}}, {"rename", "Media Type"}, {"description", "Type of the Media (e.g. Text, Audio, Video, Media)"}, {"readonly", true}}); // normally readonly
     schema.insert("properties", properties);
+    schema.insert("rename", "Media");
     return schema;
 }

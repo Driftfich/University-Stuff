@@ -85,14 +85,23 @@ void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int col
     std::shared_ptr<Media> mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
     if (!mediaItem) {
         qDebug() << "Media item with id" << currentIdValue << "not found in MediaManager.";
+        // get the current actice media type from the info panel
+        QString mediaType = newJson.value("media").toObject().value("subclass_type").toString();
+
         // set the media id in the new media json object
-        QJsonObject mediaJson = originalData.value("media").toObject();
+        QJsonObject mediaJson = libitemModel->getDefaultJsonObject(mediaType).value("media").toObject();
         QJsonObject baseinfo = mediaJson.value("media").toObject();
         baseinfo["id"] = QString::number(currentIdValue); // Set the media_id to the original value
         mediaJson["media"] = baseinfo; // Update the media object with the base info
         newJson["media"] = mediaJson; // Update the media object in the new json
-        // schema is already the original schema
-        qDebug() << newJson;
+
+        // get the default schema for the media item
+        QJsonObject mediaSchema = libitemModel->getDefaultSchema(mediaType).value("properties").toObject().value("media").toObject();
+        QJsonObject properties = newSchema.value("properties").toObject();
+        properties["media"] = mediaSchema; // Update the properties with the new media schema
+        newSchema["properties"] = properties; // Update the original schema with the new properties
+        qDebug() << newSchema;
+        // qDebug() << newJson;
     }
     else {
         // update the original media with the new media json object

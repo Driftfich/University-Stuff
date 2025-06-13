@@ -18,6 +18,7 @@ QJsonObject Borrower::getSubclassSchema() {
     schema.insert("type", "object");
     schema.insert("properties", properties);
     schema.insert("optional", true);
+    schema.insert("readonly", true); // don't allow deleting fields in the borrower
     return schema;
 }
 

@@ -54,12 +54,12 @@ int Video::loadSubclassParams(const QJsonObject& json) {
 
 QJsonObject Video::getSubclassSchema() {
     QJsonObject schema;
-    schema["duration"] = QJsonObject{{"type", "integer"}};
-    schema["type"] = QJsonObject{{"type", "string"}};
-    schema["resolution"] = QJsonObject{{"type", "integer"}};
-    schema["codec"] = QJsonObject{{"type", "string"}};
-    schema["aspect_ratio"] = QJsonObject{{"type", "string"}};
-    schema["audio_channels"] = QJsonObject{{"type", "string"}};
+    schema["duration"] = QJsonObject{{"type", "integer"}, {"rename", "Duration"}, {"description", "The duration of the video in seconds"}, {"minimum", 0}};
+    schema["type"] = QJsonObject{{"type", "string"}, {"rename", "Type"}, {"description", "The type of the video (e.g. movie, series, documentary)"}};
+    schema["resolution"] = QJsonObject{{"type", "integer"}, {"rename", "Resolution"}, {"description", "The resolution of the video (e.g. 1080p, 4K)"}, {"minimum", 1}};
+    schema["codec"] = QJsonObject{{"type", "string"}, {"rename", "Codec"}, {"description", "The codec used for the video"}};
+    schema["aspect_ratio"] = QJsonObject{{"type", "string"}, {"rename", "Aspect Ratio"}, {"description", "The aspect ratio of the video (e.g. 16:9, 4:3)"}};
+    schema["audio_channels"] = QJsonObject{{"type", "string"}, {"rename", "Audio Channels"}, {"description", "The number of audio channels in the video"}};
     return schema;
 }
 

@@ -44,6 +44,7 @@ QJsonObject Artist::getSubclassSchema() {
     schema.insert("type", "object");
     schema.insert("properties", properties);
     schema.insert("optional", true);
+    schema.insert("readonly", true); // dont allow deleting fields in the artist
 
     return schema;
 }

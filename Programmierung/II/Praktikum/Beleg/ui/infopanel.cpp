@@ -49,7 +49,10 @@ public:
         QString itemType = index.data(SchemaTypeRole).toString();
         QString itemFormat = index.data(SchemaFormatRole).toString();
         QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
-        
+
+        QVariant minValueVar = index.data(SchemaMinRole);
+        QVariant maxValueVar = index.data(SchemaMaxRole);
+
         // Debug output to check what we get from the index
         // qDebug() << "Debug createEditor: row=" << index.row() << "col=" << index.column();
         // qDebug() << "  itemType=" << itemType;
@@ -59,8 +62,12 @@ public:
         if (itemType == "integer") {
             QSpinBox* editor = new QSpinBox(parent);
             editor->setFrame(false);
-            editor->setMinimum(-2147483647); // Or from schema
-            editor->setMaximum(2147483647);  // Or from schema
+            if (minValueVar.isValid() && !minValueVar.isNull()) {
+                editor->setMinimum(minValueVar.toInt());
+            }
+            if (maxValueVar.isValid() && !maxValueVar.isNull()) {
+                editor->setMaximum(maxValueVar.toInt());
+            }
             return editor;
         }
         else if (itemType == "string" && (itemFormat.contains("date") || itemFormat.contains("time"))) {
@@ -478,6 +485,17 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         thisItem->setData(0, SchemaReadonlyRole, isReadOnly);
         thisItem->setData(1, SchemaRequiredRole, isRequired);
         thisItem->setData(1, SchemaOptionalRole, isOptional);
+        QJsonValue minValue = currentItemSchema.value("minimum");
+        if (!minValue.isUndefined() && !minValue.isNull()) {
+            long long min = minValue.toVariant().toLongLong();
+            thisItem->setData(1, SchemaMinRole, min); // Save minimum value for the item
+        }
+
+        QJsonValue maxValue = currentItemSchema.value("maximum");
+        if (!maxValue.isUndefined() && !maxValue.isNull()) {
+            long long max = maxValue.toVariant().toLongLong();
+            thisItem->setData(1, SchemaMaxRole, max); // Save maximum value for the item
+        }
         // save current value for the item
         thisItem->setData(1, Qt::UserRole + 30, thisItem->text(1));
     }
@@ -983,6 +1001,7 @@ int InfoPanel::getItemDepth(QTreeWidgetItem* item) const {
 }
 
 bool InfoPanel::isItemDeletable(QTreeWidgetItem* item) const {
+    // item is not in edit mode or has no parent, it cannot be deleted via hover
     if (!inEditMode || !item || !item->parent()) {
         return false;
     }
@@ -990,8 +1009,10 @@ bool InfoPanel::isItemDeletable(QTreeWidgetItem* item) const {
     if (item->data(0, Qt::UserRole).toString() != "leaf") {
         return false;
     }
-    // The parent of this leaf item must be a "lowest collection" (a simple array or object).
-    return isLowestCollection(item->parent()) && !isHighestItem(item->parent());
+    // The parent of this leaf item must be a "lowest collection" (a simple array or object) and parent should not be readonly
+    QVariant readonlyVariant = item->parent()->data(0, SchemaReadonlyRole);
+    bool readonly = readonlyVariant.isValid() ? readonlyVariant.toBool() : false;
+    return isLowestCollection(item->parent()) && !isHighestItem(item->parent()) && !readonly;
 }
 
 QRect InfoPanel::getDeleteButtonRectForItem(const QTreeWidgetItem* item, const QStyleOptionViewItem& option) const {
