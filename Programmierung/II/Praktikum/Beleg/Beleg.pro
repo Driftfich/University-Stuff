@@ -44,8 +44,6 @@ HEADERS +=  core/artist.h \
             ui/toolbar.h \
             ui/tablewidget.h \
             ui/sidepanel.h \
-            ui/input.h \
-            #ui/inputmodel.h \
             ui/infopanel.h \
             utils/jsonschemautils.h \
             utils/returns.h
@@ -71,7 +69,6 @@ SOURCES +=  core/artist.cpp \
             ui/mainw.cpp \
             #ui/toolbar.cpp \
             #ui/tablewidget.cpp \
-            #ui/inputmodel.cpp \
             ui/infopanel.cpp \
             utils/jsonschemautils.cpp \
             test.cpp

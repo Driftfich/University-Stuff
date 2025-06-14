@@ -370,7 +370,6 @@ DIST          = /home/USER/Qt/6.9.0/gcc_64/mkspecs/features/spec_pre.prf \
 		ui/toolbar.h \
 		ui/tablewidget.h \
 		ui/sidepanel.h \
-		ui/input.h \
 		ui/infopanel.h \
 		utils/jsonschemautils.h \
 		utils/returns.h core/artist.cpp \
@@ -905,7 +904,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ressources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /home/USER/Qt/6.9.0/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents core/artist.h core/audio.h core/borrower.h core/config.h core/libitem.h core/media.h core/person.h core/text.h core/transaction.h core/video.h manager/library.h manager/transactionman.h manager/personman.h manager/mediaman.h manager/libitemman.h tablemodel/libitemtablemodel.h tablemodel/persontablemodel.h tablemodel/transactiontablemodel.h tablemodel/custfiltproxmodel.h ui/mainw.h ui/toolbar.h ui/tablewidget.h ui/sidepanel.h ui/input.h ui/infopanel.h utils/jsonschemautils.h utils/returns.h $(DISTDIR)/
+	$(COPY_FILE) --parents core/artist.h core/audio.h core/borrower.h core/config.h core/libitem.h core/media.h core/person.h core/text.h core/transaction.h core/video.h manager/library.h manager/transactionman.h manager/personman.h manager/mediaman.h manager/libitemman.h tablemodel/libitemtablemodel.h tablemodel/persontablemodel.h tablemodel/transactiontablemodel.h tablemodel/custfiltproxmodel.h ui/mainw.h ui/toolbar.h ui/tablewidget.h ui/sidepanel.h ui/infopanel.h utils/jsonschemautils.h utils/returns.h $(DISTDIR)/
 	$(COPY_FILE) --parents core/artist.cpp core/audio.cpp core/media.cpp core/person.cpp core/text.cpp core/video.cpp core/borrower.cpp core/libitem.cpp core/transaction.cpp manager/library.cpp manager/transactionman.cpp manager/personman.cpp manager/mediaman.cpp manager/libitemman.cpp tablemodel/libitemtablemodel.cpp tablemodel/persontablemodel.cpp tablemodel/transactiontablemodel.cpp tablemodel/custfiltproxmodel.cpp ui/mainw.cpp ui/infopanel.cpp utils/jsonschemautils.cpp test.cpp $(DISTDIR)/
 
 
@@ -5515,6 +5514,13 @@ build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonO
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtabbar.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qrubberband.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QTabWidget \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDir \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdir.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdirlisting.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfile.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfileinfo.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtimezone.h \
 		tablemodel/custfiltproxmodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
@@ -5556,8 +5562,6 @@ build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonO
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QModelIndex \
 		manager/libitemman.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QFile \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfile.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonDocument \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QString \

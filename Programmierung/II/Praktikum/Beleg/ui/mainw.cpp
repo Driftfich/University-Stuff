@@ -10,6 +10,7 @@
 #include <QStringListModel>
 #include <QTableView>
 #include <QTabWidget>
+#include <QDir>
 #include <iostream>
 
 #include "custfiltproxmodel.h"
@@ -397,7 +398,7 @@ void MainWindow::setupDataLayers()
 
 void MainWindow::setupLib()
 {
-    lib = new Library(QCoreApplication::applicationDirPath());
+    lib = new Library((QCoreApplication::applicationDirPath() + QDir::separator() + "data"));
     // load happens directly in the constructor of Library
 }
 
