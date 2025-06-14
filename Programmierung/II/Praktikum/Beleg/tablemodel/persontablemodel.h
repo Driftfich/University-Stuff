@@ -10,6 +10,7 @@
 #include "personman.h"
 #include <QJsonObject>
 #include "transactionman.h"
+#include "returns.h"
 
 class PersonTableModel : public QAbstractTableModel {
     Q_OBJECT
@@ -56,8 +57,8 @@ class PersonTableModel : public QAbstractTableModel {
         QJsonObject getSchemaObject(const QModelIndex& index) const;
         QJsonObject getDefaultSchema() const;
         bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
-        bool saveFromJsonObject(const QJsonObject& jsonObject);
-    
+        Result saveFromJsonObject(const QJsonObject& jsonObject);
+
     public slots:
         void refreshData();
 

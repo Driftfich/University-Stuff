@@ -9,6 +9,7 @@
 #include <mediaman.h>
 #include <libitemman.h>
 #include <personman.h>
+#include "returns.h"
 
 
 class TransactionTableModel : public QAbstractTableModel {
@@ -84,7 +85,7 @@ class TransactionTableModel : public QAbstractTableModel {
         QJsonObject getDefaultJsonObject() const;
         QJsonObject getSchemaObject(const QModelIndex& index) const;
         QJsonObject getDefaultSchema() const;
-        bool saveFromJsonObject(const QJsonObject& jsonObject);
+        Result saveFromJsonObject(const QJsonObject& jsonObject);
         bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
     
     public slots:

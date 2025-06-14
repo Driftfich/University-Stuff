@@ -450,7 +450,8 @@ DIST          = /home/USER/Qt/6.6.1/gcc_64/mkspecs/features/spec_pre.prf \
 		ui/sidepanel.h \
 		ui/input.h \
 		ui/infopanel.h \
-		utils/jsonschemautils.h core/artist.cpp \
+		utils/jsonschemautils.h \
+		utils/returns.h core/artist.cpp \
 		core/audio.cpp \
 		core/media.cpp \
 		core/person.cpp \
@@ -1138,7 +1139,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ressources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /home/USER/Qt/6.6.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents core/artist.h core/audio.h core/borrower.h core/config.h core/libitem.h core/media.h core/person.h core/text.h core/transaction.h core/video.h manager/library.h manager/transactionman.h manager/personman.h manager/mediaman.h manager/libitemman.h tablemodel/libitemtablemodel.h tablemodel/persontablemodel.h tablemodel/transactiontablemodel.h tablemodel/custfiltproxmodel.h ui/mainw.h ui/toolbar.h ui/tablewidget.h ui/sidepanel.h ui/input.h ui/infopanel.h utils/jsonschemautils.h $(DISTDIR)/
+	$(COPY_FILE) --parents core/artist.h core/audio.h core/borrower.h core/config.h core/libitem.h core/media.h core/person.h core/text.h core/transaction.h core/video.h manager/library.h manager/transactionman.h manager/personman.h manager/mediaman.h manager/libitemman.h tablemodel/libitemtablemodel.h tablemodel/persontablemodel.h tablemodel/transactiontablemodel.h tablemodel/custfiltproxmodel.h ui/mainw.h ui/toolbar.h ui/tablewidget.h ui/sidepanel.h ui/input.h ui/infopanel.h utils/jsonschemautils.h utils/returns.h $(DISTDIR)/
 	$(COPY_FILE) --parents core/artist.cpp core/audio.cpp core/media.cpp core/person.cpp core/text.cpp core/video.cpp core/borrower.cpp core/libitem.cpp core/transaction.cpp manager/library.cpp manager/transactionman.cpp manager/personman.cpp manager/mediaman.cpp manager/libitemman.cpp tablemodel/libitemtablemodel.cpp tablemodel/persontablemodel.cpp tablemodel/transactiontablemodel.cpp tablemodel/custfiltproxmodel.cpp ui/mainw.cpp ui/infopanel.cpp utils/jsonschemautils.cpp test.cpp $(DISTDIR)/
 
 
@@ -1492,6 +1493,7 @@ build/moc/moc_libitemtablemodel.cpp: tablemodel/libitemtablemodel.h \
 		core/borrower.h \
 		json.hpp \
 		manager/mediaman.h \
+		utils/returns.h \
 		build/moc/moc_predefs.h \
 		/home/USER/Qt/6.6.1/gcc_64/libexec/moc
 	/home/USER/Qt/6.6.1/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtWidgets -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/libitemtablemodel.h -o build/moc/moc_libitemtablemodel.cpp
@@ -1804,6 +1806,7 @@ build/moc/moc_transactiontablemodel.cpp: tablemodel/transactiontablemodel.h \
 		manager/mediaman.h \
 		manager/libitemman.h \
 		manager/personman.h \
+		utils/returns.h \
 		build/moc/moc_predefs.h \
 		/home/USER/Qt/6.6.1/gcc_64/libexec/moc
 	/home/USER/Qt/6.6.1/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/home/USER/Qt/6.6.1/gcc_64/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/home/USER/Qt/6.6.1/gcc_64/include -I/home/USER/Qt/6.6.1/gcc_64/include/QtWidgets -I/home/USER/Qt/6.6.1/gcc_64/include/QtGui -I/home/USER/Qt/6.6.1/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/transactiontablemodel.h -o build/moc/moc_transactiontablemodel.cpp
@@ -2192,6 +2195,7 @@ build/moc/moc_mainw.cpp: ui/mainw.h \
 		core/borrower.h \
 		json.hpp \
 		manager/mediaman.h \
+		utils/returns.h \
 		tablemodel/transactiontablemodel.h \
 		manager/transactionman.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDateTime \
@@ -4626,6 +4630,7 @@ build/obj/libitemtablemodel.o: tablemodel/libitemtablemodel.cpp /home/USER/Qt/6.
 		core/borrower.h \
 		json.hpp \
 		manager/mediaman.h \
+		utils/returns.h \
 		core/video.h \
 		core/text.h \
 		core/audio.h
@@ -4784,7 +4789,8 @@ build/obj/persontablemodel.o: tablemodel/persontablemodel.cpp tablemodel/persont
 		core/libitem.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDebug \
 		utils/jsonschemautils.h \
-		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonValue
+		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonValue \
+		utils/returns.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/persontablemodel.o tablemodel/persontablemodel.cpp
 
 build/obj/transactiontablemodel.o: tablemodel/transactiontablemodel.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QAbstractTableModel \
@@ -4940,6 +4946,7 @@ build/obj/transactiontablemodel.o: tablemodel/transactiontablemodel.cpp /home/US
 		manager/mediaman.h \
 		manager/libitemman.h \
 		manager/personman.h \
+		utils/returns.h \
 		utils/jsonschemautils.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonValue
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/transactiontablemodel.o tablemodel/transactiontablemodel.cpp
@@ -5349,6 +5356,7 @@ build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QJsonO
 		core/borrower.h \
 		json.hpp \
 		manager/mediaman.h \
+		utils/returns.h \
 		tablemodel/transactiontablemodel.h \
 		manager/transactionman.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDateTime \
@@ -6053,6 +6061,7 @@ build/obj/test.o: test.cpp /home/USER/Qt/6.6.1/gcc_64/include/QtCore/QDate \
 		tablemodel/libitemtablemodel.h \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QAbstractTableModel \
 		/home/USER/Qt/6.6.1/gcc_64/include/QtCore/QModelIndex \
+		utils/returns.h \
 		tablemodel/transactiontablemodel.h \
 		tablemodel/persontablemodel.h \
 		ui/sidepanel.h \

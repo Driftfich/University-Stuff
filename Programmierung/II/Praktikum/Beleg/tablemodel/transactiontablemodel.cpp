@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include "transactiontablemodel.h"
 #include "jsonschemautils.h"
+#include "returns.h"
 #include <transactionman.h>
 #include <mediaman.h>
 #include <libitemman.h>
@@ -333,17 +334,42 @@ QJsonObject TransactionTableModel::getDefaultSchema() const {
     return defaultSchema;
 }
 
-bool TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
+Result TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
     std::shared_ptr<Transaction> transaction = Transaction::TransactionFactory(jsonObject);
 
+    // extract the person from the json object
+    std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
+    if (!person) {
+        return Result::Error("Person does not exist in the database");
+    }
+
+    // check that the libitem exists
+    std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
+    if (!libitem) {
+        return Result::Error("Libitem does not exist in the database");
+    }
+
+    // check that the person has not already reached the maximum number of borrowed items
+    if (person->isBorrower()) {
+        unsigned long limit = person->getBorrower()->getLimit();
+        // count the number of current transactions for this person by utilizing the person map in the transaction manager
+        QVector<std::shared_ptr<Transaction>> transactions = transactionMan->getTransactionsByPersonId(person->getId());
+        if (transactions.size() >= limit) {
+            return Result::Error("Person has reached the maximum number of borrowed items");
+        }
+    }
+    else {
+        return Result::Error("Person is not a borrower");
+    }
+
     if (!transaction) {
-        return false;
+        return Result::Error("Failed to create transaction from JSON");
     }
 
     // Add the new transaction
     transactionMan->addTransaction(transaction);
     refreshData();
-    return true;
+    return Result::Success();
 }
 
 bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {

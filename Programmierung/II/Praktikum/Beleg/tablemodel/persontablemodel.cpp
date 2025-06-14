@@ -14,6 +14,8 @@
 #include "personman.h"
 #include "jsonschemautils.h"
 
+#include "returns.h"
+
 
 PersonTableModel::PersonTableModel(PersonMan* personMan, QObject *parent)
     : QAbstractTableModel(parent), personMan(personMan) {
@@ -322,21 +324,21 @@ bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const
     return true;
 }
 
-bool PersonTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
+Result PersonTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
     if (!jsonObject.contains("person")) {
         qWarning() << "JSON object does not contain 'person' key";
-        return false;
+        return Result::Error("Failed to save person");
     }
 
     std::shared_ptr<Person> person = Person::PersonFactory(jsonObject["person"].toObject());
     if (!person) {
         qWarning() << "Failed to create person from JSON object";
-        return false;
+        return Result::Error("Failed to create person");
     }
     std::cout << "Saving person: " << *person << std::endl;
     personMan->addPerson(person);
     refreshData();
-    return true;
+    return Result::Success();
 }
 
 // QJsonObject PersonTableModel::getDefaultSchemaObject() const {

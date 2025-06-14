@@ -27,6 +27,7 @@
 #include "audio.h"
 #include "video.h"
 
+#include "returns.h"
 
 void MainWindow::setupUi()
 {
@@ -760,7 +761,7 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
 
 void MainWindow::saveNewData(const QJsonObject& data) {
     try {
-        bool success = false;
+        Result success;
 
         int currentIndex = tableWidgetUi->TabSelector->currentIndex();
         switch(currentIndex) {
@@ -780,7 +781,7 @@ void MainWindow::saveNewData(const QJsonObject& data) {
         // reset the add panel and enter edit mode again
         emit tableWidgetUi->TabSelector->currentChanged(currentIndex);
 
-        if (success) {
+        if ((bool) success) {
             QMessageBox::information(this, tr("Gespeichert"),
                                    tr("Neuer Eintrag wurde erfolgreich gespeichert."));
         } else {

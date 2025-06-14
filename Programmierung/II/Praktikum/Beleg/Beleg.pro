@@ -47,7 +47,8 @@ HEADERS +=  core/artist.h \
             ui/input.h \
             #ui/inputmodel.h \
             ui/infopanel.h \
-            utils/jsonschemautils.h
+            utils/jsonschemautils.h \
+            utils/returns.h
 
 SOURCES +=  core/artist.cpp \
             core/audio.cpp \

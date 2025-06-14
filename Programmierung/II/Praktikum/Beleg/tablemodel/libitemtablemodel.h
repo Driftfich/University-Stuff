@@ -9,6 +9,7 @@
 #include "libitem.h"
 #include "media.h"
 #include "mediaman.h"
+#include "returns.h"
 
 class LibItemTableModel : public QAbstractTableModel {
     Q_OBJECT
@@ -57,13 +58,13 @@ class LibItemTableModel : public QAbstractTableModel {
         int updateMediaFromJsonObject(const QJsonObject& jsonObject);
         bool updateLibitemFromJsonObject(const QJsonObject& jsonObject);
         bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
-        bool saveFromJsonObject(const QJsonObject& jsonObject);
+        // bool saveFromJsonObject(const QJsonObject& jsonObject);
 
         QJsonObject getDefaultSchema(QString mediaType) const;
         QJsonObject getDefaultSchema() const;
         QJsonObject getDefaultJsonObject(QString mediaType) const;
         QJsonObject getDefaultJsonObject() const;
-        bool saveFromJsonObject(const QJsonObject& jsonObject) const;
+        Result saveFromJsonObject(const QJsonObject& jsonObject);
 
     public slots:
         void refreshData();

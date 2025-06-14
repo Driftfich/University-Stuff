@@ -13,6 +13,8 @@
 #include "text.h"
 #include "audio.h"
 
+#include "returns.h"
+
 LibItemTableModel::LibItemTableModel(LibitemMan* libItemMan, MediaMan* mediaMan, QObject *parent)
     : QAbstractTableModel(parent), libItemMan(libItemMan), mediaMan(mediaMan) {
     for (int i = 0; i < MaxColumnIdentity; ++i) {
@@ -314,10 +316,10 @@ bool LibItemTableModel::updateLibitemFromJsonObject(const QJsonObject& jsonObjec
     return true;
 }
 
-bool LibItemTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
+Result LibItemTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
     if (!jsonObject.contains("libitem") || !jsonObject.contains("media")) {
         qDebug() << "JSON object does not contain required keys 'libitem' or 'media'";
-        return false;
+        return Result::Error("Invalid JSON object");
     }
 
     // try to update the media item. When the return value is -1 a new media item needs to be created
@@ -329,7 +331,7 @@ bool LibItemTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
         std::shared_ptr<Media> newMedia = Media::MediaFactory(mediaJson);
         if (!newMedia) {
             qDebug() << "Failed to create new media item from JSON object";
-            return false;
+            return Result::Error("Failed to create new media item");
         }
         mediaMan->addMedia(newMedia);
     }
@@ -339,7 +341,7 @@ bool LibItemTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
     std::shared_ptr<Libitem> newLibitem = Libitem::LibitemFactory(libitemJson);
     if (!newLibitem) {
         qDebug() << "Failed to create new libitem from JSON object";
-        return false;
+        return Result::Error("Failed to create new libitem");
     }
     libItemMan->addLibitem(newLibitem);
 
@@ -348,7 +350,7 @@ bool LibItemTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
     QModelIndex bottomRight = index(rowCount() - 1, columnCount() - 1);
     emit dataChanged(topLeft, bottomRight);
     emit layoutChanged(); // Notify that the layout has changed
-    return true;
+    return Result::Success();
 }
 
 QJsonObject LibItemTableModel::getDefaultSchema(QString mediaType) const {
