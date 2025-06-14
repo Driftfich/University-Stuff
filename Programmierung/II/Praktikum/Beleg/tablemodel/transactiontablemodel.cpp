@@ -355,7 +355,8 @@ Result TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) 
         // count the number of current transactions for this person by utilizing the person map in the transaction manager
         QVector<std::shared_ptr<Transaction>> transactions = transactionMan->getTransactionsByPersonId(person->getId());
         if (transactions.size() >= limit) {
-            return Result::Error("Person has reached the maximum number of borrowed items");
+            QString errorMsg = person->getFname() + " " + person->getLname() + " has reached the maximum number of borrowed items (" + QString::number(limit) + ")";
+            return Result::Error(errorMsg);
         }
     }
     else {
@@ -383,15 +384,15 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
     }
     // qDebug() << "Try to update transaction from json object" << "\n";
     std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
-    // qDebug() << "Failed to get the libitem, media or person from the transaction" << "\n";
     std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
-    std::shared_ptr<Media> media = nullptr;
-    if (libitem) {
-        media = mediaMan->getMedia(libitem->getMediaId());
-    }
     std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
+    std::shared_ptr<Media> media = nullptr;
+
     if (!transaction) {
         return false;
+    }
+    if (libitem) {
+        media = mediaMan->getMedia(libitem->getMediaId());
     }
 
     // Update the transaction from the json object
@@ -424,12 +425,6 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
         if (person->loadLocalParams(personObject) != 0) {
             return false;
         }
-        // if (personObject.contains("subclass_parameters")) {
-        //     QJsonObject subclassParams = personObject["subclass_parameters"].toObject();
-        //     if (person->loadSubclassParams(subclassParams) != 0) {
-        //         return false;
-        //     }
-        // }
     }
 
     refreshData();

@@ -302,7 +302,7 @@ InfoPanel::~InfoPanel() {
 }
 
 void InfoPanel::displayInfo(const QJsonObject& jsonObject, bool resetEditMode) {
-    qDebug() << "Displaying new info without schema, resetEditMode:" << resetEditMode;
+    // qDebug() << "Displaying new info without schema, resetEditMode:" << resetEditMode;
     if (resetEditMode) {
         inEditMode = false;
         resetButtons();
@@ -349,7 +349,7 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, bool resetEditMode) {
 }
 
 void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject, bool resetEditMode) {
-    qDebug() << "Displaying new info with schema, resetEditMode:" << resetEditMode;
+    // qDebug() << "Displaying new info with schema, resetEditMode:" << resetEditMode;
     if (resetEditMode) {
         inEditMode = false;
         resetButtons();
@@ -701,7 +701,7 @@ void InfoPanel::saveChanges() {
 }
 
 void InfoPanel::cancelEditMode() {
-    qDebug() << "Canceling edit mode in InfoPanel";
+    // qDebug() << "Canceling edit mode in InfoPanel";
     
     // Clear validation state
     invalidRequiredFields.clear();
@@ -729,7 +729,7 @@ void InfoPanel::cancelEditMode() {
     hoveredItemForDelete = QPersistentModelIndex();
 
     emit editModeCancelled();
-    qDebug() << "Edit mode canceled successfully";
+    // qDebug() << "Edit mode canceled successfully";
 }
 
 void InfoPanel::resetButtons() {
@@ -1472,7 +1472,7 @@ void InfoPanel::onHeaderSectionClicked(int logicalIndex) {
 }
 
 void InfoPanel::clearOptionalFieldComponentsSafely() {
-    qDebug() << "Starting safe cleanup of optional field components";
+    // qDebug() << "Starting safe cleanup of optional field components";
     
     // Phase 1: Remove all item widgets from the tree to prevent Qt from trying to paint them
     for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
@@ -1509,5 +1509,5 @@ void InfoPanel::clearOptionalFieldComponentsSafely() {
     // Phase 5: Force another event processing cycle to ensure deleteLater is processed
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     
-    qDebug() << "Completed safe cleanup of optional field components";
+    // qDebug() << "Completed safe cleanup of optional field components";
 }

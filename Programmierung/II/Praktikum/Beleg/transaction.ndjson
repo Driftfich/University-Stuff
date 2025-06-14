@@ -1,3 +1,4 @@
-{"borrower_id":4,"id":3,"libitem_id":1,"transaction_time":"Fri May 17 23:06:22 2024"}
-{"borrower_id":2,"id":2,"libitem_id":2,"transaction_time":"Sat May 17 23:06:41 2025"}
-{"borrower_id":4,"id":4,"libitem_id":7,"transaction_time":""}
+{"borrower_id":4,"id":3,"libitem_id":1,"transaction_time":"2000-01-01 00:00:00"}
+{"borrower_id":2,"id":2,"libitem_id":2,"transaction_time":"2000-01-01 00:00:00"}
+{"borrower_id":4,"id":4,"libitem_id":7,"transaction_time":"1999-12-31 23:00:00"}
+{"borrower_id":6,"id":5,"libitem_id":0,"transaction_time":"2000-01-01 00:00:00"}

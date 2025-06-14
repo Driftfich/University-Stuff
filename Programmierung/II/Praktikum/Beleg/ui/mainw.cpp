@@ -786,7 +786,7 @@ void MainWindow::saveNewData(const QJsonObject& data) {
                                    tr("Neuer Eintrag wurde erfolgreich gespeichert."));
         } else {
             QMessageBox::warning(this, tr("Fehler"),
-                               tr("Fehler beim Speichern des neuen Eintrags."));
+                               QString(success));
         }
     }
     catch (const std::exception& e) {
