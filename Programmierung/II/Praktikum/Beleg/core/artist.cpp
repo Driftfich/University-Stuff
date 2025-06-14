@@ -29,7 +29,7 @@ QJsonObject Artist::getSubclassParams() const {
 }
 
 
-QJsonObject Artist::getSubclassSchema() {
+QJsonObject Artist::getSubclassSchema(bool checked) {
     QJsonObject properties;
     // artist_type: string
     properties.insert("artist_type", QJsonObject{{"type", "string"}});
@@ -43,7 +43,7 @@ QJsonObject Artist::getSubclassSchema() {
     QJsonObject schema;
     schema.insert("type", "object");
     schema.insert("properties", properties);
-    schema.insert("optional", true);
+    schema.insert("optional", checked);
     schema.insert("readonly", true); // dont allow deleting fields in the artist
 
     return schema;

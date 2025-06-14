@@ -38,9 +38,9 @@ int Transaction::loadLocalParams(const QJsonObject& json) {
         borrower_id = static_cast<unsigned long>(json["borrower_id"].toDouble());
     }
     if (json.contains("transaction_time") && json["transaction_time"].isString()) {
-        qDebug() << "Parsing Transaction Time " << json["transaction_time"].toString();
+        // qDebug() << "Parsing Transaction Time " << json["transaction_time"].toString();
         transaction_time = QDateTime::fromString(json["transaction_time"].toString(), "yyyy-MM-dd hh:mm:ss");
-        qDebug() << "Parsed Transaction Time: " << transaction_time.toString();
+        // qDebug() << "Parsed Transaction Time: " << transaction_time.toString();
     }
     return 0;
 }

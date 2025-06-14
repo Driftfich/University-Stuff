@@ -62,7 +62,7 @@ class Artist {
         QJsonObject getSubclassParams() const;
         int loadSubclassParams(const QJsonObject& json);
 
-        static QJsonObject getSubclassSchema();
+        static QJsonObject getSubclassSchema(bool checked = false);
 
         Artist(const QJsonObject& json) {
             if (loadSubclassParams(json) != 0) {

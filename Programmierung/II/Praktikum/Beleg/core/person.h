@@ -147,9 +147,10 @@ class Person {
         static std::shared_ptr<Person> PersonFactory(const QJsonObject& json);
 
         // schema methods
-        static QJsonObject getLocalSchema();
+        static QJsonObject getLocalSchema(bool ArtistChecked = false, bool BorrowerChecked = false);
         // virtual QJsonObject getSubclassSchema() const { return QJsonObject(); }
-        static QJsonObject getSchema();
+        static QJsonObject getSchema(bool ArtistChecked = false, bool BorrowerChecked = false);
+        QJsonObject getSchemaAuto();
 
         // print methods
         friend std::ostream& operator<<(std::ostream& os, const Person& person);

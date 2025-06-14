@@ -250,9 +250,9 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
         jsonObject["Media"] = QJsonObject();
     }
     if (person) {
-        jsonObject["Person"] = person->getJson();
+        jsonObject["person"] = person->getJson();
     } else {
-        jsonObject["Person"] = QJsonObject();
+        jsonObject["person"] = QJsonObject();
     }
 
     return jsonObject;
@@ -301,9 +301,9 @@ QJsonObject TransactionTableModel::getSchemaObject(const QModelIndex& index) con
         properties.insert("Media", QJsonObject());
     }
     if (person) {
-        properties.insert("Person", person->getSchema());
+        properties.insert("person", person->getSchemaAuto());
     } else {
-        properties.insert("Person", QJsonObject());
+        properties.insert("person", QJsonObject());
     }
     rootSchema.insert("properties", properties);
     return rootSchema;
@@ -420,8 +420,8 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
         }
     }
 
-    if (person && jsonObject.contains("Person")) {
-        QJsonObject personObject = jsonObject["Person"].toObject();
+    if (person && jsonObject.contains("person")) {
+        QJsonObject personObject = jsonObject["person"].toObject();
         if (person->loadLocalParams(personObject) != 0) {
             return false;
         }

@@ -264,34 +264,27 @@ QJsonObject PersonTableModel::getSchemaObject(const QModelIndex& index) const {
         return QJsonObject();
     }
 
-    // QJsonObject completeSchema = QJsonObject();
-    // completeSchema["type"] = "object";
-    // completeSchema["properties"] = QJsonObject{
-    //     {"person", QJsonObject{
-    //         {"type", "object"},
-    //         {"rename", "Person"},
-    //         {"description", "Person object containing personal information"},
-    //         {"properties", person->getSchema().value("properties").toObject()}
-    //     }},
-    //     {"transactions", QJsonObject{
-    //         {"type", "array"},
-    //         {"rename", "Transactions"},
-    //         {"description", "List of transactions for this person"},
-    //         {"items", QJsonObject{
-    //             {"type", "object"},
-    //             {"properties", QJsonObject{
-    //                 {"id", QJsonObject{{"type", "integer"}}},
-    //                 {"libitem_id", QJsonObject{{"type", "integer"}}},
-    //                 {"borrower_id", QJsonObject{{"type", "integer"}}},
-    //                 {"transaction_time", QJsonObject{{"type", "string"}, {"format", "date-time"}}}
-    //             }},
-    //         }}
-    //     }}
-    // };
-    // qDebug() << "Person Schema Object: " << completeSchema;
-
-    // return completeSchema;
-    return getDefaultSchema();
+    QJsonObject transaction = Transaction::getSchema();
+    // make the transaction object readonly
+    transaction["readonly"] = true;
+    return QJsonObject{
+        {"type", "object"},
+        {"properties", QJsonObject{
+            {"person", QJsonObject{
+                {"type", "object"},
+                {"rename", "Person"},
+                {"description", "Person object containing personal information"},
+                {"properties", person->getSchemaAuto().value("properties").toObject()}
+            }},
+            {"transactions", QJsonObject{
+                {"type", "array"},
+                {"rename", "Transactions"},
+                {"description", "List of transactions for this person"},
+                {"readonly", true},
+                {"items", Transaction::getSchema()}
+            }}
+        }}
+    };
 }
 
 bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
@@ -340,22 +333,6 @@ Result PersonTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
     refreshData();
     return Result::Success();
 }
-
-// QJsonObject PersonTableModel::getDefaultSchemaObject() const {
-//     QJsonObject defaultJson;
-//     defaultJson["subclass_type"] = QJsonObject{
-//         {"type", "string"},
-//         {"rename", "Subclass Type"},
-//         {"enum", QJsonArray{"Person", "Artist", "Borrower"}},
-//         {"description", "Type of the subclass (e.g. Person, Artist, Borrower)"}
-//     };
-
-//     return defaultJson;
-// }
-
-// QJsonObject PersonTableModel::getDefaultJsonObject(const QJsonObject& jsonObject) const {
-    
-// }
 
 void PersonTableModel::refreshData() {
     beginResetModel();

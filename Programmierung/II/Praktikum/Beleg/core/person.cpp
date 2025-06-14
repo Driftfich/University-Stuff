@@ -244,9 +244,11 @@ QJsonObject Person::getJson() const {
     if (artist) {
         json["artist"] = artist->getSubclassParams();
     }
+    else json["artist"] = QJsonObject();
     if (borrower) {
         json["borrower"] = borrower->getSubclassParams();
     }
+    else json["borrower"] = QJsonObject();
     return json;
 }
 
@@ -269,13 +271,13 @@ int Person::loadLocalParams(const QJsonObject& json) {
     if (json.contains("tel")) tel = json["tel"].toString();
     if (json.contains("artist")) {
         QJsonObject artistJson = json["artist"].toObject();
-        artist = std::make_unique<Artist>(artistJson);
+        if (!artistJson.isEmpty()) artist = std::make_unique<Artist>(artistJson);
     } else {
         artist = nullptr;
     }
     if (json.contains("borrower")) {
         QJsonObject borrowerJson = json["borrower"].toObject();
-        borrower = std::make_unique<Borrower>(borrowerJson);
+        if (!borrowerJson.isEmpty()) borrower = std::make_unique<Borrower>(borrowerJson);
     } else {
         borrower = nullptr;
     }
@@ -294,7 +296,7 @@ std::shared_ptr<Person> Person::PersonFactory(const QJsonObject& json) {
 }
 
 // schema methods
-QJsonObject Person::getLocalSchema() {
+QJsonObject Person::getLocalSchema(bool ArtistChecked, bool BorrowerChecked) {
     QJsonObject schema;
 
     schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"rename", "ID"}, {"description", "Unique identifier for the person"}, {"required", true}};
@@ -311,13 +313,13 @@ QJsonObject Person::getLocalSchema() {
     schema["location"] = QJsonObject{{"type", "string"}, {"rename", "Location"}, {"description", "Location of the person"}};
     schema["email"] = QJsonObject{{"type", "string"}, {"format", "email"}, {"rename", "Email"}, {"description", "Email address of the person"}};
     schema["tel"] = QJsonObject{{"type", "string"}, {"format", "tel"}, {"rename", "Telephone"}, {"description", "Telephone number of the person"}};
-    schema["artist"] = Artist::getSubclassSchema();
-    schema["borrower"] = Borrower::getSubclassSchema();
+    schema["artist"] = Artist::getSubclassSchema(ArtistChecked);
+    schema["borrower"] = Borrower::getSubclassSchema(BorrowerChecked);
 
     return schema;
 }
 
-QJsonObject Person::getSchema() {
+QJsonObject Person::getSchema(bool ArtistChecked, bool BorrowerChecked) {
     QJsonObject schema;
     QJsonObject properties;
     schema.insert("type", "object");
@@ -326,8 +328,17 @@ QJsonObject Person::getSchema() {
     //     properties.insert("subclass_type", QJsonObject{{"type", "string"}, {"enum", QJsonArray{"Person", "Artist", "Borrower"}}, {"rename", "Subclass Type"}, {"description", "Type of the subclass (e.g. Person, Artist, Borrower)"}});
     //     properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", getSubclassSchema()}});
     // }
-    schema.insert("properties", getLocalSchema());
+    schema.insert("properties", getLocalSchema(ArtistChecked, BorrowerChecked));
+    schema.insert("rename", "Person");
     return schema;
+}
+
+QJsonObject Person::getSchemaAuto() {
+    bool hasArtist=false, hasBorrower=false;
+    if (isBorrower()) hasBorrower = true;
+    if (isArtist()) hasArtist = true;
+
+    return getSchema(hasArtist, hasBorrower);
 }
 
 void Person::printbase(std::ostream& os) const {

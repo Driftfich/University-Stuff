@@ -422,10 +422,13 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
 
     // Check for optional flag for all types (objects, arrays, and leaf nodes)
     // qDebug() << "Current item schema for key:" << thisItem->text(0) << "->" << currentItemSchema;
-    bool isOptional = currentItemSchema.value("optional").toBool(false);
-    if (isOptional) {
-        // qDebug() << "Creating optional checkbox for item:" << thisItem->text(0) << " (type: " << currentItemSchema.value("type").toString() << ")";
-        createOptionalCheckbox(thisItem);
+    // bool isOptional = currentItemSchema.value("optional").toBool(false);
+    // if (isOptional) {
+    //     // qDebug() << "Creating optional checkbox for item:" << thisItem->text(0) << " (type: " << currentItemSchema.value("type").toString() << ")";
+    //     createOptionalCheckbox(thisItem);
+    // }
+    if (currentItemSchema.contains("optional")) {
+        createOptionalCheckbox(thisItem, currentItemSchema.value("optional").toBool(false));
     }
 
     if (valueForThisItem.isObject()) {
@@ -452,18 +455,20 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         }
     } else if (valueForThisItem.isArray()) {
         thisItem->setData(0, Qt::UserRole, "array"); // 'thisItem' (e.g., "transactions", "artist_ids") represents an array.
+        thisItem->setData(0, SchemaReadonlyRole, isReadOnly);
         QJsonArray array = valueForThisItem.toArray();
 
         QJsonObject itemSchema; // Schema for individual items in the array
         if (currentItemSchema.value("type").toString() == "array" && currentItemSchema.contains("items")) {
             itemSchema = currentItemSchema.value("items").toObject();
         }
-
+        qDebug() << thisItem->text(0) << ":";
         for (int i = 0; i < array.size(); ++i) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, QString("[%1]").arg(i));
-            child->setData(0, SchemaReadonlyRole, isReadOnly);
-            addJsonToTreeRecursive(array[i], child, depth + 1, itemSchema);
+            qDebug() << "  Adding item" << QString("[%1]").arg(i) << "with readonly state:" << isReadOnly;
+            addJsonToTreeRecursive(array[i], child, depth + 1,  itemSchema);
+            child->setData(0, SchemaReadonlyRole, isReadOnly); // Set readonly state for the child item
         }
     } 
     else { // Leaf node
@@ -484,7 +489,7 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         thisItem->setData(1, SchemaReadonlyRole, isReadOnly);
         thisItem->setData(0, SchemaReadonlyRole, isReadOnly);
         thisItem->setData(1, SchemaRequiredRole, isRequired);
-        thisItem->setData(1, SchemaOptionalRole, isOptional);
+        // thisItem->setData(1, SchemaOptionalRole, isOptional);
         QJsonValue minValue = currentItemSchema.value("minimum");
         if (!minValue.isUndefined() && !minValue.isNull()) {
             long long min = minValue.toVariant().toLongLong();
@@ -1012,6 +1017,8 @@ bool InfoPanel::isItemDeletable(QTreeWidgetItem* item) const {
     // The parent of this leaf item must be a "lowest collection" (a simple array or object) and parent should not be readonly
     QVariant readonlyVariant = item->parent()->data(0, SchemaReadonlyRole);
     bool readonly = readonlyVariant.isValid() ? readonlyVariant.toBool() : false;
+    // qDebug() << "Checking if item is deletable:" << item->text(0) << "Readonly:" << readonly << "Parent Key:" << item->parent()->text(0) << "Parent Readonly:" << readonlyVariant;
+    // qDebug() << "Parent of parent" << item->parent()->parent()->text(0);
     return isLowestCollection(item->parent()) && !isHighestItem(item->parent()) && !readonly;
 }
 
@@ -1271,7 +1278,7 @@ void InfoPanel::updateFieldValidationState(const QModelIndex& index) {
  * When checked, the field and its subcomponents are available for editing.
  * When unchecked, the field is hidden/unavailable.
  */
-void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item) {
+void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item, bool checked) {
     if (!item) {
         qDebug() << "Cannot create checkbox for null item";
         return;
@@ -1289,7 +1296,7 @@ void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item) {
     
     // Create the checkbox with proper parent
     QCheckBox* checkbox = new QCheckBox(containerWidget);
-    checkbox->setChecked(true);
+    checkbox->setChecked(checked);
     checkbox->setToolTip("Enable/disable this optional field (only in edit mode)");
     
     // Create a label with the item's text
@@ -1303,7 +1310,7 @@ void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item) {
     
     // Store the checkbox reference BEFORE setting the widget
     optionalCheckboxes[item] = checkbox;
-    optionalFieldStates[item] = true;
+    optionalFieldStates[item] = checked;
     
     // Clear the item's text since we're showing it in the label
     item->setText(0, "");

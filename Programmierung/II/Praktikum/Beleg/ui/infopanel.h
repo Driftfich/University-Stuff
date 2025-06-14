@@ -33,7 +33,7 @@ class InfoPanel : public QWidget {
         QJsonObject getOriginalData() const { return originalData; }
         QJsonObject getCurrentSchema() const { return currentSchema; }
         void setOriginalData(const QJsonObject& data) {
-            qDebug() << "Setting original data in InfoPanel";
+            // qDebug() << "Setting original data in InfoPanel";
             originalData = data;
         }
         void setCurrentSchema(const QJsonObject& schema) {
@@ -121,7 +121,7 @@ class InfoPanel : public QWidget {
         // bool JsonChanged();
 
         // Optional field management
-        void createOptionalCheckbox(QTreeWidgetItem* item);
+        void createOptionalCheckbox(QTreeWidgetItem* item, bool checked = false);
         void onOptionalCheckboxToggled(bool checked);
         void updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visible, int depth = 0);
         void setOptionalFieldsVisibility();

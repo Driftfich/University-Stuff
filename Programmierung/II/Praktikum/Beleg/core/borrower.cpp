@@ -10,14 +10,14 @@ QJsonObject Borrower::getSubclassParams() const {
     return json;
 }
 
-QJsonObject Borrower::getSubclassSchema() {
+QJsonObject Borrower::getSubclassSchema(bool checked) {
     QJsonObject properties;
     properties["limit"] = QJsonObject{{"type", "integer"}, {"minimum", 0}, {"maximum", MAX_ITEMS_PER_BORROWER_HARD}};
     // properties["bow_id"] = QJsonObject{{"type", "integer"}, {"minimum", 0}};
     QJsonObject schema;
     schema.insert("type", "object");
     schema.insert("properties", properties);
-    schema.insert("optional", true);
+    schema.insert("optional", checked);
     schema.insert("readonly", true); // don't allow deleting fields in the borrower
     return schema;
 }

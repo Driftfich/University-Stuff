@@ -167,6 +167,34 @@ void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QSt
     addPanel->setOriginalSchema(originalSchema);
 }
 
+void MainWindow::enabledArtist(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
+    int currentIndex = tableWidgetUi->TabSelector->currentIndex();
+
+    if ((currentIndex != 0 && currentIndex != 2) ||
+        // newValue.toBool() != true ||
+        (fieldName != "artist" && fieldName != "borrower")) {
+        qDebug() << "Field isnt in Person Model nor artist." << (newValue.toBool() != true) << (fieldName != "artist" && fieldName != "borrower");
+        return;
+    }
+
+    QJsonObject originalPerson = infoPanel->getOriginalData();
+    QJsonObject currentData = infoPanel->collectDataFromTree();
+    QJsonObject currentPerson = currentData.value("person").toObject();
+    if (fieldName == "artist" && currentPerson["artist"].toObject().isEmpty()) {
+        currentPerson["artist"] = createDefaultJsonFromSchema(Artist::getSubclassSchema());
+    } else if (fieldName == "borrower" && currentPerson["borrower"].toObject().isEmpty()) {
+        currentPerson["borrower"] = createDefaultJsonFromSchema(Borrower::getSubclassSchema());
+    }
+
+    currentData["person"] = currentPerson; // Update the person object in the current data
+
+    QTimer::singleShot(0, [this, currentData, originalPerson]() {
+        infoPanel->displayInfo(currentData, infoPanel->getCurrentSchema(), false);
+        infoPanel->setOriginalData(originalPerson);
+    });
+
+}
+
 void MainWindow::setupUnifiedFieldChangeHandler()
 {
     try {
@@ -254,6 +282,7 @@ void MainWindow::setupSideDock()
     // try the changeMediaId on the info panel
     connect(infoPanel, &InfoPanel::fieldChanged, this, [=](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
         changedMediaId(infoPanel, item, column, fieldName, oldValue, newValue);
+        enabledArtist(item, column, fieldName, oldValue, newValue);
     });
     
     // Doppelklick auf Tabelleintrag zeigt Info-Panel
