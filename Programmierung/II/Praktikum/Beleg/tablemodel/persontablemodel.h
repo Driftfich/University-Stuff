@@ -53,9 +53,9 @@ class PersonTableModel : public QAbstractTableModel {
 
         QJsonObject getJsonObject(const QModelIndex& index) const;
         QJsonObject getJsonObject(const QModelIndex& index, const TransactionMan* transactionMan) const;
-        QJsonObject getDefaultJsonObject() const;
         QJsonObject getSchemaObject(const QModelIndex& index) const;
-        QJsonObject getDefaultSchema() const;
+        QJsonObject getDefaultJsonObject(bool artistChecked = false, bool borrowerChecked = false) const;
+        QJsonObject getDefaultSchema(bool artistChecked = false, bool borrowerChecked = false) const;
         bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
         Result saveFromJsonObject(const QJsonObject& jsonObject);
 

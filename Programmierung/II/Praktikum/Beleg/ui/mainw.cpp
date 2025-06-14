@@ -178,19 +178,27 @@ void MainWindow::enabledArtist(QTreeWidgetItem* item, int column, const QString&
     }
 
     QJsonObject originalPerson = infoPanel->getOriginalData();
+    QJsonObject originalSchema = infoPanel->getOriginalSchema();
+
     QJsonObject currentData = infoPanel->collectDataFromTree();
     QJsonObject currentPerson = currentData.value("person").toObject();
+    bool isArtist = currentPerson.contains("artist");
+    bool isBorrower = currentPerson.contains("borrower");
+
+    QJsonObject newSchema = personModel->getDefaultSchema(isArtist, isBorrower);
+
     if (fieldName == "artist" && currentPerson["artist"].toObject().isEmpty()) {
-        currentPerson["artist"] = createDefaultJsonFromSchema(Artist::getSubclassSchema());
+        currentPerson["artist"] = createDefaultJsonFromSchema(Artist::getSubclassSchema(true));
     } else if (fieldName == "borrower" && currentPerson["borrower"].toObject().isEmpty()) {
-        currentPerson["borrower"] = createDefaultJsonFromSchema(Borrower::getSubclassSchema());
+        currentPerson["borrower"] = createDefaultJsonFromSchema(Borrower::getSubclassSchema(true));
     }
 
     currentData["person"] = currentPerson; // Update the person object in the current data
 
-    QTimer::singleShot(0, [this, currentData, originalPerson]() {
-        infoPanel->displayInfo(currentData, infoPanel->getCurrentSchema(), false);
+    QTimer::singleShot(0, [this, currentData, newSchema, originalPerson, originalSchema]() {
+        infoPanel->displayInfo(currentData, newSchema, false);
         infoPanel->setOriginalData(originalPerson);
+        infoPanel->setOriginalSchema(originalSchema);
     });
 
 }
