@@ -182,16 +182,20 @@ void MainWindow::enabledArtist(QTreeWidgetItem* item, int column, const QString&
 
     QJsonObject currentData = infoPanel->collectDataFromTree();
     QJsonObject currentPerson = currentData.value("person").toObject();
-    bool isArtist = currentPerson.contains("artist");
-    bool isBorrower = currentPerson.contains("borrower");
+
+    bool isArtist = currentPerson.contains("artist") && !currentPerson["artist"].toObject().isEmpty();
+    bool isBorrower = currentPerson.contains("borrower") && !currentPerson["borrower"].toObject().isEmpty();
 
     QJsonObject newSchema = personModel->getDefaultSchema(isArtist, isBorrower);
 
     if (fieldName == "artist" && currentPerson["artist"].toObject().isEmpty()) {
         currentPerson["artist"] = createDefaultJsonFromSchema(Artist::getSubclassSchema(true));
-    } else if (fieldName == "borrower" && currentPerson["borrower"].toObject().isEmpty()) {
+    } 
+    else if (!isArtist) currentPerson["artist"] = QJsonObject(); // collectDataFromTree filters unchecked elements -> artist has to be set again to be visible
+    if (fieldName == "borrower" && currentPerson["borrower"].toObject().isEmpty()) {
         currentPerson["borrower"] = createDefaultJsonFromSchema(Borrower::getSubclassSchema(true));
-    }
+    } 
+    else if (!isBorrower) currentPerson["borrower"] = QJsonObject(); // collectDataFromTree filters unchecked elements -> borrower has to be set again to be visible
 
     currentData["person"] = currentPerson; // Update the person object in the current data
 
