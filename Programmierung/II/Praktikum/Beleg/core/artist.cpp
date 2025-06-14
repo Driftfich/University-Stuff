@@ -21,7 +21,7 @@ QJsonObject Artist::getSubclassParams() const {
     QJsonObject json;
     json["artist_type"] = this->artist_type;
     QJsonArray arr;
-    for (auto id : this->media_ids) {
+    for (unsigned long id : this->media_ids) {
         arr.append(static_cast<qint64>(id));
     }
     json["media_ids"] = arr;

@@ -290,19 +290,6 @@ std::shared_ptr<Person> Person::fromFile(QFile& file) {
 }
 
 std::shared_ptr<Person> Person::PersonFactory(const QJsonObject& json) {
-    // auto base = json["person"].toObject();
-    // auto type = json["subclass_type"].toString();
-    // if (type == "Artist") {
-    //     return std::make_shared<Artist>(json);
-    // } else if (type == "Borrower") {
-    //     return std::make_shared<Borrower>(json);
-    // }
-    // else if (type == "Person") {
-    //     return std::make_shared<Person>(base);
-    // }
-    // else {
-    //     throw std::runtime_error("Unknown subclass type: " + type.toStdString());
-    // }
     return std::make_shared<Person>(json);
 }
 

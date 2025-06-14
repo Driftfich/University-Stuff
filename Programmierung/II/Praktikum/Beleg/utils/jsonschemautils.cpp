@@ -23,7 +23,7 @@ QJsonObject createDefaultJsonFromSchema(const QJsonObject& schemaObject) {
     }
     
     // Durchlaufe alle Eigenschaften im Schema
-    for (auto it = properties.constBegin(); it != properties.constEnd(); ++it) {
+    for (QJsonObject::const_iterator it = properties.constBegin(); it != properties.constEnd(); ++it) {
         const QString& fieldName = it.key();
         const QJsonValue& fieldSchema = it.value();
         

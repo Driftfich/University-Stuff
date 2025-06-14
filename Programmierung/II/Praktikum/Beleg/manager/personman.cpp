@@ -70,7 +70,7 @@ QVector<std::shared_ptr<Person>> PersonMan::getPersons() const {
     return persons;
 }
 std::shared_ptr<Person> PersonMan::getPerson(unsigned long id) const {
-    auto it = person_map.find(id);
+    QHash<unsigned long, std::shared_ptr<Person>>::const_iterator it = person_map.find(id);
     if (it != person_map.end()) {
         return it.value();
     }
@@ -85,7 +85,7 @@ QString PersonMan::getFilename() const {
 }
 
 int PersonMan::removePersonId(unsigned long id) {
-    for (auto p = persons.begin(); p != persons.end(); ++p) {
+    for (QVector<std::shared_ptr<Person>>::iterator p = persons.begin(); p != persons.end(); ++p) {
         if ((*p)->getId() == id) {
             persons.erase(p);
             person_map.remove(id);

@@ -233,7 +233,7 @@ void MainWindow::setupSideDock()
 
     // InfoPanel in die infopanel-Seite einfügen
     infoPanel = new InfoPanel(sidePanelUi->infopanel);
-    auto *infoLayout = new QVBoxLayout(sidePanelUi->infopanel);
+    QVBoxLayout *infoLayout = new QVBoxLayout(sidePanelUi->infopanel);
     infoLayout->setContentsMargins(0,0,0,0);
     infoLayout->addWidget(infoPanel);
 
@@ -256,15 +256,15 @@ void MainWindow::setupSideDock()
     // Doppelklick auf Tabelleintrag zeigt Info-Panel
     auto showInfo = [this](const QModelIndex& index) {
         // 1) sender() ist das QTableView, das doubleClicked gefeuert hat
-        auto *view = qobject_cast<QTableView*>(sender());
+        QTableView* view = qobject_cast<QTableView*>(sender());
         if (!view) return;
 
         // 2) Proxy-Model holen
-        auto *proxy = qobject_cast<QSortFilterProxyModel*>(view->model());
+        QSortFilterProxyModel* proxy = qobject_cast<QSortFilterProxyModel*>(view->model());
         if (!proxy) return;
 
         // 3) Source-Model holen
-        auto *srcModel = qobject_cast<QAbstractTableModel*>(proxy->sourceModel());
+        QAbstractTableModel* srcModel = qobject_cast<QAbstractTableModel*>(proxy->sourceModel());
         if (!srcModel) return;
 
         // 4) auf Source-Index mappen
@@ -277,13 +277,13 @@ void MainWindow::setupSideDock()
         // 5) JSON holen je nach Model-Typ
         QJsonObject info;
         QJsonObject schema = QJsonObject(); // Schema-Objekt, falls verfügbar
-        if (auto *tm = qobject_cast<TransactionTableModel*>(srcModel))
+        if (TransactionTableModel* tm = qobject_cast<TransactionTableModel*>(srcModel))
             {info = tm->getJsonObject(srcIndex);
             schema = tm->getSchemaObject(srcIndex);}
-        else if (auto *pm = qobject_cast<PersonTableModel*>(srcModel))
+        else if (PersonTableModel* pm = qobject_cast<PersonTableModel*>(srcModel))
             {info = pm->getJsonObject(srcIndex, lib->getTransactionManager());
             schema = pm->getSchemaObject(srcIndex);}
-        else if (auto *lm = qobject_cast<LibItemTableModel*>(srcModel))
+        else if (LibItemTableModel* lm = qobject_cast<LibItemTableModel*>(srcModel))
             {info = lm->getJsonObject(srcIndex);
             schema = lm->getSchemaObject(srcIndex);
         }
@@ -296,7 +296,7 @@ void MainWindow::setupSideDock()
         sideDock->setWindowTitle(tr("Item Information"));
     };
 
-    for (auto *tv : { tableWidgetUi->persontab,
+    for (QTableView *tv : { tableWidgetUi->persontab,
                 tableWidgetUi->itemtab,
                 tableWidgetUi->transtab })
     connect(tv, &QTableView::doubleClicked, this, showInfo);
@@ -305,7 +305,7 @@ void MainWindow::setupSideDock()
 void MainWindow::setupAddPanel()
 {
     addPanel = new InfoPanel(sidePanelUi->addpanel);
-    auto *addLayout = new QVBoxLayout(sidePanelUi->addpanel);
+    QVBoxLayout *addLayout = new QVBoxLayout(sidePanelUi->addpanel);
     addLayout->addWidget(addPanel);
     addPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -731,15 +731,15 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
     try {
         // Je nach Model-Typ die entsprechende Speicher-Methode aufrufen
         bool success = false;
-        
-        if (auto *tm = qobject_cast<TransactionTableModel*>(currentEditModel)) {
+
+        if (TransactionTableModel* tm = qobject_cast<TransactionTableModel*>(currentEditModel)) {
             // Sie müssten eine setJsonObject-Methode implementieren oder direkt den Manager aufrufen
             success = tm->updateFromJsonObject(data, currentEditIndex);
         } 
-        else if (auto *pm = qobject_cast<PersonTableModel*>(currentEditModel)) {
+        else if (PersonTableModel* pm = qobject_cast<PersonTableModel*>(currentEditModel)) {
             success = pm->updateFromJsonObject(data, currentEditIndex);
         } 
-        else if (auto *lm = qobject_cast<LibItemTableModel*>(currentEditModel)) {
+        else if (LibItemTableModel* lm = qobject_cast<LibItemTableModel*>(currentEditModel)) {
             success = lm->updateFromJsonObject(data, currentEditIndex);
         }
         

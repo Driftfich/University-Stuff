@@ -108,21 +108,13 @@ QString TransactionMan::getFilename() const {
     return filename;
 }
 
-// QVector<std::shared_ptr<Transaction>> TransactionMan::getTransactionsByLibitemId(unsigned long libitem_id) const {
-//     QVector<std::shared_ptr<Transaction>> transactions_by_libitem;
-//     auto it = libitem_map.find(libitem_id);
-//     if (it != libitem_map.end()) {
-//         transactions_by_libitem = it.value();
-//     }
-//     return transactions_by_libitem;
-// }
 QVector<std::shared_ptr<Transaction>> TransactionMan::getTransactionsByPersonId(unsigned long person_id) const {
     // qDebug() << person_map.value(person_id).size() << "transactions for person ID:" << person_id;
     return person_map.value(person_id);
 }
 
 int TransactionMan::removeTransactionId(unsigned long id) {
-    for (auto it = transactions.begin(); it != transactions.end(); ++it) {
+    for (QVector<std::shared_ptr<Transaction>>::iterator it = transactions.begin(); it != transactions.end(); ++it) {
         if ((*it)->getId() == id) {
             transactions.erase(it);
             libitem_map.remove((*it)->getLibitemId());

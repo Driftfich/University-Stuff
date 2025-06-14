@@ -292,7 +292,7 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
 
 InfoPanel::~InfoPanel() {
     // Clean up optional checkboxes
-    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
+    for (QMap<QTreeWidgetItem*, QCheckBox*>::const_iterator it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
         delete it.value();
     }
     optionalCheckboxes.clear();
@@ -1341,7 +1341,7 @@ void InfoPanel::onOptionalCheckboxToggled(bool checked) {
     
     // Find the item associated with this checkbox
     QTreeWidgetItem* item = nullptr;
-    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
+    for (QMap<QTreeWidgetItem*, QCheckBox*>::const_iterator it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
         if (it.value() == checkbox) {
             item = it.key();
             break;
@@ -1404,7 +1404,7 @@ void InfoPanel::updateOptionalFieldVisibility(QTreeWidgetItem* item, bool visibl
  * field visibilities are correctly applied.
  */
 void InfoPanel::setOptionalFieldsVisibility() {
-    for (auto it = optionalFieldStates.constBegin(); it != optionalFieldStates.constEnd(); ++it) {
+    for (QMap<QTreeWidgetItem*, bool>::const_iterator it = optionalFieldStates.constBegin(); it != optionalFieldStates.constEnd(); ++it) {
         QTreeWidgetItem* item = it.key();
         bool enabled = it.value();
         updateOptionalFieldVisibility(item, enabled, 0);
@@ -1475,7 +1475,7 @@ void InfoPanel::clearOptionalFieldComponentsSafely() {
     // qDebug() << "Starting safe cleanup of optional field components";
     
     // Phase 1: Remove all item widgets from the tree to prevent Qt from trying to paint them
-    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
+    for (QMap<QTreeWidgetItem*, QCheckBox*>::const_iterator it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
         QTreeWidgetItem* item = it.key();
         if (item) {
             // Remove the widget from the tree widget BEFORE deleting it
@@ -1491,7 +1491,7 @@ void InfoPanel::clearOptionalFieldComponentsSafely() {
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     
     // Phase 3: Now safely delete the container widgets
-    for (auto it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
+    for (QMap<QTreeWidgetItem*, QCheckBox*>::const_iterator it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
         QTreeWidgetItem* item = it.key();
         if (item) {
             // The widget should already be removed from the tree, now safe to delete

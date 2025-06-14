@@ -35,7 +35,7 @@ int LibitemMan::addLibitem(std::shared_ptr<Libitem> libitem) {
     return -1;
 }
 int LibitemMan::removeLibitemId(unsigned long id) {
-    for (auto it = libitems.begin(); it != libitems.end(); ++it) {
+    for (QVector<std::shared_ptr<Libitem>>::iterator it = libitems.begin(); it != libitems.end(); ++it) {
         if ((*it)->getId() == id) {
             libitems.erase(it);
             libitem_map.remove(id);
@@ -63,7 +63,7 @@ QVector<std::shared_ptr<Libitem>> LibitemMan::getLibitems() const {
 }
 
 std::shared_ptr<Libitem> LibitemMan::getLibitem(unsigned long id) const {
-    auto it = libitem_map.find(id);
+    QHash<unsigned long, std::shared_ptr<Libitem>>::const_iterator it = libitem_map.find(id);
     if (it != libitem_map.end()) {
         return it.value();
     }

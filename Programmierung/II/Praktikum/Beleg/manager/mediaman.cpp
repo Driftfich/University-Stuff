@@ -36,7 +36,7 @@ int MediaMan::addMedia(std::shared_ptr<Media> media) {
 }
 
 int MediaMan::removeMedia(unsigned long id) {
-    for (auto it = media.begin(); it != media.end(); ++it) {
+    for (QVector<std::shared_ptr<Media>>::iterator it = media.begin(); it != media.end(); ++it) {
         if ((*it)->getId() == id) {
             media.erase(it);
             media_map.remove(id);
