@@ -296,7 +296,7 @@ QJsonObject TransactionTableModel::getSchemaObject(const QModelIndex& index) con
     }
     if (media) {
         // get the media type
-        properties.insert("Media", media->getSchemaByType(media->getSubclassType()));
+        properties.insert("Media", media->getSchemaByType());
     } else {
         properties.insert("Media", QJsonObject());
     }

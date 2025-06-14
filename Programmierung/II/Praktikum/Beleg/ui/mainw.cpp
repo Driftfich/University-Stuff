@@ -84,10 +84,10 @@ void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int col
     // Media* mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
     qDebug() << "Searching for media item with id:" << currentIdValue;
     std::shared_ptr<Media> mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
+    // get the current actice media type from the info panel
+    QString mediaType = newJson.value("media").toObject().value("subclass_type").toString();
     if (!mediaItem) {
         qDebug() << "Media item with id" << currentIdValue << "not found in MediaManager.";
-        // get the current actice media type from the info panel
-        QString mediaType = newJson.value("media").toObject().value("subclass_type").toString();
 
         // set the media id in the new media json object
         QJsonObject mediaJson = libitemModel->getDefaultJsonObject(mediaType).value("media").toObject();
@@ -107,14 +107,16 @@ void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int col
     else {
         // update the original media with the new media json object
         newJson["media"] = mediaItem->getJson();
-        // // update the original schema
-        // originalSchema["media"] = mediaItem->getSchema();
+        // update the schema
         QJsonObject properties = newSchema.value("properties").toObject();
         QJsonObject mediaSchema = properties.value("media").toObject();
-        mediaSchema = mediaItem->getSchema();
+        mediaSchema = mediaItem->getSchemaByType();
         properties["media"] = mediaSchema; // Update the properties with the new media schema
         newSchema["properties"] = properties; // Update the original schema with the new properties
     }
+
+    qDebug() << newJson;
+    qDebug() << newSchema;
 
     // update the info panel with the new media json object and schema
     QTimer::singleShot(0, [this, panel, newJson, newSchema, originalData, originalSchema]() {

@@ -367,8 +367,8 @@ QJsonObject Media::getSchema() {
     return schema;
 }
 
-QJsonObject Media::getSchemaByType(QString mediaType) const {
-    mediaType = mediaType.trimmed().toLower();
+QJsonObject Media::getSchemaByType() const {
+    QString mediaType = getSubclassType();
     if (mediaType == "Text") {
         return Text::getSchema();
     }

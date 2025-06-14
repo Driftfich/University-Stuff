@@ -253,7 +253,7 @@ QJsonObject LibItemTableModel::getSchemaObject(const QModelIndex& index) const {
     properties.insert("type", "object");
     properties.insert("libitem", libitem->getSchema());
     if (media) {
-        properties.insert("media", media->getSchemaByType(media->getSubclassType()));
+        properties.insert("media", media->getSchemaByType());
     } else {
         properties.insert("media", QJsonObject());
     }
