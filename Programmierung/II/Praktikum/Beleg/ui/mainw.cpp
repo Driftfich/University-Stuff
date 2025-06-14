@@ -186,7 +186,7 @@ void MainWindow::enabledArtist(QTreeWidgetItem* item, int column, const QString&
     bool isArtist = currentPerson.contains("artist") && !currentPerson["artist"].toObject().isEmpty();
     bool isBorrower = currentPerson.contains("borrower") && !currentPerson["borrower"].toObject().isEmpty();
 
-    QJsonObject newSchema = personModel->getDefaultSchema(isArtist, isBorrower);
+    QJsonObject newSchema = personModel->getDefaultSchema((isArtist || fieldName == "artist"), (isBorrower || fieldName == "borrower"));
 
     if (fieldName == "artist" && currentPerson["artist"].toObject().isEmpty()) {
         currentPerson["artist"] = createDefaultJsonFromSchema(Artist::getSubclassSchema(true));

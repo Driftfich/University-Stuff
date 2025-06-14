@@ -462,11 +462,10 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         if (currentItemSchema.value("type").toString() == "array" && currentItemSchema.contains("items")) {
             itemSchema = currentItemSchema.value("items").toObject();
         }
-        qDebug() << thisItem->text(0) << ":";
+
         for (int i = 0; i < array.size(); ++i) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, QString("[%1]").arg(i));
-            qDebug() << "  Adding item" << QString("[%1]").arg(i) << "with readonly state:" << isReadOnly;
             addJsonToTreeRecursive(array[i], child, depth + 1,  itemSchema);
             child->setData(0, SchemaReadonlyRole, isReadOnly); // Set readonly state for the child item
         }
@@ -1284,7 +1283,7 @@ void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item, bool checked) {
         return;
     }
     
-    qDebug() << "Creating checkbox for optional field:" << item->text(0);
+    // qDebug() << "Creating checkbox for optional field:" << item->text(0);
     
     // Create a container widget to hold both checkbox and label
     QWidget* containerWidget = new QWidget(treeWidget); // Set parent for proper cleanup
