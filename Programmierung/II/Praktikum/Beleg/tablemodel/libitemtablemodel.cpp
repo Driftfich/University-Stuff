@@ -38,8 +38,31 @@ int LibItemTableModel::removeRow(int row, const QModelIndex &parent) {
     if (row < 0 || row >= libItemMan->getLibitems().size()) {
         return false;
     }
+    // check if the media item behind the libitem is referenced by any other libitem
+    std::shared_ptr<Libitem> libitem = (*libItemMan)[row];
+    if (libitem == nullptr) {
+        return false;
+    }
+    std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
+    if (media == nullptr) {
+        return false;
+    }
+    // Check if the media item is referenced by any other libitem
+    bool hasOtherReferences = false;
+    for (const auto& item : libItemMan->getLibitems()) {
+        if (item->getMediaId() == media->getId() && item->getId() != libitem->getId()) {
+            hasOtherReferences = true;
+            break;
+        }
+    }
+
+    if (!hasOtherReferences) {
+        // remove the media item if it is not referenced by any other libitem
+        if (mediaMan->removeMedia(media->getId()) != 0) {
+            return false; // Failed to remove media item
+        }
+    }
     beginRemoveRows(parent, row, row);
-    // std::cout << "Removing row: " << row << std::endl;
     libItemMan->removeLibitem(row);
     endRemoveRows();
     return true;
@@ -49,11 +72,17 @@ bool LibItemTableModel::removeRows(int row, int count, const QModelIndex &parent
     if (row < 0 || row + count > libItemMan->getLibitems().size()) {
         return false;
     }
-    beginRemoveRows(parent, row, row + count - 1);
+    // beginRemoveRows(parent, row, row + count - 1);
+    // for (int i = 0; i < count; ++i) {
+    //     libItemMan->removeLibitem(row);
+    // }
+    // endRemoveRows();
     for (int i = 0; i < count; ++i) {
-        libItemMan->removeLibitem(row);
+        if (!removeRow(row, parent)) {
+            return false; // If any row removal fails, return false
+        }
     }
-    endRemoveRows();
+    
     return true;
 }
 

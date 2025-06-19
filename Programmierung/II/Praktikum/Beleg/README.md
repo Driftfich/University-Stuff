@@ -82,6 +82,8 @@ For example:
 - Delete person which is part of a transaction
 - The person wont be visible in the transaction any more. Instead it will contain some blank fields.
 
+Media Items get automatically removed with the last libitem which would reference it.
+
 1. Go to the corresponding tab
 2. Select the row(s) you want to delete
 3. Click on the "Delete" button in the right upper corner of the Window, next to the add button
