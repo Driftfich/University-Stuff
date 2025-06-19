@@ -30,6 +30,7 @@ class Media {
     // unsigned int available_copies;
     // metadata map with string to T map
     QMap<QString, QVariant> metadata;
+    int refCount = 0;
 
     public:
         // setter methods
@@ -43,6 +44,7 @@ class Media {
         int setLanguages(const QVector<QString>& languages);
         // void setAvailableCopies(unsigned int available_copies) {this->available_copies = available_copies;}
         int setMetadata(const QMap<QString, QVariant>& metadata);
+        void setRefCount(int refCount) {this->refCount = refCount;}
 
         // getter methods
         unsigned long getId() const {return this->id;}
@@ -55,6 +57,7 @@ class Media {
         QVector<QString> getLanguages() const {return this->languages;}
         // unsigned int getAvailableCopies() const {return this->available_copies;}
         QMap<QString, QVariant> getMetadata() const {return this->metadata;}
+        int getRefCount() const {return this->refCount;}
 
         // constructor using setters
         Media(unsigned long id, const QString& title, const QDate publication_date,

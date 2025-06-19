@@ -27,7 +27,7 @@ class Library : public QObject {
     std::unique_ptr<TransactionMan> transactionManager;
 
     public:
-        Library(const QString& dir);
+        Library(const QString& dir, bool load);
         ~Library();
 
         // setters

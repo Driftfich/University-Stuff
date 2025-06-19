@@ -21,7 +21,7 @@ class MediaMan {
     }
 
     public:
-        MediaMan(QString filename);
+        MediaMan(QString filename, bool load = true);
         ~MediaMan();
 
         int setFilename(const QString& filename);

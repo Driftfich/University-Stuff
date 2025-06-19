@@ -9,10 +9,12 @@
 #include "libitem.h"
 #include "libitemman.h"
 
-LibitemMan::LibitemMan(QString filename) {
+LibitemMan::LibitemMan(QString filename, bool load) {
     setNextId(0);
     setFilename(filename);
-    load(); // internally the load function sets the next id with the last id + 1
+    if (load) {
+        this->load(); // internally the load function sets the next id with the last id + 1
+    }
 }
 
 LibitemMan::~LibitemMan() {
@@ -81,7 +83,12 @@ int LibitemMan::load() {
         return -1;
     }
     while (!file.atEnd()) {
-        std::shared_ptr<Libitem> libitem = Libitem::fromFile(file);
+        std::shared_ptr<Libitem> libitem = Libitem::fromFile(file, [this](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+            // call the own callback function
+            if (onMediaChangeCallback) {
+                onMediaChangeCallback(libitemId, oldMediaId, newMediaId);
+            }
+        });
         if (libitem) {
             addLibitem(libitem);
         } else {

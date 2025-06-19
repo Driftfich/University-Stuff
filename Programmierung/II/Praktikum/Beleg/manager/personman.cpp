@@ -9,10 +9,12 @@
 #include "person.h"
 
 
-PersonMan::PersonMan(const QString& filename) {
+PersonMan::PersonMan(const QString& filename, bool load) {
     setFilename(filename);
     setNextId(0);
-    load(); // internally the load function sets the next id with the last id + 1
+    if (load) {
+        this->load(); // internally the load function sets the next id with the last id + 1
+    }
 }
 
 PersonMan::~PersonMan() {

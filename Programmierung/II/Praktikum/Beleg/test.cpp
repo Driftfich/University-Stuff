@@ -147,8 +147,12 @@ int test_person_file_management() {
 int test_libitem_file_management() {
     // Test the Libitem class
     // Create a Libitem object
-    Libitem l1 = Libitem((unsigned long) 1, (unsigned long) 1, (unsigned long) 5, (unsigned long) 0, QString("Shelf A"), QString("New"));
-    Libitem l2 = Libitem((unsigned long) 2, (unsigned long) 2, (unsigned long) 3, (unsigned long) 1, QString("Shelf B"), QString("Used"));
+    Libitem l1 = Libitem((unsigned long) 1, (unsigned long) 1, (unsigned long) 5, (unsigned long) 0, QString("Shelf A"), QString("New"), [](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+        std::cout << "Libitem with ID " << libitemId << " changed media from " << oldMediaId << " to " << newMediaId << std::endl;
+    });
+    Libitem l2 = Libitem((unsigned long) 2, (unsigned long) 2, (unsigned long) 3, (unsigned long) 1, QString("Shelf B"), QString("Used"), [](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+        std::cout << "Libitem with ID " << libitemId << " changed media from " << oldMediaId << " to " << newMediaId << std::endl;
+    });
     // create a magic pointer array on the l1 object
     std::shared_ptr<Libitem> libitemPtr1 = std::make_shared<Libitem>(l1);
     std::shared_ptr<Libitem> libitemPtr2 = std::make_shared<Libitem>(l2);
@@ -193,7 +197,9 @@ int test_libitem_file_management() {
     // std::cout << "Loading object from file" << std::endl;
     while (!file.atEnd()) {
         std::cout << "Loading object from file" << std::endl;
-        std::shared_ptr<Libitem> libitemPtr = Libitem::fromFile(file);
+        std::shared_ptr<Libitem> libitemPtr = Libitem::fromFile(file, [](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+            
+        });
         if (libitemPtr) {
             libitemPtrs.push_back(libitemPtr);
         }
@@ -308,7 +314,9 @@ int test_libitemman() {
     std::cout << lm << std::endl;
 
     // add a new libitem
-    std::shared_ptr<Libitem> l1 = std::make_shared<Libitem>(Libitem(lm.getNextId(), (unsigned long) 1, (unsigned long) 5, (unsigned long) 0, QString("Shelf A"), QString("New")));
+    std::shared_ptr<Libitem> l1 = std::make_shared<Libitem>(Libitem(lm.getNextId(), (unsigned long) 1, (unsigned long) 5, (unsigned long) 0, QString("Shelf A"), QString("New"), [](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+        std::cout << "Libitem with ID " << libitemId << " changed media from " << oldMediaId << " to " << newMediaId << std::endl;
+    }));
     lm.addLibitem(l1);
 
     return 0;

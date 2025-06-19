@@ -439,8 +439,7 @@ void MainWindow::setupDataLayers()
 
 void MainWindow::setupLib()
 {
-    lib = new Library((QCoreApplication::applicationDirPath() + QDir::separator() + "data"));
-    // load happens directly in the constructor of Library
+    lib = new Library((QCoreApplication::applicationDirPath() + QDir::separator() + "data"), false);
 }
 
 void MainWindow::setupTableModels()
@@ -453,6 +452,7 @@ void MainWindow::setupTableModels()
                                                  lib->getLibitemManager(), 
                                                  lib->getMediaManager(), this);
 
+    lib->load(); // load the data from the files
 }
 
 void MainWindow::setupProxyModels()

@@ -12,10 +12,12 @@
 
 using namespace std;
 
-TransactionMan::TransactionMan(const QString& filename) {
+TransactionMan::TransactionMan(const QString& filename, bool load) {
     setFilename(filename);
     setNextId(0);
-    load(); // internally the load function sets the next id with the last id + 1
+    if (load) {
+        this->load(); // internally the load function sets the next id with the last id + 1
+    }
     // debug the whole hash maps
     // std::cout << "Person Map Contents (" << person_map.size() << " entries):" << std::endl;
     // std::cout << "---------------------------------------" << std::endl;

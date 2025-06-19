@@ -27,7 +27,7 @@ class TransactionMan {
 
 public:
     // constructor and destructor
-    TransactionMan(const QString& filename);
+    TransactionMan(const QString& filename, bool load = true);
     ~TransactionMan();
 
     // load and save functions

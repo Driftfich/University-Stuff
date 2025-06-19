@@ -293,11 +293,14 @@ std::shared_ptr<Media> Media::MediaFactory(const QJsonObject& json) {
     else if (type == "Video") {
         return std::make_shared<Video>(json);
     }
-    else if (type == "Media") {
-        return std::make_shared<Media>(json);
-    }
+    // else if (type == "Media") {
+    //     return std::make_shared<Media>(json);
+    // }
+    // else {
+    //     throw std::runtime_error("Unbekannter Medientyp: " + type.toStdString());
+    // }
     else {
-        throw std::runtime_error("Unbekannter Medientyp: " + type.toStdString());
+        return std::make_shared<Media>(json); // Fallback auf Media, wenn kein spezifischer Typ gefunden wird
     }
 }
 

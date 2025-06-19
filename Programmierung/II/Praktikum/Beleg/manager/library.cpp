@@ -11,11 +11,14 @@
 #include "transactionman.h"
 
 
-Library::Library(const QString& dir) : dir(dir) {
-    mediaManager = std::make_unique<MediaMan>(dir + "/media.ndjson");
-    libitemManager = std::make_unique<LibitemMan>(dir + "/libitem.ndjson");
-    personManager = std::make_unique<PersonMan>(dir + "/person.ndjson");
-    transactionManager = std::make_unique<TransactionMan>(dir + "/transaction.ndjson");
+Library::Library(const QString& dir, bool load) : dir(dir) {
+    mediaManager = std::make_unique<MediaMan>(dir + "/media.ndjson", load);
+    libitemManager = std::make_unique<LibitemMan>(dir + "/libitem.ndjson", load);
+    personManager = std::make_unique<PersonMan>(dir + "/person.ndjson", load);
+    transactionManager = std::make_unique<TransactionMan>(dir + "/transaction.ndjson", load);
+    // if (load) {
+    //     this->load();
+    // }
 }
 Library::~Library() {
     save();

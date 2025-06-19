@@ -17,6 +17,12 @@
 
 LibItemTableModel::LibItemTableModel(LibitemMan* libItemMan, MediaMan* mediaMan, QObject *parent)
     : QAbstractTableModel(parent), libItemMan(libItemMan), mediaMan(mediaMan) {
+    // connect the libitemMan onMediaChange signal to the handleMediaIdChange slot
+    libItemMan->setOnMediaChangeCallback(
+        [this](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+            return handleMediaIdChange(libitemId, oldMediaId, newMediaId);
+        }
+    );
     for (int i = 0; i < MaxColumnIdentity; ++i) {
         displayedColumns.push_back(static_cast<ColumnIdentity>(i));
     }
@@ -48,15 +54,15 @@ int LibItemTableModel::removeRow(int row, const QModelIndex &parent) {
         return false;
     }
     // Check if the media item is referenced by any other libitem
-    bool hasOtherReferences = false;
-    for (const auto& item : libItemMan->getLibitems()) {
-        if (item->getMediaId() == media->getId() && item->getId() != libitem->getId()) {
-            hasOtherReferences = true;
-            break;
-        }
-    }
-
-    if (!hasOtherReferences) {
+    // bool hasOtherReferences = false;
+    // for (const auto& item : libItemMan->getLibitems()) {
+    //     if (item->getMediaId() == media->getId() && item->getId() != libitem->getId()) {
+    //         hasOtherReferences = true;
+    //         break;
+    //     }
+    // }
+    std::cout << "Media Ref Count: " << media->getRefCount() << std::endl;
+    if (media->getRefCount() <= 1) {
         // remove the media item if it is not referenced by any other libitem
         if (mediaMan->removeMedia(media->getId()) != 0) {
             return false; // Failed to remove media item
@@ -84,6 +90,33 @@ bool LibItemTableModel::removeRows(int row, int count, const QModelIndex &parent
     }
     
     return true;
+}
+
+int LibItemTableModel::handleMediaIdChange(unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+    std::cout << "Handling media ID change: " << libitemId << ", " << oldMediaId << ", " << newMediaId << std::endl;
+    // std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(libitemId);
+    // if (libitem == nullptr) {
+    //     std::cerr << "Libitem not found for ID: " << libitemId << std::endl;
+    //     return -1; // Libitem not found
+    // }
+    std::shared_ptr<Media> oldMedia = mediaMan->getMedia(oldMediaId);
+    if (oldMedia != nullptr) {
+        // decrement the reference count of the old media
+        oldMedia->setRefCount(oldMedia->getRefCount() - 1);
+    }
+    else {
+        std::cerr << "Old media not found for ID: " << oldMediaId << std::endl;
+    }
+    std::shared_ptr<Media> newMedia = mediaMan->getMedia(newMediaId);
+    if (newMedia != nullptr) {
+        // increment the reference count of the new media
+        newMedia->setRefCount(newMedia->getRefCount() + 1);
+    }
+    else {
+        std::cerr << "New media not found for ID: " << newMediaId << std::endl;
+    }
+
+    return 0; // Success
 }
 
 QVariant LibItemTableModel::data(const QModelIndex& index, int role) const {
@@ -299,21 +332,15 @@ bool LibItemTableModel::updateFromJsonObject(const QJsonObject& jsonObject, cons
     if (row >= (unsigned long) libItemMan->getLibitems().size()) {
         return false;
     }
-    // std::shared_ptr<Libitem> libitem = (*libItemMan)[row];
-    // std::shared_ptr<Media> media = mediaMan->getMedia(libitem->getMediaId());
 
-    // if (libitem->loadLocalParams(jsonObject["libitem"].toObject()) != 0) {
-    //     emit dataChanged(index, index);
-    //     return false;
-    // }
-    // if (!media || media->loadLocalParams((jsonObject["media"]["media"]).toObject()) != 0 || media->loadSubclassParams(jsonObject["media"]["subclass_params"].toObject()) != 0) {
-    //     emit dataChanged(index, index);
-    //     return false;
-    // }
-    if (!updateLibitemFromJsonObject(jsonObject) || !updateMediaFromJsonObject(jsonObject)) {
+    emit beginResetModel();
+    int mediaUpdate = updateMediaFromJsonObject(jsonObject);
+    bool libitemUpdate = updateLibitemFromJsonObject(jsonObject);
+    if (mediaUpdate != 0 || !libitemUpdate) {
         return false;
     }
-    emit dataChanged(index, index);
+    // emit dataChanged(index, index);
+    emit endResetModel();
     return true;
     
 }
@@ -322,17 +349,27 @@ int LibItemTableModel::updateMediaFromJsonObject(const QJsonObject& jsonObject) 
     unsigned long mediaId = jsonObject["media"].toObject()["media"].toObject()["id"].toVariant().toULongLong();
     std::shared_ptr<Media> media = mediaMan->getMedia(mediaId);
     if (!media) {
-        qDebug() << "Cannot update media from JSON object, media not found with ID:" << mediaId;
-        return -1;
+        // qDebug() << "Cannot update media from JSON object, media not found with ID:" << mediaId;
+        // return -1;
+        // create a new media item
+        QJsonObject mediaJson = jsonObject["media"].toObject();
+        media = Media::MediaFactory(mediaJson);
+        if (!media) {
+            qDebug() << "Failed to create new media item from JSON object";
+            return -1; // Failed to create new media item
+        }
+        mediaMan->addMedia(media);
     }
-    if (media->loadLocalParams(jsonObject["media"]["media"].toObject()) != 0 || media->loadSubclassParams(jsonObject["media"]["subclass_params"].toObject()) != 0) {
+    else if (media->loadLocalParams(jsonObject["media"]["media"].toObject()) != 0 || media->loadSubclassParams(jsonObject["media"]["subclass_params"].toObject()) != 0) {
         qDebug() << "Failed to update media from JSON object, issues with loading parameters";
         return -2;
     }
+    std::cout << "Updated media with ID: " << mediaId << std::endl;
     return 0;
 }
 
 bool LibItemTableModel::updateLibitemFromJsonObject(const QJsonObject& jsonObject) {
+    qDebug() << "Updating libitem from JSON object";
     unsigned long libitemId = jsonObject["libitem"].toObject()["id"].toVariant().toULongLong();
     std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(libitemId);
     if (!libitem) {
@@ -340,8 +377,10 @@ bool LibItemTableModel::updateLibitemFromJsonObject(const QJsonObject& jsonObjec
         return false;
     }
     if (libitem->loadLocalParams(jsonObject["libitem"].toObject()) != 0) {
+        qDebug() << "Failed to update libitem from JSON object, issues with loading parameters";
         return false;
     }
+    std::cout << "Updated libitem with ID: " << libitemId << std::endl;
     return true;
 }
 
@@ -367,7 +406,10 @@ Result LibItemTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
 
     // libitem is always new
     QJsonObject libitemJson = jsonObject["libitem"].toObject();
-    std::shared_ptr<Libitem> newLibitem = Libitem::LibitemFactory(libitemJson);
+    std::shared_ptr<Libitem> newLibitem = Libitem::LibitemFactory(libitemJson, 
+        [this](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+            return handleMediaIdChange(libitemId, oldMediaId, newMediaId);
+        });
     if (!newLibitem) {
         qDebug() << "Failed to create new libitem from JSON object";
         return Result::Error("Failed to create new libitem");

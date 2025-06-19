@@ -9,10 +9,12 @@
 #include "mediaman.h"
 #include "media.h"
 
-MediaMan::MediaMan(QString filename) {
+MediaMan::MediaMan(QString filename, bool load) {
     setNextId(0);
     setFilename(filename);
-    load(); // internally the load function sets the next id with the last id + 1
+    if (load) {
+        this->load(); // internally the load function sets the next id with the last id + 1
+    }
 }
 
 MediaMan::~MediaMan() {

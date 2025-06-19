@@ -22,7 +22,7 @@ class PersonMan {
 
     public:
         // constructor and destructor
-        PersonMan(const QString& filename);
+        PersonMan(const QString& filename, bool load = true);
         ~PersonMan();
 
         // load and save functions

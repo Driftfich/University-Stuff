@@ -77,7 +77,7 @@ int Libitem::loadLocalParams(const QJsonObject& json) {
     return 0;
 }
 // read json object from file
-std::shared_ptr<Libitem> Libitem::fromFile(QFile& file) {
+std::shared_ptr<Libitem> Libitem::fromFile(QFile& file, std::function<void(unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId)> onMediaChangeCallback) {
     if (!file.isOpen() && !file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         throw std::runtime_error("Fehler: Datei konnte nicht geöffnet werden");
     }
@@ -90,16 +90,16 @@ std::shared_ptr<Libitem> Libitem::fromFile(QFile& file) {
             return nullptr;
         }
         QJsonObject obj = doc.object();
-        return LibitemFactory(obj);
+        return LibitemFactory(obj, onMediaChangeCallback);
     }
     return nullptr;
 }
 
 // factory method
-std::shared_ptr<Libitem> Libitem::LibitemFactory(const QJsonObject& json) {
+std::shared_ptr<Libitem> Libitem::LibitemFactory(const QJsonObject& json, std::function<void(unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId)> onMediaChangeCallback) {
     // call the constructor with the json object
     // std::cout << "Reached LibitemFactory" << std::endl;
-    std::shared_ptr<Libitem> item = std::make_shared<Libitem>(json);
+    std::shared_ptr<Libitem> item = std::make_shared<Libitem>(json, onMediaChangeCallback);
     return item;
 }
 
