@@ -9,7 +9,6 @@
 
 #include "libitem.h"
 #include "borrower.h"
-#include "config.h"
 
 class Transaction {
     unsigned long id;

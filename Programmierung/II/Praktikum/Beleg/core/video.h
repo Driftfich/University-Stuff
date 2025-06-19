@@ -4,7 +4,6 @@
 #include <QString>
 #include <QVector>
 #include <QDate>
-#include "config.h"
 #include "media.h"
 
 class Video : public Media {

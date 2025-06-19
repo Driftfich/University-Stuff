@@ -9,7 +9,6 @@
 #include <QVector>
 #include <QDate>
 
-#include "config.h"
 // #include "person.h"
 #include "media.h"
 

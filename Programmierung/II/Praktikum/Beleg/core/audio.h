@@ -6,7 +6,6 @@
 #include <QDate>
 #include <vector>
 #include <string>
-#include "config.h"
 #include "media.h"
 
 class Audio : public Media {

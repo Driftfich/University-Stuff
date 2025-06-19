@@ -16,7 +16,6 @@
 #include <QFile>
 #include "person.h" // for person work with files
 #include "json.hpp" // for json work with files
-#include "config.h"
 
 class Media {
     unsigned long id;

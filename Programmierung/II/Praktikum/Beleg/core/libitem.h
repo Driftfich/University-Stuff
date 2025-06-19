@@ -6,7 +6,6 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "media.h"
-#include "config.h"
 
 class Libitem {
     unsigned long id; // libitem id
