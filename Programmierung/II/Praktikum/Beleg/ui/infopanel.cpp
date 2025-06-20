@@ -658,7 +658,7 @@ void InfoPanel::saveChanges() {
         return;
     }
     
-    qDebug() << "Saving changes with comprehensive UI cleanup";
+    // qDebug() << "Saving changes with comprehensive UI cleanup";
     
     // Daten aus Tree sammeln
     QJsonObject modifiedData = collectDataFromTree();
@@ -701,7 +701,7 @@ void InfoPanel::saveChanges() {
     // Signal aussenden
     emit saveRequested(modifiedData);
     
-    qDebug() << "Changes saved successfully with complete UI cleanup";
+    // qDebug() << "Changes saved successfully with complete UI cleanup";
 }
 
 void InfoPanel::cancelEditMode() {

@@ -62,9 +62,9 @@ void MainWindow::setupUi()
 
 void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
 {
-    qDebug() << "Updating media id in InfoPanel...";
+    // qDebug() << "Updating media id in InfoPanel...";
     int currentIndex = tableWidgetUi->TabSelector->currentIndex();
-    qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
+    // qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
     if (fieldName != "media_id" || currentIndex != 1 || oldValue.toString() == newValue.toString())
     {
         qDebug() << fieldName << "\t" << currentIndex << "\t" << (oldValue.toString() == newValue.toString());
@@ -77,13 +77,13 @@ void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int col
     QJsonObject newJson = panel->collectDataFromTree();
     QJsonObject newSchema = originalSchema;
 
-    qDebug() << "Updating media id in InfoPanel...";
+    // qDebug() << "Updating media id in InfoPanel...";
     // get the current id from the item as unsigned long
     unsigned long currentIdValue = newValue.toString().toULongLong();
 
     // try to find the media item with the new id in the media manager
     // Media* mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
-    qDebug() << "Searching for media item with id:" << currentIdValue;
+    // qDebug() << "Searching for media item with id:" << currentIdValue;
     std::shared_ptr<Media> mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
     // get the current actice media type from the info panel
     QString mediaType = newJson.value("media").toObject().value("subclass_type").toString();
@@ -116,8 +116,8 @@ void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int col
         newSchema["properties"] = properties; // Update the original schema with the new properties
     }
 
-    qDebug() << newJson;
-    qDebug() << newSchema;
+    // qDebug() << newJson;
+    // qDebug() << newSchema;
 
     // update the info panel with the new media json object and schema
     QTimer::singleShot(0, [this, panel, newJson, newSchema, originalData, originalSchema]() {
@@ -126,7 +126,7 @@ void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int col
         panel->setOriginalSchema(originalSchema);
     });
 
-    qDebug() << "AddPanel original data:" << originalData;
+    // qDebug() << "AddPanel original data:" << originalData;
 }
 
 void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
@@ -173,7 +173,7 @@ void MainWindow::enabledArtist(QTreeWidgetItem* item, int column, const QString&
     if ((currentIndex != 0 && currentIndex != 2) ||
         // newValue.toBool() != true ||
         (fieldName != "artist" && fieldName != "borrower")) {
-        qDebug() << "Field isnt in Person Model nor artist." << (newValue.toBool() != true) << (fieldName != "artist" && fieldName != "borrower");
+        // qDebug() << "Field isnt in Person Model nor artist." << (newValue.toBool() != true) << (fieldName != "artist" && fieldName != "borrower");
         return;
     }
 
@@ -478,21 +478,24 @@ void MainWindow::setupProxyModels()
     tableWidgetUi->persontab->setSortingEnabled(true);
     tableWidgetUi->persontab->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableWidgetUi->persontab->setSelectionMode(QAbstractItemView::MultiSelection);
-    tableWidgetUi->persontab->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    tableWidgetUi->persontab->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    tableWidgetUi->persontab->horizontalHeader()->setStretchLastSection(true);
     tableWidgetUi->persontab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
     tableWidgetUi->itemtab->setModel(libitemProxy);
     tableWidgetUi->itemtab->setSortingEnabled(true);
     tableWidgetUi->itemtab->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableWidgetUi->itemtab->setSelectionMode(QAbstractItemView::MultiSelection);
-    tableWidgetUi->itemtab->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    tableWidgetUi->itemtab->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    tableWidgetUi->itemtab->horizontalHeader()->setStretchLastSection(true);
     tableWidgetUi->itemtab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
     tableWidgetUi->transtab->setModel(transactionProxy);
     tableWidgetUi->transtab->setSortingEnabled(true);
     tableWidgetUi->transtab->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableWidgetUi->transtab->setSelectionMode(QAbstractItemView::MultiSelection);
-    tableWidgetUi->transtab->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    tableWidgetUi->transtab->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    tableWidgetUi->itemtab->horizontalHeader()->setStretchLastSection(true);
     tableWidgetUi->transtab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 
@@ -770,7 +773,7 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
     }
 
     // print out the modified data to console
-    qDebug() << "Modified Data:" << data << "\n\n";
+    // qDebug() << "Modified Data:" << data << "\n\n";
     
     try {
         // Je nach Model-Typ die entsprechende Speicher-Methode aufrufen

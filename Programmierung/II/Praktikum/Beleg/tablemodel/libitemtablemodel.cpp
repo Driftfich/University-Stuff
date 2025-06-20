@@ -105,7 +105,7 @@ int LibItemTableModel::handleMediaIdChange(unsigned long libitemId, unsigned lon
         - the reference count of the old media is decremented. When the old media isnt found, the method doesnt return, because the libitem could be created and therefore the uninitialized old media is invalid
         - the reference count of the new media is incremented.
     */
-    std::cout << "Handling media ID change: " << libitemId << ", " << oldMediaId << ", " << newMediaId << std::endl;
+    // std::cout << "Handling media ID change: " << libitemId << ", " << oldMediaId << ", " << newMediaId << std::endl;
     std::shared_ptr<Media> oldMedia = mediaMan->getMedia(oldMediaId);
     if (oldMedia != nullptr) {
         // decrement the reference count of the old media
@@ -410,7 +410,7 @@ int LibItemTableModel::updateMediaFromJsonObject(const QJsonObject& jsonObject) 
     }
 
     // return success
-    std::cout << "Updated media with ID: " << mediaId << std::endl;
+    // std::cout << "Updated media with ID: " << mediaId << std::endl;
     return 0;
 }
 
@@ -430,7 +430,7 @@ bool LibItemTableModel::updateLibitemFromJsonObject(const QJsonObject& jsonObjec
         qDebug() << "Failed to update libitem from JSON object, issues with loading parameters";
         return false;
     }
-    std::cout << "Updated libitem with ID: " << libitemId << std::endl;
+    // std::cout << "Updated libitem with ID: " << libitemId << std::endl;
     return true;
 }
 
