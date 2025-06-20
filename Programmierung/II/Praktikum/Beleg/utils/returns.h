@@ -1,3 +1,14 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: This file contains the Result struct, which is used to return the result of a function.
+It is used to return a boolean value and a message.
+The boolean value is true if the operation was successful, false otherwise.
+The message is a string that contains the result of the operation.
+The error code is an integer that contains the error code of the operation.
+*/
+
 #ifndef RETURNS_H
 #define RETURNS_H
 #include <QString>

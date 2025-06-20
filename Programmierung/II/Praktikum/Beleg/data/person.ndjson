@@ -4,3 +4,4 @@
 {"artist":{},"birthday":"2000-01-01","borrower":{"limit":5},"email":"","ename":"Tets","fname":"Hanna","gender":"Female","id":4,"lname":"Montana","location":"","note":"","tel":""}
 {"artist":{},"birthday":"2000-01-01","borrower":{"limit":0},"email":"","ename":"","fname":"Anna","gender":"Female","id":5,"lname":"Dalwing","location":"","note":"","tel":""}
 {"artist":{"artist_type":"Musician","media_ids":[]},"birthday":"2000-01-01","borrower":{"limit":2},"email":"","ename":"","fname":"Diana","gender":"Female","id":6,"lname":"Dexter","location":"","note":"","tel":""}
+{"artist":{},"birthday":"2018-08-18","borrower":{"limit":9},"email":"","ename":"","fname":"Billi","gender":"Male","id":7,"lname":"Boy","location":"","note":"","tel":""}

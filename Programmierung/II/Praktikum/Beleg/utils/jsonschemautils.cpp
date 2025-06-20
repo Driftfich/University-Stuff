@@ -1,15 +1,13 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: This file contains the functions to create a default json object from a schema object and a default value from a field schema.
+*/
+
 #include "jsonschemautils.h"
 
-/**
- * @brief Erstellt ein Standard-JSON-Objekt basierend auf einem Schema
- * @param schemaObject Das Schema-Objekt, das die Struktur definiert
- * @return Ein JSON-Objekt mit allen Schema-Feldern und Standard-Werten
- * 
- * Diese statische Methode durchläuft rekursiv ein Schema-Objekt und erstellt ein 
- * JSON-Objekt mit allen definierten Feldern. Felder erhalten Standard-Werte
- * basierend auf ihrem Typ. Readonly-Felder werden übersprungen, da sie normalerweise
- * auto-generiert werden (z.B. IDs).
- */
+// create a default json object from a schema object
 QJsonObject createDefaultJsonFromSchema(const QJsonObject& schemaObject) {
     QJsonObject defaultJson;
     
@@ -49,14 +47,6 @@ QJsonObject createDefaultJsonFromSchema(const QJsonObject& schemaObject) {
     return defaultJson;
 }
 
-/**
- * @brief Erstellt einen Standard-Wert für ein einzelnes Schema-Feld
- * @param fieldSchema Das Schema-Objekt für ein einzelnes Feld
- * @return Der Standard-Wert für dieses Feld basierend auf seinem Typ
- * 
- * Diese Hilfsmethode bestimmt den passenden Standard-Wert für ein Feld
- * basierend auf seinem Typ und anderen Schema-Eigenschaften.
- */
 QJsonValue createDefaultValueFromFieldSchema(const QJsonObject& fieldSchema) {
     QString type = fieldSchema["type"].toString();
     
