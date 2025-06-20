@@ -89,6 +89,12 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
     // use the current text from the model as initial value
     QString initialText = index.model()->data(index, Qt::EditRole).toString();
     editor->setText(initialText);
+    
+    // Set up completer for ID fields in transaction tab
+    if (infoPanelPtr) {
+        infoPanelPtr->setupCompleterForEditor(editor, index);
+    }
+    
     return editor;
 }
 

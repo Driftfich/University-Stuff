@@ -14,6 +14,7 @@
 #include <iostream>
 
 #include "custfiltproxmodel.h"
+#include "entitycompleter.h"
 #include "mainw.h"
 #include "infopanel.h"
 #include "library.h"
@@ -58,6 +59,67 @@ void MainWindow::setupUi()
     tableWidgetWidget = new QWidget(central);
     tableWidgetUi->setupUi(tableWidgetWidget);
     mainLayout->addWidget(tableWidgetWidget);
+}
+
+void MainWindow::setupCompleterForEditor(QLineEdit* editor, const QModelIndex& index)
+{
+    qDebug() << "Setting up completer for editor...";
+    
+    // Get the tree widget item from the index
+    QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(const_cast<QAbstractItemModel*>(index.model())->parent());
+    if (!treeWidget) return;
+    
+    QTreeWidgetItem* item = treeWidget->itemFromIndex(index);
+    if (!item) return;
+    
+    // Get the field name from the tree item's data
+    QString fieldName = item->data(0, SchemaOriginalKeyRole).toString();
+    qDebug() << "Field name:" << fieldName;
+
+    // Only setup completer for ID fields
+    if (fieldName != "libitem_id" && fieldName != "borrower_id") {
+        return;
+    }
+    
+    // create a new entity completer
+    EntityCompleter* completer = nullptr;
+    if (fieldName == "libitem_id") {
+        qDebug() << "Setting up completer for libitem_id...";
+        QStringList filterColumns = QStringList() << "ID" << "Title" << "Publisher";
+        completer = new EntityCompleter(libitemModel, "{ID}", filterColumns, "{Title} - {Publisher} ({ID})", ".", editor);
+    }
+    else if (fieldName == "borrower_id") {
+        qDebug() << "Setting up completer for borrower_id...";
+        QStringList filterColumns = QStringList() << "ID" << "First Name" << "Last Name" << "Email";
+        completer = new EntityCompleter(personModel, "{ID}", filterColumns, "{Vorname} {Nachname} ({ID})", ".", editor);
+    }
+
+    if (completer) {
+        // Configure the completer
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        completer->setFilterMode(Qt::MatchContains);
+        completer->setWrapAround(false);
+        
+        // Set the completer to the editor
+        editor->setCompleter(completer);
+        
+        // Initialize completions
+        completer->updateCompletions("");
+        
+        // Debug: Check if completions were built
+        QAbstractItemModel* completionModel = completer->model();
+        int completionCount = completionModel ? completionModel->rowCount() : 0;
+        qDebug() << "Completer set up for field:" << fieldName 
+                 << "with" << completionCount << "completions";
+        
+        // Debug: Show first few completions
+        if (completionCount > 0) {
+            for (int i = 0; i < qMin(3, completionCount); i++) {
+                QModelIndex idx = completionModel->index(i, 0);
+                qDebug() << "  Completion" << i << ":" << completionModel->data(idx).toString();
+            }
+        }
+    }
 }
 
 void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
@@ -241,7 +303,7 @@ void MainWindow::setupUnifiedFieldChangeHandler()
                         changedMediaId(addPanel, item, column, fieldName, oldValue, newValue);
                     }
                     else {
-                        qDebug() << "No specific handler for field:" << fieldName;
+                        // qDebug() << "No specific handler for field:" << fieldName;
                     }
                     
                 } catch (const std::exception& e) {
@@ -390,6 +452,9 @@ void MainWindow::setupAddPanel()
     });
 
     connect(addPanel, &InfoPanel::saveRequested, this, &MainWindow::saveNewData);
+    
+    // connect the completer setup signal for addPanel too
+    connect(addPanel, &InfoPanel::completerSetupRequested, this, &MainWindow::setupCompleterForEditor);
 
     // connection: when the cancel button in the add panel is clicked, enter Edit Mode again
     connect(addPanel, &InfoPanel::editModeCancelled, addPanel, &InfoPanel::enterEditMode);

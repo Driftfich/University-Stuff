@@ -51,6 +51,11 @@ template <> constexpr inline auto InfoPanel::qt_create_metaobjectdata<qt_meta_ta
         "QVariant",
         "oldValue",
         "newValue",
+        "completerSetupRequested",
+        "QLineEdit*",
+        "editor",
+        "QModelIndex",
+        "index",
         "displayInfo",
         "jsonObject",
         "resetEditMode",
@@ -64,8 +69,7 @@ template <> constexpr inline auto InfoPanel::qt_create_metaobjectdata<qt_meta_ta
         "painter",
         "QStyleOptionViewItem",
         "option",
-        "QModelIndex",
-        "index",
+        "setupCompleterForEditor",
         "onItemChanged",
         "handleDeleteAction",
         "onHeaderSectionClicked",
@@ -84,37 +88,45 @@ template <> constexpr inline auto InfoPanel::qt_create_metaobjectdata<qt_meta_ta
             { 0x80000000 | 6, 7 }, { QMetaType::Int, 8 }, { QMetaType::QString, 9 }, { 0x80000000 | 10, 11 },
             { 0x80000000 | 10, 12 },
         }}),
-        // Slot 'displayInfo'
-        QtMocHelpers::SlotData<void(const QJsonObject &, bool)>(13, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QJsonObject, 14 }, { QMetaType::Bool, 15 },
+        // Signal 'completerSetupRequested'
+        QtMocHelpers::SignalData<void(QLineEdit *, const QModelIndex &)>(13, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { 0x80000000 | 14, 15 }, { 0x80000000 | 16, 17 },
         }}),
         // Slot 'displayInfo'
-        QtMocHelpers::SlotData<void(const QJsonObject &, const QJsonObject &, bool)>(13, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QJsonObject, 14 }, { QMetaType::QJsonObject, 16 }, { QMetaType::Bool, 15 },
+        QtMocHelpers::SlotData<void(const QJsonObject &, bool)>(18, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QJsonObject, 19 }, { QMetaType::Bool, 20 },
+        }}),
+        // Slot 'displayInfo'
+        QtMocHelpers::SlotData<void(const QJsonObject &, const QJsonObject &, bool)>(18, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QJsonObject, 19 }, { QMetaType::QJsonObject, 21 }, { QMetaType::Bool, 20 },
         }}),
         // Slot 'enterEditMode'
-        QtMocHelpers::SlotData<void()>(17, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(22, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'saveChanges'
-        QtMocHelpers::SlotData<void()>(18, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(23, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'cancelEditMode'
-        QtMocHelpers::SlotData<void()>(19, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(24, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'resetButtons'
-        QtMocHelpers::SlotData<void()>(20, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(25, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'paintDeleteItemButton'
-        QtMocHelpers::SlotData<void(QPainter *, const QStyleOptionViewItem &, const QModelIndex &)>(21, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { 0x80000000 | 22, 23 }, { 0x80000000 | 24, 25 }, { 0x80000000 | 26, 27 },
+        QtMocHelpers::SlotData<void(QPainter *, const QStyleOptionViewItem &, const QModelIndex &)>(26, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { 0x80000000 | 27, 28 }, { 0x80000000 | 29, 30 }, { 0x80000000 | 16, 17 },
+        }}),
+        // Slot 'setupCompleterForEditor'
+        QtMocHelpers::SlotData<void(QLineEdit *, const QModelIndex &)>(31, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { 0x80000000 | 14, 15 }, { 0x80000000 | 16, 17 },
         }}),
         // Slot 'onItemChanged'
-        QtMocHelpers::SlotData<void(QTreeWidgetItem *, int)>(28, 2, QMC::AccessPrivate, QMetaType::Void, {{
+        QtMocHelpers::SlotData<void(QTreeWidgetItem *, int)>(32, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { 0x80000000 | 6, 7 }, { QMetaType::Int, 8 },
         }}),
         // Slot 'handleDeleteAction'
-        QtMocHelpers::SlotData<void(QTreeWidgetItem *)>(29, 2, QMC::AccessPrivate, QMetaType::Void, {{
+        QtMocHelpers::SlotData<void(QTreeWidgetItem *)>(33, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { 0x80000000 | 6, 7 },
         }}),
         // Slot 'onHeaderSectionClicked'
-        QtMocHelpers::SlotData<void(int)>(30, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::Int, 31 },
+        QtMocHelpers::SlotData<void(int)>(34, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 35 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -142,16 +154,18 @@ void InfoPanel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 0: _t->saveRequested((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1]))); break;
         case 1: _t->editModeCancelled(); break;
         case 2: _t->fieldChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[3])),(*reinterpret_cast< std::add_pointer_t<QVariant>>(_a[4])),(*reinterpret_cast< std::add_pointer_t<QVariant>>(_a[5]))); break;
-        case 3: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<bool>>(_a[2]))); break;
-        case 4: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<bool>>(_a[3]))); break;
-        case 5: _t->enterEditMode(); break;
-        case 6: _t->saveChanges(); break;
-        case 7: _t->cancelEditMode(); break;
-        case 8: _t->resetButtons(); break;
-        case 9: _t->paintDeleteItemButton((*reinterpret_cast< std::add_pointer_t<QPainter*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QStyleOptionViewItem>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[3]))); break;
-        case 10: _t->onItemChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
-        case 11: _t->handleDeleteAction((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1]))); break;
-        case 12: _t->onHeaderSectionClicked((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 3: _t->completerSetupRequested((*reinterpret_cast< std::add_pointer_t<QLineEdit*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[2]))); break;
+        case 4: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<bool>>(_a[2]))); break;
+        case 5: _t->displayInfo((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<bool>>(_a[3]))); break;
+        case 6: _t->enterEditMode(); break;
+        case 7: _t->saveChanges(); break;
+        case 8: _t->cancelEditMode(); break;
+        case 9: _t->resetButtons(); break;
+        case 10: _t->paintDeleteItemButton((*reinterpret_cast< std::add_pointer_t<QPainter*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QStyleOptionViewItem>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[3]))); break;
+        case 11: _t->setupCompleterForEditor((*reinterpret_cast< std::add_pointer_t<QLineEdit*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[2]))); break;
+        case 12: _t->onItemChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
+        case 13: _t->handleDeleteAction((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1]))); break;
+        case 14: _t->onHeaderSectionClicked((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         default: ;
         }
     }
@@ -161,6 +175,8 @@ void InfoPanel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         if (QtMocHelpers::indexOfMethod<void (InfoPanel::*)()>(_a, &InfoPanel::editModeCancelled, 1))
             return;
         if (QtMocHelpers::indexOfMethod<void (InfoPanel::*)(QTreeWidgetItem * , int , const QString & , const QVariant & , const QVariant & )>(_a, &InfoPanel::fieldChanged, 2))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (InfoPanel::*)(QLineEdit * , const QModelIndex & )>(_a, &InfoPanel::completerSetupRequested, 3))
             return;
     }
 }
@@ -184,14 +200,14 @@ int InfoPanel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 15;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
+        if (_id < 15)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 13;
+        _id -= 15;
     }
     return _id;
 }
@@ -212,5 +228,11 @@ void InfoPanel::editModeCancelled()
 void InfoPanel::fieldChanged(QTreeWidgetItem * _t1, int _t2, const QString & _t3, const QVariant & _t4, const QVariant & _t5)
 {
     QMetaObject::activate<void>(this, &staticMetaObject, 2, nullptr, _t1, _t2, _t3, _t4, _t5);
+}
+
+// SIGNAL 3
+void InfoPanel::completerSetupRequested(QLineEdit * _t1, const QModelIndex & _t2)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 3, nullptr, _t1, _t2);
 }
 QT_WARNING_POP

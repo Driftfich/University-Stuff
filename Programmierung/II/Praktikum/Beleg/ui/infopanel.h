@@ -80,6 +80,13 @@ class InfoPanel : public QWidget {
 
         // paint the delete item button
         void paintDeleteItemButton(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index);
+
+        // setup completer for editor widgets (called by delegate)
+        void setupCompleterForEditor(QLineEdit* editor, const QModelIndex& index) {
+            // emit the signal to setup the completer for the editor widget
+            emit completerSetupRequested(editor, index);
+        }
+
     signals:
         // signal is emitted when the user wants to save the changes
         void saveRequested(const QJsonObject& modifiedData);
@@ -87,6 +94,8 @@ class InfoPanel : public QWidget {
         void editModeCancelled();
         // signal is emitted when a field is changed
         void fieldChanged(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
+        // signal is emitted when trying to setup a completer for an editor widget
+        void completerSetupRequested(QLineEdit* editor, const QModelIndex& index);
 
     private:
         // tree widget to display the json object
