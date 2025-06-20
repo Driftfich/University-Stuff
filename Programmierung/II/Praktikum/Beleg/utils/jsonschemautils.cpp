@@ -11,34 +11,30 @@ Description: This file contains the functions to create a default json object fr
 QJsonObject createDefaultJsonFromSchema(const QJsonObject& schemaObject) {
     QJsonObject defaultJson;
     
-    // Falls das Schema ein "properties" Objekt hat, verwende dieses
+    // When a property is available, use it, otherwise use the schema object
     QJsonObject properties;
     if (schemaObject.contains("properties") && schemaObject["properties"].isObject()) {
         properties = schemaObject["properties"].toObject();
     } else {
-        // Falls kein "properties" vorhanden, verwende das Schema direkt
+        // If no "properties" is available, use the schema object
         properties = schemaObject;
     }
     
-    // Durchlaufe alle Eigenschaften im Schema
+    // Iterate over all properties in the schema
     for (QJsonObject::const_iterator it = properties.constBegin(); it != properties.constEnd(); ++it) {
         const QString& fieldName = it.key();
         const QJsonValue& fieldSchema = it.value();
         
         if (!fieldSchema.isObject()) {
-            continue; // Überspringe nicht-objekt Schemas
+            continue; // Skip non-object schemas
         }
         
         QJsonObject fieldSchemaObj = fieldSchema.toObject();
         
-        // Überspringe readonly Felder (meist auto-generierte IDs)
-        // if (fieldSchemaObj.contains("readonly") && fieldSchemaObj["readonly"].toBool()) {
-        //     continue;
-        // }
-        
-        // Bestimme den Standard-Wert basierend auf dem Typ
+        // Determine the default value based on the type
         QJsonValue defaultValue = createDefaultValueFromFieldSchema(fieldSchemaObj);
         
+        // set the default value when given
         if (!defaultValue.isNull()) {
             defaultJson[fieldName] = defaultValue;
         }
@@ -50,35 +46,35 @@ QJsonObject createDefaultJsonFromSchema(const QJsonObject& schemaObject) {
 QJsonValue createDefaultValueFromFieldSchema(const QJsonObject& fieldSchema) {
     QString type = fieldSchema["type"].toString();
     
-    // Behandle enum-Werte zuerst (haben Vorrang vor dem Basis-Typ)
+    // Handle enum values first (have priority over the base type)
     if (fieldSchema.contains("enum") && fieldSchema["enum"].isArray()) {
         QJsonArray enumValues = fieldSchema["enum"].toArray();
         if (!enumValues.isEmpty()) {
-            return enumValues.first(); // Verwende den ersten enum-Wert als Standard
+            return enumValues.first(); // Use the first enum value as default
         }
     }
     
-    // Behandle verschiedene Basis-Typen
+    // Handle different base types
     if (type == "string") {
-        return QString(""); // Leerer String als Standard
+        return QString(""); // Empty string as default
     } else if (type == "integer" || type == "number") {
-        // Prüfe auf minimum-Wert im Schema
+        // Check for minimum value in the schema
         if (fieldSchema.contains("minimum")) {
             return fieldSchema["minimum"];
         }
-        return 0; // Standard-Zahl ist 0
+        return 0; // Default number is 0
     } else if (type == "boolean") {
-        return false; // Standard-Boolean ist false
+        return false; // Default boolean is false
     } else if (type == "array") {
-        return QJsonArray(); // Leeres Array als Standard
+        return QJsonArray(); // Empty array as default
     } else if (type == "object") {
-        // Für verschachtelte Objekte, rekursive Erstellung
+        // For nested objects, recursive creation
         if (fieldSchema.contains("properties")) {
             return createDefaultJsonFromSchema(fieldSchema);
         }
-        return QJsonObject(); // Leeres Objekt als Standard
+        return QJsonObject(); // Empty object as default
     }
     
-    // Falls der Typ unbekannt ist, gib leeren String zurück
+    // If the type is unknown, return an empty string
     return QString("");
 }

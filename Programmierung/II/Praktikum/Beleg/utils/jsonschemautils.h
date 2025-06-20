@@ -13,7 +13,9 @@ Description: This file contains the functions to create a default json object fr
 #include <QJsonArray>
 #include <QString>
 
+// create a default json object from a schema object
 QJsonObject createDefaultJsonFromSchema(const QJsonObject& schemaObject);
+// create a default value from a field schema
 QJsonValue createDefaultValueFromFieldSchema(const QJsonObject& fieldSchema);
 
 #endif // JSONSCHEMAUTILS_H

@@ -284,6 +284,8 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
 // get the default json object for a new transaction
 QJsonObject TransactionTableModel::getDefaultJsonObject() const {
     QJsonObject defaultJsonObject = createDefaultJsonFromSchema(getDefaultSchema());
+    // set the transaction time to the current time
+    defaultJsonObject["transaction_time"] = QJsonValue::fromVariant(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
     defaultJsonObject["id"] = QJsonValue::fromVariant(static_cast<quint64>(transactionMan->getNextId()));
     return defaultJsonObject;
 }
