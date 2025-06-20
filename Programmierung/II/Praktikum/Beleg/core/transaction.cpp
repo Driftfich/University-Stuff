@@ -87,10 +87,14 @@ std::shared_ptr<Transaction> Transaction::TransactionFactory(const QJsonObject& 
 
 // schema methods
 QJsonObject Transaction::getLocalSchema() {
+    /*
+    Libitem id, borrower id and transaction id are readonly by default so no more changes can be done in the infopanel.
+    For the addpanel the libitem id and borrower id are made editable in the getDefaultSchema method in the transactiontablemodel.cpp file.
+    */
     QJsonObject schema;
     schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Transaction ID"}, {"description", "Unique identifier for the transaction"}};
-    schema["libitem_id"] = QJsonObject{{"type", "integer"}, {"required", true}, {"rename", "Library Item ID"}, {"description", "Unique identifier for the library item"}};
-    schema["borrower_id"] = QJsonObject{{"type", "integer"}, {"required", true}, {"rename", "Borrower ID"}, {"description", "Unique identifier for the borrower"}};
+    schema["libitem_id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Library Item ID"}, {"description", "Unique identifier for the library item"}};
+    schema["borrower_id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Borrower ID"}, {"description", "Unique identifier for the borrower"}};
     schema["transaction_time"] = QJsonObject{{"type", "string"}, {"format", "datetime"}, {"required", true}, {"rename", "Transaction Time"}, {"description", "Time when the transaction occurred"}};
     return schema;
 }

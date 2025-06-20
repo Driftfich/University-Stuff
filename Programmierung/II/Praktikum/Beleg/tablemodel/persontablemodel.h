@@ -1,3 +1,20 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description:
+Custom Qt table model to display the personman class in the mainwindow.
+
+Purpose:
+    - overwrites the data method to return the data for a specific index and role
+    - overwrites the headerData method to show the selected columns at given section and orientation
+    - overwrites the flags method to return the flags for a specific index
+    - methods to update the displayed columns
+    - methods to get the json and schema objects for a specific index
+    - methods to get default json and schema objects for new person objects
+    - methods to update and save a person from a json object
+    - methods to remove rows
+*/
 // Abstract Qt table model for the personman class
 
 #ifndef _PERSONMODEL_H
@@ -46,7 +63,6 @@ class PersonTableModel : public QAbstractTableModel {
         QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
         Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-        // void setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns);
         void setDisplayedColumns(const QVector<QString>& displayedColumns);
         QMap<ColumnIdentity, QString> getAllColumnNames() const;
         QVector<QString> getDisplayedColumns() const;
@@ -63,7 +79,9 @@ class PersonTableModel : public QAbstractTableModel {
         void refreshData();
 
     private:
+        // pointer to the person manager
         PersonMan* personMan;
+        // vector with the displayed columns
         QVector<ColumnIdentity> displayedColumns;
 
 };

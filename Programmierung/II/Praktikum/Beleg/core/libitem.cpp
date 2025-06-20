@@ -17,7 +17,7 @@ QJsonObject Libitem::getJson() const {
     json["id"] = static_cast<qint64>(id);
     json["media_id"] = static_cast<qint64>(media_id);
     json["available_copies"] = static_cast<qint64>(available_copies);
-    json["borrowed_copies"] = static_cast<qint64>(borrowed_copies);
+    // json["borrowed_copies"] = static_cast<qint64>(borrowed_copies);
     json["location"] = location;
     json["condition"] = condition;
     return json;
@@ -60,12 +60,12 @@ int Libitem::loadLocalParams(const QJsonObject& json) {
         return -1;
     }
 
-    if (json.contains("borrowed_copies")) {
-        setBorrowedCopies(json["borrowed_copies"].toVariant().toULongLong());
-    } else {
-        std::cerr << "Error: Missing 'borrowed_copies' in JSON object\n";
-        return -1;
-    }
+    // if (json.contains("borrowed_copies")) {
+    //     setBorrowedCopies(json["borrowed_copies"].toVariant().toULongLong());
+    // } else {
+    //     std::cerr << "Error: Missing 'borrowed_copies' in JSON object\n";
+    //     return -1;
+    // }
 
     if (json.contains("location")) {
         setLocation(json["location"].toString());
@@ -117,7 +117,7 @@ std::ostream& operator<<(std::ostream& os, const Libitem& libitem) {
     os << "Libitem ID: " << libitem.id << "\n"
        << "Media ID: " << libitem.media_id << "\n"
        << "Available Copies: " << libitem.available_copies << "\n"
-       << "Borrowed Copies: " << libitem.borrowed_copies << "\n"
+       // << "Borrowed Copies: " << libitem.borrowed_copies << "\n"
        << "Location: " << libitem.location.toStdString() << "\n"
        << "Condition: " << libitem.condition.toStdString() << "\n"
        << "------------------------\n";
@@ -130,7 +130,7 @@ QJsonObject Libitem::getLocalSchema() {
     schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Libitem ID"}, {"description", "Unique identifier for the library item"}};
     schema["media_id"] = QJsonObject{{"type", "integer"}, {"required", true}, {"rename", "Media ID"}, {"description", "Unique identifier for the media"}};
     schema["available_copies"] = QJsonObject{{"type", "integer"}, {"rename", "Available Copies"}, {"description", "Number of available copies"}};
-    schema["borrowed_copies"] = QJsonObject{{"type", "integer"}, {"rename", "Borrowed Copies"}, {"description", "Number of borrowed copies"}};
+    schema["borrowed_copies"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"rename", "Borrowed Copies"}, {"description", "Number of borrowed copies"}};
     schema["location"] = QJsonObject{{"type", "string"}, {"rename", "Location"}, {"description", "Location of the library item"}};
     schema["condition"] = QJsonObject{{"type", "string"}, {"enum", QJsonArray{"new", "good", "acceptable", "poor"}}, {"rename", "Condition"}, {"description", "Condition of the library item"}};
     return schema;

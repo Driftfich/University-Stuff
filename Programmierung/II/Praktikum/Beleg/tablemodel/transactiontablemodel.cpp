@@ -1,3 +1,12 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description:
+Custom Qt table model to display the transactionman class in the mainwindow.
+*/
+
+// include Qt classes
 #include <QAbstractTableModel>
 #include <QVector>
 #include <QVariant>
@@ -12,7 +21,7 @@
 #include <libitemman.h>
 #include <personman.h>
 
-
+// constructor
 TransactionTableModel::TransactionTableModel(TransactionMan* transactionMan, PersonMan* personMan, LibitemMan* libItemMan, MediaMan* mediaMan, QObject *parent)
     : QAbstractTableModel(parent), transactionMan(transactionMan), personMan(personMan), libItemMan(libItemMan), mediaMan(mediaMan) {
     for (int i = 0; i < MaxColumnIdentity; ++i) {
@@ -20,20 +29,23 @@ TransactionTableModel::TransactionTableModel(TransactionMan* transactionMan, Per
     }
 }
 
+// destructor
 TransactionTableModel::~TransactionTableModel() {
-    // Destructor
 }
 
+// override the rowCount method to return the number of rows
 int TransactionTableModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
     return transactionMan->getTransactions().size();
 }
 
+// override the columnCount method to return the number of columns in the displayedColumns vector
 int TransactionTableModel::columnCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
     return displayedColumns.size();
 }
 
+// remove a row from the transaction manager
 int TransactionTableModel::removeRow(int row, const QModelIndex &parent) {
     // std::cout << "Trying to remove row: " << row << std::endl;
     if (row < 0 || row >= transactionMan->getTransactions().size()) {
@@ -41,11 +53,13 @@ int TransactionTableModel::removeRow(int row, const QModelIndex &parent) {
     }
     beginRemoveRows(parent, row, row);
     // std::cout << "Removing row: " << row << std::endl;
+    // remove the transaction from the transaction manager
     transactionMan->removeTransaction(row);
     endRemoveRows();
     return true;
 }
 
+// override the removeRows method to remove multiple rows from the transaction manager
 bool TransactionTableModel::removeRows(int row, int count, const QModelIndex &parent) {
     if (row < 0 || row + count > transactionMan->getTransactions().size()) {
         return false;
@@ -58,6 +72,7 @@ bool TransactionTableModel::removeRows(int row, int count, const QModelIndex &pa
     return true;
 }
 
+// override the data method to return the data for a specific index and role
 QVariant TransactionTableModel::data(const QModelIndex& index, int role) const {
     if (!index.isValid() || role != Qt::DisplayRole) {
         return QVariant();
@@ -124,6 +139,7 @@ QVariant TransactionTableModel::data(const QModelIndex& index, int role) const {
     }
 }
 
+// override the headerData method to return the header data for a specific section and orientation
 QVariant TransactionTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (role != Qt::DisplayRole) {
         return QVariant();
@@ -163,6 +179,7 @@ QVariant TransactionTableModel::headerData(int section, Qt::Orientation orientat
     return QVariant();
 }
 
+// override the flags method to return the flags for a specific index
 Qt::ItemFlags TransactionTableModel::flags(const QModelIndex &index) const {
     if (!index.isValid()) {
         return Qt::NoItemFlags;
@@ -170,17 +187,15 @@ Qt::ItemFlags TransactionTableModel::flags(const QModelIndex &index) const {
     return QAbstractTableModel::flags(index);
 }
 
-// void TransactionTableModel::setDisplayedColumns(const QVector<ColumnIdentity>& displayedColumns) {
-//     this->displayedColumns = displayedColumns;
-//     emit headerDataChanged(Qt::Horizontal, 0, columnCount() - 1);
-//     emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1));
-// }
-
+// update the displayed columns
 void TransactionTableModel::setDisplayedColumns(const QVector<QString>& displayedColumns) {
     beginResetModel();
+    // clear the displayedColumns vector
     this->displayedColumns.clear();
+    // add the new displayed columns to the displayedColumns vector
     for (const auto& column : displayedColumns) {
         for (int i = 0; i < MaxColumnIdentity; ++i) {
+            // check if the column name is in the displayedColumns vector
             if (getAllColumnNames()[static_cast<ColumnIdentity>(i)] == column) {
                 this->displayedColumns.push_back(static_cast<ColumnIdentity>(i));
                 break;
@@ -190,6 +205,7 @@ void TransactionTableModel::setDisplayedColumns(const QVector<QString>& displaye
     endResetModel();
 }
 
+// get all the available column names
 QMap<TransactionTableModel::ColumnIdentity, QString> TransactionTableModel::getAllColumnNames() const {
     QMap<ColumnIdentity, QString> columnNames;
     columnNames[Id] = "ID";
@@ -207,6 +223,7 @@ QMap<TransactionTableModel::ColumnIdentity, QString> TransactionTableModel::getA
     return columnNames;
 }
 
+// get the displayed columns
 QVector<QString> TransactionTableModel::getDisplayedColumns() const {
     // substitute the displayedColumns with the actual column names
     QVector<QString> columnNames;
@@ -216,6 +233,7 @@ QVector<QString> TransactionTableModel::getDisplayedColumns() const {
     return columnNames;
 }
 
+// get the json object for a specific transaction at a specific index to show in infopanel
 QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const {
     QJsonObject jsonObject = QJsonObject();
     if (!index.isValid()) {
@@ -226,6 +244,7 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
     if (row >= (unsigned long) transactionMan->getTransactions().size()) {
         return jsonObject;
     }
+    // get the transaction, libitem, media and person from the row
     std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
     std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
     std::shared_ptr<Media> media;
@@ -233,6 +252,7 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
     else media = mediaMan->getMedia(libitem->getMediaId());
     std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
 
+    // check if the transaction is valid
     if (!transaction) {
         return jsonObject;
     }
@@ -240,7 +260,10 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
     // add the json data to the main json object
     jsonObject["Transaction"] = transaction->getJson();
     if (libitem) {
-        jsonObject["Libitem"] = libitem->getJson();
+        QJsonObject libitemJson = libitem->getJson();
+        // overwrite the borrowed copies in the libitem json object with the amount of transactions containing the libitem id
+        libitemJson["borrowed_copies"] = static_cast<qint64>(transactionMan->getTransactionsByLibitemId(libitem->getId()).size());
+        jsonObject["Libitem"] = libitemJson;
     } else {
         jsonObject["Libitem"] = QJsonObject();
     }
@@ -258,12 +281,14 @@ QJsonObject TransactionTableModel::getJsonObject(const QModelIndex& index) const
     return jsonObject;
 }
 
+// get the default json object for a new transaction
 QJsonObject TransactionTableModel::getDefaultJsonObject() const {
     QJsonObject defaultJsonObject = createDefaultJsonFromSchema(getDefaultSchema());
     defaultJsonObject["id"] = QJsonValue::fromVariant(static_cast<quint64>(transactionMan->getNextId()));
     return defaultJsonObject;
 }
 
+// get the schema object for a specific transaction at a specific index to show in infopanel
 QJsonObject TransactionTableModel::getSchemaObject(const QModelIndex& index) const {
     if (!index.isValid()) {
         return QJsonObject();
@@ -273,7 +298,8 @@ QJsonObject TransactionTableModel::getSchemaObject(const QModelIndex& index) con
     if (row >= (unsigned long) transactionMan->getTransactions().size()) {
         return QJsonObject();
     }
-
+    
+    // get the transaction, person, libitem and media for the row
     std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
     if (!transaction) {
         return QJsonObject();
@@ -284,13 +310,21 @@ QJsonObject TransactionTableModel::getSchemaObject(const QModelIndex& index) con
     if (!libitem) media = nullptr;
     else media = mediaMan->getMedia(libitem->getMediaId());
 
+    // create the root schema and add the transaction, libitem, media and person schemas
     QJsonObject rootSchema;
     rootSchema.insert("type", "object");
     QJsonObject properties;
     properties.insert("type", "object");
     properties.insert("Transaction", transaction->getSchema());
     if (libitem) {
-        properties.insert("Libitem", libitem->getSchema());
+        QJsonObject libitemSchema = libitem->getSchema();
+        // make the media id readonly so the media reference cannot be changed in the transaction infopanel (do this in the libitem infopanel)
+        QJsonObject libitemProperties = libitemSchema["properties"].toObject();
+        QJsonObject mediaId = libitemProperties["media_id"].toObject();
+        mediaId["readonly"] = true;
+        libitemProperties["media_id"] = mediaId;
+        libitemSchema["properties"] = libitemProperties;
+        properties.insert("Libitem", libitemSchema);
     } else {
         properties.insert("Libitem", QJsonObject());
     }
@@ -309,6 +343,7 @@ QJsonObject TransactionTableModel::getSchemaObject(const QModelIndex& index) con
     return rootSchema;
 }
 
+// get the default schema for a new transaction
 QJsonObject TransactionTableModel::getDefaultSchema() const {
     QJsonObject defaultSchema = Transaction::getSchema();
     
@@ -318,14 +353,14 @@ QJsonObject TransactionTableModel::getDefaultSchema() const {
     // Modify libitem_id field to make it not required
     if (properties.contains("libitem_id")) {
         QJsonObject libitemField = properties["libitem_id"].toObject();
-        libitemField["readonly"] = false;
+        libitemField["readonly"] = false; // make the libitem id editable in the form
         properties["libitem_id"] = libitemField;
     }
     
     // Modify borrower_id field to make it not required
     if (properties.contains("borrower_id")) {
         QJsonObject borrowerField = properties["borrower_id"].toObject();
-        borrowerField["readonly"] = false;
+        borrowerField["readonly"] = false; // make the borrower id editable in the form
         properties["borrower_id"] = borrowerField;
     }
     // qDebug() << "Modified Properties of Transaction Schema: " << properties << "\n";
@@ -334,6 +369,7 @@ QJsonObject TransactionTableModel::getDefaultSchema() const {
     return defaultSchema;
 }
 
+// save a new transaction from a json object
 Result TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
     std::shared_ptr<Transaction> transaction = Transaction::TransactionFactory(jsonObject);
 
@@ -349,8 +385,16 @@ Result TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) 
         return Result::Error("Libitem does not exist in the database");
     }
 
-    // check that the person has not already reached the maximum number of borrowed items
+    // check how often the libitem is already borrowed
+    QVector<std::shared_ptr<Transaction>> transactions = transactionMan->getTransactionsByLibitemId(libitem->getId());
+    if (transactions.size() >= libitem->getAvailableCopies()) {
+        QString errorMsg = "Libitem " + QString::number(libitem->getId()) + " has reached the maximum number of available copies (" + QString::number(libitem->getAvailableCopies()) + ")";
+        return Result::Error(errorMsg);
+    }
+
+    // check if the person is a borrower
     if (person->isBorrower()) {
+        // get the limit of the person
         unsigned long limit = person->getBorrower()->getLimit();
         // count the number of current transactions for this person by utilizing the person map in the transaction manager
         QVector<std::shared_ptr<Transaction>> transactions = transactionMan->getTransactionsByPersonId(person->getId());
@@ -373,7 +417,9 @@ Result TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) 
     return Result::Success();
 }
 
+// update a transaction at a specific index from a json object
 bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
+    qDebug() << "Updating transaction from json object: " << jsonObject << "\n";
     if (!index.isValid()) {
         return false;
     }
@@ -382,7 +428,8 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
     if (row >= (unsigned long) transactionMan->getTransactions().size()) {
         return false;
     }
-    // qDebug() << "Try to update transaction from json object" << "\n";
+
+    // get the transaction, libitem, media and person from the row
     std::shared_ptr<Transaction> transaction = (*transactionMan)[row];
     std::shared_ptr<Libitem> libitem = libItemMan->getLibitem(transaction->getLibitemId());
     std::shared_ptr<Person> person = personMan->getPerson(transaction->getBorrowerId());
@@ -392,6 +439,7 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
         return false;
     }
     if (libitem) {
+        // get the media from the libitem
         media = mediaMan->getMedia(libitem->getMediaId());
     }
 
@@ -407,23 +455,28 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
         }
     }
     
-    if (media && jsonObject.contains("Media")) {
-        QJsonObject mediaObject = jsonObject["Media"].toObject();
-        if (media->loadLocalParams(mediaObject) != 0) {
-            return false;
-        }
-        if (mediaObject.contains("subclass_parameters")) {
-            QJsonObject subclassParams = mediaObject["subclass_parameters"].toObject();
-            if (media->loadSubclassParams(subclassParams) != 0) {
-                return false;
-            }
-        }
-    }
-
+    // update the person if it exists in the json object
     if (person && jsonObject.contains("person")) {
         QJsonObject personObject = jsonObject["person"].toObject();
         if (person->loadLocalParams(personObject) != 0) {
             return false;
+        }
+    }
+    
+    // update the media if it exists in the json object
+    if (media && jsonObject.contains("Media")) {
+        QJsonObject mediaObject = jsonObject["Media"].toObject();
+        if (mediaObject.contains("media")) {
+            QJsonObject baseMedia = mediaObject["media"].toObject();
+            if (media->loadLocalParams(baseMedia) != 0) {
+                return false;
+            }
+        }
+        if (mediaObject.contains("subclass_parameters")) {
+            QJsonObject subclassParams = mediaObject["subclass_parameters"].toObject();
+            if (!subclassParams.isEmpty() && media->loadSubclassParams(subclassParams) != 0) {
+                return false;
+            }
         }
     }
 

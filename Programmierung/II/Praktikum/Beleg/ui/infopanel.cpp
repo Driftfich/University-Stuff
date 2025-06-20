@@ -584,7 +584,7 @@ bool InfoPanel::isHighestItem(QTreeWidgetItem* item) const {
  * @purpose Provides safe transition to edit mode with complete UI reset
  */
 void InfoPanel::enterEditMode() {
-    qDebug() << "Entering edit mode with comprehensive reset";
+    // qDebug() << "Entering edit mode with comprehensive reset";
     
     // Block signals during state transition to prevent race conditions
     QSignalBlocker treeBlocker(treeWidget);
@@ -633,7 +633,7 @@ void InfoPanel::enterEditMode() {
     // Validate all required fields to ensure proper initial state
     validateAllRequiredFieldsOnLoad();
     
-    qDebug() << "Edit mode entered successfully with complete UI reset";
+    // qDebug() << "Edit mode entered successfully with complete UI reset";
 }
 
 /**
@@ -1320,7 +1320,7 @@ void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item, bool checked) {
     // Connect checkbox toggle to handler with proper connection type
     connect(checkbox, &QCheckBox::toggled, this, &InfoPanel::onOptionalCheckboxToggled, Qt::DirectConnection);
     
-    qDebug() << "Successfully created checkbox for optional field:" << textLabel->text();
+    // qDebug() << "Successfully created checkbox for optional field:" << textLabel->text();
 }
 
 /**

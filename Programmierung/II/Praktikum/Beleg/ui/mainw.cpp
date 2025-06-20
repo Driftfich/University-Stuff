@@ -254,7 +254,7 @@ void MainWindow::setupUnifiedFieldChangeHandler()
                 isProcessingFieldChange = false;
             });
             
-        qDebug() << "Successfully established unified field change handler";
+        // qDebug() << "Successfully established unified field change handler";
         
     } catch (const std::exception& e) {
         qCritical() << "Failed to setup unified field change handler:" << e.what();
@@ -446,7 +446,7 @@ void MainWindow::setupTableModels()
 {
     // create table models
     personModel = new PersonTableModel(lib->getPersonManager(), this);
-    libitemModel = new LibItemTableModel(lib->getLibitemManager(), lib->getMediaManager(), this);
+    libitemModel = new LibItemTableModel(lib->getLibitemManager(), lib->getMediaManager(), lib->getTransactionManager(), this);
     transactionModel = new TransactionTableModel(lib->getTransactionManager(), 
                                                  lib->getPersonManager(), 
                                                  lib->getLibitemManager(), 
@@ -788,6 +788,33 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
         }
         
         if (success) {
+            // emit new double click signal on the same index to update the infopanel
+            QTableView* currentTableView = nullptr;
+            CustomFilterProxyModel* currentProxyModel = nullptr;
+            
+            // Determine which table view corresponds to the current edit model
+            if (qobject_cast<TransactionTableModel*>(currentEditModel)) {
+                currentTableView = tableWidgetUi->transtab;
+                currentProxyModel = transactionProxy;
+            } 
+            else if (qobject_cast<PersonTableModel*>(currentEditModel)) {
+                currentTableView = tableWidgetUi->persontab;
+                currentProxyModel = personProxy;
+            } 
+            else if (qobject_cast<LibItemTableModel*>(currentEditModel)) {
+                currentTableView = tableWidgetUi->itemtab;
+                currentProxyModel = libitemProxy;
+            }
+            
+            if (currentTableView && currentProxyModel) {
+                // Map source index to proxy index
+                QModelIndex proxyIndex = currentProxyModel->mapFromSource(currentEditIndex);
+                if (proxyIndex.isValid()) {
+                    // Emit the double click signal to refresh the info panel
+                    emit currentTableView->doubleClicked(proxyIndex);
+                }
+            }
+
             // Model über Änderungen benachrichtigen
             currentEditModel->dataChanged(currentEditIndex, currentEditIndex);
             QMessageBox::information(this, tr("Gespeichert"), 

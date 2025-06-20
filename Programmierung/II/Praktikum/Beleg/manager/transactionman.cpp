@@ -112,6 +112,11 @@ QString TransactionMan::getFilename() const {
     return filename;
 }
 
+// get all the transactions containing a specific libitem id
+QVector<std::shared_ptr<Transaction>> TransactionMan::getTransactionsByLibitemId(unsigned long libitem_id) const {
+    return libitem_map.value(libitem_id);
+}
+
 // get all the transactions containing a specific person id
 QVector<std::shared_ptr<Transaction>> TransactionMan::getTransactionsByPersonId(unsigned long person_id) const {
     // qDebug() << person_map.value(person_id).size() << "transactions for person ID:" << person_id;
