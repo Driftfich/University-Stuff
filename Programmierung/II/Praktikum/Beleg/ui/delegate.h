@@ -1,3 +1,12 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: 
+The InfoPanelDelegate class is responsible for creating the correct editor for the item type.
+It also handles the validation of the fields and the painting of the item.
+*/
+
 #include <QSpinBox>
 #include <QDateEdit>
 #include <QComboBox>

@@ -24,9 +24,11 @@
 
 InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWidget(this)), inEditMode(false),
     m_baseFontSize(15), m_fontScaleFactor(0.9), m_minFontSize(7), m_maxFontSize(15), // Initialize font params
-    m_treeExpandedState(false) // Initialize to collapsed state (default after displayInfo)
+    m_treeExpandedState(true) // Initialize to collapsed state (default after displayInfo)
 {
+    // set the header labels
     treeWidget->setHeaderLabels({tr("Attribut"), tr("Wert")});
+    // set the overall layout
     QVBoxLayout *layout = new QVBoxLayout(this);
     
     // Create horizontal layout for buttons
@@ -46,13 +48,14 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
     editButton->setVisible(true);
     buttonLayout->addWidget(editButton);
 
-    // Add button layout first, then treeWidget
+    // add the button layout first, then the tree widget
     layout->addLayout(buttonLayout);
     layout->addWidget(treeWidget);
 
+    // set the custom delegate for the tree widget
     treeWidget->setItemDelegate(new InfoPanelDelegate(this, treeWidget)); 
 
-    // connect signals and slots
+    // connect the signals and slots
     connect(saveButton, &QPushButton::clicked, this, &InfoPanel::saveChanges);
     connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
     connect(treeWidget, &QTreeWidget::itemChanged, this, &InfoPanel::onItemChanged);
@@ -65,15 +68,17 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
     // load the delete icon
     deleteIcon = QPixmap(":/icons/quit.png");
     if (deleteIcon.isNull()) {
-        QMessageBox::warning(this, tr("Fehler"), tr("Das Symbol für das Löschen konnte nicht geladen werden."));
+        QMessageBox::warning(this, tr("Fehler"), tr("The symbol for the delete button could not be loaded."));
     }
 
-    treeWidget->viewport()->installEventFilter(this); // Install event filter to handle mouse events
-    treeWidget->viewport()->setMouseTracking(true); // Enable mouse tracking for the viewport
+    // install the event filter to handle mouse events
+    treeWidget->viewport()->installEventFilter(this);
+    // enable mouse tracking for the viewport
+    treeWidget->viewport()->setMouseTracking(true);
 }
 
 InfoPanel::~InfoPanel() {
-    // Clean up optional checkboxes
+    // clean up the optional checkboxes
     for (QMap<QTreeWidgetItem*, QCheckBox*>::const_iterator it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
         delete it.value();
     }
@@ -83,8 +88,13 @@ InfoPanel::~InfoPanel() {
     delete treeWidget;
 }
 
+/**
+ * @brief Display the json object in the tree widget without a schema.
+ * @param jsonObject The json object to display.
+ * @param resetEditMode True if the edit mode should be reset.
+*/
 void InfoPanel::displayInfo(const QJsonObject& jsonObject, bool resetEditMode) {
-    // qDebug() << "Displaying new info without schema, resetEditMode:" << resetEditMode;
+    
     if (resetEditMode) {
         inEditMode = false;
         resetButtons();
@@ -93,36 +103,41 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, bool resetEditMode) {
     // Store new data and schema
     setOriginalData(jsonObject);
     setOriginalSchema(QJsonObject());
-    setCurrentSchema(QJsonObject()); // No schema provided in this overload, so set to empty object
+    setCurrentSchema(QJsonObject()); // no schema provided in this overload, so set to empty object
 
-    // Safe cleanup of optional field components to prevent paint engine errors
+    // safe cleanup of optional field components to prevent paint engine errors
     clearOptionalFieldComponentsSafely();
     
-    // Clear validation state
+    // clear the validation state
     invalidRequiredFields.clear();
     
     // Block all tree widget signals during reconstruction
     QSignalBlocker treeBlocker(treeWidget);
     QSignalBlocker viewportBlocker(treeWidget->viewport());
     
-    // Clear tree and reset hover state
+    // clear the tree and reset the hover state
     treeWidget->clear();
     if (hoveredItemForDelete.isValid()) {
         treeWidget->update(hoveredItemForDelete);
     }
     hoveredItemForDelete = QPersistentModelIndex();
     
+    // reset the edit and save buttons if the edit mode should be reset
     if (resetEditMode) {
         resetButtons();
     }
 
-    // Reconstruct tree with new data
+    // reconstruct the tree with new data
     addJsonToTreeRecursive(jsonObject, treeWidget->invisibleRootItem(), 0);
 
+    // expand all items in the tree
     treeWidget->expandAll();
-    m_treeExpandedState = false;
+    // set the tree collapsed
+    m_treeExpandedState = true;
+    // resize the columns to the contents
     treeWidget->resizeColumnToContents(0);
     treeWidget->resizeColumnToContents(1);
+    // set the tree items editable and update the add buttons
     setTreeItemsEditable(inEditMode);
     updateAddButtons(inEditMode);
 
@@ -130,29 +145,34 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, bool resetEditMode) {
     setOptionalFieldsVisibility();
 }
 
+/**
+ * @brief Display the json object in the tree widget with a schema.
+ * @param jsonObject The json object to display.
+ * @param schemaObject The schema to display.
+ * @param resetEditMode True if the edit mode should be reset.
+*/
 void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& schemaObject, bool resetEditMode) {
-    // qDebug() << "Displaying new info with schema, resetEditMode:" << resetEditMode;
     if (resetEditMode) {
         inEditMode = false;
         resetButtons();
     }
 
-    // Store new data and schema
+    // store the new data and schema
     setOriginalData(jsonObject);
     setOriginalSchema(schemaObject);
     setCurrentSchema(schemaObject);
 
-    // Safe cleanup of optional field components to prevent paint engine errors
+    // safe cleanup of optional field components to prevent paint engine errors
     clearOptionalFieldComponentsSafely();
     
-    // Clear validation state
+    // clear the validation state
     invalidRequiredFields.clear();
     
     // Block all tree widget signals during reconstruction
     QSignalBlocker treeBlocker(treeWidget);
     QSignalBlocker viewportBlocker(treeWidget->viewport());
     
-    // Clear tree and reset hover state
+    // clear the tree and reset the hover state
     treeWidget->clear();
     if (hoveredItemForDelete.isValid()) {
         treeWidget->update(hoveredItemForDelete);
@@ -163,11 +183,11 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
         resetButtons();
     }
 
-    // Reconstruct tree with new data
+    // reconstruct the tree with new data
     addJsonToTreeRecursive(jsonObject, treeWidget->invisibleRootItem(), 0, currentSchema);
 
     treeWidget->expandAll();
-    m_treeExpandedState = false;
+    m_treeExpandedState = true;
     treeWidget->resizeColumnToContents(0);
     treeWidget->resizeColumnToContents(1);
     setTreeItemsEditable(inEditMode);
@@ -177,17 +197,24 @@ void InfoPanel::displayInfo(const QJsonObject& jsonObject, const QJsonObject& sc
     setOptionalFieldsVisibility();
 }
 
-
+/**
+ * @brief Add the json to the tree recursively with schema.
+ * @param valueForThisItem The json value to add
+ * @param thisItem The item to add the json to
+ * @param depth The depth/level of the item
+ * @param currentItemSchema The schema of the item
+*/
 void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth, const QJsonObject& currentItemSchema) {
+    // calculate the font for the depth
     QFont itemFont = calculateFontForDepth(depth);
-    thisItem->setFont(0, itemFont); // Font for the key column of thisItem (e.g., "person", or "fname")
+    // set the font for the key column of thisItem
+    thisItem->setFont(0, itemFont);
 
+    // get the attributes from the schema
     QString nameOverride = currentItemSchema.value("rename").toString();
     QString description = currentItemSchema.value("description").toString();
     bool isReadOnly = currentItemSchema.value("readonly").toBool(false);
     QString originalKey = thisItem->text(0);
-
-    // if (isReadOnly) qDebug() << "Item is read-only:" << originalKey;
 
     if (!originalKey.isEmpty()) {
         thisItem->setData(0, SchemaOriginalKeyRole, originalKey);
@@ -202,19 +229,14 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         thisItem->setToolTip(0, description);
     }
 
-    // Check for optional flag for all types (objects, arrays, and leaf nodes)
-    // qDebug() << "Current item schema for key:" << thisItem->text(0) << "->" << currentItemSchema;
-    // bool isOptional = currentItemSchema.value("optional").toBool(false);
-    // if (isOptional) {
-    //     // qDebug() << "Creating optional checkbox for item:" << thisItem->text(0) << " (type: " << currentItemSchema.value("type").toString() << ")";
-    //     createOptionalCheckbox(thisItem);
-    // }
+    // create the checkbox if optional is in the schema. The value of optional is used to set the initial state of the checkbox
     if (currentItemSchema.contains("optional")) {
         createOptionalCheckbox(thisItem, currentItemSchema.value("optional").toBool(false));
     }
 
+    // if the value is an object, add the children to the tree
     if (valueForThisItem.isObject()) {
-        thisItem->setData(0, Qt::UserRole, "object"); // 'thisItem' (e.g., "person", "subclass_params") represents an object.
+        thisItem->setData(0, Qt::UserRole, "object"); // thisItem represents an object.
         QJsonObject obj = valueForThisItem.toObject();
 
         QJsonObject propertiesSchema;
@@ -224,38 +246,45 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         // qDebug() << "Current item schema for object:" << currentItemSchema << "\n";
         // qDebug() << "propertiesSchema from" << thisItem->text(0) << "->" << propertiesSchema << "\n";
         thisItem->setData(0, SchemaReadonlyRole, isReadOnly);
+
+        // add the children keys to the tree
         for (const QString& key : obj.keys()) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
             // child->setData(0, SchemaReadonlyRole, isReadOnly);
             QJsonObject childSchema = propertiesSchema.value(key).toObject();
             // qDebug() << key << "->" << childSchema;
-            if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
-                childSchema = currentItemSchema.value("additionalProperties").toObject();
-            }
+            // if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
+            //     childSchema = currentItemSchema.value("additionalProperties").toObject();
+            // }
+            // call recurive to setup the child item
             addJsonToTreeRecursive(obj[key], child, depth + 1, childSchema);
         }
     } else if (valueForThisItem.isArray()) {
-        thisItem->setData(0, Qt::UserRole, "array"); // 'thisItem' (e.g., "transactions", "artist_ids") represents an array.
+        thisItem->setData(0, Qt::UserRole, "array"); // thisItem represents an array.
         thisItem->setData(0, SchemaReadonlyRole, isReadOnly);
         QJsonArray array = valueForThisItem.toArray();
 
-        QJsonObject itemSchema; // Schema for individual items in the array
+        QJsonObject itemSchema; // schema for individual items in the array
         if (currentItemSchema.value("type").toString() == "array" && currentItemSchema.contains("items")) {
             itemSchema = currentItemSchema.value("items").toObject();
         }
 
+        // add the items to the tree
         for (int i = 0; i < array.size(); ++i) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
+            // set the text to [index]
             child->setText(0, QString("[%1]").arg(i));
+            // call recursively to setup the child item
             addJsonToTreeRecursive(array[i], child, depth + 1,  itemSchema);
-            child->setData(0, SchemaReadonlyRole, isReadOnly); // Set readonly state for the child item
+            // set the readonly state for the child item to overwrite afterwards
+            child->setData(0, SchemaReadonlyRole, isReadOnly);
         }
     } 
     else { // Leaf node
-        thisItem->setText(1, valueForThisItem.toVariant().toString());
-        thisItem->setData(0, Qt::UserRole, "leaf");
-        thisItem->setFont(1, calculateFontForDepth(depth));
+        thisItem->setText(1, valueForThisItem.toVariant().toString()); // set the value of the item
+        thisItem->setData(0, Qt::UserRole, "leaf"); // set the type of the item to leaf
+        thisItem->setFont(1, calculateFontForDepth(depth)); // set the font of the value column
 
         // set the schema type and format for the item
         QString itemType = currentItemSchema.value("type").toString();
@@ -287,11 +316,18 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
     }
 }
 
+/**
+ * @brief Add the json to the tree recursively without a schema.
+ * @param valueForThisItem The json value to add
+ * @param thisItem The item to add the json to
+ * @param depth The depth/level of the item
+*/
 void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTreeWidgetItem* thisItem, int depth) {
+    // set the font for the key column with the given depth
     QFont itemFont = calculateFontForDepth(depth);
     thisItem->setFont(0, itemFont);
-    thisItem->setFont(1, itemFont);
 
+    // if the value is an object, add the children to the tree
     if (valueForThisItem.isObject()) {
         thisItem->setData(0, Qt::UserRole, "object");
         QJsonObject obj = valueForThisItem.toObject();
@@ -300,7 +336,9 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
             child->setText(0, key);
             addJsonToTreeRecursive(obj[key], child, depth + 1);
         }
-    } else if (valueForThisItem.isArray()) {
+    } 
+    // if the value is an array, add the items to the tree
+    else if (valueForThisItem.isArray()) {
         thisItem->setData(0, Qt::UserRole, "array");
         QJsonArray array = valueForThisItem.toArray();
         for (int i = 0; i < array.size(); ++i) {
@@ -308,14 +346,25 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
             child->setText(0, QString("[%1]").arg(i));
             addJsonToTreeRecursive(array[i], child, depth + 1);
         }
-    } else { // Leaf node
+    } 
+    // if the value is a leaf node, add the value to the tree
+    else { 
+        // set the text of the value column
         thisItem->setText(1, valueForThisItem.toVariant().toString());
+        // set the type of the item to leaf
         thisItem->setData(0, Qt::UserRole, "leaf");
+        // set the font of the value column
+        thisItem->setFont(1, calculateFontForDepth(depth));
         // save current value for the item
         thisItem->setData(1, Qt::UserRole + 30, thisItem->text(1));
     }
 }
 
+/**
+ * @brief Check if the item is at the lowest collection level of the tree (lowest object or array)
+ * @param item The item to check
+ * @return True if the item is a lowest collection, false otherwise
+*/
 bool InfoPanel::isLowestCollection(QTreeWidgetItem* item) const {
     if (!item) return false;
     QString itemType = item->data(0, Qt::UserRole).toString();
@@ -340,11 +389,13 @@ bool InfoPanel::isLowestCollection(QTreeWidgetItem* item) const {
     return true; // All children are leaves (or it was empty)
 }
 
+/**
+ * @brief Check if the item is at the highest level of the tree (top-level item)
+ * @param item The item to check
+ * @return True if the item is at the highest level, false otherwise
+*/
 bool InfoPanel::isHighestItem(QTreeWidgetItem* item) const {
     if (!item || !item->parent()) {
-        // If item is null or has no parent (e.g., it might be the invisible root itself,
-        // or an item not yet added to a tree), it's not considered a user-visible highest item.
-        // qDebug() << "Item is null or has no parent.";
         return true;
     }
     // A "highest item" (top-level item) is a direct child of the tree widget's invisible root item.
@@ -357,7 +408,7 @@ bool InfoPanel::isHighestItem(QTreeWidgetItem* item) const {
  * 
  * Ensures all UI components are properly reset and configured for editing:
  * - Resets hover states and delete button interactions
- * - Clears any stale validation states  
+ * - Clears any stale validation states
  * - Properly manages optional field checkboxes and visibility
  * - Uses signal blocking to prevent race conditions during state transitions
  * - Validates all required fields and updates button states
@@ -384,7 +435,7 @@ void InfoPanel::enterEditMode() {
     // Set edit mode state
     inEditMode = true;
     
-    // TreeWidget editierbar machen
+    // make the tree widget editable
     setTreeItemsEditable(true);
 
     // Apply optional field visibility settings with proper state management
@@ -397,7 +448,7 @@ void InfoPanel::enterEditMode() {
     // Update save button state based on current data validity
     updateSaveButtonState();
     
-    // Button-Zustände ändern
+    // change the state of the save button
     saveButton->setEnabled(true);
     saveButton->setStyleSheet("QPushButton { background-color: lightblue; }");
     
@@ -405,7 +456,7 @@ void InfoPanel::enterEditMode() {
     editButton->setText(tr("Abbrechen"));
     editButton->setIcon(QIcon(":/icons/quit.png"));
 
-    // Signal-Verbindungen umschalten
+    // disconnect the edit button from the enterEditMode signal and connect it to the cancelEditMode signal
     disconnect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
     connect(editButton, &QPushButton::clicked, this, &InfoPanel::cancelEditMode);
 
@@ -435,14 +486,14 @@ void InfoPanel::saveChanges() {
     if (!inEditMode) return;
 
     if (!invalidRequiredFields.isEmpty()) {
-        QMessageBox::warning(this, tr("Validierungsfehler"), 
-                           tr("Bitte füllen Sie alle rot markierten Pflichtfelder aus."));
+        QMessageBox::warning(this, tr("Validation error"), 
+                           tr("Please fill in all required fields."));
         return;
     }
     
     // qDebug() << "Saving changes with comprehensive UI cleanup";
     
-    // Daten aus Tree sammeln
+    // collect the data from the tree
     QJsonObject modifiedData = collectDataFromTree();
 
     // update the original data with the modified data
@@ -455,36 +506,49 @@ void InfoPanel::saveChanges() {
     // Safe cleanup of optional field components to prevent memory leaks
     clearOptionalFieldComponentsSafely();
     
-    // Edit-Modus verlassen
+    // exit edit mode
     inEditMode = false;
     setTreeItemsEditable(false);
     
     // Apply optional field visibility settings for view mode
     setOptionalFieldsVisibility();
     
-    // Button-Zustände zurücksetzen
+    // reset the state of the save button
     saveButton->setEnabled(false);
     saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
     editButton->setText(tr("Bearbeiten"));
     editButton->setIcon(QIcon(":/icons/edit.png"));
     
-    // Signal-Verbindungen zurücksetzen
+    // reset the signal connections of the edit button
     disconnect(editButton, &QPushButton::clicked, this, &InfoPanel::cancelEditMode);
     connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
     
     // Hide add buttons and reset hover state
     updateAddButtons(false); // Hide add buttons after saving
     if (hoveredItemForDelete.isValid()) {
-        // If a delete button was hovered, we need to reset it
+        // If a delete button was hovered it will be reset
         treeWidget->update(hoveredItemForDelete);
         hoveredItemForDelete = QPersistentModelIndex(); // Reset the hovered item for delete button
     }
 
-    // Signal aussenden
+    // emit the saveRequested signal
     emit saveRequested(modifiedData);
     
     // qDebug() << "Changes saved successfully with complete UI cleanup";
 }
+
+
+/**
+ * @brief Cancels edit mode with comprehensive UI state cleanup
+ * 
+ * Ensures complete UI reset after canceling edit mode:
+ * - Resets all button states and hover interactions
+ * - Applies proper optional field visibility
+ * - Uses proper signal management for state transitions
+ * 
+ * @exception None - Shows warning for validation errors
+ * @purpose Provides safe cancel operation with complete UI cleanup
+ */
 
 void InfoPanel::cancelEditMode() {
     // qDebug() << "Canceling edit mode in InfoPanel";
@@ -518,6 +582,7 @@ void InfoPanel::cancelEditMode() {
     // qDebug() << "Edit mode canceled successfully";
 }
 
+// reset the save and edit button to non edit state
 void InfoPanel::resetButtons() {
     // Reset the buttons to their initial state
     saveButton->setEnabled(false);
@@ -530,33 +595,36 @@ void InfoPanel::resetButtons() {
     connect(editButton, &QPushButton::clicked, this, &InfoPanel::enterEditMode);
 }
 
+// set the tree items editable
 void InfoPanel::setTreeItemsEditable(bool editable) {
     for (int i = 0; i < treeWidget->topLevelItemCount(); ++i) {
         setTreeItemEditable(treeWidget->topLevelItem(i), editable);
     }
 }
 
+// set the tree item editable
 void InfoPanel::setTreeItemEditable(QTreeWidgetItem* item, bool editable) {
     if (!item) return;
     
-    // Nur Blatt-Knoten (Werte) editierbar machen, nicht Schlüssel oder Gruppennamen
+    // make the leaf nodes (values) editable, not keys or group names
     bool isLeaf = item->data(0, Qt::UserRole).toString() == "leaf";
     QString itemKey = item->text(0).toLower();
     
     if (isLeaf && editable) {
-        // Nur Spalte 1 (Wert) editierbar machen
+        // make the value column editable
         item->setFlags(item->flags() | Qt::ItemIsEditable);
     } else {
-        // Nicht editierbar
+        // make the value column not editable
         item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     }
     
-    // Rekursiv für alle Kinder
+    // recursively for all children
     for (int i = 0; i < item->childCount(); ++i) {
         setTreeItemEditable(item->child(i), editable);
     }
 }
 
+// react when a value in a tree item changes
 void InfoPanel::onItemChanged(QTreeWidgetItem* item, int column) {
     if (!inEditMode) return; // Only react to changes if in edit mode
     
@@ -583,10 +651,12 @@ void InfoPanel::onItemChanged(QTreeWidgetItem* item, int column) {
     updateSaveButtonState();
 }
 
+// collect the data from the tree
 QJsonObject InfoPanel::collectDataFromTree() {
     return getValueFromItem(treeWidget->invisibleRootItem()).toObject(); // Collect data from the invisible root item
 }
 
+// get the value from the item
 QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
     QString itemType = item->data(0, Qt::UserRole).toString();
 
@@ -601,11 +671,7 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
             array.append(getValueFromItem(child));
         }
         return array;
-    } else if (itemType == "object") { // Default to object if it has children and is not explicitly an array or leaf
-        // debug type of subclass_params key
-        // if (item->text(0) == "subclass_params") {
-        //     qDebug() << "Item type for subclass_params:" << itemType;
-        // }
+    } else if (itemType == "object") {
         QJsonObject obj = QJsonObject();
         for (int i = 0; i < item->childCount(); ++i) {
             QTreeWidgetItem* child = item->child(i);
@@ -637,22 +703,24 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
 }
 
 void InfoPanel::restoreOriginalData() {
-    // Einfach die ursprünglichen Daten neu anzeigen
-    // if (currentSchema.isEmpty()) {
-    //     displayInfo(originalData, true);
-    // } else {
-    //     // Wenn ein Schema vorhanden ist, verwenden wir es
-    //     displayInfo(originalData, currentSchema, true);
-    // }
+    // display the original data with the original schema and reset the edit mode
     displayInfo(originalData, originalSchema, true);
 }
 
+/**
+ * @brief Update the add buttons for the tree
+ * @param show True if the add buttons should be shown, false otherwise
+ * 
+ * @purpose Updates the add buttons visibility in the tree widget
+ */
 void InfoPanel::updateAddButtons(bool show) {
+    // iterate over all items in the tree
     QTreeWidgetItemIterator it(treeWidget);
     while (*it) {
         QTreeWidgetItem* item = *it;
         
-        // First, always try to remove existing widget if we are hiding or if it's not eligible
+        // When the item is a lowest collection item (doesnt contain a children which can have again a add button) 
+        // and not readonly and isnt highest item (top level attributes shouldnt be able to have further attributes)
         QWidget* currentWidget = treeWidget->itemWidget(item, 1);
         QVariant readonlyVariant = item->data(0, SchemaReadonlyRole);
         bool readonly = readonlyVariant.isValid() ? readonlyVariant.toBool() : false;
@@ -664,7 +732,7 @@ void InfoPanel::updateAddButtons(bool show) {
                 QToolButton* addButton = new QToolButton();
                 addButton->setIcon(QIcon(":/icons/add2.png")); // Ensure this icon exists
                 QString itemType = item->data(0, Qt::UserRole).toString();
-                addButton->setToolTip(itemType == "array" ? tr("Neues Element zum Array hinzufügen") : tr("Neues Attribut zum Objekt hinzufügen"));
+                addButton->setToolTip(itemType == "array" ? tr("Add new item to array") : tr("Add new attribute to object"));
                 addButton->setAutoRaise(true);
                 addButton->setFocusPolicy(Qt::NoFocus);
                 addButton->setProperty("treeItem", QVariant::fromValue<void*>(static_cast<void*>(item)));
@@ -676,103 +744,127 @@ void InfoPanel::updateAddButtons(bool show) {
                 }
                 treeWidget->setItemWidget(item, 1, addButton);
             }
-            // If currentWidget exists and shouldHaveButton is true, we assume it's the correct button already.
-        } else { // Should NOT have a button (either !show or !isLowestCollection)
+            // else the buttons should already exist
+        } else { 
+            // Should NOT have a button
             if (currentWidget) {
-                 treeWidget->removeItemWidget(item, 1);
-                 delete currentWidget;
+                treeWidget->removeItemWidget(item, 1);
+                delete currentWidget;
             }
         }
         ++it;
     }
 }
 
+// add a new item to an array
 void InfoPanel::onAddArrayItem() {
-    if (!inEditMode) return; // Only allow adding items in edit mode
+    // only allow adding items in edit mode
+    if (!inEditMode) return; 
 
+    // get the button that triggered the signal
     QToolButton* button = qobject_cast<QToolButton*>(sender());
     if (!button) return;
 
+    // get the parent array item
     QTreeWidgetItem* parentArrayItem = static_cast<QTreeWidgetItem*>(button->property("treeItem").value<void*>());
     if (!parentArrayItem) return;
 
+    // get the new index
     int newIndex = parentArrayItem->childCount();
     QString newItemKey = QString("[%1]").arg(newIndex);
 
+    // create a new item
     QTreeWidgetItem* newItem = new QTreeWidgetItem(parentArrayItem);
     newItem->setText(0, newItemKey);
     newItem->setText(1, ""); // Default empty value
     newItem->setData(0, Qt::UserRole, "leaf");
 
+    // get the depth of the new item
     int depth = getItemDepth(newItem);
     QFont itemFont = calculateFontForDepth(depth);
     newItem->setFont(0, itemFont);
     newItem->setFont(1, itemFont);
 
+    // if in edit mode, make the new item editable and set it as the current item and edit it
     if (inEditMode) {
         setTreeItemEditable(newItem, true);
         treeWidget->setCurrentItem(newItem, 1);
         treeWidget->editItem(newItem, 1);
     }
-    onItemChanged(newItem, 1); // Notify that data changed
+    // notify that data changed
+    onItemChanged(newItem, 1); 
 }
 
+// add a new item to an object
 void InfoPanel::onAddObjectItem() {
-    if (!inEditMode) return; // Only allow adding items in edit mode
+    // only allow adding items in edit mode
+    if (!inEditMode) return; 
 
+    // get the button that triggered the signal
     QToolButton* button = qobject_cast<QToolButton*>(sender());
     if (!button) return;
 
+    // get the parent object item
     QTreeWidgetItem* parentObjectItem = static_cast<QTreeWidgetItem*>(button->property("treeItem").value<void*>());
     if (!parentObjectItem) return;
 
+    // get the new key
     bool ok;
     QString newKey = QInputDialog::getText(this, tr("Neuer Schlüssel für Objekt"),
                                            tr("Schlüsselname:"), QLineEdit::Normal,
                                            "", &ok);
     if (ok && !newKey.isEmpty()) {
+        // check if the new key already exists
         for (int i = 0; i < parentObjectItem->childCount(); ++i) {
             if (parentObjectItem->child(i)->text(0) == newKey) {
-                QMessageBox::warning(this, tr("Schlüssel existiert bereits"),
-                                     tr("Ein Attribut mit dem Schlüssel '%1' existiert bereits in diesem Objekt.").arg(newKey));
+                QMessageBox::warning(this, tr("Key already exists"),
+                                     tr("A attribute with the key '%1' already exists in this object.").arg(newKey));
                 return;
             }
         }
 
+        // create a new item
         QTreeWidgetItem* newItem = new QTreeWidgetItem(parentObjectItem);
         newItem->setText(0, newKey);
         newItem->setText(1, ""); // Default empty value
         newItem->setData(0, Qt::UserRole, "leaf");
 
+        // get the depth of the new item and set the font
         int depth = getItemDepth(newItem);
         QFont itemFont = calculateFontForDepth(depth);
         newItem->setFont(0, itemFont);
         newItem->setFont(1, itemFont);
 
+        // if in edit mode, make the new item editable and set it as the current item and edit it
         if (inEditMode) {
             setTreeItemEditable(newItem, true);
             treeWidget->setCurrentItem(newItem, 1);
             treeWidget->editItem(newItem, 1);
         }
-        onItemChanged(newItem, 1); // Notify that data changed
+        // notify that data changed
+        onItemChanged(newItem, 1); 
     }
 }
 
+// calculate the font for the item based on the depth
 QFont InfoPanel::calculateFontForDepth(int depth) const {
     double scaledSize = static_cast<double>(m_baseFontSize);
-    if (depth > 0) { // Apply scaling factor for items deeper than top-level
+    if (depth > 0) { 
         scaledSize *= std::pow(m_fontScaleFactor, depth);
     }
 
-    // Clamp the font size
+    // clamp the font size
     double finalSize = std::max(static_cast<double>(m_minFontSize),
                                 std::min(scaledSize, static_cast<double>(m_maxFontSize)));
 
-    QFont font = treeWidget->font(); // Start with the tree widget's default font to inherit family etc.
-    font.setPointSizeF(finalSize);   // Use setPointSizeF for potentially fractional sizes
+    // start with the tree widget's default font to inherit family etc.
+    QFont font = treeWidget->font(); 
+    // use setPointSizeF for potentially fractional sizes
+    font.setPointSizeF(finalSize);   
     return font;
 }
 
+// get the depth of the item in the tree
 int InfoPanel::getItemDepth(QTreeWidgetItem* item) const {
     if (!item) {
         return 0; // Or handle as an error, though 0 is safe for font calculation
@@ -786,6 +878,7 @@ int InfoPanel::getItemDepth(QTreeWidgetItem* item) const {
     return depth;
 }
 
+// check if the item is deletable
 bool InfoPanel::isItemDeletable(QTreeWidgetItem* item) const {
     // item is not in edit mode or has no parent, it cannot be deleted via hover
     if (!inEditMode || !item || !item->parent()) {
@@ -803,50 +896,54 @@ bool InfoPanel::isItemDeletable(QTreeWidgetItem* item) const {
     return isLowestCollection(item->parent()) && !isHighestItem(item->parent()) && !readonly;
 }
 
+// get the rect for the delete button
 QRect InfoPanel::getDeleteButtonRectForItem(const QTreeWidgetItem* item, const QStyleOptionViewItem& option) const {
-    Q_UNUSED(item); // Item might be used for more specific sizing in the future
-    // Place button at the far right of the item's visual rect for column 1
-    // We need the visual rect for column 1. The 'option.rect' is for the whole row if columns are not individually handled by delegate.
-    // For simplicity, let's place it at the end of option.rect for now.
-    // A more precise way would be to get column 1's rect: treeWidget->visualRect(treeWidget->indexFromItem(item, 1))
-    // However, option.rect is what the delegate's paint method gets.
+    Q_UNUSED(item);
     
-    int buttonSize = 16; // Size of the delete button
-    // Position it vertically centered, and to the far right of the item's area
-    // A small margin from the right edge
+    int buttonSize = 16; 
     int margin = 2; 
-    // Ensure we are using the rect for the correct column if possible, or the whole item rect
-    QRect itemRect = option.rect; // This is the rect for the cell being painted by the delegate
+    QRect itemRect = option.rect; 
 
     return QRect(itemRect.right() - buttonSize - margin,
                  itemRect.top() + (itemRect.height() - buttonSize) / 2,
                  buttonSize, buttonSize);
 }
 
+// paint the delete button
 void InfoPanel::paintDeleteItemButton(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) {
+    // if the index is valid and the index is the hovered item for delete, paint the delete button
     if (index.isValid() && index == hoveredItemForDelete) {
+        // get the item
         QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(index.internalPointer());
+        // if the item is deletable, paint the delete button
         if (isItemDeletable(item)) {
+            // get the rect for the delete button
             QRect buttonRect = getDeleteButtonRectForItem(item, option);
+            // paint the delete button
             painter->drawPixmap(buttonRect, deleteIcon);
         }
     }
 }
 
+// handle the delete action
 void InfoPanel::handleDeleteAction(QTreeWidgetItem* itemToDelete) {
+    // if the item to delete is not valid or has no parent, return
     if (!itemToDelete || !itemToDelete->parent()) return;
 
+    // get the parent item
     QTreeWidgetItem* parentItem = itemToDelete->parent();
-    int removedAtIndex = parentItem->indexOfChild(itemToDelete); // Get index before removing
+    // get the index of the item to delete
+    int removedAtIndex = parentItem->indexOfChild(itemToDelete); 
 
+    // remove the item from the parent
     parentItem->removeChild(itemToDelete);
-    delete itemToDelete; // Crucial: actually delete the item
+    // delete the item
+    delete itemToDelete; 
 
-    // If parent was an array, re-index subsequent siblings
+    // if the parent is an array, re-index subsequent siblings
     if (parentItem->data(0, Qt::UserRole).toString() == "array") {
         for (int i = 0; i < parentItem->childCount(); ++i) {
-            // Only re-index items that were at or after the removed item's original position
-            // This loop re-indexes all, which is fine and simpler.
+            // re-index items that were at or after the removed item's original position
             parentItem->child(i)->setText(0, QString("[%1]").arg(i));
         }
     }
@@ -861,10 +958,13 @@ void InfoPanel::handleDeleteAction(QTreeWidgetItem* itemToDelete) {
     treeWidget->update(); // Force repaint of the tree view area
 }
 
+// Handle events for the tree widget viewport, including mouse hover and click interactions
 bool InfoPanel::eventFilter(QObject* watched, QEvent* event) {
     if (watched == treeWidget->viewport()) {
-        if (!inEditMode) { // Only handle hover/delete actions in edit mode
-            if (hoveredItemForDelete.isValid()) { // Clear hover if exiting edit mode while hovering
+        // If not in edit mode, clear any existing hover states and pass through
+        if (!inEditMode) { 
+            // Clear hover state for delete buttons when not in edit mode
+            if (hoveredItemForDelete.isValid()) { 
                 QModelIndex oldHover = hoveredItemForDelete;
                 hoveredItemForDelete = QPersistentModelIndex();
                 treeWidget->update(oldHover);
@@ -872,6 +972,7 @@ bool InfoPanel::eventFilter(QObject* watched, QEvent* event) {
             return QWidget::eventFilter(watched, event);
         }
 
+        // Handle mouse movement events to show/hide delete buttons on hover
         if (event->type() == QEvent::MouseMove || event->type() == QEvent::HoverMove) {
             QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
             QModelIndex index = treeWidget->indexAt(mouseEvent->pos());
@@ -883,11 +984,13 @@ bool InfoPanel::eventFilter(QObject* watched, QEvent* event) {
             QModelIndex oldHoveredIndex = hoveredItemForDelete;
             QPersistentModelIndex newHoverPersistentIndex; // Default to invalid
 
+            // Show delete button only for deletable items
             if (item && isItemDeletable(item)) {
                 newHoverPersistentIndex = index;
             }
-            // else: item is not deletable or index is invalid, newHoverPersistentIndex remains invalid
+            // If item is not deletable or index is invalid, newHoverPersistentIndex remains invalid
 
+            // Update hover state and repaint affected items if hover changed
             if (oldHoveredIndex != newHoverPersistentIndex) {
                 hoveredItemForDelete = newHoverPersistentIndex;
                 if (oldHoveredIndex.isValid()) {
@@ -899,6 +1002,7 @@ bool InfoPanel::eventFilter(QObject* watched, QEvent* event) {
             }
             return true; // Event handled
         }
+        // Handle mouse leaving the tree widget area
         else if (event->type() == QEvent::HoverLeave || event->type() == QEvent::Leave) {
              if (hoveredItemForDelete.isValid()) {
                 QModelIndex oldHover = hoveredItemForDelete;
@@ -907,20 +1011,21 @@ bool InfoPanel::eventFilter(QObject* watched, QEvent* event) {
             }
             return true; // Event handled
         }
+        // Handle mouse clicks on delete buttons
         else if (event->type() == QEvent::MouseButtonPress) {
             if (hoveredItemForDelete.isValid()) {
                 QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
                 QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(hoveredItemForDelete.internalPointer());
-                // Need QStyleOptionViewItem for the hovered item to get its rect
+                // Create style option to get proper rect calculation for delete button positioning
                 QStyleOptionViewItem option;
                 option.rect = treeWidget->visualRect(hoveredItemForDelete); // Get rect for the specific cell
-                // If the delegate is per-column, this might need to be index for column 1.
-                // For simplicity, assuming option.rect from visualRect(hoveredItemForDelete) is sufficient.
+                // Note: For column-specific delegates, this might need index for column 1
+                // Current implementation assumes visualRect(hoveredItemForDelete) provides sufficient rect
 
                 QRect buttonRect = getDeleteButtonRectForItem(item, option);
                 if (buttonRect.contains(mouseEvent->pos())) {
                     handleDeleteAction(item);
-                    // hoveredItemForDelete will be cleared in handleDeleteAction if it was the one deleted
+                    // hoveredItemForDelete will be cleared in handleDeleteAction if it was the deleted item
                     return true; // Event handled
                 }
             }
@@ -929,36 +1034,27 @@ bool InfoPanel::eventFilter(QObject* watched, QEvent* event) {
     return QWidget::eventFilter(watched, event);
 }
 
-// void InfoPanel::setFieldValidationState(const QModelIndex& index, bool isValid) {
-//     QPersistentModelIndex persistentIndex(index);
-    
-//     if (isValid) {
-//         invalidRequiredFields.remove(persistentIndex);
-//     } else {
-//         invalidRequiredFields.insert(persistentIndex);
-//     }
-    
-//     updateSaveButtonState();
-// }
-
+// update the save button state
 void InfoPanel::updateSaveButtonState() {
     if (!inEditMode) return;
     
     bool hasInvalidFields = !invalidRequiredFields.isEmpty();
-    // qDebug() << "Old data:" << originalData;
-    // qDebug() << "Current data:" << collectDataFromTree();
+
+    // on invalid fields, disable the save button and color it red
     if (hasInvalidFields) {
         saveButton->setEnabled(false);
         saveButton->setStyleSheet("QPushButton { background-color: #ffcccc; color: #666; }");
         saveButton->setToolTip(tr("Bitte füllen Sie alle Pflichtfelder aus"));
         return;
     }
+    // if the original data is not the same as the collected data, enable the save button and color it orange
     else if (getOriginalData() != collectDataFromTree()) {
         saveButton->setEnabled(true);
         saveButton->setStyleSheet("QPushButton { background-color: orange; }");
         saveButton->setToolTip(tr("Änderungen speichern"));
         return;
     }
+    // if the original data is the same as the collected data, disable the save button and color it light gray
     else {
         saveButton->setEnabled(false);
         saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
@@ -966,14 +1062,18 @@ void InfoPanel::updateSaveButtonState() {
     }
 }
 
+// validate all required fields on load
 void InfoPanel::validateAllRequiredFieldsOnLoad() {
     if (!inEditMode) return;
     
+    // clear the invalid required fields
     invalidRequiredFields.clear();
+    // validate all required fields recursively
     validateRequiredFieldsRecursive(treeWidget->invisibleRootItem());
     updateSaveButtonState();
 }
 
+// validate all required fields recursively
 void InfoPanel::validateRequiredFieldsRecursive(QTreeWidgetItem* item) {
     if (!item) return;
     
@@ -982,18 +1082,14 @@ void InfoPanel::validateRequiredFieldsRecursive(QTreeWidgetItem* item) {
         
         if (child->data(0, Qt::UserRole).toString() == "leaf") {
             QModelIndex childIndex = treeWidget->indexFromItem(child, 1);
-            updateFieldValidationState(childIndex); // Zentrale Methode verwenden
+            updateFieldValidationState(childIndex); 
         } else {
             validateRequiredFieldsRecursive(child);
         }
     }
 }
 
-// bool InfoPanel::isFieldInvalid(const QModelIndex& index) const {
-//     QPersistentModelIndex persistentIndex(index);
-//     return invalidRequiredFields.contains(persistentIndex);
-// }
-
+// check if the field is valid
 bool InfoPanel::isFieldValid(const QModelIndex& index) const {
     if (!inEditMode || !index.isValid()) return true; // Not in edit mode or invalid index
 
@@ -1010,6 +1106,7 @@ bool InfoPanel::isFieldValid(const QModelIndex& index) const {
     return true;
 }
 
+// validate the required field
 bool InfoPanel::validateRequiredField(const QTreeWidgetItem* item) const {
     if (!item) return true; // No item to validate
 
@@ -1023,6 +1120,7 @@ bool InfoPanel::validateRequiredField(const QTreeWidgetItem* item) const {
     return true;
 }
 
+// validate the field pattern
 bool InfoPanel::validateFieldPattern(const QTreeWidgetItem* item) const {
     QString pattern = item->data(1, SchemaPatternRole).toString(); // Neue Role hinzufügen
     if (pattern.isEmpty()) return true;
@@ -1033,6 +1131,7 @@ bool InfoPanel::validateFieldPattern(const QTreeWidgetItem* item) const {
     return regex.match(value).hasMatch();
 }
 
+// update the field validation state
 void InfoPanel::updateFieldValidationState(const QModelIndex& index) {
     if (!index.isValid()) return;
     
@@ -1047,7 +1146,7 @@ void InfoPanel::updateFieldValidationState(const QModelIndex& index) {
     
     updateSaveButtonState();
     
-    // Visuelle Aktualisierung
+    // update the tree widget
     treeWidget->update(index);
 }
 
@@ -1065,11 +1164,9 @@ void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item, bool checked) {
         return;
     }
     
-    // qDebug() << "Creating checkbox for optional field:" << item->text(0);
-    
-    // Create a container widget to hold both checkbox and label
-    QWidget* containerWidget = new QWidget(treeWidget); // Set parent for proper cleanup
-    containerWidget->setAttribute(Qt::WA_DeleteOnClose, false); // Prevent auto-deletion
+    // create a container widget to hold both checkbox and label
+    QWidget* containerWidget = new QWidget(treeWidget); 
+    containerWidget->setAttribute(Qt::WA_DeleteOnClose, false); 
     
     QHBoxLayout* layout = new QHBoxLayout(containerWidget);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -1093,7 +1190,7 @@ void InfoPanel::createOptionalCheckbox(QTreeWidgetItem* item, bool checked) {
     optionalCheckboxes[item] = checkbox;
     optionalFieldStates[item] = checked;
     
-    // Clear the item's text since we're showing it in the label
+    // Clear the item's text because shown in the label
     item->setText(0, "");
     
     // Set the container widget for column 0 (key column)
@@ -1127,7 +1224,7 @@ void InfoPanel::onOptionalCheckboxToggled(bool checked) {
         return;
     }
     
-    // Find the item associated with this checkbox
+    // find the item associated with this checkbox
     QTreeWidgetItem* item = nullptr;
     for (QMap<QTreeWidgetItem*, QCheckBox*>::const_iterator it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
         if (it.value() == checkbox) {
@@ -1259,6 +1356,18 @@ void InfoPanel::onHeaderSectionClicked(int logicalIndex) {
     treeWidget->resizeColumnToContents(1);
 }
 
+
+/**
+ * @brief Clears all optional field components safely
+ * 
+ * This method is used to safely remove all optional field components from the tree widget.
+ * It ensures that all references are properly removed and the widgets are deleted in a safe manner.
+ * 
+ * @exception None
+ * @purpose Provides a safe way to remove optional field components from the tree widget
+ * 
+ * @note This method was created with the help of AI, as I had some issues when switching between edit and view mode or displaying new information in between.
+ */
 void InfoPanel::clearOptionalFieldComponentsSafely() {
     // qDebug() << "Starting safe cleanup of optional field components";
     
@@ -1266,11 +1375,11 @@ void InfoPanel::clearOptionalFieldComponentsSafely() {
     for (QMap<QTreeWidgetItem*, QCheckBox*>::const_iterator it = optionalCheckboxes.constBegin(); it != optionalCheckboxes.constEnd(); ++it) {
         QTreeWidgetItem* item = it.key();
         if (item) {
-            // Remove the widget from the tree widget BEFORE deleting it
+            // remove the widget from the tree widget before deleting it
             QWidget* containerWidget = treeWidget->itemWidget(item, 0);
             if (containerWidget) {
                 treeWidget->removeItemWidget(item, 0);
-                // Do NOT delete here yet - Qt might still have references
+                // deletion happens later as qt might still have references
             }
         }
     }
