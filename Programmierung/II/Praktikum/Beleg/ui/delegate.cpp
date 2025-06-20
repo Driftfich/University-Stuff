@@ -12,6 +12,7 @@
 
 QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+    // no editor for the key column
     if (index.column() == 0)
         return nullptr;
 
@@ -20,6 +21,7 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
         return nullptr; // No editor for read-only items
     }
 
+    // read out item attributes
     QString itemType = index.data(SchemaTypeRole).toString();
     QString itemFormat = index.data(SchemaFormatRole).toString();
     QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
@@ -27,12 +29,7 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
     QVariant minValueVar = index.data(SchemaMinRole);
     QVariant maxValueVar = index.data(SchemaMaxRole);
 
-    // Debug output to check what we get from the index
-    // qDebug() << "Debug createEditor: row=" << index.row() << "col=" << index.column();
-    // qDebug() << "  itemType=" << itemType;
-    // qDebug() << "  itemFormat=" << itemFormat;
-    // qDebug() << "  enumValues=" << enumValuesVar;
-
+    // create the correct editor for the item type
     if (itemType == "integer") {
         QSpinBox* editor = new QSpinBox(parent);
         editor->setFrame(false);
@@ -49,13 +46,13 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
         editor->setFrame(false);
         editor->setCalendarPopup(true);
         if (itemFormat == "datetime") {
-            editor->setDisplayFormat("yyyy-MM-dd HH:mm:ss"); // Or from schema/locale
+            editor->setDisplayFormat("yyyy-MM-dd HH:mm:ss");
         }
         else if (itemFormat == "date") {
-            editor->setDisplayFormat("yyyy-MM-dd"); // Or from schema/locale
+            editor->setDisplayFormat("yyyy-MM-dd");
         }
         else if (itemFormat == "time") {
-            editor->setDisplayFormat("HH:mm:ss"); // Or from schema/locale
+            editor->setDisplayFormat("HH:mm:ss");
         }
         return editor;
     }
@@ -77,8 +74,7 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
         }
     }
     
-    // Fallback
-    // return QStyledItemDelegate::createEditor(parent, option, index);
+    // fallback for other item types
     QLineEdit* editor = new QLineEdit(parent);
     editor->setFrame(false);
     // use the current text from the model as initial value
@@ -88,11 +84,13 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
 }
 
 void InfoPanelDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
+    // read out item attributes
     QString value = index.model()->data(index, Qt::EditRole).toString();
     QString itemType = index.data(SchemaTypeRole).toString();
     QString itemFormat = index.data(SchemaFormatRole).toString();
     QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
 
+    // set the editor data for the item type
     if (itemType == "integer") {
         QSpinBox* spinBox = qobject_cast<QSpinBox*>(editor);
         if (spinBox) spinBox->setValue(value.toInt());
@@ -121,7 +119,7 @@ void InfoPanelDelegate::setEditorData(QWidget* editor, const QModelIndex& index)
         }
     }
     else {
-        // QStyledItemDelegate::setEditorData(editor, index);
+        // fallback for other item types
         QLineEdit* lineEdit = qobject_cast<QLineEdit*>(editor);
         if (lineEdit) {
             lineEdit->setText(value);
@@ -131,12 +129,13 @@ void InfoPanelDelegate::setEditorData(QWidget* editor, const QModelIndex& index)
 
 
 void InfoPanelDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
+    // read out item attributes
     QString itemType = index.data(SchemaTypeRole).toString();
     QString itemFormat = index.data(SchemaFormatRole).toString();
     QVariant enumValuesVar = index.data(SchemaEnumValuesRole);
-    // bool isRequired = index.data(SchemaRequiredRole).toBool();
     QString newValue;
-    // qDebug() << "Update model data for index:" << index.row() << index.column() << " Type:" << itemType << " Format:" << itemFormat;
+
+    // set the model data for the item type
     if (itemType == "integer") {
         QSpinBox* spinBox = qobject_cast<QSpinBox*>(editor);
         newValue = QString::number(spinBox->value());
@@ -184,15 +183,24 @@ void InfoPanelDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,
 void InfoPanelDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QStyleOptionViewItem modifiedOption = option;
 
-    // Prüfen ob das Feld ungültig ist
+    // check if the field is invalid
     if (index.column() == 1 && infoPanelPtr) {
         bool isInvalid = infoPanelPtr->isFieldInvalid(index);
         if (isInvalid) {
-            // Roten Hintergrund für ungültige Felder setzen
-            modifiedOption.backgroundBrush = QBrush(QColor(255, 238, 238)); // Light red
-            modifiedOption.palette.setColor(QPalette::Base, QColor(255, 238, 238));
-            
-            // Roten Rahmen zeichnen
+            // draw the red background first
+            painter->save();
+            painter->fillRect(option.rect, QColor(255, 200, 200)); // Light red background
+            painter->restore();
+        }
+    }
+
+    // paint the item
+    QStyledItemDelegate::paint(painter, modifiedOption, index);
+
+    // Draw red border after painting the item for invalid fields
+    if (index.column() == 1 && infoPanelPtr) {
+        bool isInvalid = infoPanelPtr->isFieldInvalid(index);
+        if (isInvalid) {
             painter->save();
             painter->setPen(QPen(QColor(255, 0, 0), 2));
             painter->drawRect(option.rect.adjusted(1, 1, -1, -1));
@@ -200,8 +208,7 @@ void InfoPanelDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opt
         }
     }
 
-    QStyledItemDelegate::paint(painter, modifiedOption, index);
-
+    // paint the delete item button
     if (infoPanelPtr && index.column() == 1) {
         infoPanelPtr->paintDeleteItemButton(painter, option, index);
     }

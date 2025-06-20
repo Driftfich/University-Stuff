@@ -6,16 +6,9 @@
 #include <QIcon>
 #include <QPushButton>
 #include <QMessageBox>
-#include <QStyledItemDelegate>
 #include <QToolButton>
 #include <QInputDialog>
-#include <QLineEdit>
-#include <QPainter>
 #include <QMouseEvent>
-#include <QStyleOptionViewItem>
-#include <QSpinBox>
-#include <QDateEdit>
-#include <QComboBox>
 #include <QDebug>
 #include <QCheckBox>
 #include <QHBoxLayout>
