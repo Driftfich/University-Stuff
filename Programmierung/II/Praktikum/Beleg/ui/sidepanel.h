@@ -1,3 +1,14 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description:
+Qt Widget responsible for the side panel
+- contains a stacked widget for the different panels (infopanel and addpanel)
+- contains a infopanel for the information of the selected entry
+- contains a addpanel for the creation of a new entry
+*/
+
 #ifndef _SIDEPANEL_H
 #define _SIDEPANEL_H
 

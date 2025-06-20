@@ -1,13 +1,13 @@
-/** Qt Widget responsible for the toolbar
+/** 
+ * Author: Franz Rehschuh
+ * Date: 2025-06-20
+ * 
+ * Description:
+ * Qt Widget responsible for the toolbar
  * - Contains a LineEdit for searching the table
- *     - uses a QCompleter to suggest entries
  * - contains dropdown for selecting the columns to view
  * - contains dropdown for selecting the sorting order
- * - maybe a dropdown for filtering the table
  * - contains a button to add a new entry
- *     - when clicked, opens a dropdown with the attributes of the new entry
- *     - the attribute fields in the dropdown use QCompleter suggest already available entries
- *       (e.g. when creating a new libitem, showing available media items)
  * - contains a button to delete the selected entries
  */
 

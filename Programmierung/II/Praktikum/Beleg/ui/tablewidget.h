@@ -1,3 +1,13 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description:
+Qt Widget responsible for the table widget
+- contains a tab widget for the different tables
+- contains a table view for the different tables
+*/
+
 /********************************************************************************
 ** Form generated from reading UI file 'tablewidgetaAVvLa.ui'
 **
