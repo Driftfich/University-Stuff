@@ -1,10 +1,19 @@
-#include <QString>
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Header file for the Text class, which holds information and logic related to text media.
+*/
+
 #include <iostream>
+#include <QString>
+
 #include "text.h"
 
 using namespace std;
 
 int Text::setIsbn(const QString& isbn) {
+    // Check that the isbn exists and is not too short
     if (isbn.length() != 13) {
         cerr << "Error: ISBN must be 13 characters long" << endl;
         return -1;
@@ -37,6 +46,7 @@ int Text::setTextFormat(const QString& textFormat) {
     return 0;
 }
 
+// collects all parameters into a QJsonObject
 QJsonObject Text::getSubclassParams() const {
     QJsonObject json;
     json["pages"] = pages;
@@ -46,6 +56,7 @@ QJsonObject Text::getSubclassParams() const {
     return json;
 }
 
+// Load subclass parameters from a JSON object. Overrides the base class method.
 int Text::loadSubclassParams(const QJsonObject& json) {
     if (json.contains("pages")) {
         setPages(json["pages"].toInt());
@@ -75,6 +86,7 @@ int Text::loadSubclassParams(const QJsonObject& json) {
     return 0;
 }
 
+// Collects the schema for the subclass parameters
 QJsonObject Text::getSubclassSchema() {
     QJsonObject schema;
     schema["pages"] = QJsonObject{{"type", "integer"}, {"rename", "Number of Pages"},  {"description", "The number of pages in the text"}, {"minimum", 1}};
@@ -84,6 +96,7 @@ QJsonObject Text::getSubclassSchema() {
     return schema;
 }
 
+// Returns complete the schema for the Text class. First gets the base class schema and overrides the subclass schema.
 QJsonObject Text::getSchema() {
     QJsonObject schema = Media::getSchema();
     QJsonObject properties = schema["properties"].toObject();

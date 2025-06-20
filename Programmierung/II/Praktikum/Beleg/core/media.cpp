@@ -1,14 +1,16 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Implementation file for the Media class, which holds information and logic related to media items.
+*/
+
 #include <QDate>
 #include <QString>
 #include <QVector>
 #include <QMap>
-#include <variant>
 
-#include <map>
-#include <string>
-#include <vector>
 #include "media.h"
-#include "person.h"
 #include "config.h"
 #include "text.h"
 #include "audio.h"
@@ -17,6 +19,8 @@
 
 using namespace std;
 
+// setters for Media class
+// set the title with length checks
 int Media::setTitle(const QString& title) {
     if (MIN_TITLE_LENGTH != -1 && MAX_TITLE_LENGTH != -1 && MIN_TITLE_LENGTH > MAX_TITLE_LENGTH) {
         cerr << "Error: MIN_TITLE_LENGTH > MAX_TITLE_LENGTH" << endl;
@@ -43,6 +47,7 @@ int Media::setPublicationDate(const QDate publication_date) {
     return 0;
 }
 
+// set the artist ids with max count checks
 int Media::setArtistIds(const QVector<unsigned long>& artist_ids) {
     if (artist_ids.size() > MAX_ARTIST_COUNT) {
         cerr << "Warning: Too many artists, truncating to " << MAX_ARTIST_COUNT << " artists" << endl;
@@ -52,6 +57,7 @@ int Media::setArtistIds(const QVector<unsigned long>& artist_ids) {
     return 0;
 }
 
+// set the publisher with length checks
 int Media::setPublisher(const QString& publisher) {
     if (MAX_PUBLISHER_LENGTH != -1 && publisher.length() > MAX_PUBLISHER_LENGTH) {
         cerr << "Warning: Publisher is too long, truncating to " << MAX_PUBLISHER_LENGTH << " characters" << endl;
@@ -63,6 +69,7 @@ int Media::setPublisher(const QString& publisher) {
     return 0;
 }
 
+// set the description with length checks
 int Media::setDescription(const QString& description) {
     if (MAX_DESCRIPTION_LENGTH != -1 && description.length() > MAX_DESCRIPTION_LENGTH) {
         cerr << "Warning: Description is too long, truncating to " << MAX_DESCRIPTION_LENGTH << " characters" << endl;
@@ -76,6 +83,7 @@ int Media::setDescription(const QString& description) {
     return 0;
 }
 
+// set the genre with length checks
 int Media::setGenre(const QString& genre) {
     if (MAX_GENRE_LENGTH != -1 && genre.length() > MAX_GENRE_LENGTH) {
         cerr << "Warning: Genre is too long, truncating to " << MAX_GENRE_LENGTH << " characters" << endl;
@@ -87,6 +95,7 @@ int Media::setGenre(const QString& genre) {
     return 0;
 }
 
+// set the languages with length and count checks
 int Media::setLanguages(const QVector<QString>& languages) {
     this->languages.clear();
     size_t num_languages = languages.size();
@@ -110,6 +119,7 @@ int Media::setLanguages(const QVector<QString>& languages) {
     return 0;
 }
 
+// set the metadata with length and count checks
 int Media::setMetadata(const QMap<QString, QVariant> & newMetadata) {
     metadata.clear();
     int processed = 0;
@@ -137,6 +147,7 @@ int Media::setMetadata(const QMap<QString, QVariant> & newMetadata) {
     return 0;
 }
 
+// collects all local parameters into a QJsonObject
 QJsonObject Media::getLocalParams() const {
     QJsonObject json;
     json["id"] = static_cast<qint64>(this->id);
@@ -156,10 +167,10 @@ QJsonObject Media::getLocalParams() const {
     }
     json["languages"] = QJsonArray::fromVariantList(languageVariants);
     json["metadata"] = QJsonObject::fromVariantMap(this->metadata);
-    // json["available_copies"] = static_cast<qint64>(this->available_copies);
     return json;
 }
 
+// collects all parameters into a QJsonObject, including subclass type and parameters
 QJsonObject Media::getJson() const {
     QJsonObject resjson;
     QJsonObject json = getLocalParams();
@@ -169,7 +180,9 @@ QJsonObject Media::getJson() const {
     return resjson;
 }
 
+// writes the JSON object to a file
 void Media::toFile(QFile& file) const {
+    // check if the file is open, if not, try to open it in append mode
     if (!file.isOpen() && !file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
         std::cerr << "Fehler: Datei konnte nicht im Append-Modus geöffnet werden" << std::endl;
         return;
@@ -181,6 +194,7 @@ void Media::toFile(QFile& file) const {
     }
 }
 
+// load local parameters from a JSON object
 int Media::loadLocalParams(const QJsonObject& json) {
     // qDebug() << json;
     if (json.contains("id")) {
@@ -257,35 +271,37 @@ int Media::loadLocalParams(const QJsonObject& json) {
     return 0;
 }
 
+// read new media from file
 std::shared_ptr<Media> Media::fromFile(QFile& file) {
     if (!file.isOpen() && !file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         throw std::runtime_error("Fehler: Datei konnte nicht geöffnet werden");
     }
+    // as long as the file is not at the end, read the next json object from new line delimited file
     while (!file.atEnd()) {
         QByteArray line = file.readLine().trimmed();
-        if (line.isEmpty()) continue; // Überspringe leere Zeilen
+        if (line.isEmpty()) continue; // continue if the line is empty
 
         QJsonParseError err;
         QJsonDocument doc = QJsonDocument::fromJson(line, &err);
         if (err.error != QJsonParseError::NoError) {
             throw std::runtime_error("JSON-Parsefehler: " + err.errorString().toStdString());
         }
-        if (!doc.isObject()) continue; // Überspringe ungültige Zeilen
+        if (!doc.isObject()) continue; // skip invalid lines
 
         QJsonObject obj = doc.object();
-        return MediaFactory(obj); // Siehe unten
+        return MediaFactory(obj); // see below
     }
-    return nullptr; // EOF erreicht
+    return nullptr; // EOF reached
 }
 
 std::shared_ptr<Media> Media::MediaFactory(const QJsonObject& json) {
     if (!json.contains("subclass_type") || !json["subclass_type"].isString()) {
-        throw std::runtime_error("JSON fehlt 'subclass_type' oder ist kein String");
+        throw std::runtime_error("JSON is missing 'subclass_type' or it is not a string");
     }
     QString type = json["subclass_type"].toString();
 
     if (type == "Text") {
-        return std::make_shared<Text>(json); // Konstruktor übernimmt das Parsen
+        return std::make_shared<Text>(json); // Constructor takes care of parsing
     }
     else if (type == "Audio") {
         return std::make_shared<Audio>(json);
@@ -293,14 +309,8 @@ std::shared_ptr<Media> Media::MediaFactory(const QJsonObject& json) {
     else if (type == "Video") {
         return std::make_shared<Video>(json);
     }
-    // else if (type == "Media") {
-    //     return std::make_shared<Media>(json);
-    // }
-    // else {
-    //     throw std::runtime_error("Unbekannter Medientyp: " + type.toStdString());
-    // }
     else {
-        return std::make_shared<Media>(json); // Fallback auf Media, wenn kein spezifischer Typ gefunden wird
+        return std::make_shared<Media>(json); // Fallback to Media if no specific type is found
     }
 }
 
@@ -342,6 +352,7 @@ std::ostream& operator<<(std::ostream& os, const Media& media) {
 }
 
 // schema methods
+// get the local schema for the media class
 QJsonObject Media::getLocalSchema() {
     QJsonObject schema;
     schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Media ID"}, {"description", "Unique identifier for the media"}};
@@ -356,6 +367,7 @@ QJsonObject Media::getLocalSchema() {
     return schema;
 }
 
+// get the complete schema for the media class
 QJsonObject Media::getSchema() {
     QJsonObject schema;
     schema.insert("type", "object");
@@ -370,6 +382,7 @@ QJsonObject Media::getSchema() {
     return schema;
 }
 
+// automatically gets the schema for the correct subclass type
 QJsonObject Media::getSchemaByType() const {
     QString mediaType = getSubclassType();
     if (mediaType == "Text") {

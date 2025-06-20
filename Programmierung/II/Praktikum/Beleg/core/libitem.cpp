@@ -1,3 +1,10 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Implementation file for the Libitem class, which holds information and logic related to library items.
+*/
+
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -15,11 +22,14 @@ QJsonObject Libitem::getJson() const {
     json["condition"] = condition;
     return json;
 }
+
 void Libitem::toFile(QFile& file) const {
+    // check if the file is open, if not, try to open it in append mode
     if (!file.isOpen() && !file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
         std::cerr << "Fehler: Datei konnte nicht im Append-Modus geöffnet werden" << std::endl;
         return;
     }
+    // write the JSON object to the file
     QJsonDocument doc(getJson());
     QByteArray line = doc.toJson(QJsonDocument::Compact) + "\n";
     if (file.write(line) == -1) {
@@ -27,9 +37,8 @@ void Libitem::toFile(QFile& file) const {
     }
 }
 
-// load json object from file
+// load local parameters from a JSON object
 int Libitem::loadLocalParams(const QJsonObject& json) {
-    // qDebug() << json;
     if (json.contains("id")) {
         setId(json["id"].toVariant().toULongLong());
     } else {
@@ -71,17 +80,18 @@ int Libitem::loadLocalParams(const QJsonObject& json) {
         std::cerr << "Error: Missing 'condition' in JSON object\n";
         return -1;
     }
-
-    // std::cout << "Loaded Libitem Params" << std::endl;
     
     return 0;
 }
-// read json object from file
+// read new libitem from file
 std::shared_ptr<Libitem> Libitem::fromFile(QFile& file, std::function<void(unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId)> onMediaChangeCallback) {
+    // check if the file is open, if not, try to open it in read mode
     if (!file.isOpen() && !file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         throw std::runtime_error("Fehler: Datei konnte nicht geöffnet werden");
     }
+    // as long as the file is not at the end, read the next json object
     while (!file.atEnd()) {
+        // read a line from the file, trim it and check if it is empty
         QByteArray line = file.readLine().trimmed();
         if (line.isEmpty()) continue;
         QJsonDocument doc(QJsonDocument::fromJson(line));
@@ -90,6 +100,7 @@ std::shared_ptr<Libitem> Libitem::fromFile(QFile& file, std::function<void(unsig
             return nullptr;
         }
         QJsonObject obj = doc.object();
+        // create a new Libitem object from the JSON object
         return LibitemFactory(obj, onMediaChangeCallback);
     }
     return nullptr;
@@ -98,7 +109,6 @@ std::shared_ptr<Libitem> Libitem::fromFile(QFile& file, std::function<void(unsig
 // factory method
 std::shared_ptr<Libitem> Libitem::LibitemFactory(const QJsonObject& json, std::function<void(unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId)> onMediaChangeCallback) {
     // call the constructor with the json object
-    // std::cout << "Reached LibitemFactory" << std::endl;
     std::shared_ptr<Libitem> item = std::make_shared<Libitem>(json, onMediaChangeCallback);
     return item;
 }
@@ -122,7 +132,6 @@ QJsonObject Libitem::getLocalSchema() {
     schema["available_copies"] = QJsonObject{{"type", "integer"}, {"rename", "Available Copies"}, {"description", "Number of available copies"}};
     schema["borrowed_copies"] = QJsonObject{{"type", "integer"}, {"rename", "Borrowed Copies"}, {"description", "Number of borrowed copies"}};
     schema["location"] = QJsonObject{{"type", "string"}, {"rename", "Location"}, {"description", "Location of the library item"}};
-    // schema["condition"] = QJsonObject{{"type", "string"}};
     schema["condition"] = QJsonObject{{"type", "string"}, {"enum", QJsonArray{"new", "good", "acceptable", "poor"}}, {"rename", "Condition"}, {"description", "Condition of the library item"}};
     return schema;
 }

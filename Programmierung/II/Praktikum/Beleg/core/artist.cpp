@@ -1,12 +1,17 @@
-#include <iostream>
-#include <string>
-#include <vector>
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Implementation file for the Artist class, which holds information and logic related to artists.
+*/
+
 #include <QString>
 #include <QVector>
 #include <QJsonObject>
-#include "media.h"
+#include <QJsonArray>
 #include "artist.h"
 
+// setters
 int Artist::setArtistType(const QString& artist_type) {
     this->artist_type = artist_type;
     return 0;
@@ -17,6 +22,7 @@ int Artist::setMediaIds(const QVector<unsigned long>& media_ids) {
     return 0;
 }
 
+// get all parameters as a JSON object
 QJsonObject Artist::getSubclassParams() const {
     QJsonObject json;
     json["artist_type"] = this->artist_type;
@@ -28,12 +34,10 @@ QJsonObject Artist::getSubclassParams() const {
     return json;
 }
 
-
+// get the schema for this class. Used to build comprehensive form in infopanel
 QJsonObject Artist::getSubclassSchema(bool checked) {
     QJsonObject properties;
-    // artist_type: string
     properties.insert("artist_type", QJsonObject{{"type", "string"}});
-    // media_ids: array, dessen items jeweils integer sind
     QJsonObject itemsSchema{{"type", "integer"}};
     QJsonObject mediaIdsSchema{
         {"type", "array"},
@@ -43,12 +47,13 @@ QJsonObject Artist::getSubclassSchema(bool checked) {
     QJsonObject schema;
     schema.insert("type", "object");
     schema.insert("properties", properties);
-    schema.insert("optional", checked);
-    schema.insert("readonly", true); // dont allow deleting fields in the artist
+    schema.insert("optional", checked); // sets the default visibility, based on how the checkbox is set in the infopanel
+    schema.insert("readonly", true); // This means that the artist object is not editable => no further fields can be added or deleted
 
     return schema;
 }
 
+// load parameters from a JSON object
 int Artist::loadSubclassParams(const QJsonObject& json) {
     if (json.contains("artist_type")) {
         setArtistType(json["artist_type"].toString());

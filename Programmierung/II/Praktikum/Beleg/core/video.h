@@ -1,15 +1,27 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Header file for the Video class, which holds information and logic related to video media.
+*/
+
 #ifndef _VIDEO_H
 #define _VIDEO_H
 
 #include <QString>
 #include <QVector>
 #include <QDate>
+#include <QMap>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QVariant>
+
 #include "media.h"
 
 class Video : public Media {
     unsigned int duration; // in seconds
     QString type; // e.g. movie, series, documentary
-    unsigned int resolution; // e.g. 1080p, 4K
+    unsigned int resolution; // e.g. 1080, 2160 (4K), 4320 (8K)
     QString codec; // e.g. H.264, H.265, VP9
     QString aspect_ratio; // e.g. 16:9, 4:3
     QString audio_channels; // e.g. stereo, 5.1, 7.1
@@ -76,8 +88,6 @@ class Video : public Media {
 
         // destructor
         ~Video() {
-            // Destructor logic if needed
-            // Note: Media objects are not deleted here, as they are managed elsewhere
         }
 
         // methods for loading & saving text data

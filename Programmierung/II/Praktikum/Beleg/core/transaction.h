@@ -1,3 +1,10 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Header file for the Transaction class, which holds information and logic related to transactions.
+*/
+
 #ifndef _TRANSACTION_H
 #define _TRANSACTION_H
 
@@ -5,15 +12,13 @@
 #include <QFile>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include <QString>
 
 #include "libitem.h"
-#include "borrower.h"
 
 class Transaction {
     unsigned long id;
     unsigned long libitem_id;
-    unsigned long borrower_id; // Person id 
+    unsigned long borrower_id; // <=> Person ID
     QDateTime transaction_time;
 
     public:
@@ -68,8 +73,7 @@ class Transaction {
         // methods to load and save the transaction to/from a file
         QJsonObject getJson() const;
         void toFile(QFile& file) const;
-
-        // load json object from file
+        // load local parameters from a JSON object
         int loadLocalParams(const QJsonObject& json);
         static std::shared_ptr<Transaction> fromFile(QFile& file);
         static std::shared_ptr<Transaction> TransactionFactory(const QJsonObject& json);

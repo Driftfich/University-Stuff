@@ -1,9 +1,16 @@
-#include <string>
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Implementation file for the Audio class, which holds information and logic related to audio media.
+*/
+
 #include <QString>
 #include <QVector>
 #include <QDate>
 #include <QMap>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <iostream>
 #include "audio.h"
 
@@ -35,6 +42,7 @@ int Audio::setTracks(const QVector<QString>& tracks) {
 }
 
 // methods for loading & saving audio data
+// collect all audio parameters into a JSON object
 QJsonObject Audio::getSubclassParams() const {
     QJsonObject json;
     json["duration"] = static_cast<qint64>(this->duration);
@@ -48,6 +56,7 @@ QJsonObject Audio::getSubclassParams() const {
     return json;
 }
 
+// load the audio parameters from a JSON object
 int Audio::loadSubclassParams(const QJsonObject& json) {
     if (json.contains("duration")) {
         setDuration(json["duration"].toInt());
@@ -81,6 +90,7 @@ int Audio::loadSubclassParams(const QJsonObject& json) {
     return 0;
 }
 
+// get schema for this class: audio
 QJsonObject Audio::getSubclassSchema() {
     QJsonObject schema;
     schema["duration"] = QJsonObject{{"type", "integer"},  {"rename", "Duration"}, {"description", "The duration of the audio in seconds"}, {"minimum", 0}};

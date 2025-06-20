@@ -1,16 +1,19 @@
-// Franz Rehschuh (s88216)
-// Class definition for the Person (abstract) class and child classes
-// TODO: Implement class for Tel number and Location
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
 
-// Return values
-// return -1 <=> error
-// return 0 <=> fine
+Description: Header file for the Person class, which holds information and logic related to persons.
+
+Note:
+Originally, the Person class was designed to be a base class for Artist and Borrower. However the problem which originated from this approach was
+that a Person could only have one role at the same time, as long as multiple inheritance is not used. To not overcomplicate the design via
+multiple inheritance, the Person class was changed to hold Artist and Borrower as unique_ptr members.
+This allows a Person to have both roles at the same time, or none, and makes it easier to manage the roles without the need for complex inheritance hierarchies.
+*/
 
 #ifndef _PERSON_H
 #define _PERSON_H
 
-#include <iostream>
-#include <string>
 #include <QDate>
 #include <QString>
 #include <QVector>
@@ -18,7 +21,6 @@
 #include <QJsonDocument>
 #include <QFile>
 #include <QJsonArray>
-#include <QVariant>
 #include "config.h"
 #include "artist.h"
 #include "borrower.h"
@@ -36,7 +38,6 @@ class Person {
     QString lname;
     QString ename;
     QDate birthday;
-    // Gender gender;
     QString gender;
     QString note;
     QString location;
@@ -53,7 +54,6 @@ class Person {
         int setLname(const QString& lname);
         int setEname(const QString& ename);
         int setBirthday(const QDate birthday);
-        // int setGender(const Gender gender);
         int setGender(const QString& gender);
         int setNote(const QString& note);
         int setLocation(const QString& location);
@@ -61,6 +61,7 @@ class Person {
         int setTel(const QString& tel);
 
         int setArtist(std::unique_ptr<Artist> artist) {
+            // move the artist pointer to the Person object
             this->artist = std::move(artist);
             return 0;
         }
@@ -76,7 +77,6 @@ class Person {
         QString getLname() const {return this->lname;}
         QString getEname() const {return this->ename;}
         QDate getBirthday() const {return this->birthday;}
-        // Gender getGender() const {return this->gender;}
         QString getGender() const {return this->gender;}
         QString getGenderString() const;
         QString getNote() const {return this->note;}
@@ -133,30 +133,26 @@ class Person {
         // subclass type
         virtual QString getSubclassType() const { return "Person"; } // used to identify it is a person
 
-        // serialization methods
-        // QJsonObject getLocalParams() const;
-        // QJsonObject getLocalDefaultParams() const;
-        // virtual QJsonObject getSubclassParams() const { return QJsonObject(); }
-        // virtual QJsonObject getSubclassDefaultParams() const { return QJsonObject(); }
+        // collects all parameters into a QJsonObject
         QJsonObject getJson() const;
-        // QJsonObject getDefaultJson() const;
+        // writes the JSON object to a file
         void toFile(QFile& file) const;
+        // loads local parameters from a JSON object
         int loadLocalParams(const QJsonObject& json);
-        // virtual int loadSubclassParams(const QJsonObject& json) { Q_UNUSED(json); return 0; }
+        // loads a Person object from a file
         static std::shared_ptr<Person> fromFile(QFile& file);
         static std::shared_ptr<Person> PersonFactory(const QJsonObject& json);
 
-        // schema methods
+        // schema methods. Default schema changes based on if the Artist or Borrower should be shown in the info panel
         static QJsonObject getLocalSchema(bool ArtistChecked = false, bool BorrowerChecked = false);
-        // virtual QJsonObject getSubclassSchema() const { return QJsonObject(); }
         static QJsonObject getSchema(bool ArtistChecked = false, bool BorrowerChecked = false);
+        // non static method to get the schema for this class based on the current state
         QJsonObject getSchemaAuto();
 
         // print methods
         friend std::ostream& operator<<(std::ostream& os, const Person& person);
         void printbase(std::ostream& os) const;
         void print(std::ostream& os) const;
-        // void printSubclass(std::ostream& os) const;
 };
 
 

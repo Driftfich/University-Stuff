@@ -1,8 +1,15 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Implementation file for the Transaction class, which holds information and logic related to transactions.
+*/
+
 #include <QFile>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include <QString>
 #include <QDateTime>
+
 #include "transaction.h"
 
 QJsonObject Transaction::getJson() const {
@@ -15,13 +22,16 @@ QJsonObject Transaction::getJson() const {
 }
 
 void Transaction::toFile(QFile& file) const {
+    // Open the file for writing in append mode when not already open
     if (!file.isOpen() && !file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
         std::cerr << "Fehler: Datei konnte nicht im Append-Modus geöffnet werden" << std::endl;
         return;
     }
 
+    // get the JSON representation of the transaction
     QJsonDocument doc(getJson());
     QByteArray line = doc.toJson(QJsonDocument::Compact) + "\n";
+    // Write the JSON line to the file
     if (file.write(line) == -1) {
         throw std::runtime_error("Fehler beim Schreiben in die Datei");
     }
@@ -49,9 +59,12 @@ std::shared_ptr<Transaction> Transaction::fromFile(QFile& file) {
     if (!file.isOpen() && !file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         throw std::runtime_error("Fehler: Datei konnte nicht geöffnet werden");
     }
+    // as long as the file is not at the end, read next new line delimited JSON object
     while (!file.atEnd()) {
+        // parse the json object
         QByteArray line = file.readLine().trimmed();
         QJsonDocument doc = QJsonDocument::fromJson(line);
+        // when the document is not valid, return nullptr
         if (doc.isNull()) {
             std::cerr << "Fehler: Ungültiges JSON-Dokument" << std::endl;
             return nullptr;
@@ -84,8 +97,6 @@ QJsonObject Transaction::getLocalSchema() {
 
 QJsonObject Transaction::getSchema() {
     QJsonObject schema;
-    // schema["transaction"] = getLocalSchema();
-    // return schema;
     schema.insert("type", "object");
     schema.insert("properties", getLocalSchema());
     return schema;

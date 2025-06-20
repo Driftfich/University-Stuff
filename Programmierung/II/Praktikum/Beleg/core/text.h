@@ -1,11 +1,16 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Header file for the Text class, which holds information and logic related to text media.
+*/
+
 #ifndef _TEXT_H
 #define _TEXT_H
 
-#include "media.h"
 #include <QString>
-#include <QVector>
-#include <QDate>
-#include <QMap>
+
+#include "media.h"
 
 class Text : public Media {
     int pages;
@@ -76,8 +81,6 @@ class Text : public Media {
 
         // destructor
         ~Text() {
-            // Destructor logic if needed
-            // Note: Media objects are not deleted here, as they are managed elsewhere
         }
 };
 

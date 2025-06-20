@@ -1,11 +1,16 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Header file for the Audio class, which holds information and logic related to audio media.
+*/
+
 #ifndef _AUDIO_H
 #define _AUDIO_H
 
 #include <QString>
 #include <QVector>
 #include <QDate>
-#include <vector>
-#include <string>
 #include "media.h"
 
 class Audio : public Media {
@@ -55,6 +60,7 @@ class Audio : public Media {
             setTracks(tracks);
         }
 
+        // constructor for loading from json
         Audio(const QJsonObject& json) : Media(json) {
             if (loadSubclassParams(json["subclass_params"].toObject()) != 0) {
                 throw std::runtime_error("Issue loading subclass parameters for Audio");
@@ -91,8 +97,6 @@ class Audio : public Media {
 
         // destructor
         ~Audio() {
-            // Destructor logic if needed
-            // Note: Media objects are not deleted here, as they are managed elsewhere
         }
 
         // methods for loading & saving audio data
@@ -100,9 +104,12 @@ class Audio : public Media {
 
         QJsonObject getSubclassParams() const override;
 
+        // get the whole schema: media + audio
         static QJsonObject getSchema();
+        // get the schema for this class: audio
         static QJsonObject getSubclassSchema();
 
+        // load parameters from a JSON object
         int loadSubclassParams(const QJsonObject& json) override;
 };
 

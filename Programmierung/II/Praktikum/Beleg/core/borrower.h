@@ -1,20 +1,22 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Header file for the Borrower class, which holds information and logic related to borrowers.
+*/
+
 #ifndef _BORROWER_H
 #define _BORROWER_H
 
-#include <QDate>
-#include <iostream>
-#include <algorithm>
-// #include "person.h"
 #include "config.h"
 
 using namespace std;
 
 class Borrower {
     unsigned int limit; // Limit the amount of items one borrower can hold at the same time
-    unsigned long bow_id; // Borrower ID 
 
     public:
-        // constructor with member initializer list
+        // constructor
         Borrower(unsigned int limit) {
             setLimit(limit);
         }
@@ -39,6 +41,7 @@ class Borrower {
 
         // setter method
         void setLimit(unsigned int limit) {
+            // Limit the number of items a borrower can hold
             if (MAX_ITEMS_PER_BORROWER_HARD != -1) {
                 this->limit = std::min(limit, static_cast<unsigned int> (MAX_ITEMS_PER_BORROWER_HARD));
             } else {
@@ -46,24 +49,18 @@ class Borrower {
             }
         }
 
-        // void setBowId(unsigned long bow_id) {
-        //     this->bow_id = bow_id;
-        // }
-
         // getter method
         unsigned int getLimit() const {
             return this->limit;
         }
-
-        // unsigned long getBowId() const {
-        //     return this->bow_id;
-        // }
 
         // serialization methods
         QString getSubclassType() const { return "Borrower"; }
         QJsonObject getSubclassParams() const;
         int loadSubclassParams(const QJsonObject& json);
         static QJsonObject getSubclassSchema(bool checked = false);
+
+        // constructor for loading from JSON
         Borrower(const QJsonObject& json) {
             if (loadSubclassParams(json) != 0) {
                 throw std::runtime_error("Failed to load Borrower parameters");

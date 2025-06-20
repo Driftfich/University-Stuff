@@ -1,6 +1,15 @@
-#include <QString>
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Implementation file for the Video class, which holds information and logic related to video media.
+*/
+
 #include <iostream>
-#include <vector>
+#include <QString>
+#include <QJsonObject>
+#include <QJsonDocument>
+
 #include "video.h"
 
 using namespace std;
@@ -26,7 +35,6 @@ int Video::setAudioChannels(const QString& audio_channels) {
 }
 
 // methods for loading & saving video data
-
 QJsonObject Video::getSubclassParams() const {
     QJsonObject json;
     json["type"] = this->type;
@@ -52,6 +60,7 @@ int Video::loadSubclassParams(const QJsonObject& json) {
     return 0;
 }
 
+// schema methods
 QJsonObject Video::getSubclassSchema() {
     QJsonObject schema;
     schema["duration"] = QJsonObject{{"type", "integer"}, {"rename", "Duration"}, {"description", "The duration of the video in seconds"}, {"minimum", 0}};

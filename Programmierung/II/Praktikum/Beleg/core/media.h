@@ -1,36 +1,41 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Header file for the Media class, which holds information and logic related to media items.
+
+Note:
+Because a virtual method cannot be static at the same time, virtual static getSubclassSchema() wasnt possible. As I strictly needed a static version
+to get the schema for new, uninitialized media items, I had to use a non-virtual setup. This means, to get the correct schema for a media item,
+the corresponding getSchema() method has to be called on the corresponding class or subclass.
+If static isnt needed, the helper method getSchemaByType() can be used, which automatically retrieves the schema for the correct subclass type.
+*/
+
 #ifndef _MEDIA_H
 #define _MEDIA_H
 
 #include <iostream>
-#include <vector>
-#include <string>
 #include <QDate>
 #include <QString>
 #include <QVector>
 #include <QMap>
 #include <QVariant>
-#include <variant>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QFile>
-#include "person.h" // for person work with files
-#include "json.hpp" // for json work with files
 
 class Media {
     unsigned long id;
     QString title;
     QDate publication_date;
-    QVector<unsigned long> artist_ids; // array persons ids => Information about saved in Person class
-    // QVector<Person*> artists; // array of deserialized artists/persons (person.h) objects
+    QVector<unsigned long> artist_ids; // array persons ids => information about artists is stored in the person class
     QString publisher;
     QString description;
     QString genre;
     QVector<QString> languages;
-    // unsigned int available_copies;
-    // metadata map with string to T map
     QMap<QString, QVariant> metadata;
-    int refCount = 0;
+    int refCount = 0; // how many libitems reference this media item, used to determine if the media item can be deleted
 
     public:
         // setter methods
@@ -42,7 +47,6 @@ class Media {
         int setDescription(const QString& description);
         int setGenre(const QString& genre);
         int setLanguages(const QVector<QString>& languages);
-        // void setAvailableCopies(unsigned int available_copies) {this->available_copies = available_copies;}
         int setMetadata(const QMap<QString, QVariant>& metadata);
         void setRefCount(int refCount) {this->refCount = refCount;}
 
@@ -55,7 +59,6 @@ class Media {
         QString getDescription() const {return this->description;}
         QString getGenre() const {return this->genre;}
         QVector<QString> getLanguages() const {return this->languages;}
-        // unsigned int getAvailableCopies() const {return this->available_copies;}
         QMap<QString, QVariant> getMetadata() const {return this->metadata;}
         int getRefCount() const {return this->refCount;}
 
@@ -63,7 +66,6 @@ class Media {
         Media(unsigned long id, const QString& title, const QDate publication_date,
               const QVector<unsigned long>& artist_ids, const QString& publisher, const QString& description,
               const QString& genre, const QVector<QString>& languages,
-            //    unsigned int available_copies,
               const QMap<QString, QVariant>& metadata) {
             setId(id);
             setTitle(title);
@@ -73,11 +75,10 @@ class Media {
             setDescription(description);
             setGenre(genre);
             setLanguages(languages);
-            // setAvailableCopies(available_copies);
             setMetadata(metadata);
         }
 
-        // constructor for loading from file
+        // constructor for loading from JSON object
         Media(QJsonObject json) {
             if (loadLocalParams(json["media"].toObject()) != 0) {
                 throw std::runtime_error("Issues loading media parameters");
@@ -94,7 +95,6 @@ class Media {
             this->description = other.description;
             this->genre = other.genre;
             this->languages = other.languages;
-            // this->available_copies = other.available_copies;
             this->metadata = other.metadata;
         }
 
@@ -109,7 +109,6 @@ class Media {
                 this->description = other.description;
                 this->genre = other.genre;
                 this->languages = other.languages;
-                // this->available_copies = other.available_copies;
                 this->metadata = other.metadata;
             }
             return *this;
@@ -117,32 +116,34 @@ class Media {
 
         // destructor
         virtual ~Media() {
-            // Destructor logic if needed
         }
 
         // method to retrieve the subclass type
         virtual QString getSubclassType() const {return "Media";} // used to identify if it is a text, audio, video, etc.
         // get json object from local media object
         QJsonObject getLocalParams() const;
+        // get json object from subclass e.g. Text, Audio, Video
         virtual QJsonObject getSubclassParams() const {return QJsonObject();}
         // get json object including subclass and local params
         QJsonObject getJson() const;
         // write json object to file
         void toFile(QFile& file) const;
 
-        // load json object from file
+        // load local parameters from a JSON object
         int loadLocalParams(const QJsonObject& json);
-        // read json object from file
+        // read subclass parameters from a JSON object
         virtual int loadSubclassParams(const QJsonObject& json) {Q_UNUSED(json); return 0;}
-        // load json object from file
+        // load complete media object from file
         static std::shared_ptr<Media> fromFile(QFile& file);
-        // factory method to create the correct subclass object
+        // factory method to create the correct subclass object based on the media type in the JSON object
         static std::shared_ptr<Media> MediaFactory(const QJsonObject& json);
 
         // schema methods
+        // get local schema for the media class
         static QJsonObject getLocalSchema();
-        // virtual QJsonObject getSubclassSchema() { return QJsonObject(); }
+        // get schema for the media class. To get the complete schema, use the corresponding subclass method
         static QJsonObject getSchema();
+        // automatically gets the schema for the correct subclass type, but isnt static any more
         QJsonObject getSchemaByType() const;
 
         // print methods

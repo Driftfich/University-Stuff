@@ -1,20 +1,22 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Implementation file for the Person class, which holds information and logic related to persons.
+*/
+
 #include <iostream>
 #include <QDate>
 #include <QVector>
 #include <QString>
-#include <string>
-// #include <math.h>
 #include <regex>
-#include "person.h"
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QFile>
+
+#include "person.h"
 #include "artist.h"
 #include "borrower.h"
-
-// Return values
-// return -1 <=> error
-// return 0 <=> fine
 
 using namespace std;
 
@@ -104,11 +106,6 @@ int Person::setBirthday(const QDate birthday) {
     return 0;
 }
 
-// int Person::setGender(const Gender gender) {
-//     this->gender = gender;
-//     return 0;
-// }
-
 int Person::setGender(const QString& gender) {
     this->gender = gender;
     return 0;
@@ -179,8 +176,6 @@ int Person::setTel(const QString& tel) {
 
 // copy constructor
 Person::Person(const Person& other) {
-    // deep copy is handled by the copy constructor of the QString class
-    // setter method overhead is not needed as already ensured in the other object
     this->id = other.id;
     this->fname = other.fname;
     this->lname = other.lname;
@@ -191,6 +186,7 @@ Person::Person(const Person& other) {
     this->location = other.location;
     this->email = other.email;
     this->tel = other.tel;
+    // as artist and borrower are unique_ptrs, we need to recreate them
     this->artist = other.artist ? std::make_unique<Artist>(*other.artist) : nullptr;
     this->borrower = other.borrower ? std::make_unique<Borrower>(*other.borrower) : nullptr;
 }
@@ -204,9 +200,6 @@ Person::Person(const QJsonObject& json) {
 
 // copy assignment operator
 Person& Person::operator=(const Person& other) {
-    // deep copy is handled by the copy assignment operator of the QString class
-    // setter method overhead is not needed as already ensured in the other object
-    // self-assignment check
     if (this != &other) {
         this->id = other.id;
         this->fname = other.fname;
@@ -225,10 +218,9 @@ Person& Person::operator=(const Person& other) {
 }
 
 Person::~Person() {
-    // destructor
-    // no need to delete anything as QString and QDate are handled by the C++ standard library
 }
 
+// Collects all parameters into a QJsonObject
 QJsonObject Person::getJson() const {
     QJsonObject json;
     json["id"] = static_cast<qint64>(id);
@@ -252,12 +244,14 @@ QJsonObject Person::getJson() const {
     return json;
 }
 
+// Writes the JSON object to a file
 void Person::toFile(QFile& file) const {
     if (!file.isOpen()) file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
     QJsonDocument doc(getJson());
     file.write(doc.toJson(QJsonDocument::Compact) + "\n");
 }
 
+// Loads local parameters from a JSON object
 int Person::loadLocalParams(const QJsonObject& json) {
     if (json.contains("id")) id = static_cast<unsigned long>(json["id"].toVariant().toLongLong());
     if (json.contains("fname")) fname = json["fname"].toString();
@@ -284,6 +278,7 @@ int Person::loadLocalParams(const QJsonObject& json) {
     return 0;
 }
 
+// Loads a Person object from a file
 std::shared_ptr<Person> Person::fromFile(QFile& file) {
     if (!file.isOpen()) file.open(QIODevice::ReadOnly | QIODevice::Text);
     QByteArray line = file.readLine();
@@ -291,6 +286,7 @@ std::shared_ptr<Person> Person::fromFile(QFile& file) {
     return PersonFactory(obj);
 }
 
+// Factory method to create a Person object from a QJsonObject
 std::shared_ptr<Person> Person::PersonFactory(const QJsonObject& json) {
     return std::make_shared<Person>(json);
 }
@@ -323,11 +319,6 @@ QJsonObject Person::getSchema(bool ArtistChecked, bool BorrowerChecked) {
     QJsonObject schema;
     QJsonObject properties;
     schema.insert("type", "object");
-    // properties.insert("person", QJsonObject{{"type", "object"}, {"properties", getLocalSchema()}});
-    // if (!getSubclassParams().isEmpty()) {
-    //     properties.insert("subclass_type", QJsonObject{{"type", "string"}, {"enum", QJsonArray{"Person", "Artist", "Borrower"}}, {"rename", "Subclass Type"}, {"description", "Type of the subclass (e.g. Person, Artist, Borrower)"}});
-    //     properties.insert("subclass_params", QJsonObject{{"type", "object"}, {"properties", getSubclassSchema()}});
-    // }
     schema.insert("properties", getLocalSchema(ArtistChecked, BorrowerChecked));
     schema.insert("rename", "Person");
     return schema;
