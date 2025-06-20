@@ -1,21 +1,30 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Header file for the PersonMan class, which holds the person objects and provides methods to load and save the data from and to files.
+Uses a hash map for fast access to person objects by id.
+It also provides methods to add, remove and get person objects by id.
+*/
+
 #ifndef _PERSONMAN_H
 #define _PERSONMAN_H
 
-#include <QFile>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QDate>
+#include <iostream>
 #include <QString>
 #include <QVector>
+#include <QHash>
+
 #include "person.h"
 
 
 class PersonMan {
     QString filename;
-    QVector<std::shared_ptr<Person>> persons;
-    QHash<unsigned long, std::shared_ptr<Person>> person_map; // fast access to persons by id
+    QVector<std::shared_ptr<Person>> persons; // vector of persons
+    QHash<unsigned long, std::shared_ptr<Person>> person_map; // hash map for fast access to persons by id
     unsigned long next_id;
 
+    // this method is private, because the next id is updated internally
     void setNextId(unsigned long id) {
         next_id = id;
     }
@@ -29,22 +38,24 @@ class PersonMan {
         int load();
         int save();
 
-        // setters and getters
+        // setter for the filename
         int setFilename(const QString& filename);
-        int addPerson(std::shared_ptr<Person> person);
 
+        // add and remove persons
+        int addPerson(std::shared_ptr<Person> person);
+        int removePersonId(unsigned long id);
+        int removePerson(unsigned long index);
+
+        // getters
         QVector<std::shared_ptr<Person>> getPersons() const;
         std::shared_ptr<Person> getPerson(unsigned long id) const;
         unsigned long getNextId() const;
         QString getFilename() const;
 
-        // person management functions
-        int removePersonId(unsigned long id);
-        int removePerson(unsigned long index);
-
+        // get a person by index in the vector
         std::shared_ptr<Person> operator[](unsigned long idx);
 
-        // print functions
+        // print the person objects in the vector
         friend std::ostream& operator<<(std::ostream& os, const PersonMan& pm);
 
 };

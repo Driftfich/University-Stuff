@@ -1,65 +1,51 @@
-#include <QFile>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QDateTime>
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Implementation file for the TransactionMan class, which holds the transaction objects and provides methods to load and save the data from and to files.
+Uses a hash map for fast access to transactions by libitem id and person id.
+It also provides methods to add, remove and get transaction objects by id.
+*/
+
+#include <iostream>
 #include <QString>
 #include <QVector>
 #include <QHash>
-#include <iostream>
-#include "transactionman.h"
+
 #include "transaction.h"
-#include <iostream>
+#include "transactionman.h"
 
 using namespace std;
 
+// constructor, loads the data from the file if load is true
 TransactionMan::TransactionMan(const QString& filename, bool load) {
     setFilename(filename);
     setNextId(0);
     if (load) {
-        this->load(); // internally the load function sets the next id with the last id + 1
+        this->load();
     }
-    // debug the whole hash maps
-    // std::cout << "Person Map Contents (" << person_map.size() << " entries):" << std::endl;
-    // std::cout << "---------------------------------------" << std::endl;
-    // if (person_map.isEmpty()) {
-    //     std::cout << "  [Person Map is empty]" << std::endl;
-    // } else {
-    //     // Sort keys for consistent output order (optional)
-    //     QList<unsigned long> person_keys = person_map.keys();
-    //     std::sort(person_keys.begin(), person_keys.end());
-
-    //     for (unsigned long person_id : person_keys) {
-    //         const auto& transactions_for_person = person_map.value(person_id);
-    //         std::cout << "Person ID: " << person_id << " (" << transactions_for_person.size() << " transaction(s))" << std::endl;
-    //         if (transactions_for_person.isEmpty()) {
-    //             std::cout << "  -> [No transactions associated]" << std::endl;
-    //         } else {
-    //             for (const auto& transaction_ptr : transactions_for_person) {
-    //                 if (transaction_ptr) {
-    //                     std::cout << "  -> " << *transaction_ptr << std::endl;
-    //                 } else {
-    //                     std::cout << "  -> [Null Transaction Pointer in person_map]" << std::endl;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-    // std::cout << "========= End Person Map =========" << std::endl;
 }
 
+// destructor, saves the data to the file
 TransactionMan::~TransactionMan() {
     save();
 }
 
+// load the data from the file
 int TransactionMan::load() {
     QFile file(filename);
+
+    // check if the file exists
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         std::cerr << "Error opening file for reading: " << filename.toStdString() << std::endl;
         return -1;
     }
+
+    // load each transaction from the file
     while (!file.atEnd()) {
         std::shared_ptr<Transaction> transaction = Transaction::fromFile(file);
         if (transaction) {
+            // add the transaction to the vector and the hash maps
             addTransaction(transaction);
         } else {
             std::cerr << "Error loading transaction from file" << std::endl;
@@ -69,29 +55,40 @@ int TransactionMan::load() {
     return 0;
 }
 
+// save the data to the file
 int TransactionMan::save() {
     QFile file(filename);
+
+    // check if the file exists, if it is writeable and truncate it
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
         std::cerr << "Error opening file for writing: " << filename.toStdString() << std::endl;
         return -1;
     }
+
+    // save each transaction to the file
     for (const auto& transaction : transactions) {
         transaction->toFile(file);
     }
     return 0;
 }
 
+// setter for the filename
 int TransactionMan::setFilename(const QString& filename) {
     this->filename = filename;
     return 0;
 }
 
+// add a new transaction to the vector and the hash maps
 int TransactionMan::addTransaction(std::shared_ptr<Transaction> transaction) {
     if (transaction) {
         transactions.push_back(transaction);
+
+        // update the next id if the new transaction id is greater than the current next id
         if (transaction->getId() >= next_id) {
             setNextId(transaction->getId() + 1);
         }
+
+        // add the transaction to the hash maps
         libitem_map[transaction->getLibitemId()].push_back(transaction);
         person_map[transaction->getBorrowerId()].push_back(transaction);
         return 0;
@@ -100,25 +97,34 @@ int TransactionMan::addTransaction(std::shared_ptr<Transaction> transaction) {
     return -1;
 }
 
+// get all the transactions
 QVector<std::shared_ptr<Transaction>> TransactionMan::getTransactions() const {
     return transactions;
 }
+
+// get the next id
 unsigned long TransactionMan::getNextId() const {
     return next_id;
 }
+
+// get the filename
 QString TransactionMan::getFilename() const {
     return filename;
 }
 
+// get all the transactions containing a specific person id
 QVector<std::shared_ptr<Transaction>> TransactionMan::getTransactionsByPersonId(unsigned long person_id) const {
     // qDebug() << person_map.value(person_id).size() << "transactions for person ID:" << person_id;
     return person_map.value(person_id);
 }
 
+// remove a transaction by id
 int TransactionMan::removeTransactionId(unsigned long id) {
+    // iterate over the vector and remove the transaction if the id matches
     for (QVector<std::shared_ptr<Transaction>>::iterator it = transactions.begin(); it != transactions.end(); ++it) {
         if ((*it)->getId() == id) {
             transactions.erase(it);
+            // remove the transaction from the hash maps
             libitem_map.remove((*it)->getLibitemId());
             person_map.remove((*it)->getBorrowerId());
             return 0;
@@ -127,6 +133,7 @@ int TransactionMan::removeTransactionId(unsigned long id) {
     return -1;
 }
 
+// remove a transaction by index
 int TransactionMan::removeTransaction(unsigned long index) {
     if (index < transactions.size()) {
         transactions.erase(transactions.begin() + index);
@@ -136,6 +143,7 @@ int TransactionMan::removeTransaction(unsigned long index) {
     return -1;
 }
 
+// get a transaction by index in the vector
 std::shared_ptr<Transaction> TransactionMan::operator[](unsigned long idx) {
     // get transaction at index idx
     if (idx < (unsigned long) transactions.size()) {
@@ -145,6 +153,7 @@ std::shared_ptr<Transaction> TransactionMan::operator[](unsigned long idx) {
     return nullptr;
 }
 
+// print the transaction objects in the vector
 std::ostream& operator<<(std::ostream& os, const TransactionMan& tm) {
     os << "TransactionMan: " << tm.getFilename().toStdString() << std::endl;
     os << "=========================" << std::endl;

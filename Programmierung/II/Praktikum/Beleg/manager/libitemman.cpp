@@ -1,3 +1,10 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Implementation file for the LibitemMan class, which manages a collection of media library items in a higher abstraction level.
+*/
+
 #include <QFile>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -6,6 +13,7 @@
 #include <QVector>
 #include <QHash>
 #include <iostream>
+
 #include "libitem.h"
 #include "libitemman.h"
 
@@ -13,7 +21,7 @@ LibitemMan::LibitemMan(QString filename, bool load) {
     setNextId(0);
     setFilename(filename);
     if (load) {
-        this->load(); // internally the load function sets the next id with the last id + 1
+        this->load();
     }
 }
 
@@ -25,9 +33,12 @@ int LibitemMan::setFilename(const QString& filename) {
     this->filename = filename;
     return 0;
 }
+
 int LibitemMan::addLibitem(std::shared_ptr<Libitem> libitem) {
     if (libitem) {
         this->libitems.push_back(libitem);
+        // if the libitem has a higher id than the current next_id, update next_id
+        // when the libitem id is lower, it is assumed that the id is unused
         if (libitem->getId() >= next_id) {
             setNextId(libitem->getId() + 1);
         }
@@ -36,7 +47,9 @@ int LibitemMan::addLibitem(std::shared_ptr<Libitem> libitem) {
     }
     return -1;
 }
+
 int LibitemMan::removeLibitemId(unsigned long id) {
+    // find the libitem with the given id in the vector and remove it
     for (QVector<std::shared_ptr<Libitem>>::iterator it = libitems.begin(); it != libitems.end(); ++it) {
         if ((*it)->getId() == id) {
             libitems.erase(it);
@@ -48,6 +61,7 @@ int LibitemMan::removeLibitemId(unsigned long id) {
 }
 
 int LibitemMan::removeLibitem(unsigned long index) {
+    // erase the libitem at the given index from the vector and remove it from the hash map
     if (index < (unsigned long) libitems.size()) {
         unsigned long id = libitems[index]->getId();
         libitems.erase(libitems.begin() + index);
@@ -65,6 +79,7 @@ QVector<std::shared_ptr<Libitem>> LibitemMan::getLibitems() const {
 }
 
 std::shared_ptr<Libitem> LibitemMan::getLibitem(unsigned long id) const {
+    // fast access to libitems by id using the hash map
     QHash<unsigned long, std::shared_ptr<Libitem>>::const_iterator it = libitem_map.find(id);
     if (it != libitem_map.end()) {
         return it.value();
@@ -78,13 +93,15 @@ QString LibitemMan::getFilename() const {
 
 int LibitemMan::load() {
     QFile file(filename);
+    // check if the file exists
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         std::cerr << "Error opening file for reading: " << filename.toStdString() << std::endl;
         return -1;
     }
+    // read the file line by line and create libitems from it
     while (!file.atEnd()) {
         std::shared_ptr<Libitem> libitem = Libitem::fromFile(file, [this](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
-            // call the own callback function
+            // connect the onMediaChangeCallback to the libitem's media change signal
             if (onMediaChangeCallback) {
                 onMediaChangeCallback(libitemId, oldMediaId, newMediaId);
             }
@@ -101,10 +118,12 @@ int LibitemMan::load() {
 
 int LibitemMan::save() {
     QFile file(filename);
+    // open the file for writing, truncating it if it already exists
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
         std::cerr << "Error opening file for writing: " << filename.toStdString() << std::endl;
         return -1;
     }
+    // write each libitem to the file
     for (const auto& libitem : libitems) {
         libitem->toFile(file);
     }

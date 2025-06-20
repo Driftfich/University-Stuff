@@ -1,16 +1,17 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-20
+
+Description: Header file for the library class, which holds the manager classes for media, libitems, persons, and transactions
+at one place. Used to load and save the data from and to files at once.
+*/
+
 #ifndef _LIBRARY_H
 #define _LIBRARY_H
 
-#include <QFile>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QDate>
-#include <QDateTime>
-#include <QString>
-#include <QVector>
-#include <QMap>
-#include <QHash>
 #include <iostream>
+#include <QDir>
+
 #include "mediaman.h"
 #include "transactionman.h"
 #include "personman.h"
