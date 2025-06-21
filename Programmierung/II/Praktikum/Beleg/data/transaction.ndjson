@@ -4,3 +4,4 @@
 {"borrower_id":6,"id":5,"libitem_id":0,"transaction_time":"2000-01-01 00:00:00"}
 {"borrower_id":6,"id":6,"libitem_id":10,"transaction_time":"2000-01-01 00:00:00"}
 {"borrower_id":7,"id":7,"libitem_id":6,"transaction_time":"2024-12-03 23:00:00"}
+{"borrower_id":3,"id":8,"libitem_id":5,"transaction_time":"2025-06-21 10:38:30"}

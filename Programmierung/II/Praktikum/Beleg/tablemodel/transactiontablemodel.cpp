@@ -373,6 +373,14 @@ QJsonObject TransactionTableModel::getDefaultSchema() const {
 
 // save a new transaction from a json object
 Result TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
+    // parse the borrower id string and libitem id string into unsigned longs
+    unsigned long borrowerId = jsonObject["borrower_id"].toString().toULongLong();
+    unsigned long libitemId = jsonObject["libitem_id"].toString().toULongLong();
+    // set the borrower id and libitem id in the json object
+    jsonObject["borrower_id"] = QJsonValue::fromVariant(QString::number(borrowerId));
+    jsonObject["libitem_id"] = QJsonValue::fromVariant(QString::number(libitemId));
+
+    // create the transaction from the json object
     std::shared_ptr<Transaction> transaction = Transaction::TransactionFactory(jsonObject);
 
     // extract the person from the json object

@@ -86,7 +86,7 @@ void MainWindow::setupCompleterForEditor(QLineEdit* editor, const QModelIndex& i
     if (fieldName == "libitem_id") {
         qDebug() << "Setting up completer for libitem_id...";
         QStringList filterColumns = QStringList() << "ID" << "Title" << "Publisher";
-        completer = new EntityCompleter(libitemModel, "{ID}", filterColumns, "{Title} - {Publisher} ({ID})", ".", editor);
+        completer = new EntityCompleter(libitemModel, "{ID}", filterColumns, "{Title} - {Publisher} ({ID})\nAvailable Copies: {Available Copies}\nBorrowed Copies: {Borrowed Copies}", ".", editor);
     }
     else if (fieldName == "borrower_id") {
         qDebug() << "Setting up completer for borrower_id...";
