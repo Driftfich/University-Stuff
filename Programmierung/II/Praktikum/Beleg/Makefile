@@ -71,6 +71,7 @@ SOURCES       = core/artist.cpp \
 		tablemodel/transactiontablemodel.cpp \
 		tablemodel/custfiltproxmodel.cpp \
 		tablemodel/entitycompleter.cpp \
+		tablemodel/mediatablemodel.cpp \
 		ui/mainw.cpp \
 		ui/infopanel.cpp \
 		ui/delegate.cpp \
@@ -82,6 +83,7 @@ SOURCES       = core/artist.cpp \
 		build/moc/moc_transactiontablemodel.cpp \
 		build/moc/moc_custfiltproxmodel.cpp \
 		build/moc/moc_entitycompleter.cpp \
+		build/moc/moc_mediatablemodel.cpp \
 		build/moc/moc_mainw.cpp \
 		build/moc/moc_infopanel.cpp \
 		build/moc/moc_delegate.cpp
@@ -104,6 +106,7 @@ OBJECTS       = build/obj/artist.o \
 		build/obj/transactiontablemodel.o \
 		build/obj/custfiltproxmodel.o \
 		build/obj/entitycompleter.o \
+		build/obj/mediatablemodel.o \
 		build/obj/mainw.o \
 		build/obj/infopanel.o \
 		build/obj/delegate.o \
@@ -116,6 +119,7 @@ OBJECTS       = build/obj/artist.o \
 		build/obj/moc_transactiontablemodel.o \
 		build/obj/moc_custfiltproxmodel.o \
 		build/obj/moc_entitycompleter.o \
+		build/obj/moc_mediatablemodel.o \
 		build/obj/moc_mainw.o \
 		build/obj/moc_infopanel.o \
 		build/obj/moc_delegate.o
@@ -375,6 +379,7 @@ DIST          = /home/USER/Qt/6.9.0/gcc_64/mkspecs/features/spec_pre.prf \
 		tablemodel/transactiontablemodel.h \
 		tablemodel/custfiltproxmodel.h \
 		tablemodel/entitycompleter.h \
+		tablemodel/mediatablemodel.h \
 		ui/mainw.h \
 		ui/toolbar.h \
 		ui/tablewidget.h \
@@ -401,6 +406,7 @@ DIST          = /home/USER/Qt/6.9.0/gcc_64/mkspecs/features/spec_pre.prf \
 		tablemodel/transactiontablemodel.cpp \
 		tablemodel/custfiltproxmodel.cpp \
 		tablemodel/entitycompleter.cpp \
+		tablemodel/mediatablemodel.cpp \
 		ui/mainw.cpp \
 		ui/infopanel.cpp \
 		ui/delegate.cpp \
@@ -916,8 +922,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ressources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /home/USER/Qt/6.9.0/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents core/artist.h core/audio.h core/borrower.h core/config.h core/libitem.h core/media.h core/person.h core/text.h core/transaction.h core/video.h manager/library.h manager/transactionman.h manager/personman.h manager/mediaman.h manager/libitemman.h tablemodel/libitemtablemodel.h tablemodel/persontablemodel.h tablemodel/transactiontablemodel.h tablemodel/custfiltproxmodel.h tablemodel/entitycompleter.h ui/mainw.h ui/toolbar.h ui/tablewidget.h ui/sidepanel.h ui/infopanel.h ui/delegate.h utils/jsonschemautils.h utils/returns.h $(DISTDIR)/
-	$(COPY_FILE) --parents core/artist.cpp core/audio.cpp core/media.cpp core/person.cpp core/text.cpp core/video.cpp core/borrower.cpp core/libitem.cpp core/transaction.cpp manager/library.cpp manager/transactionman.cpp manager/personman.cpp manager/mediaman.cpp manager/libitemman.cpp tablemodel/libitemtablemodel.cpp tablemodel/persontablemodel.cpp tablemodel/transactiontablemodel.cpp tablemodel/custfiltproxmodel.cpp tablemodel/entitycompleter.cpp ui/mainw.cpp ui/infopanel.cpp ui/delegate.cpp utils/jsonschemautils.cpp test.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents core/artist.h core/audio.h core/borrower.h core/config.h core/libitem.h core/media.h core/person.h core/text.h core/transaction.h core/video.h manager/library.h manager/transactionman.h manager/personman.h manager/mediaman.h manager/libitemman.h tablemodel/libitemtablemodel.h tablemodel/persontablemodel.h tablemodel/transactiontablemodel.h tablemodel/custfiltproxmodel.h tablemodel/entitycompleter.h tablemodel/mediatablemodel.h ui/mainw.h ui/toolbar.h ui/tablewidget.h ui/sidepanel.h ui/infopanel.h ui/delegate.h utils/jsonschemautils.h utils/returns.h $(DISTDIR)/
+	$(COPY_FILE) --parents core/artist.cpp core/audio.cpp core/media.cpp core/person.cpp core/text.cpp core/video.cpp core/borrower.cpp core/libitem.cpp core/transaction.cpp manager/library.cpp manager/transactionman.cpp manager/personman.cpp manager/mediaman.cpp manager/libitemman.cpp tablemodel/libitemtablemodel.cpp tablemodel/persontablemodel.cpp tablemodel/transactiontablemodel.cpp tablemodel/custfiltproxmodel.cpp tablemodel/entitycompleter.cpp tablemodel/mediatablemodel.cpp ui/mainw.cpp ui/infopanel.cpp ui/delegate.cpp utils/jsonschemautils.cpp test.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -964,9 +970,9 @@ compiler_moc_predefs_clean:
 build/moc/moc_predefs.h: /home/USER/Qt/6.9.0/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -fPIC -dM -E -o build/moc/moc_predefs.h /home/USER/Qt/6.9.0/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: build/moc/moc_library.cpp build/moc/moc_libitemtablemodel.cpp build/moc/moc_persontablemodel.cpp build/moc/moc_transactiontablemodel.cpp build/moc/moc_custfiltproxmodel.cpp build/moc/moc_entitycompleter.cpp build/moc/moc_mainw.cpp build/moc/moc_infopanel.cpp build/moc/moc_delegate.cpp
+compiler_moc_header_make_all: build/moc/moc_library.cpp build/moc/moc_libitemtablemodel.cpp build/moc/moc_persontablemodel.cpp build/moc/moc_transactiontablemodel.cpp build/moc/moc_custfiltproxmodel.cpp build/moc/moc_entitycompleter.cpp build/moc/moc_mediatablemodel.cpp build/moc/moc_mainw.cpp build/moc/moc_infopanel.cpp build/moc/moc_delegate.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) build/moc/moc_library.cpp build/moc/moc_libitemtablemodel.cpp build/moc/moc_persontablemodel.cpp build/moc/moc_transactiontablemodel.cpp build/moc/moc_custfiltproxmodel.cpp build/moc/moc_entitycompleter.cpp build/moc/moc_mainw.cpp build/moc/moc_infopanel.cpp build/moc/moc_delegate.cpp
+	-$(DEL_FILE) build/moc/moc_library.cpp build/moc/moc_libitemtablemodel.cpp build/moc/moc_persontablemodel.cpp build/moc/moc_transactiontablemodel.cpp build/moc/moc_custfiltproxmodel.cpp build/moc/moc_entitycompleter.cpp build/moc/moc_mediatablemodel.cpp build/moc/moc_mainw.cpp build/moc/moc_infopanel.cpp build/moc/moc_delegate.cpp
 build/moc/moc_library.cpp: manager/library.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDir \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdir.h \
@@ -1934,9 +1940,174 @@ build/moc/moc_entitycompleter.cpp: tablemodel/entitycompleter.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringListModel \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringlistmodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qregularexpression.h \
 		build/moc/moc_predefs.h \
 		/home/USER/Qt/6.9.0/gcc_64/libexec/moc
 	/home/USER/Qt/6.9.0/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/home/USER/Qt/6.9.0/gcc_64/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/home/USER/Qt/6.9.0/gcc_64/include -I/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets -I/home/USER/Qt/6.9.0/gcc_64/include/QtGui -I/home/USER/Qt/6.9.0/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/entitycompleter.h -o build/moc/moc_entitycompleter.cpp
+
+build/moc/moc_mediatablemodel.cpp: tablemodel/mediatablemodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QAbstractTableModel \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcompare.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qglobal.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtcoreglobal.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qconfig.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtcore-config.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtdeprecationdefinitions.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qassert.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtnoop.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtypes.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtversion.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsysinfo.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qlogging.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qflags.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qatomic.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qyieldcpu.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qforeach.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qttypetraits.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qmalloc.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qminmax.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qnumeric.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qoverload.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qswap.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtresource.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qttranslation.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qversiontagging.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstdlibdetection.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcomparehelpers.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20type_traits.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qhash.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qalgorithms.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstring.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qchar.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbytearray.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qrefcount.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qnamespace.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qarraydata.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qpair.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qarraydataops.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20functional.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20memory.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q17memory.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringfwd.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringliteral.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qanystringview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringconverter.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiterator.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringlist.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcoreevent.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbasictimer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qeventloop.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qmetatype.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdatastream.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfloat16.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qmath.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtformat_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiterable.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qscopeguard.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qobject_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qvariant.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdebug.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtextstream.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qshareddata.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q23utility.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20utility.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QObject \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVector \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qvector.h \
+		manager/mediaman.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QHash \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QString \
+		core/media.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdatetime.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcalendar.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qlocale.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonObject \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonobject.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcborvalue.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcborcommon.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qregularexpression.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qurl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/quuid.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qendian.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsondocument.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonparseerror.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonDocument \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QFile \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfile.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qspan.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h \
+		build/moc/moc_predefs.h \
+		/home/USER/Qt/6.9.0/gcc_64/libexec/moc
+	/home/USER/Qt/6.9.0/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/home/USER/Qt/6.9.0/gcc_64/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/home/USER/Qt/6.9.0/gcc_64/include -I/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets -I/home/USER/Qt/6.9.0/gcc_64/include/QtGui -I/home/USER/Qt/6.9.0/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/mediatablemodel.h -o build/moc/moc_mediatablemodel.cpp
 
 build/moc/moc_mainw.cpp: ui/mainw.h \
 		ui/toolbar.h \
@@ -2244,6 +2415,7 @@ build/moc/moc_mainw.cpp: ui/mainw.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qabstractproxymodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
+		tablemodel/mediatablemodel.h \
 		manager/library.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDir \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdir.h \
@@ -5758,8 +5930,172 @@ build/obj/entitycompleter.o: tablemodel/entitycompleter.cpp /home/USER/Qt/6.9.0/
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringListModel \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringlistmodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qregularexpression.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpressionMatchIterator \
 		tablemodel/entitycompleter.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/entitycompleter.o tablemodel/entitycompleter.cpp
+
+build/obj/mediatablemodel.o: tablemodel/mediatablemodel.cpp tablemodel/mediatablemodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QAbstractTableModel \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcompare.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qglobal.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtcoreglobal.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtconfiginclude.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qconfig.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtcore-config.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtdeprecationdefinitions.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qassert.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtnoop.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtypes.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtversion.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsysinfo.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qlogging.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qflags.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qatomic.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qyieldcpu.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qforeach.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qttypetraits.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qmalloc.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qminmax.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qnumeric.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qoverload.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qswap.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtresource.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qttranslation.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qversiontagging.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstdlibdetection.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcomparehelpers.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20type_traits.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qhash.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qalgorithms.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstring.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qchar.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbytearray.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qrefcount.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qnamespace.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qarraydata.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qpair.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qarraydataops.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20functional.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20memory.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q17memory.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringfwd.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringliteral.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qlatin1stringview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qanystringview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringconverter.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiterator.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qlist.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringlist.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qobject.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfunctionaltools_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcoreevent.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbasictimer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qeventloop.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qmetatype.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdatastream.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfloat16.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qmath.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtformat_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiterable.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qscopeguard.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qobject_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qvariant.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdebug.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qtextstream.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qshareddata.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qmap.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qset.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q23utility.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20utility.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QObject \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVector \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qvector.h \
+		manager/mediaman.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QHash \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QString \
+		core/media.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdatetime.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcalendar.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qlocale.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonObject \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonobject.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcborvalue.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qcborcommon.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qregularexpression.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qurl.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/quuid.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qendian.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsondocument.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonparseerror.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonDocument \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QFile \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfile.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qspan.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/mediatablemodel.o tablemodel/mediatablemodel.cpp
 
 build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonObject \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonobject.h \
@@ -6012,6 +6348,9 @@ build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonO
 		tablemodel/custfiltproxmodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
+		tablemodel/entitycompleter.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QAbstractItemModel \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QString \
 		ui/mainw.h \
 		ui/toolbar.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
@@ -6049,7 +6388,6 @@ build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonO
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QModelIndex \
 		core/libitem.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QString \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonDocument \
 		core/media.h \
@@ -6085,6 +6423,7 @@ build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonO
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qtreewidgetitemiterator.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QCheckBox \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/qcheckbox.h \
+		tablemodel/mediatablemodel.h \
 		manager/library.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets/QSizePolicy \
 		utils/jsonschemautils.h \
@@ -7096,6 +7435,7 @@ build/obj/test.o: test.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
 		tablemodel/custfiltproxmodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStringList \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
+		tablemodel/mediatablemodel.h \
 		manager/library.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDir \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qdir.h \
@@ -7128,6 +7468,9 @@ build/obj/moc_custfiltproxmodel.o: build/moc/moc_custfiltproxmodel.cpp
 
 build/obj/moc_entitycompleter.o: build/moc/moc_entitycompleter.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/moc_entitycompleter.o build/moc/moc_entitycompleter.cpp
+
+build/obj/moc_mediatablemodel.o: build/moc/moc_mediatablemodel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/moc_mediatablemodel.o build/moc/moc_mediatablemodel.cpp
 
 build/obj/moc_mainw.o: build/moc/moc_mainw.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/moc_mainw.o build/moc/moc_mainw.cpp

@@ -7,6 +7,7 @@
 #include "libitemtablemodel.h"
 #include "transactiontablemodel.h"
 #include "custfiltproxmodel.h"
+#include "mediatablemodel.h"
 #include "library.h"
 #include <QWidget>
 #include <QVBoxLayout>
@@ -83,6 +84,7 @@ class MainWindow : public QMainWindow
         PersonTableModel* personModel;
         LibItemTableModel* libitemModel;
         TransactionTableModel* transactionModel;
+        MediaTableModel* mediaModel;
 
         // Proxy Models
         CustomFilterProxyModel* personProxy;

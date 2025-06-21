@@ -41,6 +41,7 @@ HEADERS +=  core/artist.h \
             tablemodel/transactiontablemodel.h \
             tablemodel/custfiltproxmodel.h \
             tablemodel/entitycompleter.h \
+            tablemodel/mediatablemodel.h \
             ui/mainw.h \
             ui/toolbar.h \
             ui/tablewidget.h \
@@ -69,6 +70,7 @@ SOURCES +=  core/artist.cpp \
             tablemodel/transactiontablemodel.cpp \
             tablemodel/custfiltproxmodel.cpp \
             tablemodel/entitycompleter.cpp \
+            tablemodel/mediatablemodel.cpp \
             ui/mainw.cpp \
             #ui/toolbar.cpp \
             #ui/tablewidget.cpp \

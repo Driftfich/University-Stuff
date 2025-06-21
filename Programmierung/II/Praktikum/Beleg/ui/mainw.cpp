@@ -76,11 +76,6 @@ void MainWindow::setupCompleterForEditor(QLineEdit* editor, const QModelIndex& i
     QString fieldName = item->data(0, SchemaOriginalKeyRole).toString();
     // qDebug() << "Field name:" << fieldName;
 
-    // Only setup completer for ID fields
-    if (fieldName != "libitem_id" && fieldName != "borrower_id") {
-        return;
-    }
-    
     // create a new entity completer
     EntityCompleter* completer = nullptr;
     if (fieldName == "libitem_id") {
@@ -93,7 +88,12 @@ void MainWindow::setupCompleterForEditor(QLineEdit* editor, const QModelIndex& i
         QStringList filterColumns = QStringList() << "ID" << "First Name" << "Last Name" << "Email";
         completer = new EntityCompleter(personModel, "{ID}", filterColumns, "{Vorname} {Nachname} ({ID})", ".", editor);
     }
-
+    else if (fieldName == "media_id") {
+        qDebug() << "Setting up completer for media_id...";
+        QStringList filterColumns = QStringList() << "ID" << "Title" << "Publisher";
+        completer = new EntityCompleter(mediaModel, "{ID}", filterColumns, "{Title} - {Publisher} ({ID})", ".", editor);
+    }
+    
     if (completer) {
         // Configure the completer
         completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -129,7 +129,7 @@ void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int col
     // qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
     if (fieldName != "media_id" || currentIndex != 1 || oldValue.toString() == newValue.toString())
     {
-        qDebug() << fieldName << "\t" << currentIndex << "\t" << (oldValue.toString() == newValue.toString());
+        // qDebug() << fieldName << "\t" << currentIndex << "\t" << (oldValue.toString() == newValue.toString());
         return;
     }
     // get the original data from the info panel
@@ -140,13 +140,21 @@ void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int col
     QJsonObject newSchema = originalSchema;
 
     // qDebug() << "Updating media id in InfoPanel...";
-    // get the current id from the item as unsigned long
-    unsigned long currentIdValue = newValue.toString().toULongLong();
-
-    // try to find the media item with the new id in the media manager
-    // Media* mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
-    // qDebug() << "Searching for media item with id:" << currentIdValue;
-    std::shared_ptr<Media> mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
+    std::shared_ptr<Media> mediaItem = nullptr;
+    unsigned long currentIdValue = 0;
+    bool ok;
+    newValue.toString().toULongLong(&ok);
+    if (ok) {
+        // get the current id from the item as unsigned long
+        currentIdValue = newValue.toString().toULongLong();
+        // try to find the media item with the new id in the media manager
+        mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
+    }
+    else {
+        // get the next available id from the media manager
+        currentIdValue = lib->getMediaManager()->getNextId();
+    }
+    
     // get the current actice media type from the info panel
     QString mediaType = newJson.value("media").toObject().value("subclass_type").toString();
     if (!mediaItem) {
@@ -516,6 +524,7 @@ void MainWindow::setupTableModels()
                                                  lib->getPersonManager(), 
                                                  lib->getLibitemManager(), 
                                                  lib->getMediaManager(), this);
+    mediaModel = new MediaTableModel(lib->getMediaManager(), this);
 
     lib->load(); // load the data from the files
 }
