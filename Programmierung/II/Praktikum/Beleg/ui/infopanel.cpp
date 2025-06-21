@@ -300,7 +300,8 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         thisItem->setData(0, SchemaReadonlyRole, isReadOnly);
         thisItem->setData(1, SchemaRequiredRole, isRequired);
         thisItem->setData(1, SchemaPatternRole, currentItemSchema.value("pattern").toString());
-
+        thisItem->setData(1, SchemaPlaceholderRole, currentItemSchema.value("placeholder").toString());
+        
         // thisItem->setData(1, SchemaOptionalRole, isOptional);
         QJsonValue minValue = currentItemSchema.value("minimum");
         if (!minValue.isUndefined() && !minValue.isNull()) {

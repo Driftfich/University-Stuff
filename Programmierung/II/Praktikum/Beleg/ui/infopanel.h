@@ -31,6 +31,7 @@ const int SchemaMinRole = Qt::UserRole + 7;
 const int SchemaMaxRole = Qt::UserRole + 8;
 const int SchemaOriginalKeyRole = Qt::UserRole + 9;
 const int SchemaOptionalRole = Qt::UserRole + 10;
+const int SchemaPlaceholderRole = Qt::UserRole + 11;
 
 class InfoPanel : public QWidget {
     Q_OBJECT

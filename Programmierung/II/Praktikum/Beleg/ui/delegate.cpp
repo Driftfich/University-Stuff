@@ -38,6 +38,8 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
     QVariant minValueVar = index.data(SchemaMinRole);
     QVariant maxValueVar = index.data(SchemaMaxRole);
 
+    QVariant placeholderVar = index.data(SchemaPlaceholderRole);
+
     // create the correct editor for the item type
     if (itemType == "integer") {
         QSpinBox* editor = new QSpinBox(parent);
@@ -70,6 +72,9 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
         editor->addItem(tr("true"), true);
         editor->addItem(tr("false"), false);
         editor->setFrame(false);
+        if (placeholderVar.isValid() && !placeholderVar.isNull()) {
+            editor->setPlaceholderText(placeholderVar.toString());
+        }
         return editor;
     }
     else if (itemType == "string" && enumValuesVar.canConvert<QStringList>() && !enumValuesVar.toStringList().isEmpty()) {
@@ -79,20 +84,27 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
             QComboBox* editor = new QComboBox(parent);
             editor->addItems(enumValues);
             editor->setFrame(false);
+            if (placeholderVar.isValid() && !placeholderVar.isNull()) {
+                editor->setPlaceholderText(placeholderVar.toString());
+            }
             return editor;
         }
     }
     
-    // fallback for other item types
+    // fallback for other item types to string input
     QLineEdit* editor = new QLineEdit(parent);
     editor->setFrame(false);
     // use the current text from the model as initial value
     QString initialText = index.model()->data(index, Qt::EditRole).toString();
     editor->setText(initialText);
     
-    // Set up completer for ID fields in transaction tab
+    // Set up completer
     if (infoPanelPtr) {
         infoPanelPtr->setupCompleterForEditor(editor, index);
+    }
+
+    if (placeholderVar.isValid() && !placeholderVar.isNull()) {
+        editor->setPlaceholderText(placeholderVar.toString());
     }
     
     return editor;

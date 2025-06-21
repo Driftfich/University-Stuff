@@ -74,7 +74,7 @@ void MainWindow::setupCompleterForEditor(QLineEdit* editor, const QModelIndex& i
     
     // Get the field name from the tree item's data
     QString fieldName = item->data(0, SchemaOriginalKeyRole).toString();
-    qDebug() << "Field name:" << fieldName;
+    // qDebug() << "Field name:" << fieldName;
 
     // Only setup completer for ID fields
     if (fieldName != "libitem_id" && fieldName != "borrower_id") {
