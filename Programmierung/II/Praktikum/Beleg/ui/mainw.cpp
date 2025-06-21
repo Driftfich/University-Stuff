@@ -61,7 +61,7 @@ void MainWindow::setupUi()
     mainLayout->addWidget(tableWidgetWidget);
 }
 
-void MainWindow::setupCompleterForEditor(QLineEdit* editor, const QModelIndex& index)
+void MainWindow::setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex& index)
 {
     qDebug() << "Setting up completer for editor...";
     
@@ -119,6 +119,35 @@ void MainWindow::setupCompleterForEditor(QLineEdit* editor, const QModelIndex& i
                 qDebug() << "  Completion" << i << ":" << completionModel->data(idx).toString();
             }
         }
+    }
+}
+
+void MainWindow::setupCompleterForInfoPanel(QLineEdit* editor, const QModelIndex& index)
+{
+    qDebug() << "Setting up completer for editor...";
+    
+    // Get the tree widget item from the index
+    QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(const_cast<QAbstractItemModel*>(index.model())->parent());
+    if (!treeWidget) return;
+
+    QTreeWidgetItem* item = treeWidget->itemFromIndex(index);
+    if (!item) return;
+
+    QString fieldName = item->data(0, SchemaOriginalKeyRole).toString();
+
+    EntityCompleter* completer = nullptr;
+    if (fieldName == "media_id") {
+        qDebug() << "Setting up completer for media_id...";
+        QStringList filterColumns = QStringList() << "ID" << "Title" << "Publisher";
+        completer = new EntityCompleter(mediaModel, "{ID}", filterColumns, "{Title} - {Publisher} ({ID})", ".", editor);
+    }
+
+    if (completer) {
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        completer->setFilterMode(Qt::MatchContains);
+        completer->setWrapAround(false);
+        editor->setCompleter(completer);
+        completer->updateCompletions("");
     }
 }
 
@@ -361,6 +390,9 @@ void MainWindow::setupSideDock()
     // Signal vom InfoPanel verbinden
     connect(infoPanel, &InfoPanel::saveRequested, this, &MainWindow::saveModifiedData);
 
+    // connect the completer setup signal for infoPanel too
+    connect(infoPanel, &InfoPanel::completerSetupRequested, this, &MainWindow::setupCompleterForInfoPanel);
+
     // try the changeMediaId on the info panel
     connect(infoPanel, &InfoPanel::fieldChanged, this, [=](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
         changedMediaId(infoPanel, item, column, fieldName, oldValue, newValue);
@@ -462,7 +494,7 @@ void MainWindow::setupAddPanel()
     connect(addPanel, &InfoPanel::saveRequested, this, &MainWindow::saveNewData);
     
     // connect the completer setup signal for addPanel too
-    connect(addPanel, &InfoPanel::completerSetupRequested, this, &MainWindow::setupCompleterForEditor);
+    connect(addPanel, &InfoPanel::completerSetupRequested, this, &MainWindow::setupCompleterForAddpanel);
 
     // connection: when the cancel button in the add panel is clicked, enter Edit Mode again
     connect(addPanel, &InfoPanel::editModeCancelled, addPanel, &InfoPanel::enterEditMode);

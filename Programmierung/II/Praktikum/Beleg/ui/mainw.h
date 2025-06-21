@@ -128,7 +128,8 @@ class MainWindow : public QMainWindow
 
         void updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
         void changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
-        void setupCompleterForEditor(QLineEdit* editor, const QModelIndex& index);
+        void setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex& index);
+        void setupCompleterForInfoPanel(QLineEdit* editor, const QModelIndex& index);
         void setupUnifiedFieldChangeHandler();
         void enabledArtist(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
         void addPanelSave();
