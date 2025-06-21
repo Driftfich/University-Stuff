@@ -24,7 +24,7 @@ QJsonObject Transaction::getJson() const {
 void Transaction::toFile(QFile& file) const {
     // Open the file for writing in append mode when not already open
     if (!file.isOpen() && !file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
-        std::cerr << "Fehler: Datei konnte nicht im Append-Modus geöffnet werden" << std::endl;
+        std::cerr << "Error: File could not be opened in append mode" << std::endl;
         return;
     }
 
@@ -33,7 +33,7 @@ void Transaction::toFile(QFile& file) const {
     QByteArray line = doc.toJson(QJsonDocument::Compact) + "\n";
     // Write the JSON line to the file
     if (file.write(line) == -1) {
-        throw std::runtime_error("Fehler beim Schreiben in die Datei");
+        throw std::runtime_error("Error: Could not write to file");
     }
 }
 
@@ -57,7 +57,7 @@ int Transaction::loadLocalParams(const QJsonObject& json) {
 
 std::shared_ptr<Transaction> Transaction::fromFile(QFile& file) {
     if (!file.isOpen() && !file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw std::runtime_error("Fehler: Datei konnte nicht geöffnet werden");
+        throw std::runtime_error("Error: File could not be opened");
     }
     // as long as the file is not at the end, read next new line delimited JSON object
     while (!file.atEnd()) {
@@ -66,12 +66,12 @@ std::shared_ptr<Transaction> Transaction::fromFile(QFile& file) {
         QJsonDocument doc = QJsonDocument::fromJson(line);
         // when the document is not valid, return nullptr
         if (doc.isNull()) {
-            std::cerr << "Fehler: Ungültiges JSON-Dokument" << std::endl;
+            std::cerr << "Error: Invalid JSON document" << std::endl;
             return nullptr;
         }
         QJsonObject json = doc.object();
         if (json.isEmpty()) {
-            std::cerr << "Fehler: Leeres JSON-Objekt" << std::endl;
+            std::cerr << "Error: Empty JSON object" << std::endl;
             return nullptr;
         }
         return TransactionFactory(json);

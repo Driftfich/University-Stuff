@@ -232,7 +232,7 @@ public:
                                        LibItemTableModel*,
                                        TransactionTableModel*>& model)
     {
-        // std::visit verwendet einen Lambdaausdruck, der für jeden möglichen Typ des Variants aufgerufen wird
+        // std::visit uses a lambda expression that is called for each possible type of the variant
         std::visit([this](auto* m) {
             // Hier rufen wir die andere setColumns-Methode auf, die mit QStringList arbeitet
             setColumns(QStringList::fromVector(m->getAllColumnNames().values()),
@@ -251,7 +251,7 @@ public:
                                        LibItemTableModel*,
                                        TransactionTableModel*>& model)
     {
-        // std::visit verwendet einen Lambdaausdruck, der für jeden möglichen Typ des Variants aufgerufen wird
+        // std::visit uses a lambda expression that is called for each possible type of the variant
         std::visit([this](auto* m) {
             // Hier rufen wir die andere setColumns-Methode auf, die mit QStringList arbeitet
             setSortColumns(QStringList::fromVector(m->getAllColumnNames().values()));

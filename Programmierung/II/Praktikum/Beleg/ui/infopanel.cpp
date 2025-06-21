@@ -22,12 +22,11 @@
 #include "infopanel.h"
 #include "delegate.h"
 
-InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWidget(this)), inEditMode(false),
-    m_baseFontSize(15), m_fontScaleFactor(0.9), m_minFontSize(7), m_maxFontSize(15), // Initialize font params
-    m_treeExpandedState(true) // Initialize to collapsed state (default after displayInfo)
+InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWidget(this)), inEditMode(false), m_treeExpandedState(true),
+    m_baseFontSize(15), m_fontScaleFactor(0.9), m_minFontSize(7), m_maxFontSize(15) // Initialize font params
 {
     // set the header labels
-    treeWidget->setHeaderLabels({tr("Attribut"), tr("Wert")});
+    treeWidget->setHeaderLabels({tr("Attribute"), tr("Value")});
     // set the overall layout
     QVBoxLayout *layout = new QVBoxLayout(this);
     
@@ -35,7 +34,7 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     
     // set icon of the save button
-    saveButton = new QPushButton(tr("Speichern"), this);
+    saveButton = new QPushButton(tr("Save"), this);
     saveButton->setIcon(QIcon(":/icons/save.png"));
     saveButton->setVisible(true);
     saveButton->setEnabled(false);
@@ -43,7 +42,7 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
     buttonLayout->addWidget(saveButton);
 
     // set the icon of the edit button
-    editButton = new QPushButton(tr("Bearbeiten"), this);
+    editButton = new QPushButton(tr("Edit"), this);
     editButton->setIcon(QIcon(":/icons/edit.png"));
     editButton->setVisible(true);
     buttonLayout->addWidget(editButton);
@@ -68,7 +67,7 @@ InfoPanel::InfoPanel(QWidget *parent) : QWidget(parent), treeWidget(new QTreeWid
     // load the delete icon
     deleteIcon = QPixmap(":/icons/quit.png");
     if (deleteIcon.isNull()) {
-        QMessageBox::warning(this, tr("Fehler"), tr("The symbol for the delete button could not be loaded."));
+        QMessageBox::warning(this, tr("Error"), tr("The symbol for the delete button could not be loaded."));
     }
 
     // install the event filter to handle mouse events
@@ -456,7 +455,7 @@ void InfoPanel::enterEditMode() {
     saveButton->setStyleSheet("QPushButton { background-color: lightblue; }");
     
     // change the edit button to cancel button
-    editButton->setText(tr("Abbrechen"));
+    editButton->setText(tr("Cancel"));
     editButton->setIcon(QIcon(":/icons/quit.png"));
 
     // disconnect the edit button from the enterEditMode signal and connect it to the cancelEditMode signal
@@ -519,7 +518,7 @@ void InfoPanel::saveChanges() {
     // reset the state of the save button
     saveButton->setEnabled(false);
     saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
-    editButton->setText(tr("Bearbeiten"));
+    editButton->setText(tr("Edit"));
     editButton->setIcon(QIcon(":/icons/edit.png"));
     
     // reset the signal connections of the edit button
@@ -590,7 +589,7 @@ void InfoPanel::resetButtons() {
     // Reset the buttons to their initial state
     saveButton->setEnabled(false);
     saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
-    editButton->setText(tr("Bearbeiten"));
+    editButton->setText(tr("Edit"));
     editButton->setIcon(QIcon(":/icons/edit.png"));
 
     // Signal-Verbindungen zurücksetzen
@@ -813,8 +812,8 @@ void InfoPanel::onAddObjectItem() {
 
     // get the new key
     bool ok;
-    QString newKey = QInputDialog::getText(this, tr("Neuer Schlüssel für Objekt"),
-                                           tr("Schlüsselname:"), QLineEdit::Normal,
+    QString newKey = QInputDialog::getText(this, tr("New key for object"),
+                                           tr("Key name:"), QLineEdit::Normal,
                                            "", &ok);
     if (ok && !newKey.isEmpty()) {
         // check if the new key already exists
@@ -935,8 +934,8 @@ void InfoPanel::handleDeleteAction(QTreeWidgetItem* itemToDelete) {
 
     // get the parent item
     QTreeWidgetItem* parentItem = itemToDelete->parent();
-    // get the index of the item to delete
-    int removedAtIndex = parentItem->indexOfChild(itemToDelete); 
+    // // get the index of the item to delete
+    // int removedAtIndex = parentItem->indexOfChild(itemToDelete); 
 
     // remove the item from the parent
     parentItem->removeChild(itemToDelete);
@@ -1047,21 +1046,21 @@ void InfoPanel::updateSaveButtonState() {
     if (hasInvalidFields) {
         saveButton->setEnabled(false);
         saveButton->setStyleSheet("QPushButton { background-color: #ffcccc; color: #666; }");
-        saveButton->setToolTip(tr("Bitte füllen Sie alle Pflichtfelder aus"));
+        saveButton->setToolTip(tr("Please fill in all required fields"));
         return;
     }
     // if the original data is not the same as the collected data, enable the save button and color it orange
     else if (getOriginalData() != collectDataFromTree()) {
         saveButton->setEnabled(true);
         saveButton->setStyleSheet("QPushButton { background-color: orange; }");
-        saveButton->setToolTip(tr("Änderungen speichern"));
+        saveButton->setToolTip(tr("Save changes"));
         return;
     }
     // if the original data is the same as the collected data, disable the save button and color it light gray
     else {
         saveButton->setEnabled(false);
         saveButton->setStyleSheet("QPushButton { background-color: lightgray; }");
-        saveButton->setToolTip(tr("Keine Änderungen zum Speichern"));
+        saveButton->setToolTip(tr("No changes to save"));
     }
 }
 
@@ -1097,7 +1096,7 @@ bool InfoPanel::isFieldValid(const QModelIndex& index) const {
     if (!inEditMode || !index.isValid()) return true; // Not in edit mode or invalid index
 
     QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(index.internalPointer());
-    bool isRequired = item->data(1, SchemaRequiredRole).toBool();
+    // bool isRequired = item->data(1, SchemaRequiredRole).toBool();
     
     if (!validateRequiredField(item)) {
         return false; // Required field is empty
@@ -1125,7 +1124,7 @@ bool InfoPanel::validateRequiredField(const QTreeWidgetItem* item) const {
 
 // validate the field pattern
 bool InfoPanel::validateFieldPattern(const QTreeWidgetItem* item) const {
-    QString pattern = item->data(1, SchemaPatternRole).toString(); // Neue Role hinzufügen
+    QString pattern = item->data(1, SchemaPatternRole).toString(); // Add new role
     if (pattern.isEmpty()) return true;
 
     QString value = item->text(1).trimmed();

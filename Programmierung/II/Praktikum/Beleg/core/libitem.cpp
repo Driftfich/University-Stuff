@@ -26,14 +26,14 @@ QJsonObject Libitem::getJson() const {
 void Libitem::toFile(QFile& file) const {
     // check if the file is open, if not, try to open it in append mode
     if (!file.isOpen() && !file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
-        std::cerr << "Fehler: Datei konnte nicht im Append-Modus geöffnet werden" << std::endl;
+        std::cerr << "Error: File could not be opened in append mode" << std::endl;
         return;
     }
     // write the JSON object to the file
     QJsonDocument doc(getJson());
     QByteArray line = doc.toJson(QJsonDocument::Compact) + "\n";
     if (file.write(line) == -1) {
-        throw std::runtime_error("Fehler beim Schreiben in die Datei");
+        throw std::runtime_error("Error: Could not write to file");
     }
 }
 
@@ -87,7 +87,7 @@ int Libitem::loadLocalParams(const QJsonObject& json) {
 std::shared_ptr<Libitem> Libitem::fromFile(QFile& file, std::function<void(unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId)> onMediaChangeCallback) {
     // check if the file is open, if not, try to open it in read mode
     if (!file.isOpen() && !file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw std::runtime_error("Fehler: Datei konnte nicht geöffnet werden");
+        throw std::runtime_error("Error: File could not be opened");
     }
     // as long as the file is not at the end, read the next json object
     while (!file.atEnd()) {
@@ -96,7 +96,7 @@ std::shared_ptr<Libitem> Libitem::fromFile(QFile& file, std::function<void(unsig
         if (line.isEmpty()) continue;
         QJsonDocument doc(QJsonDocument::fromJson(line));
         if (doc.isNull()) {
-            std::cerr << "Fehler: Ungültiges JSON-Format" << std::endl;
+            std::cerr << "Error: Invalid JSON format" << std::endl;
             return nullptr;
         }
         QJsonObject obj = doc.object();

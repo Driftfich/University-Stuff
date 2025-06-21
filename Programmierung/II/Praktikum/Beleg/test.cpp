@@ -188,7 +188,7 @@ int test_libitem_file_management() {
     file.close();
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        std::cerr << "Fehler beim Öffnen zum Lesen\n";
+        std::cerr << "Error: Could not open file for reading" << std::endl;
         return -1;
     }
 
@@ -250,7 +250,7 @@ int test_transaction_file_management() {
     file.close();
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        std::cerr << "Fehler beim Öffnen zum Lesen\n";
+        std::cerr << "Error: Could not open file for reading" << std::endl;
         return -1;
     }
 
@@ -325,16 +325,16 @@ int test_libitemman() {
 static void loadQssTheme(QApplication &app, const QString &resourcePath) {
     QFile f(resourcePath);
     if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Konnte Theme nicht laden:" << resourcePath;
+        qWarning() << "Could not load theme:" << resourcePath;
         return;
     }
     app.setStyleSheet(QString::fromUtf8(f.readAll()));
 }
 
 /**
- * @brief Startet die MainWindow-UI im modernen Material-Look.
- * @param argc Anzahl Kommandozeilenargumente.
- * @param argv Kommandozeilenargumente.
+ * @brief Starts the MainWindow UI in modern Material look.
+ * @param argc Number of command line arguments.
+ * @param argv Command line arguments.
  * @return app.exec()
  */
 int test_ui(int argc, char *argv[]) {

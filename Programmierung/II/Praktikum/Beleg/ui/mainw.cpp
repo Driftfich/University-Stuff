@@ -86,7 +86,7 @@ void MainWindow::setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex&
     else if (fieldName == "borrower_id") {
         qDebug() << "Setting up completer for borrower_id...";
         QStringList filterColumns = QStringList() << "ID" << "First Name" << "Last Name" << "Email";
-        completer = new EntityCompleter(personModel, "{ID}", filterColumns, "{Vorname} {Nachname} ({ID})", ".", editor);
+        completer = new EntityCompleter(personModel, "{ID}", filterColumns, "{First Name} {Last Name} ({ID})", ".", editor);
     }
     else if (fieldName == "media_id") {
         qDebug() << "Setting up completer for media_id...";
@@ -153,6 +153,9 @@ void MainWindow::setupCompleterForInfoPanel(QLineEdit* editor, const QModelIndex
 
 void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
 {
+    Q_UNUSED(column);
+    Q_UNUSED(item);
+
     // qDebug() << "Updating media id in InfoPanel...";
     int currentIndex = tableWidgetUi->TabSelector->currentIndex();
     // qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
@@ -230,6 +233,9 @@ void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int col
 
 void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
 {
+    Q_UNUSED(column);
+    Q_UNUSED(item);
+
     qDebug() << "Updating subclass type in InfoPanel...";
     // qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
     // get the index of the current active tab
@@ -267,6 +273,11 @@ void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QSt
 }
 
 void MainWindow::enabledArtist(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
+    Q_UNUSED(column);
+    Q_UNUSED(oldValue);
+    Q_UNUSED(newValue);
+    Q_UNUSED(item);
+    
     int currentIndex = tableWidgetUi->TabSelector->currentIndex();
 
     if ((currentIndex != 0 && currentIndex != 2) ||
@@ -373,13 +384,13 @@ void MainWindow::setupSideDock()
     sidePanelUi     = new Ui::Form();
     sidePanelUi->setupUi(sidePanelWidget);
 
-    // InfoPanel in die infopanel-Seite einfügen
+    // Insert InfoPanel into the infopanel page
     infoPanel = new InfoPanel(sidePanelUi->infopanel);
     QVBoxLayout *infoLayout = new QVBoxLayout(sidePanelUi->infopanel);
     infoLayout->setContentsMargins(0,0,0,0);
     infoLayout->addWidget(infoPanel);
 
-    // Dock erstellen und einhängen
+    // Create and attach dock
     sideDock = new QDockWidget(tr("Seitenpanel"), this);
     sideDock->setAllowedAreas(
         Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -422,7 +433,7 @@ void MainWindow::setupSideDock()
 
         // 5) JSON holen je nach Model-Typ
         QJsonObject info;
-        QJsonObject schema = QJsonObject(); // Schema-Objekt, falls verfügbar
+        QJsonObject schema = QJsonObject(); // Schema object, if available
         if (TransactionTableModel* tm = qobject_cast<TransactionTableModel*>(srcModel))
             {info = tm->getJsonObject(srcIndex);
             schema = tm->getSchemaObject(srcIndex);}
@@ -725,12 +736,12 @@ void MainWindow::setupSortConnections()
                 currentTableView = tableWidgetUi->transtab;
                 break;
             default:
-                qWarning() << "Ungültiger Tab-Index für Sortierung:" << tableWidgetUi->TabSelector->currentIndex();
+                qWarning() << "Invalid tab index for sorting:" << tableWidgetUi->TabSelector->currentIndex();
                 return;
         }
 
         if (!currentProxyModel || !currentTableView) {
-            qWarning() << "Konnte ProxyModel oder TableView für Sortierung nicht ermitteln.";
+            qWarning() << "Could not determine ProxyModel or TableView for sorting.";
             return;
         }
 
@@ -743,7 +754,7 @@ void MainWindow::setupSortConnections()
         Qt::SortOrder currentSortOrder = currentProxyModel->sortOrder();
 
         Qt::SortOrder newSortOrder = Qt::AscendingOrder;
-        // Wenn dieselbe Spalte erneut ausgewählt wird, die Sortierreihenfolge umkehren
+        // If the same column is selected again, reverse the sort order
         if (columnToSort == currentSortColumn) {
             newSortOrder = (currentSortOrder == Qt::AscendingOrder) ? Qt::DescendingOrder : Qt::AscendingOrder;
         }
@@ -770,12 +781,12 @@ void MainWindow::applySearchFilter()
                 currentProxyModel = transactionProxy; 
                 break;
             default:
-                qWarning() << "Ungültiger Tab-Index für Filterung:" << tableWidgetUi->TabSelector->currentIndex();
+                qWarning() << "Invalid tab index for filtering:" << tableWidgetUi->TabSelector->currentIndex();
                 return;
         }
 
     if (!currentProxyModel) {
-        qWarning() << "Konnte ProxyModel für Filterung nicht ermitteln.";
+        qWarning() << "Could not determine ProxyModel for filtering.";
         return;
     }
 
@@ -823,26 +834,26 @@ void MainWindow::setupDeleteConnections()
                 currentSourceModel = transactionModel;
                 break;
             default:
-                qWarning() << "Ungültiger Tab-Index für Löschvorgang:" << tableWidgetUi->TabSelector->currentIndex();
+                qWarning() << "Invalid tab index for delete operation:" << tableWidgetUi->TabSelector->currentIndex();
                 return;
         }
 
         if (!currentTableView || !currentProxyModel || !currentSourceModel) {
-            qWarning() << "Konnte TableView, ProxyModel oder SourceModel für Löschvorgang nicht ermitteln.";
+            qWarning() << "Could not determine TableView, ProxyModel or SourceModel for delete operation.";
             return;
         }
 
-        // Hole die ausgewählten Zeilen
+        // Get the selected rows
         QModelIndexList selectedIndexes = currentTableView->selectionModel()->selectedRows();
         
         if (selectedIndexes.isEmpty()) {
-            QMessageBox::information(this, "Keine Auswahl", "Bitte wählen Sie mindestens eine Zeile zum Löschen aus.");
+            QMessageBox::information(this, "No selection", "Please select at least one row to delete.");
             return;
         }
 
-        // Bestätigungsdialog anzeigen
-        QString message = QString("Möchten Sie wirklich %1 Eintrag/Einträge löschen?").arg(selectedIndexes.size());
-        QMessageBox::StandardButton reply = QMessageBox::question(this, "Löschen bestätigen", message,
+        // Show confirmation dialog
+        QString message = QString("Do you really want to delete %1 entry/entries?").arg(selectedIndexes.size());
+        QMessageBox::StandardButton reply = QMessageBox::question(this, "Confirm deletion", message,
                                                                 QMessageBox::Yes | QMessageBox::No);
         
         if (reply != QMessageBox::Yes) {
@@ -874,7 +885,7 @@ void MainWindow::setupDeleteConnections()
 
 void MainWindow::saveModifiedData(const QJsonObject& data) {
     if (!currentEditModel || !currentEditIndex.isValid()) {
-        QMessageBox::warning(this, tr("Fehler"), tr("Keine gültigen Daten zum Speichern."));
+        QMessageBox::warning(this, tr("Error"), tr("No valid data to save."));
         return;
     }
 
@@ -886,7 +897,7 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
         bool success = false;
 
         if (TransactionTableModel* tm = qobject_cast<TransactionTableModel*>(currentEditModel)) {
-            // Sie müssten eine setJsonObject-Methode implementieren oder direkt den Manager aufrufen
+            // You would need to implement a setJsonObject method or call the manager directly
             success = tm->updateFromJsonObject(data, currentEditIndex);
         } 
         else if (PersonTableModel* pm = qobject_cast<PersonTableModel*>(currentEditModel)) {
@@ -924,18 +935,18 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
                 }
             }
 
-            // Model über Änderungen benachrichtigen
+            // Notify model about changes
             currentEditModel->dataChanged(currentEditIndex, currentEditIndex);
-            QMessageBox::information(this, tr("Gespeichert"), 
-                                   tr("Änderungen wurden erfolgreich gespeichert."));
+            QMessageBox::information(this, tr("Saved"), 
+                                   tr("Changes were successfully saved."));
         } else {
-            QMessageBox::warning(this, tr("Fehler"), 
-                               tr("Fehler beim Speichern der Änderungen."));
+            QMessageBox::warning(this, tr("Error"), 
+                               tr("Error saving changes."));
         }
     } 
     catch (const std::exception& e) {
-        QMessageBox::critical(this, tr("Fehler"), 
-                            tr("Unerwarteter Fehler: %1").arg(e.what()));
+        QMessageBox::critical(this, tr("Error"), 
+                            tr("Unexpected error: %1").arg(e.what()));
     }
 }
 
@@ -962,16 +973,16 @@ void MainWindow::saveNewData(const QJsonObject& data) {
         emit tableWidgetUi->TabSelector->currentChanged(currentIndex);
 
         if ((bool) success) {
-            QMessageBox::information(this, tr("Gespeichert"),
-                                   tr("Neuer Eintrag wurde erfolgreich gespeichert."));
+            QMessageBox::information(this, tr("Saved"),
+                                   tr("New entry was successfully saved."));
         } else {
-            QMessageBox::warning(this, tr("Fehler"),
+            QMessageBox::warning(this, tr("Error"),
                                QString(success));
         }
     }
     catch (const std::exception& e) {
-        QMessageBox::critical(this, tr("Fehler"),
-                            tr("Unerwarteter Fehler: %1").arg(e.what()));
+        QMessageBox::critical(this, tr("Error"),
+                            tr("Unexpected error: %1").arg(e.what()));
     }
 }
 
@@ -1116,7 +1127,7 @@ void MainWindow::onCompleterActivated(const QString& suggestion)
     else {
         QString lastToken = tokens.last();
         
-        // Prüfe, ob suggestion mit letztem Token beginnt (case-insensitive)
+        // Check if suggestion starts with last token (case-insensitive)
         bool startsWithLastToken = !lastToken.isEmpty() && 
                                   suggestion.startsWith(lastToken, Qt::CaseInsensitive);
 
@@ -1129,11 +1140,11 @@ void MainWindow::onCompleterActivated(const QString& suggestion)
             // qDebug() << "Token replacement:" << lastToken << "->" << suggestion;
         }
         else {
-            // // Vollständige Ersetzung des Suchtexts
+            // // Complete replacement of the search text
             newSearchText = suggestion;
             // qDebug() << "Complete replacement:" << currentText << "->" << suggestion;
 
-            // Anfügen des neuen Tokens
+            // Append the new token
             // tokens.append(suggestion);
             // newSearchText = tokens.join(' ');
         }
@@ -1148,10 +1159,10 @@ void MainWindow::onCompleterActivated(const QString& suggestion)
     
     toolbarUi->searchbar->setText(newSearchText);
     
-    // Cursor ans Ende setzen für weitere Eingaben
+    // Set cursor to the end for further input
     toolbarUi->searchbar->setCursorPosition(newSearchText.length());
     
-    // Completer wieder anhängen
+    // Reattach completer
     toolbarUi->searchbar->setCompleter(searchCompleter);
     // make the popup visible again
     searchCompleter->popup()->show();

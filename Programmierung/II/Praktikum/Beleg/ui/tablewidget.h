@@ -124,9 +124,9 @@ public:
     void retranslateUi(QWidget *TableWidget)
     {
         TableWidget->setWindowTitle(QCoreApplication::translate("TableWidget", "Form", nullptr));
-        TabSelector->setTabText(TabSelector->indexOf(personwid), QCoreApplication::translate("TableWidget", "Personen", nullptr));
+        TabSelector->setTabText(TabSelector->indexOf(personwid), QCoreApplication::translate("TableWidget", "Persons", nullptr));
         TabSelector->setTabText(TabSelector->indexOf(itemwid), QCoreApplication::translate("TableWidget", "Items", nullptr));
-        TabSelector->setTabText(TabSelector->indexOf(transwid), QCoreApplication::translate("TableWidget", "Transaktionen", nullptr));
+        TabSelector->setTabText(TabSelector->indexOf(transwid), QCoreApplication::translate("TableWidget", "Transactions", nullptr));
     } // retranslateUi
 
 };

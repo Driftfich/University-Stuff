@@ -131,7 +131,7 @@ int Media::setMetadata(const QMap<QString, QVariant> & newMetadata) {
         const QString& key = it.key();
         QVariant value = it.value();
 
-        // Zeichenketten kürzen, falls zu lang
+        // truncate strings if too long
         if (MAX_METADATA_LENGTH != -1 && value.typeId() == QMetaType::QString) {
             QString s = value.toString();
             if (s.length() > MAX_METADATA_LENGTH) {
@@ -184,13 +184,13 @@ QJsonObject Media::getJson() const {
 void Media::toFile(QFile& file) const {
     // check if the file is open, if not, try to open it in append mode
     if (!file.isOpen() && !file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
-        std::cerr << "Fehler: Datei konnte nicht im Append-Modus geöffnet werden" << std::endl;
+        std::cerr << "Error: File could not be opened in append mode" << std::endl;
         return;
     }
     QJsonDocument doc(getJson());
     QByteArray line = doc.toJson(QJsonDocument::Compact) + "\n";
     if (file.write(line) == -1) {
-        throw std::runtime_error("Fehler beim Schreiben in die Datei");
+        throw std::runtime_error("Error: Could not write to file");
     }
 }
 
@@ -274,7 +274,7 @@ int Media::loadLocalParams(const QJsonObject& json) {
 // read new media from file
 std::shared_ptr<Media> Media::fromFile(QFile& file) {
     if (!file.isOpen() && !file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw std::runtime_error("Fehler: Datei konnte nicht geöffnet werden");
+        throw std::runtime_error("Error: File could not be opened");
     }
     // as long as the file is not at the end, read the next json object from new line delimited file
     while (!file.atEnd()) {
@@ -284,7 +284,7 @@ std::shared_ptr<Media> Media::fromFile(QFile& file) {
         QJsonParseError err;
         QJsonDocument doc = QJsonDocument::fromJson(line, &err);
         if (err.error != QJsonParseError::NoError) {
-            throw std::runtime_error("JSON-Parsefehler: " + err.errorString().toStdString());
+            throw std::runtime_error("Error: JSON parse error: " + err.errorString().toStdString());
         }
         if (!doc.isObject()) continue; // skip invalid lines
 

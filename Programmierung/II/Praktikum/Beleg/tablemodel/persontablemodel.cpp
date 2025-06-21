@@ -182,15 +182,15 @@ void PersonTableModel::setDisplayedColumns(const QVector<QString>& displayedColu
 QMap<PersonTableModel::ColumnIdentity, QString> PersonTableModel::getAllColumnNames() const {
     QMap<ColumnIdentity, QString> columnNames;
     columnNames[Id] = "ID";
-    columnNames[FirstName] = "Vorname";
-    columnNames[LastName] = "Nachname";
-    columnNames[ExtensionName] = "Zusatzname";
-    columnNames[BirthDate] = "Geburtsdatum";
-    columnNames[Gender] = "Geschlecht";
-    columnNames[Location] = "Standort";
-    columnNames[Email] = "E-Mail";
-    columnNames[Phone] = "Telefon";
-    columnNames[Note] = "Notiz";
+    columnNames[FirstName] = "First Name";
+    columnNames[LastName] = "Last Name";
+    columnNames[ExtensionName] = "Extension Name";
+    columnNames[BirthDate] = "Birth Date";
+    columnNames[Gender] = "Gender";
+    columnNames[Location] = "Location";
+    columnNames[Email] = "Email";
+    columnNames[Phone] = "Phone";
+    columnNames[Note] = "Note";
     return columnNames;
 }
 
