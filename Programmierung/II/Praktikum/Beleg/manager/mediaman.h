@@ -21,6 +21,7 @@ class MediaMan {
     QString filename;
     QVector<std::shared_ptr<Media>> media;
     QHash<unsigned long, std::shared_ptr<Media>> media_map; // fast access to media by id
+    QHash<unsigned long, QVector<std::shared_ptr<Media>>> media_by_person; // fast access to media by person id
     unsigned long next_id;
 
     // this method is private, because the next id is updated internally
@@ -44,7 +45,8 @@ class MediaMan {
         QVector<std::shared_ptr<Media>> getAllMedia() const;
         std::shared_ptr<Media> getMedia(unsigned long id) const;
         QString getFilename() const;
-
+        QVector<std::shared_ptr<Media>> getMediaByPersonId(unsigned long personId) const;
+        
         // load and save
         int load();
         int save();

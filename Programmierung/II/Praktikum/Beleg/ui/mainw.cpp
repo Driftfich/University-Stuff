@@ -572,7 +572,7 @@ void MainWindow::setupLib()
 void MainWindow::setupTableModels()
 {
     // create table models
-    personModel = new PersonTableModel(lib->getPersonManager(), this);
+    personModel = new PersonTableModel(lib->getPersonManager(), lib->getMediaManager(), this);
     libitemModel = new LibItemTableModel(lib->getLibitemManager(), lib->getMediaManager(), lib->getTransactionManager(), lib->getPersonManager(), this);
     transactionModel = new TransactionTableModel(lib->getTransactionManager(), 
                                                  lib->getPersonManager(), 

@@ -250,14 +250,10 @@ void InfoPanel::addJsonToTreeRecursive(const QJsonValue& valueForThisItem, QTree
         for (const QString& key : obj.keys()) {
             QTreeWidgetItem* child = new QTreeWidgetItem(thisItem);
             child->setText(0, key);
-            // child->setData(0, SchemaReadonlyRole, isReadOnly);
             QJsonObject childSchema = propertiesSchema.value(key).toObject();
-            // qDebug() << key << "->" << childSchema;
-            // if (childSchema.isEmpty() && currentItemSchema.contains("additionalProperties") && currentItemSchema.value("additionalProperties").isObject()) {
-            //     childSchema = currentItemSchema.value("additionalProperties").toObject();
-            // }
             // call recurive to setup the child item
             addJsonToTreeRecursive(obj[key], child, depth + 1, childSchema);
+            // set the readonly state for the child item to overwrite afterwards
         }
     } else if (valueForThisItem.isArray()) {
         thisItem->setData(0, Qt::UserRole, "array"); // thisItem represents an array.

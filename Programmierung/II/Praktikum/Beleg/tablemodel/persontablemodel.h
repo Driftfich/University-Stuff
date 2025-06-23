@@ -26,7 +26,9 @@ Purpose:
 #include <QModelIndex>
 #include "personman.h"
 #include <QJsonObject>
+
 #include "transactionman.h"
+#include "mediaman.h"
 #include "returns.h"
 
 class PersonTableModel : public QAbstractTableModel {
@@ -49,7 +51,7 @@ class PersonTableModel : public QAbstractTableModel {
 
         Q_ENUM(ColumnIdentity)
 
-        explicit PersonTableModel(PersonMan* personMan, QObject *parent = nullptr);
+        explicit PersonTableModel(PersonMan* personMan, MediaMan* mediaMan, QObject *parent = nullptr);
         ~PersonTableModel() override;
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -81,6 +83,8 @@ class PersonTableModel : public QAbstractTableModel {
     private:
         // pointer to the person manager
         PersonMan* personMan;
+        // pointer to the media manager
+        MediaMan* mediaMan;
         // vector with the displayed columns
         QVector<ColumnIdentity> displayedColumns;
 

@@ -22,6 +22,7 @@ Custom Qt table model to display the personman class in the mainwindow.
 #include "person.h"
 #include "personman.h"
 #include "transactionman.h"
+#include "mediaman.h"
 #include "persontablemodel.h"
 
 // include utils
@@ -29,8 +30,8 @@ Custom Qt table model to display the personman class in the mainwindow.
 #include "returns.h"
 
 // constructor
-PersonTableModel::PersonTableModel(PersonMan* personMan, QObject *parent)
-    : QAbstractTableModel(parent), personMan(personMan) {
+PersonTableModel::PersonTableModel(PersonMan* personMan, MediaMan* mediaMan, QObject *parent)
+    : QAbstractTableModel(parent), personMan(personMan), mediaMan(mediaMan) {
     // Initialize the displayed columns with all columns
     for (int i = 0; i < MaxColumnIdentity; ++i) {
         displayedColumns.push_back(static_cast<ColumnIdentity>(i));
@@ -251,8 +252,17 @@ QJsonObject PersonTableModel::getJsonObject(const QModelIndex& index, const Tran
     for (const auto& transaction : transactions) {
         transactionArray.append(transaction->getJson());
     }
+
+    // get all media for this person
+    QVector<std::shared_ptr<Media>> media = mediaMan->getMediaByPersonId(personId);
+    // create the media array
+    QJsonArray mediaArray;
+    for (const auto& m : media) {
+        mediaArray.append(m->getJson());
+    }
     // add the transaction array to the complete json object
     completeJson["transactions"] = transactionArray;
+    completeJson["media"] = mediaArray;
     return completeJson;
 }
 
@@ -273,7 +283,35 @@ QJsonObject PersonTableModel::getDefaultJsonObject(bool artistChecked, bool borr
 QJsonObject PersonTableModel::getDefaultSchema(bool ArtistChecked, bool BorrowerChecked) const {
     // create the transaction schema
     QJsonObject transaction = Transaction::getSchema();
-    // make the transaction object readonly
+    QJsonObject mediaSchema = Media::getSchema();
+    
+    // Helper function to recursively add readonly: true to all nested objects
+    std::function<void(QJsonObject&)> addReadonlyRecursive = [&](QJsonObject& obj) {
+        obj.insert("readonly", true);
+        
+        // If this object has properties, recursively process them
+        if (obj.contains("properties")) {
+            QJsonObject properties = obj["properties"].toObject();
+            for (auto it = properties.begin(); it != properties.end(); ++it) {
+                QJsonObject propertyObj = it.value().toObject();
+                addReadonlyRecursive(propertyObj);
+                properties[it.key()] = propertyObj;
+            }
+            obj["properties"] = properties;
+        }
+        
+        // If this object has items (for arrays), recursively process them
+        if (obj.contains("items")) {
+            QJsonObject itemsObj = obj["items"].toObject();
+            addReadonlyRecursive(itemsObj);
+            obj["items"] = itemsObj;
+        }
+    };
+    
+    // Apply readonly to all nested objects in mediaSchema
+    addReadonlyRecursive(mediaSchema);
+    
+    qDebug() << mediaSchema;
     transaction["readonly"] = true;
     return QJsonObject{
         {"type", "object"},
@@ -289,7 +327,14 @@ QJsonObject PersonTableModel::getDefaultSchema(bool ArtistChecked, bool Borrower
                 {"rename", "Transactions"},
                 {"description", "List of transactions for this person"},
                 {"readonly", true}, // make the transactions readonly
-                {"items", Transaction::getSchema()}
+                {"items", transaction}
+            }},
+            {"media", QJsonObject{
+                {"type", "array"},
+                {"rename", "Media"},
+                {"description", "List of media for this person"},
+                {"readonly", true}, // make the media readonly
+                {"items", mediaSchema}
             }}
         }}
     };

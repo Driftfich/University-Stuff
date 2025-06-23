@@ -44,6 +44,10 @@ int MediaMan::addMedia(std::shared_ptr<Media> media) {
             setNextId(media->getId() + 1);
         }
         media_map.insert(media->getId(), media);
+        // add the media to the hash map by person id
+        for (const auto& artistId : media->getArtistIds()) {
+            media_by_person[artistId].push_back(media);
+        }
         return 0;
     }
     return -1;
@@ -55,12 +59,22 @@ int MediaMan::removeMedia(unsigned long id) {
         if ((*it)->getId() == id) {
             media.erase(it);
             media_map.remove(id);
+            // remove the media from the hash map by person id
+            for (const auto& artistId : (*it)->getArtistIds()) {
+                media_by_person[artistId].removeOne(*it);
+            }
             return 0;
         }
     }
     return -1;
 }
 
+// get the media objects by person id
+QVector<std::shared_ptr<Media>> MediaMan::getMediaByPersonId(unsigned long personId) const {
+    return media_by_person.value(personId, QVector<std::shared_ptr<Media>>());
+}
+
+// get the next id
 unsigned long MediaMan::getNextId() const {
     return next_id;
 }
