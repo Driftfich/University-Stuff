@@ -358,7 +358,7 @@ QJsonObject Media::getLocalSchema() {
     schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Media ID"}, {"description", "Unique identifier for the media"}};
     schema["title"] = QJsonObject{{"type", "string"}, {"minLength", MIN_TITLE_LENGTH}, {"maxLength", MAX_TITLE_LENGTH}, {"rename", "Title"}, {"description", "Title of the media"}};
     schema["publication_date"] = QJsonObject{{"type", "string"}, {"format", "date"}, {"rename", "Publication Date"}, {"description", "Date when the media was published"}};
-    schema["artist_ids"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "integer"}}}, {"rename", "Artist IDs"}, {"description", "List of artist IDs associated with the media"}};
+    schema["artist_ids"] = QJsonObject{{"type", "array"}, {"items", QJsonObject{{"type", "string"}}}, {"rename", "Artist IDs"}, {"description", "List of artist IDs associated with the media"}};
     schema["publisher"] = QJsonObject{{"type", "string"}, {"rename", "Publisher"}, {"description", "Publisher of the media"}};
     schema["description"] = QJsonObject{{"type", "string"}, {"rename", "Description"}, {"description", "Description of the media"}};
     schema["genre"] = QJsonObject{{"type", "string"}, {"rename", "Genre"}, {"description", "Genre of the media"}};

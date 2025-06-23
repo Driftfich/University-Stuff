@@ -27,8 +27,8 @@ Also provides methods to handle media id changes and provides methods to remove 
 #include "jsonschemautils.h"
 #include "returns.h"
 
-LibItemTableModel::LibItemTableModel(LibitemMan* libItemMan, MediaMan* mediaMan, TransactionMan* transactionMan, QObject *parent)
-    : QAbstractTableModel(parent), libItemMan(libItemMan), mediaMan(mediaMan), transactionMan(transactionMan) {
+LibItemTableModel::LibItemTableModel(LibitemMan* libItemMan, MediaMan* mediaMan, TransactionMan* transactionMan, PersonMan* personMan, QObject *parent)
+    : QAbstractTableModel(parent), libItemMan(libItemMan), mediaMan(mediaMan), transactionMan(transactionMan), personMan(personMan) {
     // connect the libitemMan onMediaChange signal to the handleMediaIdChange slot
     libItemMan->setOnMediaChangeCallback(
         [this](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
@@ -174,6 +174,16 @@ QVariant LibItemTableModel::data(const QModelIndex& index, int role) const {
         case Publisher:
             if (!media) return QVariant();
             return media->getPublisher();
+        case MainArtist:
+            {if (!media) return QVariant();
+            // get the first artist id from the media
+            QVector<unsigned long> artistIds = media->getArtistIds();
+            if (artistIds.isEmpty()) return QVariant();
+            // get the artist from the artist manager
+            std::shared_ptr<Person> person = personMan->getPerson(artistIds[0]);
+            if (!person) return QVariant();
+            return person->getFname() + " " + person->getLname() + " (" + QString::number(person->getId()) + ")";
+            };
         case Description:
             if (!media) return QVariant();
             return media->getDescription();
@@ -213,6 +223,8 @@ QVariant LibItemTableModel::headerData(int section, Qt::Orientation orientation,
                 return "Title";
             case PublicationDate:
                 return "Publication Date";
+            case MainArtist:
+                return "Main Artist";
             case Publisher:
                 return "Publisher";
             case Description:
@@ -263,6 +275,7 @@ QMap<LibItemTableModel::ColumnIdentity, QString> LibItemTableModel::getAllColumn
     columnNames[Condition] = "Condition";
     columnNames[Title] = "Title";
     columnNames[PublicationDate] = "Publication Date";
+    columnNames[MainArtist] = "Main Artist";
     columnNames[Publisher] = "Publisher";
     columnNames[Description] = "Description";
     columnNames[Genre] = "Genre";

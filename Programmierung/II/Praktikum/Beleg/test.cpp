@@ -98,7 +98,7 @@ int test_person_file_management() {
     // make the p2 a borrower
     p2.setBorrower(std::make_unique<Borrower>(Borrower((unsigned long) 2)));
     // make the p3 an artist
-    p3.setArtist(std::make_unique<Artist>(Artist(QString("Painter"), QVector<unsigned long>{1, 2})));
+    p3.setArtist(std::make_unique<Artist>(Artist(QString("Painter")))); // , QVector<unsigned long>{1, 2}
 
     // create a magic pointer array on the p1 and b1 objects
     std::vector<std::shared_ptr<Person>> personPtrs = {std::make_shared<Person>(p1), std::make_shared<Person>(p2), std::make_shared<Person>(p3)};

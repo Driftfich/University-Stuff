@@ -92,7 +92,7 @@ class Person {
         bool isBorrower() const { return borrower != nullptr; }
         
         // Create role with default parameters
-        int createArtistRole(const QString& artist_type = "", const QVector<unsigned long>& media_ids = {});
+        int createArtistRole(const QString& artist_type = ""); // , const QVector<unsigned long>& media_ids = {}
         int createBorrowerRole(unsigned int limit = MAX_ITEMS_PER_BORROWER_DEFAULT);
         
         // Remove roles

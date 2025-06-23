@@ -15,34 +15,34 @@ Description: Header file for the Artist class, which holds information and logic
 
 class Artist {
     QString artist_type; // e.g. actor, director, musician, etc.
-    QVector<unsigned long> media_ids; // array of media ids => works created by the artist
+    // QVector<unsigned long> media_ids; // array of media ids => works created by the artist
 
     public:
         // setter methods
         int setArtistType(const QString& artist_type);
-        int setMediaIds(const QVector<unsigned long>& media_ids);
+        // int setMediaIds(const QVector<unsigned long>& media_ids);
 
         // getter methods
         QString getArtistType() const {return this->artist_type;}
-        QVector<unsigned long> getMediaIds() const {return this->media_ids;}
+        // QVector<unsigned long> getMediaIds() const {return this->media_ids;}
 
         // constructor using setters
-        Artist(const QString& artist_type, const QVector<unsigned long>& media_ids) {
+        Artist(const QString& artist_type) { // , const QVector<unsigned long>& media_ids
             setArtistType(artist_type);
-            setMediaIds(media_ids);
+            // setMediaIds(media_ids);
         }
 
         // copy constructor
         Artist(const Artist& other) {
             this->artist_type = other.artist_type;
-            this->media_ids = other.media_ids;
+            // this->media_ids = other.media_ids;
         }
 
         // copy assignment operator
         Artist& operator=(const Artist& other) {
             if (this != &other) {
                 this->artist_type = other.artist_type;
-                this->media_ids = other.media_ids;
+                // this->media_ids = other.media_ids;
             }
             return *this;
         }

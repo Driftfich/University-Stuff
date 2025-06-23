@@ -22,6 +22,7 @@ Also provides methods to handle media id changes and provides methods to remove 
 #include "libitemman.h"
 #include "transactionman.h"
 #include "mediaman.h"
+#include "personman.h"
 #include "returns.h" // for the Result struct
 
 class LibItemTableModel : public QAbstractTableModel {
@@ -39,6 +40,7 @@ class LibItemTableModel : public QAbstractTableModel {
             Title,
             PublicationDate,
             // ArtistIds,
+            MainArtist,
             Publisher,
             Description,
             Genre,
@@ -51,7 +53,7 @@ class LibItemTableModel : public QAbstractTableModel {
         Q_ENUM(ColumnIdentity)
 
         // constructor and destructor
-        explicit LibItemTableModel(LibitemMan* libItemMan, MediaMan* mediaMan, TransactionMan* transactionMan, QObject *parent = nullptr);
+        explicit LibItemTableModel(LibitemMan* libItemMan, MediaMan* mediaMan, TransactionMan* transactionMan, PersonMan* personMan, QObject *parent = nullptr);
         ~LibItemTableModel() override;
 
         // override the rowCount and columnCount methods
@@ -113,6 +115,8 @@ class LibItemTableModel : public QAbstractTableModel {
         MediaMan* mediaMan;
         // pointer to the transaction manager
         TransactionMan* transactionMan;
+        // pointer to the person manager
+        PersonMan* personMan;
         // vector with the displayed columns
         QVector<ColumnIdentity> displayedColumns;
 };

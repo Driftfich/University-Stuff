@@ -50,6 +50,7 @@ static constexpr auto qt_meta_stringdata_CLASSLibItemTableModelENDCLASS = QtMocH
     "Condition",
     "Title",
     "PublicationDate",
+    "MainArtist",
     "Publisher",
     "Description",
     "Genre",
@@ -58,7 +59,7 @@ static constexpr auto qt_meta_stringdata_CLASSLibItemTableModelENDCLASS = QtMocH
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSLibItemTableModelENDCLASS_t {
-    uint offsetsAndSizes[34];
+    uint offsetsAndSizes[36];
     char stringdata0[18];
     char stringdata1[12];
     char stringdata2[1];
@@ -71,11 +72,12 @@ struct qt_meta_stringdata_CLASSLibItemTableModelENDCLASS_t {
     char stringdata9[10];
     char stringdata10[6];
     char stringdata11[16];
-    char stringdata12[10];
-    char stringdata13[12];
-    char stringdata14[6];
-    char stringdata15[10];
-    char stringdata16[18];
+    char stringdata12[11];
+    char stringdata13[10];
+    char stringdata14[12];
+    char stringdata15[6];
+    char stringdata16[10];
+    char stringdata17[18];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSLibItemTableModelENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -93,11 +95,12 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSLibItemTableModelENDCLASS_t qt_
         QT_MOC_LITERAL(97, 9),  // "Condition"
         QT_MOC_LITERAL(107, 5),  // "Title"
         QT_MOC_LITERAL(113, 15),  // "PublicationDate"
-        QT_MOC_LITERAL(129, 9),  // "Publisher"
-        QT_MOC_LITERAL(139, 11),  // "Description"
-        QT_MOC_LITERAL(151, 5),  // "Genre"
-        QT_MOC_LITERAL(157, 9),  // "Languages"
-        QT_MOC_LITERAL(167, 17)   // "MaxColumnIdentity"
+        QT_MOC_LITERAL(129, 10),  // "MainArtist"
+        QT_MOC_LITERAL(140, 9),  // "Publisher"
+        QT_MOC_LITERAL(150, 11),  // "Description"
+        QT_MOC_LITERAL(162, 5),  // "Genre"
+        QT_MOC_LITERAL(168, 9),  // "Languages"
+        QT_MOC_LITERAL(178, 17)   // "MaxColumnIdentity"
     },
     "LibItemTableModel",
     "refreshData",
@@ -111,6 +114,7 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSLibItemTableModelENDCLASS_t qt_
     "Condition",
     "Title",
     "PublicationDate",
+    "MainArtist",
     "Publisher",
     "Description",
     "Genre",
@@ -141,7 +145,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSLibItemTableModelENDCLASS[] = {
     QMetaType::Void,
 
  // enums: name, alias, flags, count, data
-       3,    3, 0x0,   13,   26,
+       3,    3, 0x0,   14,   26,
 
  // enum data: key, value
        4, uint(LibItemTableModel::Id),
@@ -152,11 +156,12 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSLibItemTableModelENDCLASS[] = {
        9, uint(LibItemTableModel::Condition),
       10, uint(LibItemTableModel::Title),
       11, uint(LibItemTableModel::PublicationDate),
-      12, uint(LibItemTableModel::Publisher),
-      13, uint(LibItemTableModel::Description),
-      14, uint(LibItemTableModel::Genre),
-      15, uint(LibItemTableModel::Languages),
-      16, uint(LibItemTableModel::MaxColumnIdentity),
+      12, uint(LibItemTableModel::MainArtist),
+      13, uint(LibItemTableModel::Publisher),
+      14, uint(LibItemTableModel::Description),
+      15, uint(LibItemTableModel::Genre),
+      16, uint(LibItemTableModel::Languages),
+      17, uint(LibItemTableModel::MaxColumnIdentity),
 
        0        // eod
 };

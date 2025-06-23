@@ -93,6 +93,12 @@ void MainWindow::setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex&
         QStringList filterColumns = QStringList() << "ID" << "Title" << "Publisher";
         completer = new EntityCompleter(mediaModel, "{ID}", filterColumns, "{Title} - {Publisher} ({ID})", ".", editor);
     }
+    // if item parent key is "artist_ids" setup a completer for the given array key
+    else if (item->parent()->data(0, SchemaOriginalKeyRole).toString() == "artist_ids") {
+        qDebug() << "Setting up completer for artist_ids...";
+        QStringList filterColumns = QStringList() << "ID" << "First Name" << "Last Name" << "Email";
+        completer = new EntityCompleter(personModel, "{ID}", filterColumns, "{First Name} {Last Name} ({ID})", ".", editor);
+    }
     
     if (completer) {
         // Configure the completer
@@ -140,6 +146,11 @@ void MainWindow::setupCompleterForInfoPanel(QLineEdit* editor, const QModelIndex
         qDebug() << "Setting up completer for media_id...";
         QStringList filterColumns = QStringList() << "ID" << "Title" << "Publisher";
         completer = new EntityCompleter(mediaModel, "{ID}", filterColumns, "{Title} - {Publisher} ({ID})", ".", editor);
+    }
+    else if (item->parent()->data(0, SchemaOriginalKeyRole).toString() == "artist_ids") {
+        qDebug() << "Setting up completer for artist_ids...";
+        QStringList filterColumns = QStringList() << "ID" << "First Name" << "Last Name" << "Email";
+        completer = new EntityCompleter(personModel, "{ID}", filterColumns, "{First Name} {Last Name} ({ID})", ".", editor);
     }
 
     if (completer) {
@@ -562,7 +573,7 @@ void MainWindow::setupTableModels()
 {
     // create table models
     personModel = new PersonTableModel(lib->getPersonManager(), this);
-    libitemModel = new LibItemTableModel(lib->getLibitemManager(), lib->getMediaManager(), lib->getTransactionManager(), this);
+    libitemModel = new LibItemTableModel(lib->getLibitemManager(), lib->getMediaManager(), lib->getTransactionManager(), lib->getPersonManager(), this);
     transactionModel = new TransactionTableModel(lib->getTransactionManager(), 
                                                  lib->getPersonManager(), 
                                                  lib->getLibitemManager(), 

@@ -17,20 +17,20 @@ int Artist::setArtistType(const QString& artist_type) {
     return 0;
 }
 
-int Artist::setMediaIds(const QVector<unsigned long>& media_ids) {
-    this->media_ids = media_ids;
-    return 0;
-}
+// int Artist::setMediaIds(const QVector<unsigned long>& media_ids) {
+//     this->media_ids = media_ids;
+//     return 0;
+// }
 
 // get all parameters as a JSON object
 QJsonObject Artist::getSubclassParams() const {
     QJsonObject json;
     json["artist_type"] = this->artist_type;
     QJsonArray arr;
-    for (unsigned long id : this->media_ids) {
-        arr.append(static_cast<qint64>(id));
-    }
-    json["media_ids"] = arr;
+    // for (unsigned long id : this->media_ids) {
+    //     arr.append(static_cast<qint64>(id));
+    // }
+    // json["media_ids"] = arr;
     return json;
 }
 
@@ -38,10 +38,11 @@ QJsonObject Artist::getSubclassParams() const {
 QJsonObject Artist::getSubclassSchema(bool checked) {
     QJsonObject properties;
     properties.insert("artist_type", QJsonObject{{"type", "string"}});
-    QJsonObject itemsSchema{{"type", "integer"}};
+    QJsonObject itemsSchema{{"type", "integer"}, {"readonly", true}};
     QJsonObject mediaIdsSchema{
         {"type", "array"},
-        {"items", itemsSchema}
+        {"items", itemsSchema},
+        {"readonly", true}
     };
     properties.insert("media_ids", mediaIdsSchema);
     QJsonObject schema;
@@ -58,13 +59,13 @@ int Artist::loadSubclassParams(const QJsonObject& json) {
     if (json.contains("artist_type")) {
         setArtistType(json["artist_type"].toString());
     }
-    if (json.contains("media_ids")) {
-        QJsonArray mediaIdsArray = json["media_ids"].toArray();
-        QVector<unsigned long> mediaIds;
-        for (const QJsonValue& value : mediaIdsArray) {
-            mediaIds.push_back(value.toVariant().toULongLong());
-        }
-        setMediaIds(mediaIds);
-    }
+    // if (json.contains("media_ids")) {
+    //     QJsonArray mediaIdsArray = json["media_ids"].toArray();
+    //     QVector<unsigned long> mediaIds;
+    //     for (const QJsonValue& value : mediaIdsArray) {
+    //         mediaIds.push_back(value.toVariant().toULongLong());
+    //     }
+    //     setMediaIds(mediaIds);
+    // }
     return 0;
 }

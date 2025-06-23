@@ -345,11 +345,11 @@ void Person::printbase(std::ostream& os) const {
     << "Telephone: " << tel.toStdString() << "\n";
     if (artist) {
         os << "Artist Type: " << artist->getArtistType().toStdString() << "\n";
-        os << "Media IDs: ";
-        for (const auto& media_id : artist->getMediaIds()) {
-            os << media_id << " ";
-        }
-        os << "\n";
+        // os << "Media IDs: ";
+        // for (const auto& media_id : artist->getMediaIds()) {
+        //     os << media_id << " ";
+        // }
+        // os << "\n";
     }
     if (borrower) {
         os << "Borrower Limit: " << borrower->getLimit() << "\n";
@@ -370,9 +370,9 @@ std::ostream& operator<<(std::ostream& os, const Person& person) {
 }
 
 // Role management method implementations
-int Person::createArtistRole(const QString& artist_type, const QVector<unsigned long>& media_ids) {
+int Person::createArtistRole(const QString& artist_type) { // , const QVector<unsigned long>& media_ids
     try {
-        artist = std::make_unique<Artist>(artist_type, media_ids);
+        artist = std::make_unique<Artist>(artist_type); // , media_ids
         return 0;
     } catch (...) {
         return -1;
