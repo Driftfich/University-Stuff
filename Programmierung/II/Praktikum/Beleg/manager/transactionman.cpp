@@ -128,10 +128,30 @@ int TransactionMan::removeTransactionId(unsigned long id) {
     // iterate over the vector and remove the transaction if the id matches
     for (QVector<std::shared_ptr<Transaction>>::iterator it = transactions.begin(); it != transactions.end(); ++it) {
         if ((*it)->getId() == id) {
+            std::shared_ptr<Transaction> transaction = *it;
             transactions.erase(it);
             // remove the transaction from the hash maps
-            libitem_map.remove((*it)->getLibitemId());
-            person_map.remove((*it)->getBorrowerId());
+            unsigned long libitemId = transaction->getLibitemId();
+            if (libitem_map.contains(libitemId)) {
+                QVector<std::shared_ptr<Transaction>>& libitemTransactions = libitem_map[libitemId];
+                libitemTransactions.removeOne(transaction);
+                // If the vector is now empty, remove the entry from the map
+                if (libitemTransactions.isEmpty()) {
+                    libitem_map.remove(libitemId);
+                }
+            }
+            
+            // Remove the specific transaction from the person_map vector
+            unsigned long borrowerId = transaction->getBorrowerId();
+            if (person_map.contains(borrowerId)) {
+                QVector<std::shared_ptr<Transaction>>& personTransactions = person_map[borrowerId];
+                personTransactions.removeOne(transaction);
+                // If the vector is now empty, remove the entry from the map
+                if (personTransactions.isEmpty()) {
+                    person_map.remove(borrowerId);
+                }
+            }
+            
             return 0;
         }
     }
@@ -141,7 +161,32 @@ int TransactionMan::removeTransactionId(unsigned long id) {
 // remove a transaction by index
 int TransactionMan::removeTransaction(unsigned long index) {
     if (index < transactions.size()) {
+        // get the transaction at the given index
+        std::shared_ptr<Transaction> transaction = transactions[index];
+        // remove the transaction from the vector
         transactions.erase(transactions.begin() + index);
+        // remove the transaction from the hash maps
+        unsigned long libitemId = transaction->getLibitemId();
+        if (libitem_map.contains(libitemId)) {
+            QVector<std::shared_ptr<Transaction>>& libitemTransactions = libitem_map[libitemId];
+            libitemTransactions.removeOne(transaction);
+            // If the vector is now empty, remove the entry from the map
+            if (libitemTransactions.isEmpty()) {
+                libitem_map.remove(libitemId);
+            }
+        }
+        
+        // Remove the specific transaction from the person_map vector
+        unsigned long borrowerId = transaction->getBorrowerId();
+        if (person_map.contains(borrowerId)) {
+            QVector<std::shared_ptr<Transaction>>& personTransactions = person_map[borrowerId];
+            personTransactions.removeOne(transaction);
+            // If the vector is now empty, remove the entry from the map
+            if (personTransactions.isEmpty()) {
+                person_map.remove(borrowerId);
+            }
+        }
+        
         return 0;
     }
     std::cerr << "Error: Index out of range" << std::endl;
