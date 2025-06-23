@@ -1,7 +1,5 @@
-{"artist":{},"birthday":"2025-06-03","borrower":{"limit":10},"email":"john.doe@example.com","ename":"","fname":"John","gender":"Male","id":1,"lname":"Doe","location":"Test Location","note":"Test Note","tel":""}
-{"artist":{},"birthday":"2025-06-03","borrower":{"limit":2},"email":"jane.smith@example.com","ename":"Ms.","fname":"Jane","gender":"Female","id":2,"lname":"Smith","location":"Test Location","note":"Test Note","tel":""}
-{"artist":{"artist_type":"Painter","media_ids":[1,2]},"birthday":"2025-06-03","borrower":{"limit":10},"email":"alice.johnson@example.com","ename":"Dr.","fname":"Hanna","gender":"Unknown","id":3,"lname":"Johnson","location":"Test Location","note":"Test Note","tel":""}
-{"artist":{},"birthday":"2000-01-01","borrower":{"limit":5},"email":"","ename":"Tets","fname":"Hanna","gender":"Female","id":4,"lname":"Montana","location":"","note":"","tel":""}
-{"artist":{},"birthday":"2000-01-01","borrower":{"limit":0},"email":"","ename":"","fname":"Anna","gender":"Female","id":5,"lname":"Dalwing","location":"","note":"","tel":""}
-{"artist":{"artist_type":"Musician","media_ids":[]},"birthday":"2000-01-01","borrower":{"limit":2},"email":"","ename":"","fname":"Diana","gender":"Female","id":6,"lname":"Dexter","location":"","note":"","tel":""}
-{"artist":{},"birthday":"2018-08-18","borrower":{"limit":9},"email":"","ename":"","fname":"Billi","gender":"Male","id":7,"lname":"Boy","location":"","note":"","tel":""}
+{"artist":{},"birthday":"2018-08-18","borrower":{"limit":9},"email":"","ename":"","fname":"Billi","gender":"Male","id":1,"lname":"Boy","location":"","note":"","tel":""}
+{"artist":{"artist_type":"Writer","media_ids":[]},"birthday":"1982-01-01","borrower":{},"email":"","ename":"Uwe","fname":"Marc","gender":"Male","id":2,"lname":"Kling","location":"Berlin, Germany","note":"","tel":""}
+{"artist":{},"birthday":"2005-12-05","borrower":{"limit":5},"email":"","ename":"","fname":"Franz","gender":"Male","id":3,"lname":"Rehschuh","location":"Dresden","note":"Student at HTW Dresden University","tel":""}
+{"artist":{"artist_type":"Novelist","media_ids":[]},"birthday":"1972-06-16","borrower":{},"email":"","ename":"","fname":"Andy","gender":"Female","id":4,"lname":"Weir","location":"Dresden","note":"","tel":""}
+{"artist":{"artist_type":"Science Fiction Writer","media_ids":[0]},"birthday":"1963-06-23","borrower":{},"email":"","ename":"","fname":"Liu","gender":"Male","id":5,"lname":"Cixin","location":"","note":"","tel":""}
