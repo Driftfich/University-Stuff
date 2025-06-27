@@ -685,17 +685,26 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
     }
     else if (itemType == "leaf" || item->childCount() == 0) { // Leaf or no children implies direct value
         QString text = item->text(1);
-        bool ok;
-        int intVal = text.toInt(&ok);
-        if (ok) return intVal;
+        if (item->data(0, SchemaTypeRole).toString() == "string") {
+            return QJsonValue(text);
+        }
+        else if (item->data(0, SchemaTypeRole).toString() == "integer") {
+            bool ok;
+            int intVal = text.toInt(&ok);
+            if (ok) return intVal;
+        }
+        else if (item->data(0, SchemaTypeRole).toString() == "double") {
+            bool ok;
+            double doubleVal = text.toDouble(&ok);
+            if (ok) return doubleVal;
+        }
+        else if (item->data(0, SchemaTypeRole).toString() == "boolean") {
+            if (text.toLower() == "true") return true;
+            if (text.toLower() == "false") return false;
+        }
         
-        double doubleVal = text.toDouble(&ok);
-        if (ok) return doubleVal;
-        
-        if (text.toLower() == "true") return true;
-        if (text.toLower() == "false") return false;
-        
-        return text;
+        // fallback to string
+        return QJsonValue(text);
     }
     return QJsonValue(); // Fallback, should not happen
 }

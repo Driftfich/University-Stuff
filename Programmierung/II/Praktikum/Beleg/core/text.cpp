@@ -18,7 +18,15 @@ int Text::setIsbn(const QString& isbn) {
         cerr << "Error: ISBN must be 13 characters long" << endl;
         return -1;
     }
-    // use parity check to validate the isbn number
+    
+    // Check that all characters are digits
+    for (int i = 0; i < 13; i++) {
+        if (!isbn[i].isDigit()) {
+            cerr << "Error: ISBN must contain only digits" << endl;
+            return -1;
+        }
+    }
+    // use ISBN-13 check digit validation
     int sum = 0;
     for (int i = 0; i < 12; i++) {
         if (i % 2 == 0) {
@@ -27,9 +35,17 @@ int Text::setIsbn(const QString& isbn) {
             sum += isbn[i].digitValue() * 3;
         }
     }
-    int checkDigit = sum % 10;
-    if (checkDigit != 0) {
-        cerr << "Error: ISBN is invalid" << endl;
+    
+    // Calculate the expected check digit
+    int calculatedCheckDigit = (10 - (sum % 10)) % 10;
+    
+    // Get the actual check digit (13th digit)
+    int actualCheckDigit = isbn[12].digitValue();
+    
+    // Validate that calculated and actual check digits match
+    if (calculatedCheckDigit != actualCheckDigit) {
+        cerr << "Error: ISBN check digit is invalid (expected " 
+             << calculatedCheckDigit << ", got " << actualCheckDigit << ")" << endl;
         return -1;
     }
     this->isbn = isbn;
