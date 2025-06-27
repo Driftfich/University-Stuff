@@ -1,103 +1,109 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'transactiontablemodel.h'
 **
-** Created by: The Qt Meta Object Compiler version 69 (Qt 6.9.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.13)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../tablemodel/transactiontablemodel.h"
-#include <QtCore/qmetatype.h>
-
-#include <QtCore/qtmochelpers.h>
-
 #include <memory>
-
-
-#include <QtCore/qxptype_traits.h>
+#include "../../tablemodel/transactiontablemodel.h"
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'transactiontablemodel.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 69
-#error "This file was generated using the moc from 6.9.0. It"
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.15.13. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
-#ifndef Q_CONSTINIT
-#define Q_CONSTINIT
-#endif
-
+QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-QT_WARNING_DISABLE_GCC("-Wuseless-cast")
-namespace {
-struct qt_meta_tag_ZN21TransactionTableModelE_t {};
-} // unnamed namespace
+struct qt_meta_stringdata_TransactionTableModel_t {
+    QByteArrayData data[17];
+    char stringdata0[183];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_TransactionTableModel_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_TransactionTableModel_t qt_meta_stringdata_TransactionTableModel = {
+    {
+QT_MOC_LITERAL(0, 0, 21), // "TransactionTableModel"
+QT_MOC_LITERAL(1, 22, 11), // "refreshData"
+QT_MOC_LITERAL(2, 34, 0), // ""
+QT_MOC_LITERAL(3, 35, 14), // "ColumnIdentity"
+QT_MOC_LITERAL(4, 50, 2), // "Id"
+QT_MOC_LITERAL(5, 53, 9), // "LibitemId"
+QT_MOC_LITERAL(6, 63, 8), // "PersonId"
+QT_MOC_LITERAL(7, 72, 9), // "Timestamp"
+QT_MOC_LITERAL(8, 82, 7), // "MediaId"
+QT_MOC_LITERAL(9, 90, 5), // "Title"
+QT_MOC_LITERAL(10, 96, 15), // "PublicationDate"
+QT_MOC_LITERAL(11, 112, 9), // "Publisher"
+QT_MOC_LITERAL(12, 122, 9), // "FirstName"
+QT_MOC_LITERAL(13, 132, 8), // "LastName"
+QT_MOC_LITERAL(14, 141, 13), // "ExtensionName"
+QT_MOC_LITERAL(15, 155, 9), // "BirthDate"
+QT_MOC_LITERAL(16, 165, 17) // "MaxColumnIdentity"
 
-template <> constexpr inline auto TransactionTableModel::qt_create_metaobjectdata<qt_meta_tag_ZN21TransactionTableModelE_t>()
-{
-    namespace QMC = QtMocConstants;
-    QtMocHelpers::StringRefStorage qt_stringData {
-        "TransactionTableModel",
-        "refreshData",
-        "",
-        "ColumnIdentity",
-        "Id",
-        "LibitemId",
-        "PersonId",
-        "Timestamp",
-        "MediaId",
-        "Title",
-        "PublicationDate",
-        "Publisher",
-        "FirstName",
-        "LastName",
-        "ExtensionName",
-        "BirthDate",
-        "MaxColumnIdentity"
-    };
+    },
+    "TransactionTableModel\0refreshData\0\0"
+    "ColumnIdentity\0Id\0LibitemId\0PersonId\0"
+    "Timestamp\0MediaId\0Title\0PublicationDate\0"
+    "Publisher\0FirstName\0LastName\0ExtensionName\0"
+    "BirthDate\0MaxColumnIdentity"
+};
+#undef QT_MOC_LITERAL
 
-    QtMocHelpers::UintData qt_methods {
-        // Slot 'refreshData'
-        QtMocHelpers::SlotData<void()>(1, 2, QMC::AccessPublic, QMetaType::Void),
-    };
-    QtMocHelpers::UintData qt_properties {
-    };
-    QtMocHelpers::UintData qt_enums {
-        // enum 'ColumnIdentity'
-        QtMocHelpers::EnumData<ColumnIdentity>(3, 3, QMC::EnumFlags{}).add({
-            {    4, ColumnIdentity::Id },
-            {    5, ColumnIdentity::LibitemId },
-            {    6, ColumnIdentity::PersonId },
-            {    7, ColumnIdentity::Timestamp },
-            {    8, ColumnIdentity::MediaId },
-            {    9, ColumnIdentity::Title },
-            {   10, ColumnIdentity::PublicationDate },
-            {   11, ColumnIdentity::Publisher },
-            {   12, ColumnIdentity::FirstName },
-            {   13, ColumnIdentity::LastName },
-            {   14, ColumnIdentity::ExtensionName },
-            {   15, ColumnIdentity::BirthDate },
-            {   16, ColumnIdentity::MaxColumnIdentity },
-        }),
-    };
-    return QtMocHelpers::metaObjectData<TransactionTableModel, qt_meta_tag_ZN21TransactionTableModelE_t>(QMC::MetaObjectFlag{}, qt_stringData,
-            qt_methods, qt_properties, qt_enums);
-}
-Q_CONSTINIT const QMetaObject TransactionTableModel::staticMetaObject = { {
-    QMetaObject::SuperData::link<QAbstractTableModel::staticMetaObject>(),
-    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN21TransactionTableModelE_t>.stringdata,
-    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN21TransactionTableModelE_t>.data,
-    qt_static_metacall,
-    nullptr,
-    qt_staticMetaObjectRelocatingContent<qt_meta_tag_ZN21TransactionTableModelE_t>.metaTypes,
-    nullptr
-} };
+static const uint qt_meta_data_TransactionTableModel[] = {
+
+ // content:
+       8,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       1,   14, // methods
+       0,    0, // properties
+       1,   20, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags
+       1,    0,   19,    2, 0x0a /* Public */,
+
+ // slots: parameters
+    QMetaType::Void,
+
+ // enums: name, alias, flags, count, data
+       3,    3, 0x0,   13,   25,
+
+ // enum data: key, value
+       4, uint(TransactionTableModel::Id),
+       5, uint(TransactionTableModel::LibitemId),
+       6, uint(TransactionTableModel::PersonId),
+       7, uint(TransactionTableModel::Timestamp),
+       8, uint(TransactionTableModel::MediaId),
+       9, uint(TransactionTableModel::Title),
+      10, uint(TransactionTableModel::PublicationDate),
+      11, uint(TransactionTableModel::Publisher),
+      12, uint(TransactionTableModel::FirstName),
+      13, uint(TransactionTableModel::LastName),
+      14, uint(TransactionTableModel::ExtensionName),
+      15, uint(TransactionTableModel::BirthDate),
+      16, uint(TransactionTableModel::MaxColumnIdentity),
+
+       0        // eod
+};
 
 void TransactionTableModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    auto *_t = static_cast<TransactionTableModel *>(_o);
     if (_c == QMetaObject::InvokeMetaMethod) {
+        auto *_t = static_cast<TransactionTableModel *>(_o);
+        (void)_t;
         switch (_id) {
         case 0: _t->refreshData(); break;
         default: ;
@@ -105,6 +111,16 @@ void TransactionTableModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c
     }
     (void)_a;
 }
+
+QT_INIT_METAOBJECT const QMetaObject TransactionTableModel::staticMetaObject = { {
+    QMetaObject::SuperData::link<QAbstractTableModel::staticMetaObject>(),
+    qt_meta_stringdata_TransactionTableModel.data,
+    qt_meta_data_TransactionTableModel,
+    qt_static_metacall,
+    nullptr,
+    nullptr
+} };
+
 
 const QMetaObject *TransactionTableModel::metaObject() const
 {
@@ -114,7 +130,7 @@ const QMetaObject *TransactionTableModel::metaObject() const
 void *TransactionTableModel::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_staticMetaObjectStaticContent<qt_meta_tag_ZN21TransactionTableModelE_t>.strings))
+    if (!strcmp(_clname, qt_meta_stringdata_TransactionTableModel.stringdata0))
         return static_cast<void*>(this);
     return QAbstractTableModel::qt_metacast(_clname);
 }
@@ -128,12 +144,12 @@ int TransactionTableModel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         if (_id < 1)
             qt_static_metacall(this, _c, _id, _a);
         _id -= 1;
-    }
-    if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         if (_id < 1)
-            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
+            *reinterpret_cast<int*>(_a[0]) = -1;
         _id -= 1;
     }
     return _id;
 }
 QT_WARNING_POP
+QT_END_MOC_NAMESPACE
