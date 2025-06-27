@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mediatablemodel.h'
 **
-** Created by: The Qt Meta Object Compiler version 68 (Qt 6.6.1)
+** Created by: The Qt Meta Object Compiler version 69 (Qt 6.9.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -9,19 +9,16 @@
 #include "../../tablemodel/mediatablemodel.h"
 #include <QtCore/qmetatype.h>
 
-#if __has_include(<QtCore/qtmochelpers.h>)
 #include <QtCore/qtmochelpers.h>
-#else
-QT_BEGIN_MOC_NAMESPACE
-#endif
-
 
 #include <memory>
 
+
+#include <QtCore/qxptype_traits.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'mediatablemodel.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 68
-#error "This file was generated using the moc from 6.6.1. It"
+#elif Q_MOC_OUTPUT_REVISION != 69
+#error "This file was generated using the moc from 6.9.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -34,114 +31,61 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 QT_WARNING_DISABLE_GCC("-Wuseless-cast")
 namespace {
-
-#ifdef QT_MOC_HAS_STRINGDATA
-struct qt_meta_stringdata_CLASSMediaTableModelENDCLASS_t {};
-static constexpr auto qt_meta_stringdata_CLASSMediaTableModelENDCLASS = QtMocHelpers::stringData(
-    "MediaTableModel",
-    "ColumnIdentity",
-    "Id",
-    "Title",
-    "Publisher",
-    "Description",
-    "Genre",
-    "PublicationDate",
-    "SubclassType",
-    "MaxColumnIdentity"
-);
-#else  // !QT_MOC_HAS_STRING_DATA
-struct qt_meta_stringdata_CLASSMediaTableModelENDCLASS_t {
-    uint offsetsAndSizes[20];
-    char stringdata0[16];
-    char stringdata1[15];
-    char stringdata2[3];
-    char stringdata3[6];
-    char stringdata4[10];
-    char stringdata5[12];
-    char stringdata6[6];
-    char stringdata7[16];
-    char stringdata8[13];
-    char stringdata9[18];
-};
-#define QT_MOC_LITERAL(ofs, len) \
-    uint(sizeof(qt_meta_stringdata_CLASSMediaTableModelENDCLASS_t::offsetsAndSizes) + ofs), len 
-Q_CONSTINIT static const qt_meta_stringdata_CLASSMediaTableModelENDCLASS_t qt_meta_stringdata_CLASSMediaTableModelENDCLASS = {
-    {
-        QT_MOC_LITERAL(0, 15),  // "MediaTableModel"
-        QT_MOC_LITERAL(16, 14),  // "ColumnIdentity"
-        QT_MOC_LITERAL(31, 2),  // "Id"
-        QT_MOC_LITERAL(34, 5),  // "Title"
-        QT_MOC_LITERAL(40, 9),  // "Publisher"
-        QT_MOC_LITERAL(50, 11),  // "Description"
-        QT_MOC_LITERAL(62, 5),  // "Genre"
-        QT_MOC_LITERAL(68, 15),  // "PublicationDate"
-        QT_MOC_LITERAL(84, 12),  // "SubclassType"
-        QT_MOC_LITERAL(97, 17)   // "MaxColumnIdentity"
-    },
-    "MediaTableModel",
-    "ColumnIdentity",
-    "Id",
-    "Title",
-    "Publisher",
-    "Description",
-    "Genre",
-    "PublicationDate",
-    "SubclassType",
-    "MaxColumnIdentity"
-};
-#undef QT_MOC_LITERAL
-#endif // !QT_MOC_HAS_STRING_DATA
+struct qt_meta_tag_ZN15MediaTableModelE_t {};
 } // unnamed namespace
 
-Q_CONSTINIT static const uint qt_meta_data_CLASSMediaTableModelENDCLASS[] = {
+template <> constexpr inline auto MediaTableModel::qt_create_metaobjectdata<qt_meta_tag_ZN15MediaTableModelE_t>()
+{
+    namespace QMC = QtMocConstants;
+    QtMocHelpers::StringRefStorage qt_stringData {
+        "MediaTableModel",
+        "ColumnIdentity",
+        "Id",
+        "Title",
+        "Publisher",
+        "Description",
+        "Genre",
+        "PublicationDate",
+        "SubclassType",
+        "MaxColumnIdentity"
+    };
 
- // content:
-      12,       // revision
-       0,       // classname
-       0,    0, // classinfo
-       0,    0, // methods
-       0,    0, // properties
-       1,   14, // enums/sets
-       0,    0, // constructors
-       0,       // flags
-       0,       // signalCount
-
- // enums: name, alias, flags, count, data
-       1,    1, 0x0,    8,   19,
-
- // enum data: key, value
-       2, uint(MediaTableModel::Id),
-       3, uint(MediaTableModel::Title),
-       4, uint(MediaTableModel::Publisher),
-       5, uint(MediaTableModel::Description),
-       6, uint(MediaTableModel::Genre),
-       7, uint(MediaTableModel::PublicationDate),
-       8, uint(MediaTableModel::SubclassType),
-       9, uint(MediaTableModel::MaxColumnIdentity),
-
-       0        // eod
-};
-
+    QtMocHelpers::UintData qt_methods {
+    };
+    QtMocHelpers::UintData qt_properties {
+    };
+    QtMocHelpers::UintData qt_enums {
+        // enum 'ColumnIdentity'
+        QtMocHelpers::EnumData<ColumnIdentity>(1, 1, QMC::EnumFlags{}).add({
+            {    2, ColumnIdentity::Id },
+            {    3, ColumnIdentity::Title },
+            {    4, ColumnIdentity::Publisher },
+            {    5, ColumnIdentity::Description },
+            {    6, ColumnIdentity::Genre },
+            {    7, ColumnIdentity::PublicationDate },
+            {    8, ColumnIdentity::SubclassType },
+            {    9, ColumnIdentity::MaxColumnIdentity },
+        }),
+    };
+    return QtMocHelpers::metaObjectData<MediaTableModel, qt_meta_tag_ZN15MediaTableModelE_t>(QMC::MetaObjectFlag{}, qt_stringData,
+            qt_methods, qt_properties, qt_enums);
+}
 Q_CONSTINIT const QMetaObject MediaTableModel::staticMetaObject = { {
     QMetaObject::SuperData::link<QAbstractTableModel::staticMetaObject>(),
-    qt_meta_stringdata_CLASSMediaTableModelENDCLASS.offsetsAndSizes,
-    qt_meta_data_CLASSMediaTableModelENDCLASS,
+    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN15MediaTableModelE_t>.stringdata,
+    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN15MediaTableModelE_t>.data,
     qt_static_metacall,
     nullptr,
-    qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSMediaTableModelENDCLASS_t,
-        // enum 'ColumnIdentity'
-        QtPrivate::TypeAndForceComplete<MediaTableModel::ColumnIdentity, std::true_type>,
-        // Q_OBJECT / Q_GADGET
-        QtPrivate::TypeAndForceComplete<MediaTableModel, std::true_type>
-    >,
+    qt_staticMetaObjectRelocatingContent<qt_meta_tag_ZN15MediaTableModelE_t>.metaTypes,
     nullptr
 } };
 
 void MediaTableModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    (void)_o;
-    (void)_id;
+    auto *_t = static_cast<MediaTableModel *>(_o);
+    (void)_t;
     (void)_c;
+    (void)_id;
     (void)_a;
 }
 
@@ -153,7 +97,7 @@ const QMetaObject *MediaTableModel::metaObject() const
 void *MediaTableModel::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_CLASSMediaTableModelENDCLASS.stringdata0))
+    if (!strcmp(_clname, qt_staticMetaObjectStaticContent<qt_meta_tag_ZN15MediaTableModelE_t>.strings))
         return static_cast<void*>(this);
     return QAbstractTableModel::qt_metacast(_clname);
 }

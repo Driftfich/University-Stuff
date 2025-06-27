@@ -449,7 +449,7 @@ void MainWindow::setupSideDock()
             {info = tm->getJsonObject(srcIndex);
             schema = tm->getSchemaObject(srcIndex);}
         else if (PersonTableModel* pm = qobject_cast<PersonTableModel*>(srcModel))
-            {info = pm->getJsonObject(srcIndex, lib->getTransactionManager());
+            {info = pm->getJsonObject(srcIndex);
             schema = pm->getSchemaObject(srcIndex);}
         else if (LibItemTableModel* lm = qobject_cast<LibItemTableModel*>(srcModel))
             {info = lm->getJsonObject(srcIndex);
@@ -572,13 +572,13 @@ void MainWindow::setupLib()
 void MainWindow::setupTableModels()
 {
     // create table models
-    personModel = new PersonTableModel(lib->getPersonManager(), lib->getMediaManager(), this);
+    personModel = new PersonTableModel(lib->getPersonManager(), lib->getMediaManager(), lib->getTransactionManager(), this);
     libitemModel = new LibItemTableModel(lib->getLibitemManager(), lib->getMediaManager(), lib->getTransactionManager(), lib->getPersonManager(), this);
     transactionModel = new TransactionTableModel(lib->getTransactionManager(), 
                                                  lib->getPersonManager(), 
                                                  lib->getLibitemManager(), 
                                                  lib->getMediaManager(), this);
-    mediaModel = new MediaTableModel(lib->getMediaManager(), this);
+    mediaModel = new MediaTableModel(lib->getMediaManager(),this);
 
     lib->load(); // load the data from the files
 }

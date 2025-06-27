@@ -51,7 +51,7 @@ class PersonTableModel : public QAbstractTableModel {
 
         Q_ENUM(ColumnIdentity)
 
-        explicit PersonTableModel(PersonMan* personMan, MediaMan* mediaMan, QObject *parent = nullptr);
+        explicit PersonTableModel(PersonMan* personMan, MediaMan* mediaMan, const TransactionMan* transactionMan, QObject *parent = nullptr);
         ~PersonTableModel() override;
 
         int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -70,7 +70,6 @@ class PersonTableModel : public QAbstractTableModel {
         QVector<QString> getDisplayedColumns() const;
 
         QJsonObject getJsonObject(const QModelIndex& index) const;
-        QJsonObject getJsonObject(const QModelIndex& index, const TransactionMan* transactionMan) const;
         QJsonObject getSchemaObject(const QModelIndex& index) const;
         QJsonObject getDefaultJsonObject(bool artistChecked = false, bool borrowerChecked = false) const;
         QJsonObject getDefaultSchema(bool artistChecked = false, bool borrowerChecked = false) const;
@@ -85,6 +84,8 @@ class PersonTableModel : public QAbstractTableModel {
         PersonMan* personMan;
         // pointer to the media manager
         MediaMan* mediaMan;
+        // pointer to the transaction manager
+        const TransactionMan* transactionMan;
         // vector with the displayed columns
         QVector<ColumnIdentity> displayedColumns;
 
