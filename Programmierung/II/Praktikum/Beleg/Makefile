@@ -3552,6 +3552,7 @@ build/obj/person.o: core/person.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QD
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsondocument.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonparseerror.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonDocument \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QRegularExpression \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
