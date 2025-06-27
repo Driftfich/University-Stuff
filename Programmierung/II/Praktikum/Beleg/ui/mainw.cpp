@@ -69,7 +69,7 @@ void MainWindow::setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex&
     QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(const_cast<QAbstractItemModel*>(index.model())->parent());
     if (!treeWidget) return;
     
-    QTreeWidgetItem* item = treeWidget->itemFromIndex(index);
+    QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(index.internalPointer());
     if (!item) return;
     
     // Get the field name from the tree item's data
@@ -136,7 +136,7 @@ void MainWindow::setupCompleterForInfoPanel(QLineEdit* editor, const QModelIndex
     QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(const_cast<QAbstractItemModel*>(index.model())->parent());
     if (!treeWidget) return;
 
-    QTreeWidgetItem* item = treeWidget->itemFromIndex(index);
+    QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(index.internalPointer());
     if (!item) return;
 
     QString fieldName = item->data(0, SchemaOriginalKeyRole).toString();

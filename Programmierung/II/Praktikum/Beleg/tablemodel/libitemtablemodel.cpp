@@ -191,8 +191,11 @@ QVariant LibItemTableModel::data(const QModelIndex& index, int role) const {
             if (!media) return QVariant();
             return media->getGenre();
         case Languages:
-            if (!media) return QVariant();
-            return media->getLanguages().join(", ");
+            {
+                if (!media) return QVariant();
+                QStringList languagesList = media->getLanguages().toList();
+                return languagesList.join(", ");
+            }
         default:
             return QVariant();
     }

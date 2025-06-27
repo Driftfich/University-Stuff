@@ -52,7 +52,9 @@ QJsonObject Audio::getSubclassParams() const {
     json["channels"] = this->channels;
     json["codec"] = this->codec;
     json["album"] = this->album;
-    json["tracks"] = QJsonArray::fromStringList(this->tracks);
+    // json["tracks"] = QJsonArray::fromStringList(this->tracks);
+    QStringList tracksList = this->tracks.toList();
+    json["tracks"] = QJsonArray::fromStringList(tracksList);
     return json;
 }
 

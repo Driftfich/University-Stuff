@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include <QWidget>
 #include <QTreeWidget>
 #include <QJsonObject>
@@ -1079,7 +1081,13 @@ void InfoPanel::validateRequiredFieldsRecursive(QTreeWidgetItem* item) {
         QTreeWidgetItem* child = item->child(i);
         
         if (child->data(0, Qt::UserRole).toString() == "leaf") {
-            QModelIndex childIndex = treeWidget->indexFromItem(child, 1);
+            // Use the model() and indexAt() to get the index instead of protected method
+            QRect itemRect = treeWidget->visualItemRect(child);
+            QModelIndex childIndex = treeWidget->indexAt(itemRect.center());
+            if (childIndex.isValid() && childIndex.column() == 0) {
+                // Get the index for column 1 (value column)
+                childIndex = treeWidget->model()->index(childIndex.row(), 1, childIndex.parent());
+            }
             updateFieldValidationState(childIndex); 
         } else {
             validateRequiredFieldsRecursive(child);
