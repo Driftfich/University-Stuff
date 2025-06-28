@@ -1,3 +1,13 @@
+/*
+Author: Franz Rehschuh
+Date: 2025-06-28
+
+Description:
+The mainw.cpp file contains the implementation of the MainWindow class.
+It is responsible for the main window ui and the data management.
+
+*/
+
 #include <QJsonObject>
 #include <QDebug>
 #include <QMainWindow>
@@ -31,22 +41,29 @@
 
 #include "returns.h"
 
+/**
+ * @brief MainWindow::setupUi
+ * @details This method is responsible for setting up the main window ui.
+ * It creates the central widget and applies the layout to it.
+ * It also sets the window title and icon.
+ * It creates the toolbar and table widget and adds them to the main layout.
+ */
 void MainWindow::setupUi()
 {
-    // 1) Eigenes Central Widget erstellen und setzen
+    // 1) create and set the central widget
     QWidget *central = new QWidget(this);
     setCentralWidget(central);
 
-    // 2) Layout jetzt auf das Central Widget anwenden
+    // 2) apply the layout to the central widget
     mainLayout = new QVBoxLayout(central);
     mainLayout->setObjectName("mainLayout");
 
-    // 3)
+    // 3) set the window title and icon
     setWindowTitle("Library Management System");
     setMinimumSize(1200, 600);
     setWindowIcon(QIcon(":/icons/lib.png"));
 
-    // ---- toolbarUi als echtes QWidget ----
+    // ---- toolbarUi as a real QWidget ----
     toolbarUi    = new Ui_toolbar();
     toolbarWidget = new QWidget(central);
     toolbarWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
@@ -54,21 +71,27 @@ void MainWindow::setupUi()
     toolbarUi->setupUi(toolbarWidget);
     mainLayout->addWidget(toolbarWidget);
 
-    // ---- TableWidget als echtes QWidget ----
+    // ---- TableWidget as a real QWidget ----
     tableWidgetUi     = new Ui_TableWidget();
     tableWidgetWidget = new QWidget(central);
     tableWidgetUi->setupUi(tableWidgetWidget);
     mainLayout->addWidget(tableWidgetWidget);
 }
 
+/**
+ * @brief MainWindow::setupCompleterForAddpanel
+ * @details When a LineEdit is focused in the addPanel, a completer is setup via this handler if the field name is one of the following:
+ * libitem_id, borrower_id, media_id, artist_ids
+ */
 void MainWindow::setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex& index)
 {
-    qDebug() << "Setting up completer for editor...";
+    // qDebug() << "Setting up completer for editor...";
     
-    // Get the tree widget item from the index
+    // get the tree widget item from the index
     QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(const_cast<QAbstractItemModel*>(index.model())->parent());
     if (!treeWidget) return;
     
+    // get the tree widget item from the index
     QTreeWidgetItem* item = treeWidget->itemFromIndex(index);
     if (!item) return;
     
@@ -76,7 +99,7 @@ void MainWindow::setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex&
     QString fieldName = item->data(0, SchemaOriginalKeyRole).toString();
     // qDebug() << "Field name:" << fieldName;
 
-    // create a new entity completer
+    // create a new entity completer if the field name is supported
     EntityCompleter* completer = nullptr;
     if (fieldName == "libitem_id") {
         qDebug() << "Setting up completer for libitem_id...";
@@ -101,52 +124,47 @@ void MainWindow::setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex&
     }
     
     if (completer) {
-        // Configure the completer
+        // configure the completer
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         completer->setFilterMode(Qt::MatchContains);
         completer->setWrapAround(false);
         
-        // Set the completer to the editor
+        // set the completer to the editor
         editor->setCompleter(completer);
         
-        // Initialize completions
+        // initialize completions
         completer->updateCompletions("");
-        
-        // Debug: Check if completions were built
-        QAbstractItemModel* completionModel = completer->model();
-        int completionCount = completionModel ? completionModel->rowCount() : 0;
-        qDebug() << "Completer set up for field:" << fieldName 
-                 << "with" << completionCount << "completions";
-        
-        // Debug: Show first few completions
-        if (completionCount > 0) {
-            for (int i = 0; i < qMin(3, completionCount); i++) {
-                QModelIndex idx = completionModel->index(i, 0);
-                qDebug() << "  Completion" << i << ":" << completionModel->data(idx).toString();
-            }
-        }
     }
 }
 
+/**
+ * @brief MainWindow::setupCompleterForInfoPanel
+ * @details When a LineEdit is focused in the infoPanel, a completer is setup via this handler if the field name is one of the following:
+ * media_id, artist_ids
+ */
 void MainWindow::setupCompleterForInfoPanel(QLineEdit* editor, const QModelIndex& index)
 {
-    qDebug() << "Setting up completer for editor...";
+    // qDebug() << "Setting up completer for editor...";
     
-    // Get the tree widget item from the index
+    // get the tree widget item from the index
     QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(const_cast<QAbstractItemModel*>(index.model())->parent());
     if (!treeWidget) return;
 
+    // get the tree widget item from the index
     QTreeWidgetItem* item = treeWidget->itemFromIndex(index);
     if (!item) return;
 
+    // get the field name from the tree item's data
     QString fieldName = item->data(0, SchemaOriginalKeyRole).toString();
 
+    // create a new entity completer if the field name is supported
     EntityCompleter* completer = nullptr;
     if (fieldName == "media_id") {
         qDebug() << "Setting up completer for media_id...";
         QStringList filterColumns = QStringList() << "ID" << "Title" << "Publisher";
         completer = new EntityCompleter(mediaModel, "{ID}", filterColumns, "{Title} - {Publisher} ({ID})", ".", editor);
     }
+    // if item parent key is "artist_ids" setup a completer for the given array key
     else if (item->parent()->data(0, SchemaOriginalKeyRole).toString() == "artist_ids") {
         qDebug() << "Setting up completer for artist_ids...";
         QStringList filterColumns = QStringList() << "ID" << "First Name" << "Last Name" << "Email";
@@ -162,153 +180,169 @@ void MainWindow::setupCompleterForInfoPanel(QLineEdit* editor, const QModelIndex
     }
 }
 
+/**
+ * @details When the media id is changed in the given panel, the media object will be updated in the form by rerendering it.
+ */
 void MainWindow::changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
 {
     Q_UNUSED(column);
     Q_UNUSED(item);
 
-    // qDebug() << "Updating media id in InfoPanel...";
+    // get the current index of the tab selector
     int currentIndex = tableWidgetUi->TabSelector->currentIndex();
-    // qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
+    // check that the field name is "media_id" and the current tab is the libitem tab. Also check that the old and new value are not the same.
     if (fieldName != "media_id" || currentIndex != 1 || oldValue.toString() == newValue.toString())
     {
-        // qDebug() << fieldName << "\t" << currentIndex << "\t" << (oldValue.toString() == newValue.toString());
         return;
     }
-    // get the original data from the info panel
+
+    // get the original data and schema from the info panel. This will be later set again to allow for correct cancel behavior.
     QJsonObject originalData = panel->getOriginalData();
     QJsonObject originalSchema = panel->getOriginalSchema();
-
+    
+    // get the current json and schema from the info panel
     QJsonObject newJson = panel->collectDataFromTree();
     QJsonObject newSchema = originalSchema;
 
-    // qDebug() << "Updating media id in InfoPanel...";
+    // try to get the media item from the media manager
     std::shared_ptr<Media> mediaItem = nullptr;
     unsigned long currentIdValue = 0;
     bool ok;
     newValue.toString().toULongLong(&ok);
     if (ok) {
-        // get the current id from the item as unsigned long
+        // get the current id from the item as unsigned long long
         currentIdValue = newValue.toString().toULongLong();
         // try to find the media item with the new id in the media manager
         mediaItem = lib->getMediaManager()->getMedia(currentIdValue);
     }
     else {
-        // get the next available id from the media manager
+        // get the next available id from the media manager to create a new default media object
         currentIdValue = lib->getMediaManager()->getNextId();
     }
     
-    // get the current actice media type from the info panel
-    QString mediaType = newJson.value("media").toObject().value("subclass_type").toString();
+    // if the media item is not found, a new default media json object will be shown, based on the current media type
     if (!mediaItem) {
-        qDebug() << "Media item with id" << currentIdValue << "not found in MediaManager.";
+        // get the current actice media type from the info panel
+        QString mediaType = newJson.value("media").toObject().value("subclass_type").toString();
+        // qDebug() << "Media item with id" << currentIdValue << "not found in MediaManager.";
 
-        // set the media id in the new media json object
+        // get a new default media json object based on the current media type
         QJsonObject mediaJson = libitemModel->getDefaultJsonObject(mediaType).value("media").toObject();
+        // update the media id in the default media json object to the choosen one from the libitem
         QJsonObject baseinfo = mediaJson.value("media").toObject();
-        baseinfo["id"] = QString::number(currentIdValue); // Set the media_id to the original value
-        mediaJson["media"] = baseinfo; // Update the media object with the base info
-        newJson["media"] = mediaJson; // Update the media object in the new json
+        baseinfo["id"] = QString::number(currentIdValue);
+        mediaJson["media"] = baseinfo;
+        newJson["media"] = mediaJson;
 
-        // get the default schema for the media item
+        // get the default schema for the media item based current media type
         QJsonObject mediaSchema = libitemModel->getDefaultSchema(mediaType).value("properties").toObject().value("media").toObject();
         QJsonObject properties = newSchema.value("properties").toObject();
-        properties["media"] = mediaSchema; // Update the properties with the new media schema
-        newSchema["properties"] = properties; // Update the original schema with the new properties
-        qDebug() << newSchema;
-        // qDebug() << newJson;
+        properties["media"] = mediaSchema;
+        newSchema["properties"] = properties;
     }
+    // if the media item is found, update the original media with the new media json object
     else {
-        // update the original media with the new media json object
         newJson["media"] = mediaItem->getJson();
-        // update the schema
+        // update the schema for the correct media type
         QJsonObject properties = newSchema.value("properties").toObject();
         QJsonObject mediaSchema = properties.value("media").toObject();
         mediaSchema = mediaItem->getSchemaByType();
-        properties["media"] = mediaSchema; // Update the properties with the new media schema
-        newSchema["properties"] = properties; // Update the original schema with the new properties
+        properties["media"] = mediaSchema;
+        newSchema["properties"] = properties;
     }
 
-    // qDebug() << newJson;
-    // qDebug() << newSchema;
-
-    // update the info panel with the new media json object and schema
+    // update the info panel with the new media json object and schema.
+    // use a timer to avoid race conditions when the info panel is updated
+    // afterwards the original data and schema are set again to allow for correct cancel behavior
     QTimer::singleShot(0, [this, panel, newJson, newSchema, originalData, originalSchema]() {
         panel->displayInfo(newJson, newSchema, false);
         panel->setOriginalData(originalData);
         panel->setOriginalSchema(originalSchema);
     });
-
-    // qDebug() << "AddPanel original data:" << originalData;
 }
 
+/**
+ * @brief MainWindow::updateSubclassType
+ * @details When the subclass type is changed in the addPanel, the json and schema are updated/rerendered to show the correct fields
+ */
 void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue)
 {
     Q_UNUSED(column);
     Q_UNUSED(item);
 
-    qDebug() << "Updating subclass type in InfoPanel...";
-    // qDebug() << "Field changed:" << fieldName << "from" << oldValue.toString() << "to" << newValue.toString();
     // get the index of the current active tab
     int currentIndex = tableWidgetUi->TabSelector->currentIndex();
     
+    // check that the field name is indeed the subclass type and the current tab is the libitem tab.
+    // also check that the old and new value are not the same and the old value is not empty
     if (fieldName != "subclass_type" || 
         oldValue.toString() == newValue.toString() || 
         currentIndex != 1 || 
         oldValue.toString().isEmpty()) {
-        // qDebug() << (oldValue.toString() == newValue.toString()) << "\t" << currentIndex << "\t" << oldValue.toString().isEmpty();
         return;
     }
 
-    // get the updated json object from the info panel
+    // get the current json object from the add panel
     QJsonObject modifiedData = addPanel->collectDataFromTree();
     QJsonObject mediaBaseData = modifiedData.value("media").toObject().value("media").toObject();
     QJsonObject libitemBaseData = modifiedData.value("libitem").toObject();
 
+    // get the original data and schema from the add panel. This will be later set again to allow for correct cancel behavior.
     QJsonObject originalData = addPanel->getOriginalData();
     QJsonObject originalSchema = addPanel->getOriginalSchema();
     
-    // get the new matching default json object and default schema from the libitemModel
+    // get the new default json object based on the new subclass type, here newValue
     QJsonObject defaultJson = libitemModel->getDefaultJsonObject(newValue.toString());
+    // extract the media object from the default json object
     QJsonObject defaultMediaJson = defaultJson.value("media").toObject();
-    defaultMediaJson["subclass_type"] = newValue.toString();
+    defaultMediaJson["subclass_type"] = newValue.toString(); // overwrite the subclass type
     defaultMediaJson["media"] = mediaBaseData; // Preserve the base media data
     defaultJson["media"] = defaultMediaJson; // Update the media object with the new subclass_type
     defaultJson["libitem"] = libitemBaseData; // Preserve the base libitem data
     QJsonObject defaultSchema = libitemModel->getDefaultSchema(newValue.toString());
 
-    // update the info panel with the new default json object and schema
+    // update the info panel with the new default json object and schema. The edit mode will be not left, as the user is still in the addPanel
     addPanel->displayInfo(defaultJson, defaultSchema, false);
+    // set the original data and schema again to allow for correct cancel behavior
     addPanel->setOriginalData(originalData);
     addPanel->setOriginalSchema(originalSchema);
 }
 
+/**
+ * @brief MainWindow::enabledArtist
+ * @details When the artist is enabled in the infoPanel, the artist object will be updated in the form by rerendering it.
+ */
 void MainWindow::enabledArtist(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
     Q_UNUSED(column);
     Q_UNUSED(oldValue);
     Q_UNUSED(newValue);
     Q_UNUSED(item);
     
+    // get the current index of the tab selector
     int currentIndex = tableWidgetUi->TabSelector->currentIndex();
 
+    // check that the current tab is the person tab and the field name is either artist or borrower
     if ((currentIndex != 0 && currentIndex != 2) ||
-        // newValue.toBool() != true ||
         (fieldName != "artist" && fieldName != "borrower")) {
-        // qDebug() << "Field isnt in Person Model nor artist." << (newValue.toBool() != true) << (fieldName != "artist" && fieldName != "borrower");
         return;
     }
 
+    // get the original data and schema from the info panel. This will be later set again to allow for correct cancel behavior.
     QJsonObject originalPerson = infoPanel->getOriginalData();
     QJsonObject originalSchema = infoPanel->getOriginalSchema();
 
+    // get the current json object from the info panel
     QJsonObject currentData = infoPanel->collectDataFromTree();
     QJsonObject currentPerson = currentData.value("person").toObject();
 
+    // check if the person is currently an artist or borrower
     bool isArtist = currentPerson.contains("artist") && !currentPerson["artist"].toObject().isEmpty();
     bool isBorrower = currentPerson.contains("borrower") && !currentPerson["borrower"].toObject().isEmpty();
 
+    // get the new default schema for the person object based on the current artist and borrower status
     QJsonObject newSchema = personModel->getDefaultSchema((isArtist || fieldName == "artist"), (isBorrower || fieldName == "borrower"));
 
+    // if the field name is artist and the person is not currently an artist, create a new default artist object
     if (fieldName == "artist" && currentPerson["artist"].toObject().isEmpty()) {
         currentPerson["artist"] = createDefaultJsonFromSchema(Artist::getSubclassSchema(true));
     } 
@@ -318,8 +352,9 @@ void MainWindow::enabledArtist(QTreeWidgetItem* item, int column, const QString&
     } 
     else if (!isBorrower) currentPerson["borrower"] = QJsonObject(); // collectDataFromTree filters unchecked elements -> borrower has to be set again to be visible
 
-    currentData["person"] = currentPerson; // Update the person object in the current data
+    currentData["person"] = currentPerson; // update the person object in the current data
 
+    // update the info panel with the new default json object and schema. The edit mode will be not left, as the user is still in Edit Mode in the infoPanel
     QTimer::singleShot(0, [this, currentData, newSchema, originalPerson, originalSchema]() {
         infoPanel->displayInfo(currentData, newSchema, false);
         infoPanel->setOriginalData(originalPerson);
@@ -328,121 +363,66 @@ void MainWindow::enabledArtist(QTreeWidgetItem* item, int column, const QString&
 
 }
 
-void MainWindow::setupUnifiedFieldChangeHandler()
-{
-    try {
-        // STEP 1: Clean slate - disconnect any existing field change connections
-        disconnect(addPanel, &InfoPanel::fieldChanged, this, nullptr);
-        
-        // STEP 2: Single unified connection that handles ALL field types
-        connect(addPanel, &InfoPanel::fieldChanged, this, 
-            [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
-                
-                qDebug() << "Unified field change handler triggered:" << fieldName 
-                         << "from" << oldValue.toString() << "to" << newValue.toString();
-                
-                // Prevent recursion during field updates
-                static bool isProcessingFieldChange = false;
-                if (isProcessingFieldChange) {
-                    qDebug() << "Ignoring recursive field change for:" << fieldName;
-                    return;
-                }
-                
-                // Set processing flag
-                isProcessingFieldChange = true;
-                
-                try {
-                    // Route to appropriate handler based on field type
-                    if (fieldName == "subclass_type") {
-                        qDebug() << "Routing to updateSubclassType for:" << fieldName;
-                        updateSubclassType(item, column, fieldName, oldValue, newValue);
-                    } 
-                    else if (fieldName == "media_id") {
-                        qDebug() << "Routing to changedMediaId for:" << fieldName;
-                        changedMediaId(addPanel, item, column, fieldName, oldValue, newValue);
-                    }
-                    else {
-                        // qDebug() << "No specific handler for field:" << fieldName;
-                    }
-                    
-                } catch (const std::exception& e) {
-                    qCritical() << "Exception in unified field change handler:" << e.what();
-                } catch (...) {
-                    qCritical() << "Unknown exception in unified field change handler";
-                }
-                
-                // Clear processing flag
-                isProcessingFieldChange = false;
-            });
-            
-        // qDebug() << "Successfully established unified field change handler";
-        
-    } catch (const std::exception& e) {
-        qCritical() << "Failed to setup unified field change handler:" << e.what();
-    } catch (...) {
-        qCritical() << "Unknown exception setting up unified field change handler";
-    }
-}
-
-// void MainWindow::addPanelSave() {
-
-// }
-
+/**
+ * @details This method is responsible for setting up the side dock.
+ * It creates the side panel widget and adds the info panel to it.
+ * It connects the saveRequested signal from the infoPanel to the saveModifiedData method.
+ */
 void MainWindow::setupSideDock()
 {
-    // Side-Panel instanziieren
+    // create the side panel widget
     sidePanelWidget = new QWidget(this);
     sidePanelUi     = new Ui::Form();
     sidePanelUi->setupUi(sidePanelWidget);
 
-    // Insert InfoPanel into the infopanel page
+    // create the info panel and add it to the side panel widget
     infoPanel = new InfoPanel(sidePanelUi->infopanel);
     QVBoxLayout *infoLayout = new QVBoxLayout(sidePanelUi->infopanel);
     infoLayout->setContentsMargins(0,0,0,0);
     infoLayout->addWidget(infoPanel);
 
-    // Create and attach dock
+    // create the side dock and add it to the main window
     sideDock = new QDockWidget(tr("Seitenpanel"), this);
     sideDock->setAllowedAreas(
         Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     sideDock->setWidget(sidePanelWidget);
     addDockWidget(Qt::RightDockWidgetArea, sideDock);
-    sideDock->hide(); // startet ausgeblendet
+    sideDock->hide(); // start hidden
 
-    // Signal vom InfoPanel verbinden
+    // connect the saveRequested signal from the infoPanel to the saveModifiedData method
     connect(infoPanel, &InfoPanel::saveRequested, this, &MainWindow::saveModifiedData);
 
     // connect the completer setup signal for infoPanel too
     connect(infoPanel, &InfoPanel::completerSetupRequested, this, &MainWindow::setupCompleterForInfoPanel);
 
-    // try the changeMediaId on the info panel
+    // try the changeMediaId and enabledArtist on the info panel
     connect(infoPanel, &InfoPanel::fieldChanged, this, [=](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
         changedMediaId(infoPanel, item, column, fieldName, oldValue, newValue);
         enabledArtist(item, column, fieldName, oldValue, newValue);
     });
     
-    // Doppelklick auf Tabelleintrag zeigt Info-Panel
+    // when a table view item is double clicked, the info panel will be shown
     auto showInfo = [this](const QModelIndex& index) {
-        // 1) sender() ist das QTableView, das doubleClicked gefeuert hat
+        // 1) get the sender, which is the QTableView that was double clicked
         QTableView* view = qobject_cast<QTableView*>(sender());
         if (!view) return;
 
-        // 2) Proxy-Model holen
+        // 2) get the proxy model
         QSortFilterProxyModel* proxy = qobject_cast<QSortFilterProxyModel*>(view->model());
         if (!proxy) return;
 
-        // 3) Source-Model holen
+        // 3) get the source model
         QAbstractTableModel* srcModel = qobject_cast<QAbstractTableModel*>(proxy->sourceModel());
         if (!srcModel) return;
 
-        // 4) auf Source-Index mappen
+        // 4) map the source index
         QModelIndex srcIndex = proxy->mapToSource(index);
 
-        // Aktuelle Bearbeitung tracken
+        // track the current edit model and index
         currentEditModel = srcModel;
         currentEditIndex = srcIndex;
 
-        // 5) JSON holen je nach Model-Typ
+        // 5) get the json object and schema based on the model type
         QJsonObject info;
         QJsonObject schema = QJsonObject(); // Schema object, if available
         if (TransactionTableModel* tm = qobject_cast<TransactionTableModel*>(srcModel))
@@ -456,7 +436,7 @@ void MainWindow::setupSideDock()
             schema = lm->getSchemaObject(srcIndex);
         }
 
-        // 6) anzeigen
+        // 6) display the info panel
         infoPanel->displayInfo(info, schema, true);
         sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->infopanel);
         sideDock->show();
@@ -464,23 +444,31 @@ void MainWindow::setupSideDock()
         sideDock->setWindowTitle(tr("Item Information"));
     };
 
+    // connect the doubleClicked signal from the table views to the showInfo method
     for (QTableView *tv : { tableWidgetUi->persontab,
                 tableWidgetUi->itemtab,
                 tableWidgetUi->transtab })
     connect(tv, &QTableView::doubleClicked, this, showInfo);
 }
 
+/**
+ * @brief MainWindow::setupAddPanel
+ * @details This method is responsible for setting up the add panel.
+ * It creates the add panel widget and adds it to the side panel widget.
+ * It also enters edit mode directly at beginning.
+ */
 void MainWindow::setupAddPanel()
 {
+    // create the add panel widget and add it to the side panel widget
     addPanel = new InfoPanel(sidePanelUi->addpanel);
     QVBoxLayout *addLayout = new QVBoxLayout(sidePanelUi->addpanel);
     addLayout->addWidget(addPanel);
     addPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    // enter Edit Mode directly at beginning
+    // enter edit mode directly at beginning
     addPanel->enterEditMode();
 
-    // Button aus toolbarUi zeigt Add-Panel
+    // connect the add button in the toolbar to the addPanel
     connect(toolbarUi->add, &QPushButton::clicked, this, [=]() {
         sidePanelUi->stackedWidget->setCurrentWidget(sidePanelUi->addpanel);
         sideDock->show();
@@ -505,20 +493,22 @@ void MainWindow::setupAddPanel()
             default:
                 return; // No valid tab selected
         }
-        // qDebug() << schemaJson;
-        // set the default json object for the add panel
+        // set the default json object and schema for the add panel
         addPanel->displayInfo(defaultJson, schemaJson, true);
+        // enter edit mode at beginning
         addPanel->enterEditMode();
-        // change the title of the side dock
+        // change the title of the side dock to "Add New Item"
         sideDock->setWindowTitle(tr("Add New Item"));
     });
 
+    // connect the saveRequested signal from the addPanel to the saveNewData method
     connect(addPanel, &InfoPanel::saveRequested, this, &MainWindow::saveNewData);
     
-    // connect the completer setup signal for addPanel too
+    // connect the completer setup signal for addPanel
     connect(addPanel, &InfoPanel::completerSetupRequested, this, &MainWindow::setupCompleterForAddpanel);
 
-    // connection: when the cancel button in the add panel is clicked, enter Edit Mode again
+    // When the cancel button in the add panel is clicked, enter edit mode again. 
+    // This keeps the addPanel in edit mode all the time, while the cancel button still resets the form.
     connect(addPanel, &InfoPanel::editModeCancelled, addPanel, &InfoPanel::enterEditMode);
 
     // when the tab is changed, the default json object for the current tab should be set
@@ -549,14 +539,20 @@ void MainWindow::setupAddPanel()
         // set the default json object for the add panel
         addPanel->displayInfo(defaultJson, schemaJson, true);
         addPanel->enterEditMode();
-        
-        // // change the title of the side dock
-        // sideDock->setWindowTitle(tr("Add New Item"));
     });
     
-    setupUnifiedFieldChangeHandler();
+    // connect the fieldChanged signal from the addPanel to the updateSubclassType and changedMediaId methods
+    connect(addPanel, &InfoPanel::fieldChanged, this, 
+            [this](QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue) {
+                updateSubclassType(item, column, fieldName, oldValue, newValue);
+                changedMediaId(addPanel, item, column, fieldName, oldValue, newValue);
+            });
 }
 
+/**
+ * @details This method is responsible for setting up the data layers.
+ * It creates the library, table models and proxy models.
+ */
 void MainWindow::setupDataLayers()
 {
     setupLib();
@@ -564,11 +560,24 @@ void MainWindow::setupDataLayers()
     setupProxyModels();
 }
 
+/**
+ * @details This method is responsible for setting up the library.
+ * It creates the library object, which itself will create the manager classes under the hood.
+ * Preloading is disabled here due to following reason:
+ * - The LibitemTableModel handles when a libitem is changing/initializing its media reference.
+ *   It will then search for the media item in the media manager and increases the reference count in this media item.
+ * - When preloading would be enabled, the increase of the reference count could not be handled correctly, as the LibitemTableModel is not yet initialized.
+ */
 void MainWindow::setupLib()
 {
     lib = new Library((QCoreApplication::applicationDirPath() + QDir::separator() + "data"), false);
 }
 
+/**
+ * @details This method is responsible for setting up the table models.
+ * It creates the person, libitem and transaction table models.
+ * Then the data is loaded from the files.
+ */
 void MainWindow::setupTableModels()
 {
     // create table models
@@ -583,6 +592,12 @@ void MainWindow::setupTableModels()
     lib->load(); // load the data from the files
 }
 
+/**
+ * @details This method is responsible for setting up the proxy models.
+ * It creates the person, libitem and transaction proxy models.
+ * Furthermore the Sort and Filter functionality is enabled.
+ * Additionally the selection, header and size policy are set.
+ */
 void MainWindow::setupProxyModels()
 {
     // create proxy models
@@ -601,14 +616,14 @@ void MainWindow::setupProxyModels()
     transactionProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
     transactionProxy->setDynamicSortFilter(true);
 
-    // set the proxy models to the table views
+    // set the proxy models to the table views, configure the selection, header and size policy
     tableWidgetUi->persontab->setModel(personProxy);
-    tableWidgetUi->persontab->setSortingEnabled(true);
-    tableWidgetUi->persontab->setSelectionBehavior(QAbstractItemView::SelectRows);
-    tableWidgetUi->persontab->setSelectionMode(QAbstractItemView::MultiSelection);
-    tableWidgetUi->persontab->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-    tableWidgetUi->persontab->horizontalHeader()->setStretchLastSection(true);
-    tableWidgetUi->persontab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    tableWidgetUi->persontab->setSortingEnabled(true); // enable sorting
+    tableWidgetUi->persontab->setSelectionBehavior(QAbstractItemView::SelectRows); // select rows
+    tableWidgetUi->persontab->setSelectionMode(QAbstractItemView::MultiSelection); // allow selection of multiple rows
+    tableWidgetUi->persontab->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive); // allow resizing of the columns
+    tableWidgetUi->persontab->horizontalHeader()->setStretchLastSection(true); // stretch the last section to the remaining space
+    tableWidgetUi->persontab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); // allow the table view to expand
     
     tableWidgetUi->itemtab->setModel(libitemProxy);
     tableWidgetUi->itemtab->setSortingEnabled(true);
@@ -629,17 +644,25 @@ void MainWindow::setupProxyModels()
 
 }
 
+/**
+ * @details This method is responsible for setting up the toolbar connections.
+ * It initializes the columns, sort, search and delete connections.
+ */
 void MainWindow::setupToolbarConnections()
 {
     setupColumnsConnections();
     setupSortConnections();
     setupSearchConnections();
     setupDeleteConnections();
-    // setupAddConnections();
-
+    
+    // emit that the tab changed so the sorting and filtering is updated at the beginning
     emit tableWidgetUi->TabSelector->currentChanged(0);
 }
 
+/**
+ * @details This method is responsible for setting up the columns connections.
+ * It initializes the columns dropdown to the current model columns.
+ */
 void MainWindow::setupColumnsConnections()
 {
     // 1) When the tab is changed, the columns dropdown should be updated to the current model columns
@@ -654,6 +677,7 @@ void MainWindow::setupColumnsConnections()
             case 2: model = transactionModel; break;
             default: return;
         }
+        // set the columns dropdown to the current model columns
         toolbarUi->setColumns(model);
 
     });
@@ -661,14 +685,7 @@ void MainWindow::setupColumnsConnections()
     // use the dropdown selection change signal to uncheck/check this item in the columns dropdown
     QObject::connect(toolbarUi->columns->view(), &QAbstractItemView::pressed,
                      [&](const QModelIndex &index) {
-        // get the current index of the selected item
-        // int index = toolbarUi->columns->currentIndex();
-        // change the check state of the item
-        // if (toolbarUi->columns->itemData(index, Qt::CheckStateRole).toBool()) {
-        //     toolbarUi->columns->setItemData(index, Qt::Unchecked, Qt::CheckStateRole);
-        // } else {
-        //     toolbarUi->columns->setItemData(index, Qt::Checked, Qt::CheckStateRole);
-        // }
+        // get the current active abstract table model
         std::variant<PersonTableModel*,
         LibItemTableModel*,
         TransactionTableModel*> model;
@@ -678,27 +695,34 @@ void MainWindow::setupColumnsConnections()
             case 2: model = transactionModel; break;
             default: return;
         }
-        
+
+        // get the columns combo box and the model
         QComboBox *combo = toolbarUi->columns;
         QAbstractItemModel *m = combo->model();
+        // get the check state of the item
         Qt::CheckState cs = static_cast<Qt::CheckState>(
             m->data(index, Qt::CheckStateRole).toInt());
-            m->setData(index,
+        // invert the check state of the item
+        m->setData(index,
                 (cs == Qt::Checked ? Qt::Unchecked : Qt::Checked),
                 Qt::CheckStateRole);
+        // show the popup of the combo box
         combo->showPopup();
 
         // update the columns in the current model
         std::visit([&](auto* m) {
-            // Hier rufen wir die andere setColumns-Methode auf, die mit QStringList arbeitet
             m->setDisplayedColumns(toolbarUi->getCheckedColumns());
         }, model);
     });
 }
 
+/**
+ * @details This method is responsible for setting up the sort connections.
+ * It initializes the sort dropdown to the current model columns.
+ */
 void MainWindow::setupSortConnections()
 {
-    // 2.1) When the tab is changed, the sort dropdown should be updated to the current model columns
+    // 1) When the tab is changed, the sort dropdown should be updated to the current model columns
     QObject::connect(tableWidgetUi->TabSelector, &QTabWidget::currentChanged, [&]() {
         // get the current active abstract table model
         std::variant<PersonTableModel*,
@@ -727,7 +751,7 @@ void MainWindow::setupSortConnections()
         toolbarUi->sort->setCurrentIndex(sortColumn);
     });
 
-    // 2.2) When the sort dropdown is changed, the current proxy model should be sorted by the selected column
+    // 2) When the sort dropdown is changed, the current proxy model should be sorted by the selected column
     QObject::connect(toolbarUi->sort, QOverload<int>::of(&QComboBox::activated), [&](int dropdownIndex) {
         // get the current active proxy model e.g. personProxy, libitemProxy, transactionProxy
         CustomFilterProxyModel *currentProxyModel = nullptr;
@@ -756,29 +780,31 @@ void MainWindow::setupSortConnections()
             return;
         }
 
-        // Daten aus der ComboBox abrufen. Wir erwarten, dass die ColumnIdentity (als int)
-        // oder der Spaltenindex des Quellmodells als UserData gespeichert ist.
-        // In toolbarUi->setSortColumns wurde die ColumnIdentity als UserData gespeichert.
+        // get the column to sort from the dropdown
         int columnToSort = toolbarUi->sort->itemData(dropdownIndex).toInt();
-        // Aktuelle Sortierspalte und -reihenfolge des Proxy-Modells abrufen
+        // get the current sort column and order of the proxy model
         int currentSortColumn = currentProxyModel->sortColumn();
         Qt::SortOrder currentSortOrder = currentProxyModel->sortOrder();
 
+        // set the new sort order to ascending
         Qt::SortOrder newSortOrder = Qt::AscendingOrder;
-        // If the same column is selected again, reverse the sort order
+        // if the same column is selected again, reverse the sort order
         if (columnToSort == currentSortColumn) {
             newSortOrder = (currentSortOrder == Qt::AscendingOrder) ? Qt::DescendingOrder : Qt::AscendingOrder;
         }
         
         currentProxyModel->sort(columnToSort, newSortOrder);
-        // Optional: Sicherstellen, dass der Header der TableView die Sortierindikatoren aktualisiert
-        // Dies geschieht normalerweise automatisch, wenn setSortingEnabled(true) gesetzt ist.
+        // update the header of the table view to show the sort indicator
         currentTableView->horizontalHeader()->setSortIndicator(dropdownIndex, newSortOrder);
     });
 }
 
+/**
+ * @details Updates the search filter of the current proxy model.
+ */
 void MainWindow::applySearchFilter()
 {
+    // get the current active proxy model
     CustomFilterProxyModel *currentProxyModel = nullptr;
 
     switch(tableWidgetUi->TabSelector->currentIndex()) {
@@ -800,34 +826,44 @@ void MainWindow::applySearchFilter()
         qWarning() << "Could not determine ProxyModel for filtering.";
         return;
     }
-
+    // extract the search string from the search bar
     QString filterString = toolbarUi->searchbar->text();
 
+    // set the filter key column to -1, so the search is applied to all columns
     currentProxyModel->setFilterKeyColumn(-1);
 
+    // set the search string to the text in the search bar
     currentProxyModel->setSearchString(filterString, " ");
 }
 
+/**
+ * @details This method is responsible for setting up the search connections.
+ * The table gets updated when the tab is changed or the search bar text is changed.
+ */
 void MainWindow::setupSearchConnections()
 {
-    // 3.1) Wenn der Tab gewechselt wird, Filter anwenden
+    // 1) When the tab is changed, the filter is applied
     QObject::connect(tableWidgetUi->TabSelector, &QTabWidget::currentChanged, [this]()
     {applySearchFilter();});
 
-    // 3.2) Wenn sich der Text im Suchfeld ändert, Filter anwenden
+    // 2) When the text in the search bar is changed, the filter is applied
     QObject::connect(toolbarUi->searchbar, &QLineEdit::textChanged, [this](const QString&)
     {applySearchFilter();});
 }
 
+/**
+ * @details This method is responsible for setting up the delete connections.
+ */
 void MainWindow::setupDeleteConnections()
 {
-    // 4) When the deletec button is clicked, the selected rows in the current table view should be deleted
+    // 1) When the deletec button is clicked, the selected rows in the current table view should be deleted
     QObject::connect(toolbarUi->deletec, &QPushButton::clicked, [&]() {
-        // Bestimme das aktuelle TableView und ProxyModel
+        // get the current active table view, proxy model and source model
         QTableView *currentTableView = nullptr;
         CustomFilterProxyModel *currentProxyModel = nullptr;
         QAbstractTableModel *currentSourceModel = nullptr;
 
+        // get the current active table view, proxy model and source model based on the current tab
         switch(tableWidgetUi->TabSelector->currentIndex()) {
             case 0: // Person Tab
                 currentTableView = tableWidgetUi->persontab;
@@ -849,20 +885,22 @@ void MainWindow::setupDeleteConnections()
                 return;
         }
 
+        // check if the table view, proxy model and source model are valid
         if (!currentTableView || !currentProxyModel || !currentSourceModel) {
             qWarning() << "Could not determine TableView, ProxyModel or SourceModel for delete operation.";
             return;
         }
 
-        // Get the selected rows
+        // get the selected rows
         QModelIndexList selectedIndexes = currentTableView->selectionModel()->selectedRows();
         
+        // check if there are any selected rows
         if (selectedIndexes.isEmpty()) {
             QMessageBox::information(this, "No selection", "Please select at least one row to delete.");
             return;
         }
 
-        // Show confirmation dialog
+        // show confirmation dialog
         QString message = QString("Do you really want to delete %1 entry/entries?").arg(selectedIndexes.size());
         QMessageBox::StandardButton reply = QMessageBox::question(this, "Confirm deletion", message,
                                                                 QMessageBox::Yes | QMessageBox::No);
@@ -871,44 +909,40 @@ void MainWindow::setupDeleteConnections()
             return;
         }
 
-        // Konvertiere Proxy-Indizes zu Source-Indizes
+        // convert the proxy indexes to source indexes
         QList<int> sourceRows;
         for (const QModelIndex &proxyIndex : selectedIndexes) {
             QModelIndex sourceIndex = currentProxyModel->mapToSource(proxyIndex);
             sourceRows.append(sourceIndex.row());
         }
 
-        // Sortiere die Zeilen in absteigender Reihenfolge, um beim Löschen keine Indexverschiebungen zu haben
+        // sort the rows in descending order, so the index shifting is avoided
         std::sort(sourceRows.begin(), sourceRows.end(), std::greater<int>());
 
-        // Lösche die Zeilen aus dem Source-Model
+        // delete the rows from the source model
         for (int row : sourceRows) {
-            // std::cout << "Deleting row: " << row << std::endl;
             currentSourceModel->removeRow(row);
         }
-
-        // std::cout << "Gelöscht: " << sourceRows.size() << " Einträge" << std::endl;
     });
 }
 
-// void MainWindow::setupAddConnections()
-// {}
-
+/**
+ * @details This method is responsible for saving the modified data from the info panel.
+ * It updates the data in the current edit model and index.
+ * When the data is saved, a new double click event is emitted on the same index to update the info panel.
+ */
 void MainWindow::saveModifiedData(const QJsonObject& data) {
+    // check if the current edit model and index are valid
     if (!currentEditModel || !currentEditIndex.isValid()) {
         QMessageBox::warning(this, tr("Error"), tr("No valid data to save."));
         return;
     }
 
-    // print out the modified data to console
-    // qDebug() << "Modified Data:" << data << "\n\n";
-    
     try {
-        // Je nach Model-Typ die entsprechende Speicher-Methode aufrufen
         Result success = Result::Error("No valid data to save");
-
+        
+        // save the data to the current table model
         if (TransactionTableModel* tm = qobject_cast<TransactionTableModel*>(currentEditModel)) {
-            // You would need to implement a setJsonObject method or call the manager directly
             success = tm->updateFromJsonObject(data, currentEditIndex);
         } 
         else if (PersonTableModel* pm = qobject_cast<PersonTableModel*>(currentEditModel)) {
@@ -917,9 +951,10 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
         else if (LibItemTableModel* lm = qobject_cast<LibItemTableModel*>(currentEditModel)) {
             success = lm->updateFromJsonObject(data, currentEditIndex);
         }
-        
+
+        // check if the save operation was successful
         if (success) {
-            // emit new double click signal on the same index to update the infopanel
+            // get the current active table view and proxy model
             QTableView* currentTableView = nullptr;
             CustomFilterProxyModel* currentProxyModel = nullptr;
             
@@ -951,6 +986,7 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
             QMessageBox::information(this, tr("Saved"), 
                                    tr("Changes were successfully saved."));
         } else {
+            // show the error message
             QString errorMessage = ((QString) success);
             qDebug() << "Error message:" << errorMessage;
             QMessageBox::warning(this, tr("Error"), 
@@ -963,10 +999,14 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
     }
 }
 
+/**
+ * @details This method is responsible for saving new data from the add panel to the current table model.
+ */
 void MainWindow::saveNewData(const QJsonObject& data) {
     try {
         Result success;
 
+        // save the data to the current table model based on the current tab
         int currentIndex = tableWidgetUi->TabSelector->currentIndex();
         switch(currentIndex) {
             case 0: // Person tab
@@ -985,6 +1025,7 @@ void MainWindow::saveNewData(const QJsonObject& data) {
         // reset the add panel and enter edit mode again
         emit tableWidgetUi->TabSelector->currentChanged(currentIndex);
 
+        // check if the save operation was successful
         if ((bool) success) {
             QMessageBox::information(this, tr("Saved"),
                                    tr("New entry was successfully saved."));
@@ -999,9 +1040,14 @@ void MainWindow::saveNewData(const QJsonObject& data) {
     }
 }
 
+/**
+ * @details This method is responsible for setting up the search completer.
+ */
 void MainWindow::setupSearchCompleter()
 {
+    // create the completer
     searchCompleter = new QCompleter(this);
+    // set the case sensitivity to case insensitive
     searchCompleter->setCaseSensitivity(Qt::CaseInsensitive);
     searchCompleter->setFilterMode(Qt::MatchContains);
     searchCompleter->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
@@ -1010,11 +1056,13 @@ void MainWindow::setupSearchCompleter()
     // set the origSearchText to an empty string initially for safety
     origSearchText = QString();
     
+    // when a completion is highlighted, activate the onCompleterActivated method to show the text in the search bar
     connect(searchCompleter, QOverload<const QString&>::of(&QCompleter::highlighted),
             this, [this](const QString& text) {
                 MainWindow::onCompleterActivated(text);
             });
 
+    // when a completion is activated, activate the onCompleterActivated method to show the text in the search bar
     connect(searchCompleter, QOverload<const QString&>::of(&QCompleter::activated),
             this, [this](const QString& text) {
                 // overwrite qt internal logic to complete correctly
@@ -1024,27 +1072,35 @@ void MainWindow::setupSearchCompleter()
             });
 
 
-    // Bei Tab-Wechsel und Textänderung Completer aktualisieren
+    // when the tab is changed, update the completer
     connect(tableWidgetUi->TabSelector, &QTabWidget::currentChanged,
             this, [this]() {
                 updateSearchCompleter();
                 searchCompleter->popup()->hide(); // hide the popup on tab change
             });
+
+    // when the text in the search bar is changed, update the completer
     connect(toolbarUi->searchbar, &QLineEdit::textChanged,
             this, &MainWindow::updateSearchCompleter);
 
-    // Initiale Befüllung für das aktuelle Tab
+    // initial fill for the current tab
     updateSearchCompleter();
     
-    // Completer am Suchfeld anbringen
+    // set the completer to the search bar
     toolbarUi->searchbar->setCompleter(searchCompleter);
 }
 
+/**
+ * @details This method is responsible for updating the search completer.
+ */
 void MainWindow::updateSearchCompleter()
 {
+    // create a list of suggestions
     QStringList suggestions;
+    // get the current tab index
     int currentTabIdx = tableWidgetUi->TabSelector->currentIndex();
 
+    // get the current active table view and proxy model
     QTableView* view = nullptr;
     CustomFilterProxyModel* model = nullptr;
     switch (currentTabIdx) {
@@ -1096,10 +1152,8 @@ void MainWindow::updateSearchCompleter()
                   return a.length() < b.length();
               });
 
-
+    // get the last token from the search bar
     QString lastToken = toolbarUi->searchbar->text().split(' ').last();
-    // qDebug() << "Raw suggestions:" << suggestions;
-    // qDebug() << "Last token for completer:" << lastToken;
               
     QStringListModel *stringModel = new QStringListModel(suggestions, searchCompleter);
     searchCompleter->setModel(stringModel);
@@ -1108,63 +1162,62 @@ void MainWindow::updateSearchCompleter()
     searchCompleter->popup()->show();
 }
 
+/**
+ * @details This method is responsible for handling the completion of the search completer.
+ * It updates the search bar with the selected suggestion.
+ * When the suggestion begins with the last token, the last token is replaced with the suggestion.
+ * Otherwise the whole current text is replaced with the suggestion.
+ */
 void MainWindow::onCompleterActivated(const QString& suggestion)
 {
-    // qDebug() << "Completer activated with suggestion:" << suggestion;
+    // check if the search bar is available
     if (!toolbarUi || !toolbarUi->searchbar) {
         qWarning() << "SearchBar UI component not available";
         return;
     }
-
+    
+    // check if the suggestion is empty
     if (suggestion.isEmpty()) {
         qDebug() << "Empty suggestion received, ignoring";
         return;
     }
-
+    
+    // get the current search text and split it into tokens
     QString currentText = origSearchText;
     QStringList tokens = currentText.split(' ', Qt::SkipEmptyParts);
     
-    // Spezialfall: Text endet mit Leerzeichen -> neuer leerer Token
+    // if the current text ends with a space, add a new empty token
     if (currentText.endsWith(' ')) {
         tokens.append(QString());
     }
     
+
     QString newSearchText;
-    // qDebug() << "Current search text:" << currentText;
-    // qDebug() << "Tokens:" << tokens;
+
+    // if the current text is empty or only contains spaces, set the new search text to the suggestion
     if (tokens.isEmpty()) {
-        // Suchfeld war leer oder enthielt nur Leerzeichen
         newSearchText = suggestion;
-        // qDebug() << "Empty search field, setting to:" << suggestion;
     }
     else {
         QString lastToken = tokens.last();
         
-        // Check if suggestion starts with last token (case-insensitive)
+        // check if the suggestion starts with the last token (case-insensitive)
         bool startsWithLastToken = !lastToken.isEmpty() && 
                                   suggestion.startsWith(lastToken, Qt::CaseInsensitive);
-
-        // qDebug() << startsWithLastToken;
         
         if (startsWithLastToken) {
-            // Token-Ersetzung: Ersetze nur den letzten Token
+            // replace the last token with the suggestion
             tokens[tokens.size() - 1] = suggestion;
             newSearchText = tokens.join(' ');
-            // qDebug() << "Token replacement:" << lastToken << "->" << suggestion;
         }
         else {
-            // // Complete replacement of the search text
+            // replace the complete current text with the suggestion
             newSearchText = suggestion;
-            // qDebug() << "Complete replacement:" << currentText << "->" << suggestion;
-
-            // Append the new token
-            // tokens.append(suggestion);
-            // newSearchText = tokens.join(' ');
         }
     }
     
-    // Text im Suchfeld aktualisieren
-    // blockSignals verhindert rekursive updateSearchCompleter-Aufrufe
+    // Update the search bar with the new search text
+    // block the signals of the search bar to avoid recursive updateSearchCompleter calls
     toolbarUi->searchbar->blockSignals(true);
     
     // remove the completer temporarily to avoid that the lineedit gets overwritten by internal qt logic
@@ -1175,17 +1228,20 @@ void MainWindow::onCompleterActivated(const QString& suggestion)
     // Set cursor to the end for further input
     toolbarUi->searchbar->setCursorPosition(newSearchText.length());
     
-    // Reattach completer
+    // reattach the completer
     toolbarUi->searchbar->setCompleter(searchCompleter);
     // make the popup visible again
     searchCompleter->popup()->show();
     toolbarUi->searchbar->blockSignals(false);
-    
-    // qDebug() << "Search text updated to:" << newSearchText;
 }
 
+/**
+ * @details This method is responsible for handling the close event of the main window.
+ * It saves the library data on close.
+ */
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (lib) lib->save(); // Save the library data on close
+    // save the library data on close
+    if (lib) lib->save();
     QMainWindow::closeEvent(event);
 }

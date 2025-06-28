@@ -6,8 +6,7 @@ Description:
 The InfoPanel class is responsible for displaying the information of a json object in a tree widget.
 Furthermore it allows the user to specify the schema of the json object.
 The schema enables to define the type (string, number, boolean, object, array), format (date, time, datetime, enum), minimum and maximum values,
-pattern of the string, required and optional fields and the default value.
-
+pattern of the string, required and optional fields and the default value
 */
 
 #ifndef _INFOPANEL_H

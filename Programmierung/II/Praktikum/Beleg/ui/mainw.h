@@ -1,4 +1,13 @@
-// Uses the toolbar.h and tablewidget.h files to create the main window ui.
+/*
+Author: Franz Rehschuh
+Date: 2025-06-28
+
+Description: 
+The MainWindow class combines all high level ui and data management components to show the data in a user friendly way.
+
+*/
+
+
 #include "ui/toolbar.h"
 #include "ui/tablewidget.h"
 #include "ui/sidepanel.h"
@@ -35,6 +44,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     public:
+        // constructor and destructor
         MainWindow(QWidget *parent = nullptr) : QMainWindow(parent)
         {
             setupUi();
@@ -47,25 +57,22 @@ class MainWindow : public QMainWindow
         }
         ~MainWindow() {}
 
-        // getter for the toolbar and tableWidget
-        Ui_toolbar* getToolbarUi() const { return toolbarUi; }
-        Ui_TableWidget* getTableWidgetUi() const { return tableWidgetUi; }
-
     protected:
+        // custom close event handler to save the data
         void closeEvent(QCloseEvent *event) override;
 
     private:
         // UI components
-        Ui_toolbar*      toolbarUi;
-        QWidget*         toolbarWidget;
-        Ui_TableWidget*  tableWidgetUi;
-        QWidget*         tableWidgetWidget;
-        QVBoxLayout*     mainLayout;
+        Ui_toolbar*      toolbarUi; // ui for the toolbar
+        QWidget*         toolbarWidget; // widget holding the toolbar
+        Ui_TableWidget*  tableWidgetUi; // ui for the table widget
+        QWidget*         tableWidgetWidget; // widget holding the table widget
+        QVBoxLayout*     mainLayout; // main layout of the main window
 
         // side panel ui components
-        QDockWidget*   sideDock;
-        Ui::Form* sidePanelUi;
-        QWidget* sidePanelWidget;
+        QDockWidget*   sideDock; // dock widget holding the side panel
+        Ui::Form* sidePanelUi; // ui for the side panel
+        QWidget* sidePanelWidget; // widget holding the side panel
         InfoPanel* infoPanel;
         InfoPanel* addPanel;
 
@@ -86,7 +93,7 @@ class MainWindow : public QMainWindow
         TransactionTableModel* transactionModel;
         MediaTableModel* mediaModel;
 
-        // Proxy Models
+        // Proxy Models for searching and filtering
         CustomFilterProxyModel* personProxy;
         CustomFilterProxyModel* libitemProxy;
         CustomFilterProxyModel* transactionProxy;
@@ -97,7 +104,7 @@ class MainWindow : public QMainWindow
         void setupSideDock();
         void setupAddPanel();
 
-        // 
+        // setup methods for the data layers
         void setupDataLayers();
 
         // setup method for the lib
@@ -107,13 +114,14 @@ class MainWindow : public QMainWindow
         void setupTableModels();
         void setupProxyModels();
         
+        // connection setup methods
         void setupToolbarConnections();
         void setupColumnsConnections();
         void setupSortConnections();
         void setupSearchConnections();
         void setupDeleteConnections();
-        // void setupAddConnections();
-
+        
+        // update the proxy model with new search string from the searchbar
         void applySearchFilter();
         
         // search completer methods
@@ -125,14 +133,16 @@ class MainWindow : public QMainWindow
         void saveModifiedData(const QJsonObject& modifiedData);
         void saveNewData(const QJsonObject& newData);
 
-
+        // Special handler methods which handle signals from the InfoPanel/AddPanel
+        // When the subclass type is changed in the addPanel, the json and schema are updated/rerendered to show the correct fields
         void updateSubclassType(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
+        // When the media id is changed in the panel (addPanel/infoPanel) the form is rerendered to show the correct media object
         void changedMediaId(InfoPanel* panel, QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
+        // setup completers for the addPanel to show suggestions for specific fields (libitem_id, borrower_id, media_id, artist_ids)
         void setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex& index);
+        // setup completers for the infoPanel to show suggestions for specific fields (media_id, artist_ids)
         void setupCompleterForInfoPanel(QLineEdit* editor, const QModelIndex& index);
-        void setupUnifiedFieldChangeHandler();
+        // when the artist is enabled in the addPanel, the artist object is updated in the form by rerendering the form
         void enabledArtist(QTreeWidgetItem* item, int column, const QString& fieldName, const QVariant& oldValue, const QVariant& newValue);
-        void addPanelSave();
-
 
 };
