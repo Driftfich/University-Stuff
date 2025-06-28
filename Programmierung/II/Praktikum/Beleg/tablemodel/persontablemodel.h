@@ -73,7 +73,7 @@ class PersonTableModel : public QAbstractTableModel {
         QJsonObject getSchemaObject(const QModelIndex& index) const;
         QJsonObject getDefaultJsonObject(bool artistChecked = false, bool borrowerChecked = false) const;
         QJsonObject getDefaultSchema(bool artistChecked = false, bool borrowerChecked = false) const;
-        bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
+        Result updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
         Result saveFromJsonObject(const QJsonObject& jsonObject);
 
     public slots:

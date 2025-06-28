@@ -9,6 +9,7 @@ Description: Implementation file for the Transaction class, which holds informat
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QDateTime>
+#include "returns.h"
 
 #include "transaction.h"
 
@@ -37,22 +38,21 @@ void Transaction::toFile(QFile& file) const {
     }
 }
 
-int Transaction::loadLocalParams(const QJsonObject& json) {
-    if (json.contains("id") && json["id"].isDouble()) {
-        id = static_cast<unsigned long>(json["id"].toDouble());
+Result Transaction::loadLocalParams(const QJsonObject& json) {
+    Result result = Result::Success();
+    if (!json.contains("id") || setId(static_cast<unsigned long>(json["id"].toDouble())) != 0) {
+        result = Result::Error("Failed to set id");
     }
-    if (json.contains("libitem_id") && json["libitem_id"].isDouble()) {
-        libitem_id = static_cast<unsigned long>(json["libitem_id"].toDouble());
+    if (!json.contains("libitem_id") || setLibitemId(static_cast<unsigned long>(json["libitem_id"].toDouble())) != 0) {
+        result = Result::Error("Failed to set libitem id");
     }
-    if (json.contains("borrower_id") && json["borrower_id"].isDouble()) {
-        borrower_id = static_cast<unsigned long>(json["borrower_id"].toDouble());
+    if (!json.contains("borrower_id") || setBorrowerId(static_cast<unsigned long>(json["borrower_id"].toDouble())) != 0) {
+        result = Result::Error("Failed to set borrower id");
     }
-    if (json.contains("transaction_time") && json["transaction_time"].isString()) {
-        // qDebug() << "Parsing Transaction Time " << json["transaction_time"].toString();
-        transaction_time = QDateTime::fromString(json["transaction_time"].toString(), "yyyy-MM-dd hh:mm:ss");
-        // qDebug() << "Parsed Transaction Time: " << transaction_time.toString();
+    if (!json.contains("transaction_time") || setTransactionTime(QDateTime::fromString(json["transaction_time"].toString(), "yyyy-MM-dd hh:mm:ss")) != 0) {
+        result = Result::Error("Failed to set transaction time");
     }
-    return 0;
+    return result;
 }
 
 std::shared_ptr<Transaction> Transaction::fromFile(QFile& file) {

@@ -17,6 +17,7 @@ Description: Header file for the Video class, which holds information and logic 
 #include <QVariant>
 
 #include "media.h"
+#include "returns.h"
 
 class Video : public Media {
     unsigned int duration; // in seconds
@@ -98,7 +99,7 @@ class Video : public Media {
         static QJsonObject getSubclassSchema();
         static QJsonObject getSchema();
 
-        int loadSubclassParams(const QJsonObject& json) override;
+        Result loadSubclassParams(const QJsonObject& json) override;
 };
 
 #endif

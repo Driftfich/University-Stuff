@@ -12,6 +12,7 @@ Description: Header file for the Artist class, which holds information and logic
 #include <QVector>
 #include <QDate>
 #include <QVector>
+#include "returns.h"
 
 class Artist {
     QString artist_type; // e.g. actor, director, musician, etc.
@@ -54,7 +55,7 @@ class Artist {
         // serialization methods
         QString getSubclassType() const { return "Artist"; }
         QJsonObject getSubclassParams() const;
-        int loadSubclassParams(const QJsonObject& json);
+        Result loadSubclassParams(const QJsonObject& json);
 
         // get the schema for this class. Used to build comprehensive form in infopanel
         static QJsonObject getSubclassSchema(bool checked = false);

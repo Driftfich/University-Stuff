@@ -428,15 +428,15 @@ Result TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) 
 }
 
 // update a transaction at a specific index from a json object
-bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
+Result TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
     qDebug() << "Updating transaction from json object: " << jsonObject << "\n";
     if (!index.isValid()) {
-        return false;
+        return Result::Error("Invalid index");
     }
 
     unsigned long row = (unsigned long) index.row();
     if (row >= (unsigned long) transactionMan->getTransactions().size()) {
-        return false;
+        return Result::Error("Invalid row");
     }
 
     // get the transaction, libitem, media and person from the row
@@ -446,7 +446,7 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
     std::shared_ptr<Media> media = nullptr;
 
     if (!transaction) {
-        return false;
+        return Result::Error("Failed to get transaction from index");
     }
     if (libitem) {
         // get the media from the libitem
@@ -454,22 +454,25 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
     }
 
     // Update the transaction from the json object
-    if (transaction->loadLocalParams(jsonObject["Transaction"].toObject()) != 0) {
-        return false;
+    Result result = transaction->loadLocalParams(jsonObject["Transaction"].toObject());
+    if (result != 0) {
+        return result;
     }
 
     // Update the libitem, media and person if they exist in the json object
     if (libitem && jsonObject.contains("Libitem")) {
-        if (libitem->loadLocalParams(jsonObject["Libitem"].toObject()) != 0) {
-            return false;
+        result = libitem->loadLocalParams(jsonObject["Libitem"].toObject());
+        if (result != 0) {
+            return result;
         }
     }
     
     // update the person if it exists in the json object
     if (person && jsonObject.contains("person")) {
         QJsonObject personObject = jsonObject["person"].toObject();
-        if (person->loadLocalParams(personObject) != 0) {
-            return false;
+        result = person->loadLocalParams(personObject);
+        if (result != 0) {
+            return result;
         }
     }
     
@@ -478,20 +481,24 @@ bool TransactionTableModel::updateFromJsonObject(const QJsonObject& jsonObject, 
         QJsonObject mediaObject = jsonObject["Media"].toObject();
         if (mediaObject.contains("media")) {
             QJsonObject baseMedia = mediaObject["media"].toObject();
-            if (media->loadLocalParams(baseMedia) != 0) {
-                return false;
+            result = media->loadLocalParams(baseMedia);
+            if (result != 0) {
+                return result;
             }
         }
         if (mediaObject.contains("subclass_parameters")) {
             QJsonObject subclassParams = mediaObject["subclass_parameters"].toObject();
-            if (!subclassParams.isEmpty() && media->loadSubclassParams(subclassParams) != 0) {
-                return false;
+            if (!subclassParams.isEmpty()) {
+                result = media->loadSubclassParams(subclassParams);
+                if (result != 0) {
+                    return result;
+                }
             }
         }
     }
 
     refreshData();
-    return true;
+    return Result::Success();
 }
 
 void TransactionTableModel::refreshData() {

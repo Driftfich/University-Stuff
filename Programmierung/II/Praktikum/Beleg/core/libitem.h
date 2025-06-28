@@ -20,6 +20,7 @@ where simultan access to all libitems and media items is possible.
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "media.h"
+#include "returns.h"
 
 class Libitem {
     unsigned long id; // libitem id
@@ -33,8 +34,8 @@ class Libitem {
     public:
 
         // setters
-        void setId(unsigned long id) { this->id = id; }
-        void setMediaId(unsigned long media_id) { 
+        int setId(unsigned long id) { this->id = id; return 0;}
+        int setMediaId(unsigned long media_id) { 
             unsigned long oldMediaId = this->media_id;
             this->media_id = media_id;
             // std::cout << ("Changed media id from " + QString::number(oldMediaId) + " to " + QString::number(media_id)).toStdString() << std::endl;
@@ -42,13 +43,15 @@ class Libitem {
                 // std::cout << "Calling onMediaChangeCallback" << std::endl;
                 onMediaChangeCallback(this->id, oldMediaId, media_id);
             }
+            return 0;
         }
-        void setAvailableCopies(unsigned long available_copies) { this->available_copies = available_copies; }
+        int setAvailableCopies(unsigned long available_copies) { this->available_copies = available_copies; return 0;}
         // void setBorrowedCopies(unsigned long borrowed_copies) { this->borrowed_copies = borrowed_copies; }
-        void setLocation(const QString& location) { this->location = location; }
-        void setCondition(const QString& condition) { this->condition = condition; }
-        void setOnMediaChangeCallback(std::function<void(unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId)> callback) {
+        int setLocation(const QString& location) { this->location = location; return 0;}
+        int setCondition(const QString& condition) { this->condition = condition; return 0;}
+        int setOnMediaChangeCallback(std::function<void(unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId)> callback) {
             this->onMediaChangeCallback = callback;
+            return 0;
         }
 
         // getters
@@ -115,7 +118,7 @@ class Libitem {
         void toFile(QFile& file) const;
 
         // load local parameters from a JSON object
-        int loadLocalParams(const QJsonObject& json);
+        Result loadLocalParams(const QJsonObject& json);
         // read json object from file
         static std::shared_ptr<Libitem> fromFile(QFile& file, std::function<void(unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId)> onMediaChangeCallback);
         // factory method

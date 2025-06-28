@@ -10,7 +10,7 @@ Description: Implementation file for the Libitem class, which holds information 
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "libitem.h"
-
+#include "returns.h"
 
 QJsonObject Libitem::getJson() const {
     QJsonObject json;
@@ -38,50 +38,28 @@ void Libitem::toFile(QFile& file) const {
 }
 
 // load local parameters from a JSON object
-int Libitem::loadLocalParams(const QJsonObject& json) {
-    if (json.contains("id")) {
-        setId(json["id"].toVariant().toULongLong());
-    } else {
-        std::cerr << "Error: Missing 'id' in libitem JSON object\n";
-        return -1;
+Result Libitem::loadLocalParams(const QJsonObject& json) {
+    Result result = Result::Success();
+    if (!json.contains("id") || setId(json["id"].toVariant().toULongLong()) != 0) {
+        result = Result::Error("Failed to set id");
     }
 
-    if (json.contains("media_id")) {
-        setMediaId(json["media_id"].toVariant().toULongLong());
-    } else {
-        std::cerr << "Error: Missing 'media_id' in JSON object\n";
-        return -1;
+    if (!json.contains("media_id") || setMediaId(json["media_id"].toVariant().toULongLong()) != 0) {
+        result = Result::Error("Failed to set media id");
     }
 
-    if (json.contains("available_copies")) {
-        setAvailableCopies(json["available_copies"].toVariant().toULongLong());
-    } else {
-        std::cerr << "Error: Missing 'available_copies' in JSON object\n";
-        return -1;
+    if (!json.contains("available_copies") || setAvailableCopies(json["available_copies"].toVariant().toULongLong()) != 0) {
+        result = Result::Error("Failed to set available copies");
     }
 
-    // if (json.contains("borrowed_copies")) {
-    //     setBorrowedCopies(json["borrowed_copies"].toVariant().toULongLong());
-    // } else {
-    //     std::cerr << "Error: Missing 'borrowed_copies' in JSON object\n";
-    //     return -1;
-    // }
-
-    if (json.contains("location")) {
-        setLocation(json["location"].toString());
-    } else {
-        std::cerr << "Error: Missing 'location' in JSON object\n";
-        return -1;
+    if (!json.contains("location") || setLocation(json["location"].toString()) != 0) {
+        result = Result::Error("Failed to set location");
     }
 
-    if (json.contains("condition")) {
-        setCondition(json["condition"].toString());
-    } else {
-        std::cerr << "Error: Missing 'condition' in JSON object\n";
-        return -1;
+    if (!json.contains("condition") || setCondition(json["condition"].toString()) != 0) {
+        result = Result::Error("Failed to set condition");
     }
-    
-    return 0;
+    return result;
 }
 // read new libitem from file
 std::shared_ptr<Libitem> Libitem::fromFile(QFile& file, std::function<void(unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId)> onMediaChangeCallback) {

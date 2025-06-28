@@ -13,6 +13,7 @@ Description: Implementation file for the Audio class, which holds information an
 #include <QJsonArray>
 #include <iostream>
 #include "audio.h"
+#include "returns.h"
 
 using namespace std;
 
@@ -57,27 +58,31 @@ QJsonObject Audio::getSubclassParams() const {
 }
 
 // load the audio parameters from a JSON object
-int Audio::loadSubclassParams(const QJsonObject& json) {
-    if (json.contains("duration")) {
+Result Audio::loadSubclassParams(const QJsonObject& json) {
+    Result result = Result::Success();
+    if (!json.contains("duration")) {
+        result = Result::Error("Failed to set duration");
+    }
+    else {
         setDuration(json["duration"].toInt());
     }
-    if (json.contains("type")) {
-        setType(json["type"].toString());
+    if (!json.contains("type") || setType(json["type"].toString()) != 0) {
+        result = Result::Error("Failed to set type");
     }
-    if (json.contains("bitrate")) {
-        setBitrate(json["bitrate"].toInt());
+    if (!json.contains("bitrate") || setBitrate(json["bitrate"].toInt()) != 0) {
+        result = Result::Error("Failed to set bitrate");
     }
-    if (json.contains("sample_rate")) {
-        setSampleRate(json["sample_rate"].toInt());
+    if (!json.contains("sample_rate") || setSampleRate(json["sample_rate"].toInt()) != 0) {
+        result = Result::Error("Failed to set sample rate");
     }
-    if (json.contains("channels")) {
-        setChannels(json["channels"].toString());
+    if (!json.contains("channels") || setChannels(json["channels"].toString()) != 0) {
+        result = Result::Error("Failed to set channels");
     }
-    if (json.contains("codec")) {
-        setCodec(json["codec"].toString());
+    if (!json.contains("codec") || setCodec(json["codec"].toString()) != 0) {
+        result = Result::Error("Failed to set codec");
     }
-    if (json.contains("album")) {
-        setAlbum(json["album"].toString());
+    if (!json.contains("album") || setAlbum(json["album"].toString()) != 0) {
+        result = Result::Error("Failed to set album");
     }
     if (json.contains("tracks")) {
         QJsonArray tracksArray = json["tracks"].toArray();
@@ -85,9 +90,14 @@ int Audio::loadSubclassParams(const QJsonObject& json) {
         for (const QJsonValue& value : tracksArray) {
             tracks.push_back(value.toString());
         }
-        setTracks(tracks);
+        if (setTracks(tracks) != 0) {
+            result = Result::Error("Failed to set tracks");
+        }
     }
-    return 0;
+    else {
+        result = Result::Error("Failed to set tracks");
+    }
+    return result;
 }
 
 // get schema for this class: audio

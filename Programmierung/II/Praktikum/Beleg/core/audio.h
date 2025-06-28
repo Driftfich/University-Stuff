@@ -12,6 +12,7 @@ Description: Header file for the Audio class, which holds information and logic 
 #include <QVector>
 #include <QDate>
 #include "media.h"
+#include "returns.h"
 
 class Audio : public Media {
     unsigned int duration; // in seconds
@@ -110,7 +111,7 @@ class Audio : public Media {
         static QJsonObject getSubclassSchema();
 
         // load parameters from a JSON object
-        int loadSubclassParams(const QJsonObject& json) override;
+        Result loadSubclassParams(const QJsonObject& json) override;
 };
 
 #endif

@@ -8,6 +8,7 @@ Description: Implementation file for the Borrower class, which holds information
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "borrower.h"
+#include "returns.h"
 
 QJsonObject Borrower::getSubclassParams() const {
     QJsonObject json;
@@ -26,9 +27,9 @@ QJsonObject Borrower::getSubclassSchema(bool checked) {
     return schema;
 }
 
-int Borrower::loadSubclassParams(const QJsonObject& json) {
-    if (json.contains("limit")) {
-        setLimit(static_cast<unsigned int>(json["limit"].toVariant().toLongLong()));
+Result Borrower::loadSubclassParams(const QJsonObject& json) {
+    if (!json.contains("limit") || setLimit(static_cast<unsigned int>(json["limit"].toVariant().toLongLong())) != 0) {
+        return Result::Error("Failed to set limit");
     }
-    return 0;
+    return Result::Success();
 }

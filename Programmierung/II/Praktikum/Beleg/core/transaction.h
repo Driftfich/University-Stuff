@@ -13,6 +13,7 @@ Description: Header file for the Transaction class, which holds information and 
 #include <QJsonObject>
 #include <QJsonDocument>
 
+#include "returns.h"
 #include "libitem.h"
 
 class Transaction {
@@ -23,10 +24,10 @@ class Transaction {
 
     public:
         // setters
-        void setId(unsigned long id) { this->id = id; }
-        void setLibitemId(unsigned long libitem_id) { this->libitem_id = libitem_id; }
-        void setBorrowerId(unsigned long borrower_id) { this->borrower_id = borrower_id; }
-        void setTransactionTime(const QDateTime& transaction_time) { this->transaction_time = transaction_time; }
+        int setId(unsigned long id) { this->id = id; return 0;}
+        int setLibitemId(unsigned long libitem_id) { this->libitem_id = libitem_id; return 0;}
+        int setBorrowerId(unsigned long borrower_id) { this->borrower_id = borrower_id; return 0;}
+        int setTransactionTime(const QDateTime& transaction_time) { this->transaction_time = transaction_time; return 0;}
 
         // getters
         unsigned long getId() const { return id; }
@@ -43,7 +44,10 @@ class Transaction {
         }
 
         Transaction(QJsonObject json) {
-            if (loadLocalParams(json) != 0) {
+            Result result = loadLocalParams(json);
+            qDebug() << (int) result;
+            qDebug() << (QString) result;
+            if (result != 0) {
                 throw std::runtime_error("Issues loading transaction parameters");
             }
         }
@@ -74,7 +78,7 @@ class Transaction {
         QJsonObject getJson() const;
         void toFile(QFile& file) const;
         // load local parameters from a JSON object
-        int loadLocalParams(const QJsonObject& json);
+        Result loadLocalParams(const QJsonObject& json);
         static std::shared_ptr<Transaction> fromFile(QFile& file);
         static std::shared_ptr<Transaction> TransactionFactory(const QJsonObject& json);
         

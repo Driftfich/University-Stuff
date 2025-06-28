@@ -348,15 +348,15 @@ QJsonObject PersonTableModel::getSchemaObject(const QModelIndex& index) const {
 }
 
 // update the person at specific index from a json object
-bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
+Result PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
     if (!index.isValid()) {
-        return false;
+        return Result::Error("Invalid index");
     }
 
     // get the row from the index
     unsigned long row = (unsigned long) index.row();
     if (row >= (unsigned long) personMan->getPersons().size()) {
-        return false;
+        return Result::Error("Invalid row");
     }
 
     // get the person from the row
@@ -364,23 +364,24 @@ bool PersonTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const
     // check if the person is valid
     if (!person) {
         qWarning() << "Failed to get person from index";
-        return false;
+        return Result::Error("Failed to get person from index");
     }
 
     // check if the json object contains the person key
     if (!jsonObject.contains("person")) {
         qWarning() << "JSON object does not contain 'person' key";
-        return false;
+        return Result::Error("JSON object does not contain 'person' key");
     }
 
     // update the person from the json object
-    if (person->loadLocalParams(jsonObject["person"].toObject()) != 0) { //  || person->loadSubclassParams(personJson["subclass_params"].toObject()) != 0
+    Result result = person->loadLocalParams(jsonObject["person"].toObject());
+    if (result != 0) {
         qWarning() << "Failed to update person from JSON object";
-        return false;
+        return result;
     }
     // refresh the data
     refreshData();
-    return true;
+    return Result::Success();
 }
 
 // save a new person from a json object

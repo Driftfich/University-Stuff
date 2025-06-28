@@ -90,7 +90,7 @@ class TransactionTableModel : public QAbstractTableModel {
 
         // save and update methods
         Result saveFromJsonObject(const QJsonObject& jsonObject);
-        bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
+        Result updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
     
     public slots:
         void refreshData();

@@ -9,6 +9,8 @@ Description: Implementation file for the Artist class, which holds information a
 #include <QVector>
 #include <QJsonObject>
 #include <QJsonArray>
+
+#include "returns.h"
 #include "artist.h"
 
 // setters
@@ -55,9 +57,10 @@ QJsonObject Artist::getSubclassSchema(bool checked) {
 }
 
 // load parameters from a JSON object
-int Artist::loadSubclassParams(const QJsonObject& json) {
-    if (json.contains("artist_type")) {
-        setArtistType(json["artist_type"].toString());
+Result Artist::loadSubclassParams(const QJsonObject& json) {
+    Result result = Result::Success();
+    if (!json.contains("artist_type") || setArtistType(json["artist_type"].toString()) != 0) {
+        result = Result::Error("Failed to set artist type");
     }
     // if (json.contains("media_ids")) {
     //     QJsonArray mediaIdsArray = json["media_ids"].toArray();
@@ -67,5 +70,5 @@ int Artist::loadSubclassParams(const QJsonObject& json) {
     //     }
     //     setMediaIds(mediaIds);
     // }
-    return 0;
+    return result;
 }

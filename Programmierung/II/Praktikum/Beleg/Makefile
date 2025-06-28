@@ -1134,6 +1134,7 @@ build/moc/moc_library.cpp: manager/library.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonDocument \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QFile \
+		utils/returns.h \
 		manager/transactionman.h \
 		core/transaction.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDateTime \
@@ -1306,6 +1307,7 @@ build/moc/moc_libitemtablemodel.cpp: tablemodel/libitemtablemodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		utils/returns.h \
 		manager/libitemman.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QHash \
 		manager/transactionman.h \
@@ -1317,7 +1319,6 @@ build/moc/moc_libitemtablemodel.cpp: tablemodel/libitemtablemodel.h \
 		core/config.h \
 		core/artist.h \
 		core/borrower.h \
-		utils/returns.h \
 		build/moc/moc_predefs.h \
 		/home/USER/Qt/6.9.0/gcc_64/libexec/moc
 	/home/USER/Qt/6.9.0/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/home/USER/Qt/6.9.0/gcc_64/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/home/USER/Qt/6.9.0/gcc_64/include -I/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets -I/home/USER/Qt/6.9.0/gcc_64/include/QtGui -I/home/USER/Qt/6.9.0/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/libitemtablemodel.h -o build/moc/moc_libitemtablemodel.cpp
@@ -1482,6 +1483,7 @@ build/moc/moc_persontablemodel.cpp: tablemodel/persontablemodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
 		core/config.h \
 		core/artist.h \
+		utils/returns.h \
 		core/borrower.h \
 		manager/transactionman.h \
 		core/transaction.h \
@@ -1490,7 +1492,6 @@ build/moc/moc_persontablemodel.cpp: tablemodel/persontablemodel.h \
 		core/media.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
 		manager/mediaman.h \
-		utils/returns.h \
 		build/moc/moc_predefs.h \
 		/home/USER/Qt/6.9.0/gcc_64/libexec/moc
 	/home/USER/Qt/6.9.0/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/home/USER/Qt/6.9.0/gcc_64/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/home/USER/Qt/6.9.0/gcc_64/include -I/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets -I/home/USER/Qt/6.9.0/gcc_64/include/QtGui -I/home/USER/Qt/6.9.0/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/persontablemodel.h -o build/moc/moc_persontablemodel.cpp
@@ -1657,6 +1658,7 @@ build/moc/moc_transactiontablemodel.cpp: tablemodel/transactiontablemodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		utils/returns.h \
 		manager/mediaman.h \
 		manager/libitemman.h \
 		manager/personman.h \
@@ -1664,7 +1666,6 @@ build/moc/moc_transactiontablemodel.cpp: tablemodel/transactiontablemodel.h \
 		core/config.h \
 		core/artist.h \
 		core/borrower.h \
-		utils/returns.h \
 		build/moc/moc_predefs.h \
 		/home/USER/Qt/6.9.0/gcc_64/libexec/moc
 	/home/USER/Qt/6.9.0/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/home/USER/Qt/6.9.0/gcc_64/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/home/USER/Qt/6.9.0/gcc_64/include -I/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets -I/home/USER/Qt/6.9.0/gcc_64/include/QtGui -I/home/USER/Qt/6.9.0/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/transactiontablemodel.h -o build/moc/moc_transactiontablemodel.cpp
@@ -2111,6 +2112,7 @@ build/moc/moc_mediatablemodel.cpp: tablemodel/mediatablemodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qspan.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h \
+		utils/returns.h \
 		build/moc/moc_predefs.h \
 		/home/USER/Qt/6.9.0/gcc_64/libexec/moc
 	/home/USER/Qt/6.9.0/gcc_64/libexec/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/home/USER/Qt/6.9.0/gcc_64/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/home/USER/Qt/6.9.0/gcc_64/include -I/home/USER/Qt/6.9.0/gcc_64/include/QtWidgets -I/home/USER/Qt/6.9.0/gcc_64/include/QtGui -I/home/USER/Qt/6.9.0/gcc_64/include/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/mediatablemodel.h -o build/moc/moc_mediatablemodel.cpp
@@ -2384,6 +2386,7 @@ build/moc/moc_mainw.cpp: ui/mainw.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		utils/returns.h \
 		manager/libitemman.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QHash \
 		manager/transactionman.h \
@@ -2395,7 +2398,6 @@ build/moc/moc_mainw.cpp: ui/mainw.h \
 		core/config.h \
 		core/artist.h \
 		core/borrower.h \
-		utils/returns.h \
 		tablemodel/transactiontablemodel.h \
 		tablemodel/persontablemodel.h \
 		ui/tablewidget.h \
@@ -3091,6 +3093,7 @@ build/obj/artist.o: core/artist.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QS
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonparseerror.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		utils/returns.h \
 		core/artist.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/artist.o core/artist.cpp
@@ -3248,7 +3251,8 @@ build/obj/audio.o: core/audio.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStr
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qspan.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h \
+		utils/returns.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/audio.o core/audio.cpp
 
 build/obj/media.o: core/media.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
@@ -3404,6 +3408,7 @@ build/obj/media.o: core/media.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDat
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qspan.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h \
+		utils/returns.h \
 		core/config.h \
 		core/text.h \
 		core/audio.h \
@@ -3564,6 +3569,7 @@ build/obj/person.o: core/person.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QD
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
 		core/config.h \
 		core/artist.h \
+		utils/returns.h \
 		core/borrower.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/person.o core/person.cpp
 
@@ -3720,7 +3726,8 @@ build/obj/text.o: core/text.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStrin
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qspan.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h \
+		utils/returns.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/text.o core/text.cpp
 
 build/obj/video.o: core/video.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QString \
@@ -3876,7 +3883,8 @@ build/obj/video.o: core/video.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QStr
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qspan.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h \
+		utils/returns.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/video.o core/video.cpp
 
 build/obj/borrower.o: core/borrower.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonObject \
@@ -4018,7 +4026,9 @@ build/obj/borrower.o: core/borrower.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCor
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonparseerror.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonDocument \
 		core/borrower.h \
-		core/config.h
+		core/config.h \
+		utils/returns.h \
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QString
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/borrower.o core/borrower.cpp
 
 build/obj/libitem.o: core/libitem.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QFile \
@@ -4174,7 +4184,8 @@ build/obj/libitem.o: core/libitem.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVector \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qvector.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVariant
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
+		utils/returns.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/libitem.o core/libitem.cpp
 
 build/obj/transaction.o: core/transaction.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QFile \
@@ -4332,7 +4343,8 @@ build/obj/transaction.o: core/transaction.cpp /home/USER/Qt/6.9.0/gcc_64/include
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		utils/returns.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/transaction.o core/transaction.cpp
 
 build/obj/library.o: manager/library.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
@@ -4497,6 +4509,7 @@ build/obj/library.o: manager/library.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCo
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
+		utils/returns.h \
 		manager/transactionman.h \
 		core/transaction.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDateTime \
@@ -4666,6 +4679,7 @@ build/obj/transactionman.o: manager/transactionman.cpp /home/USER/Qt/6.9.0/gcc_6
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		utils/returns.h \
 		manager/transactionman.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/transactionman.o manager/transactionman.cpp
 
@@ -4823,6 +4837,7 @@ build/obj/personman.o: manager/personman.cpp /home/USER/Qt/6.9.0/gcc_64/include/
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
 		core/config.h \
 		core/artist.h \
+		utils/returns.h \
 		core/borrower.h \
 		manager/personman.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/personman.o manager/personman.cpp
@@ -4981,6 +4996,7 @@ build/obj/mediaman.o: manager/mediaman.cpp /home/USER/Qt/6.9.0/gcc_64/include/Qt
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qspan.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h \
+		utils/returns.h \
 		manager/mediaman.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/mediaman.o manager/mediaman.cpp
 
@@ -5139,6 +5155,7 @@ build/obj/libitemman.o: manager/libitemman.cpp /home/USER/Qt/6.9.0/gcc_64/includ
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QVariant \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		utils/returns.h \
 		manager/libitemman.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/libitemman.o manager/libitemman.cpp
 
@@ -5298,6 +5315,7 @@ build/obj/libitemtablemodel.o: tablemodel/libitemtablemodel.cpp /home/USER/Qt/6.
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qspan.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h \
+		utils/returns.h \
 		core/video.h \
 		core/text.h \
 		core/audio.h \
@@ -5314,7 +5332,6 @@ build/obj/libitemtablemodel.o: tablemodel/libitemtablemodel.cpp /home/USER/Qt/6.
 		core/config.h \
 		core/artist.h \
 		core/borrower.h \
-		utils/returns.h \
 		utils/jsonschemautils.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonValue
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/libitemtablemodel.o tablemodel/libitemtablemodel.cpp
@@ -5477,6 +5494,7 @@ build/obj/persontablemodel.o: tablemodel/persontablemodel.cpp /home/USER/Qt/6.9.
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h \
 		core/config.h \
 		core/artist.h \
+		utils/returns.h \
 		core/borrower.h \
 		manager/personman.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QHash \
@@ -5488,7 +5506,6 @@ build/obj/persontablemodel.o: tablemodel/persontablemodel.cpp /home/USER/Qt/6.9.
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
 		manager/mediaman.h \
 		tablemodel/persontablemodel.h \
-		utils/returns.h \
 		utils/jsonschemautils.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonValue
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/persontablemodel.o tablemodel/persontablemodel.cpp
@@ -5655,6 +5672,7 @@ build/obj/transactiontablemodel.o: tablemodel/transactiontablemodel.cpp /home/US
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		utils/returns.h \
 		manager/mediaman.h \
 		manager/libitemman.h \
 		manager/personman.h \
@@ -5662,7 +5680,6 @@ build/obj/transactiontablemodel.o: tablemodel/transactiontablemodel.cpp /home/US
 		core/config.h \
 		core/artist.h \
 		core/borrower.h \
-		utils/returns.h \
 		utils/jsonschemautils.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonValue
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/transactiontablemodel.o tablemodel/transactiontablemodel.cpp
@@ -6107,7 +6124,8 @@ build/obj/mediatablemodel.o: tablemodel/mediatablemodel.cpp tablemodel/mediatabl
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qiodevice.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qspan.h \
-		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h
+		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/q20iterator.h \
+		utils/returns.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/mediatablemodel.o tablemodel/mediatablemodel.cpp
 
 build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonObject \
@@ -6408,6 +6426,7 @@ build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonO
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QMap \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonArray \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qjsonarray.h \
+		utils/returns.h \
 		manager/libitemman.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QHash \
 		manager/transactionman.h \
@@ -6419,7 +6438,6 @@ build/obj/mainw.o: ui/mainw.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QJsonO
 		core/config.h \
 		core/artist.h \
 		core/borrower.h \
-		utils/returns.h \
 		tablemodel/transactiontablemodel.h \
 		tablemodel/persontablemodel.h \
 		ui/tablewidget.h \
@@ -7372,6 +7390,7 @@ build/obj/test.o: test.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QFile \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfile.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/qfiledevice.h \
+		utils/returns.h \
 		core/text.h \
 		core/video.h \
 		core/audio.h \
@@ -7432,7 +7451,6 @@ build/obj/test.o: test.cpp /home/USER/Qt/6.9.0/gcc_64/include/QtCore/QDate \
 		tablemodel/libitemtablemodel.h \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QAbstractTableModel \
 		/home/USER/Qt/6.9.0/gcc_64/include/QtCore/QModelIndex \
-		utils/returns.h \
 		tablemodel/transactiontablemodel.h \
 		tablemodel/persontablemodel.h \
 		ui/sidepanel.h \

@@ -369,35 +369,38 @@ QJsonObject LibItemTableModel::getSchemaObject(const QModelIndex& index) const {
 }
 
 // update the libitem and media from a json object and a specific index
-bool LibItemTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
+Result LibItemTableModel::updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index) {
     if (!index.isValid()) {
-        return false;
+        return Result::Error("Invalid index");
     }
 
     // get the row from the index
     unsigned long row = (unsigned long) index.row();
     if (row >= (unsigned long) libItemMan->getLibitems().size()) {
-        return false;
+        return Result::Error("Invalid row");
     }
 
     // update the media and libitem
     emit beginResetModel();
     // first update the media as a new media item could be created which needs to be referenced by the libitem that the onMediaChangeCallback works correctly
-    int mediaUpdate = updateMediaFromJsonObject(jsonObject);
-    bool libitemUpdate = updateLibitemFromJsonObject(jsonObject);
+    Result mediaUpdate = updateMediaFromJsonObject(jsonObject);
+    Result libitemUpdate = updateLibitemFromJsonObject(jsonObject);
 
     // check if the media or libitem update failed
-    if (mediaUpdate != 0 || !libitemUpdate) {
-        return false;
+    if (mediaUpdate != 0) {
+        return mediaUpdate;
+    }
+    if (libitemUpdate != 0) {
+        return libitemUpdate;
     }
 
     emit endResetModel();
-    return true;
+    return Result::Success();
     
 }
 
 // update or create a media item from a json object
-int LibItemTableModel::updateMediaFromJsonObject(const QJsonObject& jsonObject) {
+Result LibItemTableModel::updateMediaFromJsonObject(const QJsonObject& jsonObject) {
     // get the media object from the json object
     unsigned long mediaId = jsonObject["media"].toObject()["media"].toObject()["id"].toVariant().toULongLong();
     std::shared_ptr<Media> media = mediaMan->getMedia(mediaId);
@@ -411,24 +414,31 @@ int LibItemTableModel::updateMediaFromJsonObject(const QJsonObject& jsonObject) 
         media = Media::MediaFactory(mediaJson);
         if (!media) {
             qDebug() << "Failed to create new media item from JSON object";
-            return -1; // Failed to create new media item
+            // return -1; // Failed to create new media item
+            return Result::Error("Failed to create new media item from JSON object", -1);
         }
         // add the new media item to the media manager
         mediaMan->addMedia(media);
     }
     // check if the media could be updated
-    else if (media->loadLocalParams(jsonObject["media"]["media"].toObject()) != 0 || media->loadSubclassParams(jsonObject["media"]["subclass_params"].toObject()) != 0) {
-        qDebug() << "Failed to update media from JSON object, issues with loading parameters";
-        return -2;
+    // else if (media->loadLocalParams(jsonObject["media"]["media"].toObject()) != 0 || media->loadSubclassParams(jsonObject["media"]["subclass_params"].toObject()) != 0) {
+    //     qDebug() << "Failed to update media from JSON object, issues with loading parameters";
+    //     return Result::Error("Failed to update media from JSON object, issues with loading parameters", -2);
+    // }
+    else {
+        Result loadLocalResult = media->loadLocalParams(jsonObject["media"]["media"].toObject());
+        Result loadSubclassResult = media->loadSubclassParams(jsonObject["media"]["subclass_params"].toObject());
+        if (loadLocalResult != 0) return loadLocalResult;
+        if (loadSubclassResult != 0) return loadSubclassResult;
     }
 
     // return success
     // std::cout << "Updated media with ID: " << mediaId << std::endl;
-    return 0;
+    return Result::Success();
 }
 
 // update the libitem from a json object. As the libitem id is fixed via schema, the libitem will never be created in this stage
-bool LibItemTableModel::updateLibitemFromJsonObject(const QJsonObject& jsonObject) {
+Result LibItemTableModel::updateLibitemFromJsonObject(const QJsonObject& jsonObject) {
     // get the libitem id from the json object
     unsigned long libitemId = jsonObject["libitem"].toObject()["id"].toVariant().toULongLong();
     // get the libitem from the libitem manager
@@ -436,15 +446,15 @@ bool LibItemTableModel::updateLibitemFromJsonObject(const QJsonObject& jsonObjec
     // check if the libitem is valid
     if (!libitem) {
         qDebug() << "Cannot update libitem from JSON object, libitem not found with ID:" << libitemId;
-        return false;
+        return Result::Error("Libitem not found with ID:" + QString::number(libitemId));
     }
     // update the libitem
     if (libitem->loadLocalParams(jsonObject["libitem"].toObject()) != 0) {
         qDebug() << "Failed to update libitem from JSON object, issues with loading parameters";
-        return false;
+        return Result::Error("Failed to update libitem from JSON object, issues with loading parameters");
     }
     // std::cout << "Updated libitem with ID: " << libitemId << std::endl;
-    return true;
+    return Result::Success();
 }
 
 // save a new libitem from a json object

@@ -24,6 +24,7 @@ This allows a Person to have both roles at the same time, or none, and makes it 
 #include "config.h"
 #include "artist.h"
 #include "borrower.h"
+#include "returns.h"
 
 enum class Gender {
     female,
@@ -138,7 +139,7 @@ class Person {
         // writes the JSON object to a file
         void toFile(QFile& file) const;
         // loads local parameters from a JSON object
-        int loadLocalParams(const QJsonObject& json);
+        Result loadLocalParams(const QJsonObject& json);
         // loads a Person object from a file
         static std::shared_ptr<Person> fromFile(QFile& file);
         static std::shared_ptr<Person> PersonFactory(const QJsonObject& json);

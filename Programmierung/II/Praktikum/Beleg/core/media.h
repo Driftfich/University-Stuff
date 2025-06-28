@@ -24,6 +24,7 @@ If static isnt needed, the helper method getSchemaByType() can be used, which au
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QFile>
+#include "returns.h"
 
 class Media {
     unsigned long id;
@@ -130,9 +131,9 @@ class Media {
         void toFile(QFile& file) const;
 
         // load local parameters from a JSON object
-        int loadLocalParams(const QJsonObject& json);
+        Result loadLocalParams(const QJsonObject& json);
         // read subclass parameters from a JSON object
-        virtual int loadSubclassParams(const QJsonObject& json) {Q_UNUSED(json); return 0;}
+        virtual Result loadSubclassParams(const QJsonObject& json) {Q_UNUSED(json); return Result::Success();}
         // load complete media object from file
         static std::shared_ptr<Media> fromFile(QFile& file);
         // factory method to create the correct subclass object based on the media type in the JSON object

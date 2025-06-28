@@ -44,20 +44,21 @@ QJsonObject Video::getSubclassParams() const {
     return json;
 }
 
-int Video::loadSubclassParams(const QJsonObject& json) {
-    if (json.contains("type")) {
-        setType(json["type"].toString());
+Result Video::loadSubclassParams(const QJsonObject& json) {
+    Result result = Result::Success();
+    if (!json.contains("type") || setType(json["type"].toString()) != 0) {
+        result = Result::Error("Failed to set type");
     }
-    if (json.contains("codec")) {
-        setCodec(json["codec"].toString());
+    if (!json.contains("codec") || setCodec(json["codec"].toString()) != 0) {
+        result = Result::Error("Failed to set codec");
     }
-    if (json.contains("aspect_ratio")) {
-        setAspectRatio(json["aspect_ratio"].toString());
+    if (!json.contains("aspect_ratio") || setAspectRatio(json["aspect_ratio"].toString()) != 0) {
+        result = Result::Error("Failed to set aspect ratio");
     }
-    if (json.contains("audio_channels")) {
-        setAudioChannels(json["audio_channels"].toString());
+    if (!json.contains("audio_channels") || setAudioChannels(json["audio_channels"].toString()) != 0) {
+        result = Result::Error("Failed to set audio channels");
     }
-    return 0;
+    return result;
 }
 
 // schema methods

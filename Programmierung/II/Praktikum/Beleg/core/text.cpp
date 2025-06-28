@@ -73,33 +73,21 @@ QJsonObject Text::getSubclassParams() const {
 }
 
 // Load subclass parameters from a JSON object. Overrides the base class method.
-int Text::loadSubclassParams(const QJsonObject& json) {
-    if (json.contains("pages")) {
-        setPages(json["pages"].toInt());
-    } else {
-        std::cerr << "Error: Missing 'pages' in JSON object\n";
-        return -1;
+Result Text::loadSubclassParams(const QJsonObject& json) {
+    Result result = Result::Success();
+    if (!json.contains("pages") || setPages(json["pages"].toInt()) != 0) {
+        result = Result::Error("Failed to set pages");
     }
-    if (json.contains("isbn")) {
-        setIsbn(json["isbn"].toString());
-    } else {
-        std::cerr << "Error: Missing 'isbn' in JSON object\n";
-        return -1;
+    if (!json.contains("isbn") || setIsbn(json["isbn"].toString()) != 0) {
+        result = Result::Error("Failed to set isbn");
     }
-    if (json.contains("bindingType")) {
-        setBindingType(json["bindingType"].toString());
-    } else {
-        std::cerr << "Error: Missing 'bindingType' in JSON object\n";
-        return -1;
+    if (!json.contains("bindingType") || setBindingType(json["bindingType"].toString()) != 0) {
+        result = Result::Error("Failed to set binding type");
     }
-    if (json.contains("textFormat")) {
-        setTextFormat(json["textFormat"].toString());
-    } else {
-        std::cerr << "Error: Missing 'textFormat' in JSON object\n";
-        return -1;
+    if (!json.contains("textFormat") || setTextFormat(json["textFormat"].toString()) != 0) {
+        result = Result::Error("Failed to set text format");
     }
-
-    return 0;
+    return result;
 }
 
 // Collects the schema for the subclass parameters

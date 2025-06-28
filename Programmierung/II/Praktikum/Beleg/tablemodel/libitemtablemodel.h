@@ -87,11 +87,11 @@ class LibItemTableModel : public QAbstractTableModel {
         // get the schema object for a specific libitem
         QJsonObject getSchemaObject(const QModelIndex& index) const;
         // update the media from a json object
-        int updateMediaFromJsonObject(const QJsonObject& jsonObject);
+        Result updateMediaFromJsonObject(const QJsonObject& jsonObject);
         // update the libitem from a json object
-        bool updateLibitemFromJsonObject(const QJsonObject& jsonObject);
+        Result updateLibitemFromJsonObject(const QJsonObject& jsonObject);
         // update the libitem from a json object and a specific index
-        bool updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
+        Result updateFromJsonObject(const QJsonObject& jsonObject, const QModelIndex& index);
 
         // get the default schema for a specific media type
         QJsonObject getDefaultSchema(QString mediaType) const;

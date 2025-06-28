@@ -15,6 +15,7 @@ Description: Implementation file for the Media class, which holds information an
 #include "text.h"
 #include "audio.h"
 #include "video.h"
+#include "returns.h"
 #include <iostream>
 
 using namespace std;
@@ -115,26 +116,20 @@ void Media::toFile(QFile& file) const {
 }
 
 // load local parameters from a JSON object
-int Media::loadLocalParams(const QJsonObject& json) {
-    // qDebug() << json;
-    if (json.contains("id")) {
+Result Media::loadLocalParams(const QJsonObject& json) {
+    Result result = Result::Success();
+    if (!json.contains("id")) {
+        result = Result::Error("Failed to set id");
+    }
+    else {
         setId(json["id"].toVariant().toULongLong());
-    } else {
-        std::cerr << "Error: Missing 'id' in media JSON object\n";
-        return -1;
     }
 
-    if (json.contains("title")) {
-        setTitle(json["title"].toString());
-    } else {
-        std::cerr << "Error: Missing 'title' in JSON object\n";
-        return -1;
+    if (!json.contains("title") || setTitle(json["title"].toString()) != 0) {
+        result = Result::Error("Failed to set title");
     }
-    if (json.contains("publication_date")) {
-        setPublicationDate(QDate::fromString(json["publication_date"].toString(), Qt::ISODate));
-    } else {
-        std::cerr << "Error: Missing 'publication_date' in JSON object\n";
-        return -1;
+    if (!json.contains("publication_date") || setPublicationDate(QDate::fromString(json["publication_date"].toString(), Qt::ISODate)) != 0) {
+        result = Result::Error("Failed to set publication date");
     }
     if (json.contains("artist_ids")) {
         QJsonArray artistIdsArray = json["artist_ids"].toArray();
@@ -142,28 +137,20 @@ int Media::loadLocalParams(const QJsonObject& json) {
         for (const QJsonValue& value : artistIdsArray) {
             artistIds.push_back(value.toVariant().toULongLong());
         }
-        setArtistIds(artistIds);
+        if (setArtistIds(artistIds) != 0) {
+            result = Result::Error("Failed to set artist ids");
+        }
     } else {
-        std::cerr << "Error: Missing 'artist_ids' in JSON object\n";
-        return -1;
+        result = Result::Error("Failed to set artist ids");
     }
-    if (json.contains("publisher")) {
-        setPublisher(json["publisher"].toString());
-    } else {
-        std::cerr << "Error: Missing 'publisher' in JSON object\n";
-        return -1;
+    if (!json.contains("publisher") || setPublisher(json["publisher"].toString()) != 0) {
+        result = Result::Error("Failed to set publisher");
     }
-    if (json.contains("description")) {
-        setDescription(json["description"].toString());
-    } else {
-        std::cerr << "Error: Missing 'description' in JSON object\n";
-        return -1;
+    if (!json.contains("description") || setDescription(json["description"].toString()) != 0) {
+        result = Result::Error("Failed to set description");
     }
-    if (json.contains("genre")) {
-        setGenre(json["genre"].toString());
-    } else {
-        std::cerr << "Error: Missing 'genre' in JSON object\n";
-        return -1;
+    if (!json.contains("genre") || setGenre(json["genre"].toString()) != 0) {
+        result = Result::Error("Failed to set genre");
     }
     if (json.contains("languages")) {
         QJsonArray languagesArray = json["languages"].toArray();
@@ -171,10 +158,11 @@ int Media::loadLocalParams(const QJsonObject& json) {
         for (const QJsonValue& value : languagesArray) {
             languages.push_back(value.toString());
         }
-        setLanguages(languages);
+        if (setLanguages(languages) != 0) {
+            result = Result::Error("Failed to set languages");
+        }
     } else {
-        std::cerr << "Error: Missing 'languages' in JSON object\n";
-        return -1;
+        result = Result::Error("Failed to set languages");
     }
     if (json.contains("metadata")) {
         QJsonObject metadataObj = json["metadata"].toObject();
@@ -182,13 +170,14 @@ int Media::loadLocalParams(const QJsonObject& json) {
         for (auto it = metadataObj.constBegin(); it != metadataObj.constEnd(); ++it) {
             metadata.insert(it.key(), it.value().toVariant());
         }
-        setMetadata(metadata);
+        if (setMetadata(metadata) != 0) {
+            result = Result::Error("Failed to set metadata");
+        }
     } else {
-        std::cerr << "Error: Missing 'metadata' in JSON object\n";
-        return -1;
+        result = Result::Error("Failed to set metadata");
     }
 
-    return 0;
+    return result;
 }
 
 // read new media from file

@@ -18,6 +18,7 @@ Description: Implementation file for the Person class, which holds information a
 #include "person.h"
 #include "artist.h"
 #include "borrower.h"
+#include "returns.h"
 
 using namespace std;
 
@@ -199,30 +200,51 @@ void Person::toFile(QFile& file) const {
 }
 
 // Loads local parameters from a JSON object
-int Person::loadLocalParams(const QJsonObject& json) {
+Result Person::loadLocalParams(const QJsonObject& json) {
+    Result result = Result::Success();
     if (json.contains("id")) id = static_cast<unsigned long>(json["id"].toVariant().toLongLong());
-    if (json.contains("fname")) fname = json["fname"].toString();
-    if (json.contains("lname")) lname = json["lname"].toString();
-    if (json.contains("ename")) ename = json["ename"].toString();
-    if (json.contains("birthday")) birthday = QDate::fromString(json["birthday"].toString(), Qt::ISODate);
-    if (json.contains("gender")) gender = json["gender"].toString();
-    if (json.contains("note")) note = json["note"].toString();
-    if (json.contains("location")) location = json["location"].toString();
-    if (json.contains("email")) email = json["email"].toString();
-    if (json.contains("tel")) tel = json["tel"].toString();
+    else result = Result::Error("Failed to set id");
+    if (!json.contains("fname") || setFname(json["fname"].toString()) != 0) {
+        result = Result::Error("Failed to set fname");
+    }
+    if (!json.contains("lname") || setLname(json["lname"].toString()) != 0) {
+        result = Result::Error("Failed to set lname");
+    }
+    if (!json.contains("ename") || setEname(json["ename"].toString()) != 0) {
+        result = Result::Error("Failed to set ename");
+    }
+    if (!json.contains("birthday") || setBirthday(QDate::fromString(json["birthday"].toString(), Qt::ISODate)) != 0) {
+        result = Result::Error("Failed to set birthday");
+    }
+    if (!json.contains("gender") || setGender(json["gender"].toString()) != 0) {
+        result = Result::Error("Failed to set gender");
+    }
+    if (!json.contains("note") || setNote(json["note"].toString()) != 0) {
+        result = Result::Error("Failed to set note");
+    }
+    if (!json.contains("location") || setLocation(json["location"].toString()) != 0) {
+        result = Result::Error("Failed to set location");
+    }
+    if (!json.contains("email") || setEmail(json["email"].toString()) != 0) {
+        result = Result::Error("Failed to set email");
+    }
+    if (!json.contains("tel") || setTel(json["tel"].toString()) != 0) {
+        result = Result::Error("Failed to set tel");
+    }
+    std::unique_ptr<Artist> artist = nullptr;
+    std::unique_ptr<Borrower> borrower = nullptr;
     if (json.contains("artist")) {
         QJsonObject artistJson = json["artist"].toObject();
         if (!artistJson.isEmpty()) artist = std::make_unique<Artist>(artistJson);
-    } else {
-        artist = nullptr;
     }
     if (json.contains("borrower")) {
         QJsonObject borrowerJson = json["borrower"].toObject();
         if (!borrowerJson.isEmpty()) borrower = std::make_unique<Borrower>(borrowerJson);
-    } else {
-        borrower = nullptr;
     }
-    return 0;
+    // set the artist and borrower
+    this->artist = std::move(artist);
+    this->borrower = std::move(borrower);
+    return result;
 }
 
 // Loads a Person object from a file

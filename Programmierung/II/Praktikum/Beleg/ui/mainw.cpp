@@ -905,7 +905,7 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
     
     try {
         // Je nach Model-Typ die entsprechende Speicher-Methode aufrufen
-        bool success = false;
+        Result success = Result::Error("No valid data to save");
 
         if (TransactionTableModel* tm = qobject_cast<TransactionTableModel*>(currentEditModel)) {
             // You would need to implement a setJsonObject method or call the manager directly
@@ -951,8 +951,10 @@ void MainWindow::saveModifiedData(const QJsonObject& data) {
             QMessageBox::information(this, tr("Saved"), 
                                    tr("Changes were successfully saved."));
         } else {
+            QString errorMessage = ((QString) success);
+            qDebug() << "Error message:" << errorMessage;
             QMessageBox::warning(this, tr("Error"), 
-                               tr("Error saving changes."));
+                               errorMessage);
         }
     } 
     catch (const std::exception& e) {

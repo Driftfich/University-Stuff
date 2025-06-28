@@ -11,6 +11,7 @@ Description: Header file for the Text class, which holds information and logic r
 #include <QString>
 
 #include "media.h"
+#include "returns.h"
 
 class Text : public Media {
     int pages;
@@ -19,7 +20,7 @@ class Text : public Media {
     QString textFormat;  // e.g. Book, Magazine, Newspaper
 
     public:
-        void setPages(int pages) {this->pages = pages;}
+        int setPages(int pages) {this->pages = pages; return 0;}
         int setIsbn(const QString& isbn);
         int setBindingType(const QString& bindingType);
         int setTextFormat(const QString& textFormat);
@@ -37,7 +38,7 @@ class Text : public Media {
         static QJsonObject getSubclassSchema();
         static QJsonObject getSchema();
 
-        int loadSubclassParams(const QJsonObject& json) override;
+        Result loadSubclassParams(const QJsonObject& json) override;
 
 
         // constructor using setters
