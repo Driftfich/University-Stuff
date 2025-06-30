@@ -1,82 +1,90 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'entitycompleter.h'
 **
-** Created by: The Qt Meta Object Compiler version 69 (Qt 6.9.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.13)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../tablemodel/entitycompleter.h"
-#include <QtCore/qmetatype.h>
-
-#include <QtCore/qtmochelpers.h>
-
 #include <memory>
-
-
-#include <QtCore/qxptype_traits.h>
+#include "../../tablemodel/entitycompleter.h"
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'entitycompleter.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 69
-#error "This file was generated using the moc from 6.9.0. It"
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.15.13. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
-#ifndef Q_CONSTINIT
-#define Q_CONSTINIT
-#endif
-
+QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-QT_WARNING_DISABLE_GCC("-Wuseless-cast")
-namespace {
-struct qt_meta_tag_ZN15EntityCompleterE_t {};
-} // unnamed namespace
+struct qt_meta_stringdata_EntityCompleter_t {
+    QByteArrayData data[4];
+    char stringdata0[40];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_EntityCompleter_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_EntityCompleter_t qt_meta_stringdata_EntityCompleter = {
+    {
+QT_MOC_LITERAL(0, 0, 15), // "EntityCompleter"
+QT_MOC_LITERAL(1, 16, 11), // "onActivated"
+QT_MOC_LITERAL(2, 28, 0), // ""
+QT_MOC_LITERAL(3, 29, 10) // "completion"
 
-template <> constexpr inline auto EntityCompleter::qt_create_metaobjectdata<qt_meta_tag_ZN15EntityCompleterE_t>()
-{
-    namespace QMC = QtMocConstants;
-    QtMocHelpers::StringRefStorage qt_stringData {
-        "EntityCompleter",
-        "onActivated",
-        "",
-        "completion"
-    };
+    },
+    "EntityCompleter\0onActivated\0\0completion"
+};
+#undef QT_MOC_LITERAL
 
-    QtMocHelpers::UintData qt_methods {
-        // Slot 'onActivated'
-        QtMocHelpers::SlotData<void(const QString &)>(1, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QString, 3 },
-        }}),
-    };
-    QtMocHelpers::UintData qt_properties {
-    };
-    QtMocHelpers::UintData qt_enums {
-    };
-    return QtMocHelpers::metaObjectData<EntityCompleter, qt_meta_tag_ZN15EntityCompleterE_t>(QMC::MetaObjectFlag{}, qt_stringData,
-            qt_methods, qt_properties, qt_enums);
-}
-Q_CONSTINIT const QMetaObject EntityCompleter::staticMetaObject = { {
-    QMetaObject::SuperData::link<QCompleter::staticMetaObject>(),
-    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN15EntityCompleterE_t>.stringdata,
-    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN15EntityCompleterE_t>.data,
-    qt_static_metacall,
-    nullptr,
-    qt_staticMetaObjectRelocatingContent<qt_meta_tag_ZN15EntityCompleterE_t>.metaTypes,
-    nullptr
-} };
+static const uint qt_meta_data_EntityCompleter[] = {
+
+ // content:
+       8,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       1,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags
+       1,    1,   19,    2, 0x08 /* Private */,
+
+ // slots: parameters
+    QMetaType::Void, QMetaType::QString,    3,
+
+       0        // eod
+};
 
 void EntityCompleter::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    auto *_t = static_cast<EntityCompleter *>(_o);
     if (_c == QMetaObject::InvokeMetaMethod) {
+        auto *_t = static_cast<EntityCompleter *>(_o);
+        (void)_t;
         switch (_id) {
-        case 0: _t->onActivated((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 0: _t->onActivated((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
     }
 }
+
+QT_INIT_METAOBJECT const QMetaObject EntityCompleter::staticMetaObject = { {
+    QMetaObject::SuperData::link<QCompleter::staticMetaObject>(),
+    qt_meta_stringdata_EntityCompleter.data,
+    qt_meta_data_EntityCompleter,
+    qt_static_metacall,
+    nullptr,
+    nullptr
+} };
+
 
 const QMetaObject *EntityCompleter::metaObject() const
 {
@@ -86,7 +94,7 @@ const QMetaObject *EntityCompleter::metaObject() const
 void *EntityCompleter::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_staticMetaObjectStaticContent<qt_meta_tag_ZN15EntityCompleterE_t>.strings))
+    if (!strcmp(_clname, qt_meta_stringdata_EntityCompleter.stringdata0))
         return static_cast<void*>(this);
     return QCompleter::qt_metacast(_clname);
 }
@@ -100,12 +108,12 @@ int EntityCompleter::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         if (_id < 1)
             qt_static_metacall(this, _c, _id, _a);
         _id -= 1;
-    }
-    if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         if (_id < 1)
-            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
+            *reinterpret_cast<int*>(_a[0]) = -1;
         _id -= 1;
     }
     return _id;
 }
 QT_WARNING_POP
+QT_END_MOC_NAMESPACE

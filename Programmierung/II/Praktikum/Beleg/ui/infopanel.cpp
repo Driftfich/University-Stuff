@@ -25,6 +25,7 @@ pattern of the string, required and optional fields and the default value
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QHeaderView>
+#include <cmath>
 
 #include <QEventLoop>
 #include <QCoreApplication>
@@ -696,25 +697,29 @@ QJsonValue InfoPanel::getValueFromItem(QTreeWidgetItem* item) {
     }
     else if (itemType == "leaf" || item->childCount() == 0) { // Leaf or no children implies direct value
         QString text = item->text(1);
-        if (item->data(0, SchemaTypeRole).toString() == "string") {
+        QString itemType = item->data(1, SchemaTypeRole).toString();
+        // qDebug() << "Item type:" << itemType;
+        // qDebug() << "Text:" << text;
+        if (itemType == "string") {
             return QJsonValue(text);
         }
-        else if (item->data(0, SchemaTypeRole).toString() == "integer") {
+        else if (itemType == "integer") {
             bool ok;
             int intVal = text.toInt(&ok);
             if (ok) return intVal;
         }
-        else if (item->data(0, SchemaTypeRole).toString() == "double") {
+        else if (itemType == "double") {
             bool ok;
             double doubleVal = text.toDouble(&ok);
             if (ok) return doubleVal;
         }
-        else if (item->data(0, SchemaTypeRole).toString() == "boolean") {
+        else if (itemType == "boolean") {
             if (text.toLower() == "true") return true;
             if (text.toLower() == "false") return false;
         }
         
         // fallback to string
+        // qDebug() << "Fallback to string for item:" << item->text(0);
         return QJsonValue(text);
     }
     return QJsonValue(); // Fallback, should not happen
@@ -1099,7 +1104,13 @@ void InfoPanel::validateRequiredFieldsRecursive(QTreeWidgetItem* item) {
         QTreeWidgetItem* child = item->child(i);
         
         if (child->data(0, Qt::UserRole).toString() == "leaf") {
-            QModelIndex childIndex = treeWidget->indexFromItem(child, 1);
+            // Use the model() and indexAt() to get the index instead of protected method
+            QRect itemRect = treeWidget->visualItemRect(child);
+            QModelIndex childIndex = treeWidget->indexAt(itemRect.center());
+            if (childIndex.isValid() && childIndex.column() == 0) {
+                // Get the index for column 1 (value column)
+                childIndex = treeWidget->model()->index(childIndex.row(), 1, childIndex.parent());
+            }
             updateFieldValidationState(childIndex); 
         } else {
             validateRequiredFieldsRecursive(child);
@@ -1421,7 +1432,7 @@ void InfoPanel::clearOptionalFieldComponentsSafely() {
     optionalCheckboxes.clear();
     optionalFieldStates.clear();
     
-    // Phase 5: Force another event processing cycle to ensure deleteLater is processed
+    // Phase 5: Force another event processing cycle
     QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     
     // qDebug() << "Completed safe cleanup of optional field components";

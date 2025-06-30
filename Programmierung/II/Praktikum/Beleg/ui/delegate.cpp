@@ -43,11 +43,14 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
     // create the correct editor for the item type
     if (itemType == "integer") {
         QSpinBox* editor = new QSpinBox(parent);
+        editor->setRange(0, 1000000);
         editor->setFrame(false);
         if (minValueVar.isValid() && !minValueVar.isNull()) {
+            // qDebug() << "Setting minimum to" << minValueVar.toInt();
             editor->setMinimum(minValueVar.toInt());
         }
         if (maxValueVar.isValid() && !maxValueVar.isNull()) {
+            // qDebug() << "Setting maximum to" << maxValueVar.toInt();
             editor->setMaximum(maxValueVar.toInt());
         }
         return editor;

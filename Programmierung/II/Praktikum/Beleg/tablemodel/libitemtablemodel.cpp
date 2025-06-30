@@ -12,6 +12,7 @@ Also provides methods to handle media id changes and provides methods to remove 
 #include <QVector>
 #include <QVariant>
 #include <QModelIndex>
+#include <cmath>
 
 // include the media and libitem classes
 #include "media.h"
@@ -106,6 +107,7 @@ int LibItemTableModel::handleMediaIdChange(unsigned long libitemId, unsigned lon
         - the reference count of the new media is incremented.
     */
     // std::cout << "Handling media ID change: " << libitemId << ", " << oldMediaId << ", " << newMediaId << std::endl;
+    Q_UNUSED(libitemId);
     std::shared_ptr<Media> oldMedia = mediaMan->getMedia(oldMediaId);
     if (oldMedia != nullptr) {
         // decrement the reference count of the old media
@@ -191,8 +193,10 @@ QVariant LibItemTableModel::data(const QModelIndex& index, int role) const {
             if (!media) return QVariant();
             return media->getGenre();
         case Languages:
-            if (!media) return QVariant();
-            return media->getLanguages().join(", ");
+            {if (!media) return QVariant();
+            // return media->getLanguages().join(", ");
+            QStringList languagesList = media->getLanguages().toList();
+            return languagesList.join(", ");}
         default:
             return QVariant();
     }
@@ -404,6 +408,7 @@ Result LibItemTableModel::updateMediaFromJsonObject(const QJsonObject& jsonObjec
     // get the media object from the json object
     unsigned long mediaId = jsonObject["media"].toObject()["media"].toObject()["id"].toVariant().toULongLong();
     std::shared_ptr<Media> media = mediaMan->getMedia(mediaId);
+    // qDebug() << jsonObject;
 
     // check if the media is valid
     if (!media) {
@@ -467,7 +472,7 @@ Result LibItemTableModel::saveFromJsonObject(const QJsonObject& jsonObject) {
 
     // try to update the media item. When the return value is -1 a new media item needs to be created
     int mediaUpdateResult = updateMediaFromJsonObject(jsonObject);
-    qDebug() << "Media update result:" << mediaUpdateResult;
+    // qDebug() << "Media update result:" << mediaUpdateResult;
     if (mediaUpdateResult == -1) {
         // create a new media item
         QJsonObject mediaJson = jsonObject["media"].toObject();

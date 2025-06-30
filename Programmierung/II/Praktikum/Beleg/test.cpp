@@ -148,9 +148,11 @@ int test_libitem_file_management() {
     // Test the Libitem class
     // Create a Libitem object
     Libitem l1 = Libitem((unsigned long) 1, (unsigned long) 1, (unsigned long) 5, QString("Shelf A"), QString("New"), [](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+        Q_UNUSED(libitemId);
         std::cout << "Libitem with ID " << libitemId << " changed media from " << oldMediaId << " to " << newMediaId << std::endl;
     });
     Libitem l2 = Libitem((unsigned long) 2, (unsigned long) 2, (unsigned long) 3, QString("Shelf B"), QString("Used"), [](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+        Q_UNUSED(libitemId);
         std::cout << "Libitem with ID " << libitemId << " changed media from " << oldMediaId << " to " << newMediaId << std::endl;
     });
     // create a magic pointer array on the l1 object
@@ -198,7 +200,9 @@ int test_libitem_file_management() {
     while (!file.atEnd()) {
         std::cout << "Loading object from file" << std::endl;
         std::shared_ptr<Libitem> libitemPtr = Libitem::fromFile(file, [](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
-            
+            Q_UNUSED(libitemId);
+            Q_UNUSED(oldMediaId);
+            Q_UNUSED(newMediaId);
         });
         if (libitemPtr) {
             libitemPtrs.push_back(libitemPtr);
@@ -315,6 +319,7 @@ int test_libitemman() {
 
     // add a new libitem
     std::shared_ptr<Libitem> l1 = std::make_shared<Libitem>(Libitem(lm.getNextId(), (unsigned long) 1, (unsigned long) 5, QString("Shelf A"), QString("New"), [](unsigned long libitemId, unsigned long oldMediaId, unsigned long newMediaId) {
+        Q_UNUSED(libitemId);
         std::cout << "Libitem with ID " << libitemId << " changed media from " << oldMediaId << " to " << newMediaId << std::endl;
     }));
     lm.addLibitem(l1);

@@ -160,7 +160,7 @@ int TransactionMan::removeTransactionId(unsigned long id) {
 
 // remove a transaction by index
 int TransactionMan::removeTransaction(unsigned long index) {
-    if (index < transactions.size()) {
+    if (index < (unsigned long) transactions.size()) {
         // get the transaction at the given index
         std::shared_ptr<Transaction> transaction = transactions[index];
         // remove the transaction from the vector

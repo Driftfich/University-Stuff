@@ -192,7 +192,7 @@ public:
         toolbar->setWindowTitle(QCoreApplication::translate("toolbar", "Form", nullptr));
         add->setText(QCoreApplication::translate("toolbar", "", nullptr));
         deletec->setText(QCoreApplication::translate("toolbar", "", nullptr));
-    } // retranslateUi
+    }
 
     // get columns
     QVector<QString> getColumns() const {
@@ -234,9 +234,13 @@ public:
     {
         // std::visit uses a lambda expression that is called for each possible type of the variant
         std::visit([this](auto* m) {
-            // Hier rufen wir die andere setColumns-Methode auf, die mit QStringList arbeitet
-            setColumns(QStringList::fromVector(m->getAllColumnNames().values()),
-                       m->getDisplayedColumns());
+            QVector<QString> columnNames = m->getAllColumnNames().values().toVector();
+            QVector<QString> displayedColumns = m->getDisplayedColumns();
+
+            QStringList columnNamesList = QStringList::fromVector(columnNames);
+            QStringList displayedColumnsList = QStringList::fromVector(displayedColumns);
+
+            setColumns(columnNamesList, displayedColumnsList);
         }, model);
     }
 
@@ -253,8 +257,8 @@ public:
     {
         // std::visit uses a lambda expression that is called for each possible type of the variant
         std::visit([this](auto* m) {
-            // Hier rufen wir die andere setColumns-Methode auf, die mit QStringList arbeitet
-            setSortColumns(QStringList::fromVector(m->getAllColumnNames().values()));
+            QVector<QString> columnNames = m->getAllColumnNames().values().toVector();
+            setSortColumns(QStringList::fromVector(columnNames));
         }, model);
     }
 

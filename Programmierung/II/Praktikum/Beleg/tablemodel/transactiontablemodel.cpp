@@ -397,7 +397,7 @@ Result TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) 
 
     // check how often the libitem is already borrowed
     QVector<std::shared_ptr<Transaction>> transactions = transactionMan->getTransactionsByLibitemId(libitem->getId());
-    if (transactions.size() >= libitem->getAvailableCopies()) {
+    if ((unsigned long) transactions.size() >= libitem->getAvailableCopies()) {
         QString errorMsg = "Libitem " + QString::number(libitem->getId()) + " has reached the maximum number of available copies (" + QString::number(libitem->getAvailableCopies()) + ")";
         return Result::Error(errorMsg);
     }
@@ -408,7 +408,7 @@ Result TransactionTableModel::saveFromJsonObject(const QJsonObject& jsonObject) 
         unsigned long limit = person->getBorrower()->getLimit();
         // count the number of current transactions for this person by utilizing the person map in the transaction manager
         QVector<std::shared_ptr<Transaction>> transactions = transactionMan->getTransactionsByPersonId(person->getId());
-        if (transactions.size() >= limit) {
+        if ((unsigned long) transactions.size() >= limit) {
             QString errorMsg = person->getFname() + " " + person->getLname() + " has reached the maximum number of borrowed items (" + QString::number(limit) + ")";
             return Result::Error(errorMsg);
         }

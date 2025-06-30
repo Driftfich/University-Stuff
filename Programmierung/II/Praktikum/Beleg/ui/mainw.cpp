@@ -92,7 +92,7 @@ void MainWindow::setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex&
     if (!treeWidget) return;
     
     // get the tree widget item from the index
-    QTreeWidgetItem* item = treeWidget->itemFromIndex(index);
+    QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(index.internalPointer());
     if (!item) return;
     
     // Get the field name from the tree item's data
@@ -102,23 +102,23 @@ void MainWindow::setupCompleterForAddpanel(QLineEdit* editor, const QModelIndex&
     // create a new entity completer if the field name is supported
     EntityCompleter* completer = nullptr;
     if (fieldName == "libitem_id") {
-        qDebug() << "Setting up completer for libitem_id...";
+        // qDebug() << "Setting up completer for libitem_id...";
         QStringList filterColumns = QStringList() << "ID" << "Title" << "Publisher";
         completer = new EntityCompleter(libitemModel, "{ID}", filterColumns, "{Title} - {Publisher} ({ID})\nAvailable Copies: {Available Copies}\nBorrowed Copies: {Borrowed Copies}", ".", editor);
     }
     else if (fieldName == "borrower_id") {
-        qDebug() << "Setting up completer for borrower_id...";
+        // qDebug() << "Setting up completer for borrower_id...";
         QStringList filterColumns = QStringList() << "ID" << "First Name" << "Last Name" << "Email";
         completer = new EntityCompleter(personModel, "{ID}", filterColumns, "{First Name} {Last Name} ({ID})", ".", editor);
     }
     else if (fieldName == "media_id") {
-        qDebug() << "Setting up completer for media_id...";
+        // qDebug() << "Setting up completer for media_id...";
         QStringList filterColumns = QStringList() << "ID" << "Title" << "Publisher";
         completer = new EntityCompleter(mediaModel, "{ID}", filterColumns, "{Title} - {Publisher} ({ID})", ".", editor);
     }
     // if item parent key is "artist_ids" setup a completer for the given array key
     else if (item->parent()->data(0, SchemaOriginalKeyRole).toString() == "artist_ids") {
-        qDebug() << "Setting up completer for artist_ids...";
+        // qDebug() << "Setting up completer for artist_ids...";
         QStringList filterColumns = QStringList() << "ID" << "First Name" << "Last Name" << "Email";
         completer = new EntityCompleter(personModel, "{ID}", filterColumns, "{First Name} {Last Name} ({ID})", ".", editor);
     }
@@ -151,7 +151,7 @@ void MainWindow::setupCompleterForInfoPanel(QLineEdit* editor, const QModelIndex
     if (!treeWidget) return;
 
     // get the tree widget item from the index
-    QTreeWidgetItem* item = treeWidget->itemFromIndex(index);
+    QTreeWidgetItem* item = static_cast<QTreeWidgetItem*>(index.internalPointer());
     if (!item) return;
 
     // get the field name from the tree item's data
@@ -301,11 +301,14 @@ void MainWindow::updateSubclassType(QTreeWidgetItem* item, int column, const QSt
     defaultJson["libitem"] = libitemBaseData; // Preserve the base libitem data
     QJsonObject defaultSchema = libitemModel->getDefaultSchema(newValue.toString());
 
-    // update the info panel with the new default json object and schema. The edit mode will be not left, as the user is still in the addPanel
-    addPanel->displayInfo(defaultJson, defaultSchema, false);
-    // set the original data and schema again to allow for correct cancel behavior
-    addPanel->setOriginalData(originalData);
-    addPanel->setOriginalSchema(originalSchema);
+
+    QTimer::singleShot(0, [this, defaultJson, defaultSchema, originalData, originalSchema]() {
+        // update the info panel with the new default json object and schema. The edit mode will be not left, as the user is still in the addPanel
+        addPanel->displayInfo(defaultJson, defaultSchema, false);
+        // set the original data and schema again to allow for correct cancel behavior
+        addPanel->setOriginalData(originalData);
+        addPanel->setOriginalSchema(originalSchema);
+    });
 }
 
 /**

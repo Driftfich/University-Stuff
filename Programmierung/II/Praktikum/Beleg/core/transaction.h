@@ -45,8 +45,8 @@ class Transaction {
 
         Transaction(QJsonObject json) {
             Result result = loadLocalParams(json);
-            qDebug() << (int) result;
-            qDebug() << (QString) result;
+            // qDebug() << (int) result;
+            // qDebug() << (QString) result;
             if (result != 0) {
                 throw std::runtime_error("Issues loading transaction parameters");
             }

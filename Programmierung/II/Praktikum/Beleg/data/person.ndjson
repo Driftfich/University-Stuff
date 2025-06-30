@@ -1,5 +1,5 @@
 {"artist":{},"birthday":"2018-08-18","borrower":{"limit":9},"email":"","ename":"","fname":"Billi","gender":"Male","id":1,"lname":"Boy","location":"","note":"","tel":""}
 {"artist":{"artist_type":"Writer"},"birthday":"1982-01-01","borrower":{},"email":"","ename":"Uwe","fname":"Marc","gender":"Male","id":2,"lname":"Kling","location":"Berlin, Germany","note":"","tel":""}
 {"artist":{},"birthday":"2005-12-05","borrower":{"limit":5},"email":"","ename":"","fname":"Franz","gender":"Male","id":3,"lname":"Rehschuh","location":"Dresden","note":"Student at HTW Dresden University","tel":""}
-{"artist":{"artist_type":"Novelist"},"birthday":"1972-06-16","borrower":{},"email":"","ename":"","fname":"Andy","gender":"Female","id":4,"lname":"Weir","location":"Dresden","note":"","tel":""}
+{"artist":{"artist_type":"Novelist"},"birthday":"1972-06-16","borrower":{},"email":"","ename":"","fname":"Andy","gender":"Male","id":4,"lname":"Weir","location":"Dresden","note":"","tel":""}
 {"artist":{"artist_type":"Science Fiction Writer"},"birthday":"1963-06-23","borrower":{},"email":"","ename":"","fname":"Liu","gender":"Male","id":5,"lname":"Cixin","location":"","note":"","tel":""}

@@ -1,83 +1,92 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'custfiltproxmodel.h'
 **
-** Created by: The Qt Meta Object Compiler version 69 (Qt 6.9.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.13)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../tablemodel/custfiltproxmodel.h"
-#include <QtCore/qmetatype.h>
-
-#include <QtCore/qtmochelpers.h>
-
 #include <memory>
-
-
-#include <QtCore/qxptype_traits.h>
+#include "../../tablemodel/custfiltproxmodel.h"
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'custfiltproxmodel.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 69
-#error "This file was generated using the moc from 6.9.0. It"
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.15.13. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
-#ifndef Q_CONSTINIT
-#define Q_CONSTINIT
-#endif
-
+QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-QT_WARNING_DISABLE_GCC("-Wuseless-cast")
-namespace {
-struct qt_meta_tag_ZN22CustomFilterProxyModelE_t {};
-} // unnamed namespace
+struct qt_meta_stringdata_CustomFilterProxyModel_t {
+    QByteArrayData data[5];
+    char stringdata0[61];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_CustomFilterProxyModel_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_CustomFilterProxyModel_t qt_meta_stringdata_CustomFilterProxyModel = {
+    {
+QT_MOC_LITERAL(0, 0, 22), // "CustomFilterProxyModel"
+QT_MOC_LITERAL(1, 23, 15), // "setSearchString"
+QT_MOC_LITERAL(2, 39, 0), // ""
+QT_MOC_LITERAL(3, 40, 10), // "filterText"
+QT_MOC_LITERAL(4, 51, 9) // "delimiter"
 
-template <> constexpr inline auto CustomFilterProxyModel::qt_create_metaobjectdata<qt_meta_tag_ZN22CustomFilterProxyModelE_t>()
-{
-    namespace QMC = QtMocConstants;
-    QtMocHelpers::StringRefStorage qt_stringData {
-        "CustomFilterProxyModel",
-        "setSearchString",
-        "",
-        "filterText",
-        "delimiter"
-    };
+    },
+    "CustomFilterProxyModel\0setSearchString\0"
+    "\0filterText\0delimiter"
+};
+#undef QT_MOC_LITERAL
 
-    QtMocHelpers::UintData qt_methods {
-        // Method 'setSearchString'
-        QtMocHelpers::MethodData<void(const QString &, const QString &)>(1, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 3 }, { QMetaType::QString, 4 },
-        }}),
-    };
-    QtMocHelpers::UintData qt_properties {
-    };
-    QtMocHelpers::UintData qt_enums {
-    };
-    return QtMocHelpers::metaObjectData<CustomFilterProxyModel, qt_meta_tag_ZN22CustomFilterProxyModelE_t>(QMC::MetaObjectFlag{}, qt_stringData,
-            qt_methods, qt_properties, qt_enums);
-}
-Q_CONSTINIT const QMetaObject CustomFilterProxyModel::staticMetaObject = { {
-    QMetaObject::SuperData::link<QSortFilterProxyModel::staticMetaObject>(),
-    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN22CustomFilterProxyModelE_t>.stringdata,
-    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN22CustomFilterProxyModelE_t>.data,
-    qt_static_metacall,
-    nullptr,
-    qt_staticMetaObjectRelocatingContent<qt_meta_tag_ZN22CustomFilterProxyModelE_t>.metaTypes,
-    nullptr
-} };
+static const uint qt_meta_data_CustomFilterProxyModel[] = {
+
+ // content:
+       8,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       1,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // methods: name, argc, parameters, tag, flags
+       1,    2,   19,    2, 0x02 /* Public */,
+
+ // methods: parameters
+    QMetaType::Void, QMetaType::QString, QMetaType::QString,    3,    4,
+
+       0        // eod
+};
 
 void CustomFilterProxyModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    auto *_t = static_cast<CustomFilterProxyModel *>(_o);
     if (_c == QMetaObject::InvokeMetaMethod) {
+        auto *_t = static_cast<CustomFilterProxyModel *>(_o);
+        (void)_t;
         switch (_id) {
-        case 0: _t->setSearchString((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
+        case 0: _t->setSearchString((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         default: ;
         }
     }
 }
+
+QT_INIT_METAOBJECT const QMetaObject CustomFilterProxyModel::staticMetaObject = { {
+    QMetaObject::SuperData::link<QSortFilterProxyModel::staticMetaObject>(),
+    qt_meta_stringdata_CustomFilterProxyModel.data,
+    qt_meta_data_CustomFilterProxyModel,
+    qt_static_metacall,
+    nullptr,
+    nullptr
+} };
+
 
 const QMetaObject *CustomFilterProxyModel::metaObject() const
 {
@@ -87,7 +96,7 @@ const QMetaObject *CustomFilterProxyModel::metaObject() const
 void *CustomFilterProxyModel::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_staticMetaObjectStaticContent<qt_meta_tag_ZN22CustomFilterProxyModelE_t>.strings))
+    if (!strcmp(_clname, qt_meta_stringdata_CustomFilterProxyModel.stringdata0))
         return static_cast<void*>(this);
     return QSortFilterProxyModel::qt_metacast(_clname);
 }
@@ -101,12 +110,12 @@ int CustomFilterProxyModel::qt_metacall(QMetaObject::Call _c, int _id, void **_a
         if (_id < 1)
             qt_static_metacall(this, _c, _id, _a);
         _id -= 1;
-    }
-    if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         if (_id < 1)
-            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
+            *reinterpret_cast<int*>(_a[0]) = -1;
         _id -= 1;
     }
     return _id;
 }
 QT_WARNING_POP
+QT_END_MOC_NAMESPACE
