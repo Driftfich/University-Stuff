@@ -47,6 +47,11 @@ qmake Beleg.pro
 make
 ```
 
+- If you have any issues with the compilation, try to clean up the build directory and try again.
+```bash
+find build -type f -delete
+```
+
 
 ## Usage Instructions
 ### Adding Data
