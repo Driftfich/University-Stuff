@@ -76,7 +76,8 @@ SOURCES       = core/artist.cpp \
 		ui/infopanel.cpp \
 		ui/delegate.cpp \
 		utils/jsonschemautils.cpp \
-		test.cpp build/rcc/qrc_ressources.cpp \
+		test.cpp \
+		run.cpp build/rcc/qrc_ressources.cpp \
 		build/moc/moc_library.cpp \
 		build/moc/moc_libitemtablemodel.cpp \
 		build/moc/moc_persontablemodel.cpp \
@@ -112,6 +113,7 @@ OBJECTS       = build/obj/artist.o \
 		build/obj/delegate.o \
 		build/obj/jsonschemautils.o \
 		build/obj/test.o \
+		build/obj/run.o \
 		build/obj/qrc_ressources.o \
 		build/obj/moc_library.o \
 		build/obj/moc_libitemtablemodel.o \
@@ -252,7 +254,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		ui/infopanel.cpp \
 		ui/delegate.cpp \
 		utils/jsonschemautils.cpp \
-		test.cpp
+		test.cpp \
+		run.cpp
 QMAKE_TARGET  = Beleg
 DESTDIR       = 
 TARGET        = Beleg
@@ -440,7 +443,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents ressources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents core/artist.h core/audio.h core/borrower.h core/config.h core/libitem.h core/media.h core/person.h core/text.h core/transaction.h core/video.h manager/library.h manager/transactionman.h manager/personman.h manager/mediaman.h manager/libitemman.h tablemodel/libitemtablemodel.h tablemodel/persontablemodel.h tablemodel/transactiontablemodel.h tablemodel/custfiltproxmodel.h tablemodel/entitycompleter.h tablemodel/mediatablemodel.h ui/mainw.h ui/toolbar.h ui/tablewidget.h ui/sidepanel.h ui/infopanel.h ui/delegate.h utils/jsonschemautils.h utils/returns.h $(DISTDIR)/
-	$(COPY_FILE) --parents core/artist.cpp core/audio.cpp core/media.cpp core/person.cpp core/text.cpp core/video.cpp core/borrower.cpp core/libitem.cpp core/transaction.cpp manager/library.cpp manager/transactionman.cpp manager/personman.cpp manager/mediaman.cpp manager/libitemman.cpp tablemodel/libitemtablemodel.cpp tablemodel/persontablemodel.cpp tablemodel/transactiontablemodel.cpp tablemodel/custfiltproxmodel.cpp tablemodel/entitycompleter.cpp tablemodel/mediatablemodel.cpp ui/mainw.cpp ui/infopanel.cpp ui/delegate.cpp utils/jsonschemautils.cpp test.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents core/artist.cpp core/audio.cpp core/media.cpp core/person.cpp core/text.cpp core/video.cpp core/borrower.cpp core/libitem.cpp core/transaction.cpp manager/library.cpp manager/transactionman.cpp manager/personman.cpp manager/mediaman.cpp manager/libitemman.cpp tablemodel/libitemtablemodel.cpp tablemodel/persontablemodel.cpp tablemodel/transactiontablemodel.cpp tablemodel/custfiltproxmodel.cpp tablemodel/entitycompleter.cpp tablemodel/mediatablemodel.cpp ui/mainw.cpp ui/infopanel.cpp ui/delegate.cpp utils/jsonschemautils.cpp test.cpp run.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -850,6 +853,31 @@ build/obj/test.o: test.cpp core/media.h \
 		tablemodel/mediatablemodel.h \
 		manager/library.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/test.o test.cpp
+
+build/obj/run.o: run.cpp ui/mainw.h \
+		ui/toolbar.h \
+		tablemodel/libitemtablemodel.h \
+		core/libitem.h \
+		core/media.h \
+		utils/returns.h \
+		manager/libitemman.h \
+		manager/transactionman.h \
+		core/transaction.h \
+		manager/mediaman.h \
+		manager/personman.h \
+		core/person.h \
+		core/config.h \
+		core/artist.h \
+		core/borrower.h \
+		tablemodel/transactiontablemodel.h \
+		tablemodel/persontablemodel.h \
+		ui/tablewidget.h \
+		ui/sidepanel.h \
+		ui/infopanel.h \
+		tablemodel/custfiltproxmodel.h \
+		tablemodel/mediatablemodel.h \
+		manager/library.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/run.o run.cpp
 
 build/obj/qrc_ressources.o: build/rcc/qrc_ressources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/qrc_ressources.o build/rcc/qrc_ressources.cpp

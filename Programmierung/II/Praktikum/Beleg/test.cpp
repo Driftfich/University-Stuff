@@ -31,7 +31,6 @@
 #include "libitemtablemodel.h"
 #include "transactiontablemodel.h"
 #include "custfiltproxmodel.h"
-// include the variant type
 #include <variant>
 
 int test_media_file_management() {
@@ -41,7 +40,6 @@ int test_media_file_management() {
     Video v1 = Video((unsigned long) 1, QString("Test Title"), QDate::currentDate(), QVector<unsigned long>{1, 2}, QString("Test Publisher"), QString("Test Description"), QString("Test Genre"), QVector<QString>{"English"}, QMap<QString, QVariant>{}, 120, QString("Movie"), 1080, QString("H.264"), QString("16:9"), QString("Stereo"));
     Audio a1 = Audio((unsigned long) 1, QString("Test Title"), QDate::currentDate(), QVector<unsigned long>{1, 2}, QString("Test Publisher"), QString("Test Description"), QString("Test Genre"), QVector<QString>{"English"}, QMap<QString, QVariant>{}, 300, QString("Song"), 320, 44100, QString("Stereo"), QString("MP3"), QString("Test Album"), QVector<QString>{"Track 1", "Track 2"});
 
-    // create a magic pointer array on the m1 and t1 objects
     std::shared_ptr<Media> mediaPtr1 = std::make_shared<Media>(m1);
     std::shared_ptr<Text> textPtr1 = std::make_shared<Text>(t1);
     std::shared_ptr<Video> videoPtr1 = std::make_shared<Video>(v1);
@@ -100,7 +98,6 @@ int test_person_file_management() {
     // make the p3 an artist
     p3.setArtist(std::make_unique<Artist>(Artist(QString("Painter")))); // , QVector<unsigned long>{1, 2}
 
-    // create a magic pointer array on the p1 and b1 objects
     std::vector<std::shared_ptr<Person>> personPtrs = {std::make_shared<Person>(p1), std::make_shared<Person>(p2), std::make_shared<Person>(p3)};
 
     // save all objects to a file
@@ -336,35 +333,16 @@ static void loadQssTheme(QApplication &app, const QString &resourcePath) {
     app.setStyleSheet(QString::fromUtf8(f.readAll()));
 }
 
-/**
- * @brief Starts the MainWindow UI in modern Material look.
- * @param argc Number of command line arguments.
- * @param argv Command line arguments.
- * @return app.exec()
- */
 int test_ui(int argc, char *argv[]) {
     Q_INIT_RESOURCE(ressources);
     QApplication app(argc, argv);
 
-    // moderner Basis-Style
+    // modern base style
     app.setStyle(QStyleFactory::create("Fusion"));
-    // eigenes Material-QSS drüberlegen
+    // custom material QSS
     loadQssTheme(app, ":/ui/material.qss");
 
     MainWindow w;
     w.show();
     return app.exec();
-}
-
-int main(int argc, char *argv[]) {
-    // Test the Media class
-    // test_media_file_management();
-    // test_person_file_management();
-    // test_libitem_file_management();
-    // test_transaction_file_management();
-    // test_transactionman();
-    // test_mediaman();
-    // test_personman();
-    // test_libitemman();
-    test_ui(argc, argv);
 }

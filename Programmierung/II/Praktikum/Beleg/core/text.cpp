@@ -94,7 +94,7 @@ Result Text::loadSubclassParams(const QJsonObject& json) {
 QJsonObject Text::getSubclassSchema() {
     QJsonObject schema;
     schema["pages"] = QJsonObject{{"type", "integer"}, {"rename", "Number of Pages"},  {"description", "The number of pages in the text"}, {"minimum", 1}};
-    schema["isbn"] = QJsonObject{{"type", "integer"}, {"rename", "ISBN"}, {"description", "The ISBN of the text"}, {"pattern", "^[0-9]{13}$"}};
+    schema["isbn"] = QJsonObject{{"type", "string"}, {"rename", "ISBN"}, {"description", "The ISBN of the text"}, {"pattern", "^[0-9]{13}$"}};
     schema["bindingType"] = QJsonObject{{"type", "string"}, {"rename", "Binding Type"}, {"description", "The binding type of the text"}};
     schema["textFormat"] = QJsonObject{{"type", "string"}, {"rename", "Text Format"}, {"description", "The text format of the text"}};
     return schema;

@@ -21,6 +21,8 @@ It also handles the validation of the fields and the painting of the item.
 
 QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+    Q_UNUSED(option);
+    
     // no editor for the key column
     if (index.column() == 0)
         return nullptr;
@@ -43,7 +45,7 @@ QWidget* InfoPanelDelegate::createEditor(QWidget* parent, const QStyleOptionView
     // create the correct editor for the item type
     if (itemType == "integer") {
         QSpinBox* editor = new QSpinBox(parent);
-        editor->setRange(0, 1000000);
+        editor->setRange(0, 276447232);
         editor->setFrame(false);
         if (minValueVar.isValid() && !minValueVar.isNull()) {
             // qDebug() << "Setting minimum to" << minValueVar.toInt();

@@ -6,21 +6,14 @@ TEMPLATE = app
 TARGET = Beleg
 INCLUDEPATH += .
 
-# Build-Verzeichnis-Konfiguration für saubere Projektstruktur
+# Build Directories for clean structure
 OBJECTS_DIR = build/obj     # .o Dateien
 MOC_DIR = build/moc         # moc_*.cpp Dateien
 RCC_DIR = build/rcc         # qrc_*.cpp Dateien  
 UI_DIR = build/ui           # ui_*.h Dateien
 #DESTDIR = build/bin         # Ziel-Executable
 
-# You can make your code fail to compile if you use deprecated APIs.
-# In order to do so, uncomment the following line.
-# Please consult the documentation of the deprecated API in order to know
-# how to port your code away from it.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
-#DEFINES += QT_DISABLE_DEPRECATED_UP_TO=0x060000 # disables all APIs deprecated in Qt 6.0.0 and earlier
-
-# Input
+# Header and Source Files
 HEADERS +=  core/artist.h \
             core/audio.h \
             core/borrower.h \
@@ -77,14 +70,18 @@ SOURCES +=  core/artist.cpp \
             ui/infopanel.cpp \
             ui/delegate.cpp \
             utils/jsonschemautils.cpp \
-            test.cpp
+            test.cpp \
+            run.cpp
 
+# Include dirs for clean structure
 INCLUDEPATH += $$PWD/core
 INCLUDEPATH += $$PWD/manager
 INCLUDEPATH += $$PWD/tablemodel
 INCLUDEPATH += $$PWD/ui
 INCLUDEPATH += $$PWD/utils
 
+# image resources
 RESOURCES = ressources.qrc
 
+# Qt modules
 QT += core gui widgets
