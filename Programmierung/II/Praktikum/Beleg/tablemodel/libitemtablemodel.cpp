@@ -82,6 +82,8 @@ int LibItemTableModel::removeRow(int row, const QModelIndex &parent) {
     beginRemoveRows(parent, row, row);
     // remove the libitem from the libitem manager
     libItemMan->removeLibitem(row);
+    // reduce the media refcount by 1
+    media->setRefCount(media->getRefCount() - 1);
     endRemoveRows();
     return true;
 }

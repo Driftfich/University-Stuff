@@ -106,7 +106,7 @@ std::ostream& operator<<(std::ostream& os, const Libitem& libitem) {
 QJsonObject Libitem::getLocalSchema() {
     QJsonObject schema;
     schema["id"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"required", true}, {"rename", "Libitem ID"}, {"description", "Unique identifier for the library item"}};
-    schema["media_id"] = QJsonObject{{"type", "string"}, {"required", true}, {"rename", "Media ID"}, {"description", "Unique identifier for the media"}, {"pattern", "^[0-9]+$"}, {"placeholder", "Enter ID or search for media"}};
+    schema["media_id"] = QJsonObject{{"type", "string"}, {"required", true}, {"rename", "Media ID"}, {"description", "Unique identifier for the media"}, {"pattern", "^[0-9]{1,19}$"}, {"placeholder", "Enter ID or search for media"}};
     schema["available_copies"] = QJsonObject{{"type", "integer"}, {"rename", "Available Copies"}, {"description", "Number of available copies"}};
     schema["borrowed_copies"] = QJsonObject{{"type", "integer"}, {"readonly", true}, {"rename", "Borrowed Copies"}, {"description", "Number of borrowed copies"}};
     schema["location"] = QJsonObject{{"type", "string"}, {"rename", "Location"}, {"description", "Location of the library item"}};

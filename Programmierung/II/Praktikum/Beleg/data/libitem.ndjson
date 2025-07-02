@@ -1,6 +1,7 @@
-{"available_copies":5,"condition":"good","id":0,"location":"Shelf A","media_id":0}
+{"available_copies":5,"condition":"poor","id":0,"location":"Shelf A","media_id":0}
 {"available_copies":9,"condition":"new","id":1,"location":"","media_id":1}
 {"available_copies":8,"condition":"new","id":2,"location":"","media_id":2}
 {"available_copies":5,"condition":"new","id":3,"location":"Shelf B","media_id":3}
 {"available_copies":5,"condition":"new","id":4,"location":"","media_id":4}
 {"available_copies":5,"condition":"new","id":6,"location":"","media_id":6}
+{"available_copies":3,"condition":"new","id":7,"location":"","media_id":0}

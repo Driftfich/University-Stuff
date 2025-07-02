@@ -21,10 +21,11 @@ where simultan access to all libitems and media items is possible.
 #include <QJsonDocument>
 #include "media.h"
 #include "returns.h"
+#include "config.h"
 
 class Libitem {
     unsigned long id; // libitem id
-    unsigned long media_id; // media id
+    unsigned long media_id = INVALID_MEDIA_ID; // media id - initialize to invalid
     unsigned long available_copies; // number of available copies in the library
     // unsigned long borrowed_copies; // number of borrowed copies
     QString location; // location of the libitem in the library
@@ -37,6 +38,7 @@ class Libitem {
         int setId(unsigned long id) { this->id = id; return 0;}
         int setMediaId(unsigned long media_id) { 
             unsigned long oldMediaId = this->media_id;
+            
             this->media_id = media_id;
             // std::cout << ("Changed media id from " + QString::number(oldMediaId) + " to " + QString::number(media_id)).toStdString() << std::endl;
             if (onMediaChangeCallback) {

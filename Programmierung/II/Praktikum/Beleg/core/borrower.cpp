@@ -18,7 +18,7 @@ QJsonObject Borrower::getSubclassParams() const {
 
 QJsonObject Borrower::getSubclassSchema(bool checked) {
     QJsonObject properties;
-    properties["limit"] = QJsonObject{{"type", "integer"}, {"minimum", 0}, {"maximum", MAX_ITEMS_PER_BORROWER_HARD}};
+    properties["limit"] = QJsonObject{{"type", "integer"}, {"minimum", MAX_ITEMS_PER_BORROWER_DEFAULT}, {"maximum", MAX_ITEMS_PER_BORROWER_HARD}};
     QJsonObject schema;
     schema.insert("type", "object");
     schema.insert("properties", properties);

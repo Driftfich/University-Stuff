@@ -49,7 +49,7 @@ class Media {
         int setGenre(const QString& genre);
         int setLanguages(const QVector<QString>& languages);
         int setMetadata(const QMap<QString, QVariant>& metadata);
-        void setRefCount(int refCount) {this->refCount = refCount;}
+        void setRefCount(int refCount) {this->refCount = refCount;} //  qDebug() << "RefCount updated to" << refCount;
 
         // getter methods
         unsigned long getId() const {return this->id;}

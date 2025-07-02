@@ -14,6 +14,7 @@ It also provides methods to add, remove and get media objects by id.
 
 #include "media.h"
 #include "mediaman.h"
+#include "config.h"
 
 // constructor
 MediaMan::MediaMan(QString filename, bool load) {
@@ -76,6 +77,10 @@ QVector<std::shared_ptr<Media>> MediaMan::getMediaByPersonId(unsigned long perso
 
 // get the next id
 unsigned long MediaMan::getNextId() const {
+    // if the next id is invalid/to big, return 0
+    if (next_id == INVALID_MEDIA_ID) {
+        return 0;
+    }
     return next_id;
 }
 QVector<std::shared_ptr<Media>> MediaMan::getAllMedia() const {
