@@ -38,9 +38,18 @@ The project is roughly structured into several directories:
 - **/utils**: Contains utility functions, such for creating a default json from the schema or for the custom return type.
 - **/data**: Contains the data files used by the application.
 
+## Configuration
+The configuration file can be found in the /core directory.
+It contains the following settings:
+- MIN_AGE: The minimum age of a person.
+- MAX_AGE: The maximum age of a person.
+- MAX_ITEMS_PER_BORROWER_HARD: The maximum number of items a borrower can borrow.
+- MAX_ITEMS_PER_BORROWER_DEFAULT: The default number of items a borrower can borrow.
+- INVALID_MEDIA_ID: The invalid media id. It is used at init of a libitem, so when the onMediaChangeCallback is called, no media item gets a negative refcount. Do not change this value.
+
 ## Compiling Instructions
 - During development 6.9.0 was used. At the end the project was backported to Qt 5
-- To compile the project, you need to have Qt installed on your system.
+- To compile the project, you need to have Qt, C++ and make installed on your system.
 - navigate to the project directory and run the following commands:
 ```bash
 qmake Beleg.pro
