@@ -31,6 +31,26 @@ public class Files extends Panel {
         quit.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) { quit();}});
 
         show.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) { inpChanged(inp.getText());}});
+
+        out.addMouseListener(new MouseAdapter() {public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() >= 2) {
+                System.out.println("Double click!");
+                int cpos = out.getCaretPosition();
+                System.out.println(cpos);
+                String x = out.getText();
+                for (;cpos > 0 && x.charAt(cpos) != '\n'; cpos--);
+                int end = cpos;
+                cpos--;
+                for (;cpos >= 0 && x.charAt(cpos) != '\n'; cpos--);
+                int start = cpos;
+                try {
+                    String s = x.substring(start+1, end);
+                    String newPath = inp.getText() + "/" + s;
+                    inpChanged(newPath);
+                    inp.setText(newPath);
+                } catch (IndexOutOfBoundsException er) {};
+            }
+        }});
     }
 
     public static void main(String[] args) {
@@ -53,6 +73,10 @@ public class Files extends Panel {
         out.setText(getContent(path));
         return;
     }
+
+    // public void doubleClickPerformed(String path) {
+
+    // }
 
     public static String getContent(String path) {
         File f = new File(path);
