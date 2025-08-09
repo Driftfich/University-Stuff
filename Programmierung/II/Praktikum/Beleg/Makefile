@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Beleg1.0.0
-DISTDIR = /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/obj/Beleg1.0.0
+DISTDIR = /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/obj/Beleg1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
 LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread   
@@ -500,32 +500,32 @@ build/moc/moc_library.cpp: manager/library.h \
 		manager/transactionman.h \
 		core/transaction.h \
 		core/libitem.h \
+		core/config.h \
 		manager/personman.h \
 		core/person.h \
-		core/config.h \
 		core/artist.h \
 		core/borrower.h \
 		manager/libitemman.h \
 		build/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include manager/library.h -o build/moc/moc_library.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include manager/library.h -o build/moc/moc_library.cpp
 
 build/moc/moc_libitemtablemodel.cpp: tablemodel/libitemtablemodel.h \
 		core/libitem.h \
 		core/media.h \
 		utils/returns.h \
+		core/config.h \
 		manager/libitemman.h \
 		manager/transactionman.h \
 		core/transaction.h \
 		manager/mediaman.h \
 		manager/personman.h \
 		core/person.h \
-		core/config.h \
 		core/artist.h \
 		core/borrower.h \
 		build/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/libitemtablemodel.h -o build/moc/moc_libitemtablemodel.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/libitemtablemodel.h -o build/moc/moc_libitemtablemodel.cpp
 
 build/moc/moc_persontablemodel.cpp: tablemodel/persontablemodel.h \
 		manager/personman.h \
@@ -541,7 +541,7 @@ build/moc/moc_persontablemodel.cpp: tablemodel/persontablemodel.h \
 		manager/mediaman.h \
 		build/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/persontablemodel.h -o build/moc/moc_persontablemodel.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/persontablemodel.h -o build/moc/moc_persontablemodel.cpp
 
 build/moc/moc_transactiontablemodel.cpp: tablemodel/transactiontablemodel.h \
 		manager/transactionman.h \
@@ -549,26 +549,26 @@ build/moc/moc_transactiontablemodel.cpp: tablemodel/transactiontablemodel.h \
 		utils/returns.h \
 		core/libitem.h \
 		core/media.h \
+		core/config.h \
 		manager/mediaman.h \
 		manager/libitemman.h \
 		manager/personman.h \
 		core/person.h \
-		core/config.h \
 		core/artist.h \
 		core/borrower.h \
 		build/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/transactiontablemodel.h -o build/moc/moc_transactiontablemodel.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/transactiontablemodel.h -o build/moc/moc_transactiontablemodel.cpp
 
 build/moc/moc_custfiltproxmodel.cpp: tablemodel/custfiltproxmodel.h \
 		build/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/custfiltproxmodel.h -o build/moc/moc_custfiltproxmodel.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/custfiltproxmodel.h -o build/moc/moc_custfiltproxmodel.cpp
 
 build/moc/moc_entitycompleter.cpp: tablemodel/entitycompleter.h \
 		build/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/entitycompleter.h -o build/moc/moc_entitycompleter.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/entitycompleter.h -o build/moc/moc_entitycompleter.cpp
 
 build/moc/moc_mediatablemodel.cpp: tablemodel/mediatablemodel.h \
 		manager/mediaman.h \
@@ -576,7 +576,7 @@ build/moc/moc_mediatablemodel.cpp: tablemodel/mediatablemodel.h \
 		utils/returns.h \
 		build/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/mediatablemodel.h -o build/moc/moc_mediatablemodel.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include tablemodel/mediatablemodel.h -o build/moc/moc_mediatablemodel.cpp
 
 build/moc/moc_mainw.cpp: ui/mainw.h \
 		ui/toolbar.h \
@@ -584,13 +584,13 @@ build/moc/moc_mainw.cpp: ui/mainw.h \
 		core/libitem.h \
 		core/media.h \
 		utils/returns.h \
+		core/config.h \
 		manager/libitemman.h \
 		manager/transactionman.h \
 		core/transaction.h \
 		manager/mediaman.h \
 		manager/personman.h \
 		core/person.h \
-		core/config.h \
 		core/artist.h \
 		core/borrower.h \
 		tablemodel/transactiontablemodel.h \
@@ -603,18 +603,18 @@ build/moc/moc_mainw.cpp: ui/mainw.h \
 		manager/library.h \
 		build/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ui/mainw.h -o build/moc/moc_mainw.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ui/mainw.h -o build/moc/moc_mainw.cpp
 
 build/moc/moc_infopanel.cpp: ui/infopanel.h \
 		build/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ui/infopanel.h -o build/moc/moc_infopanel.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ui/infopanel.h -o build/moc/moc_infopanel.cpp
 
 build/moc/moc_delegate.cpp: ui/delegate.h \
 		ui/infopanel.h \
 		build/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ui/delegate.h -o build/moc/moc_delegate.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/build/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/core -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/manager -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/tablemodel -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/ui -I/home/USER/Dokumente/Github/C-Programming/Programmierung/II/Praktikum/Beleg/utils -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ui/delegate.h -o build/moc/moc_delegate.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -673,13 +673,15 @@ build/obj/borrower.o: core/borrower.cpp core/borrower.h \
 
 build/obj/libitem.o: core/libitem.cpp core/libitem.h \
 		core/media.h \
-		utils/returns.h
+		utils/returns.h \
+		core/config.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/libitem.o core/libitem.cpp
 
 build/obj/transaction.o: core/transaction.cpp utils/returns.h \
 		core/transaction.h \
 		core/libitem.h \
-		core/media.h
+		core/media.h \
+		core/config.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/transaction.o core/transaction.cpp
 
 build/obj/library.o: manager/library.cpp manager/library.h \
@@ -689,9 +691,9 @@ build/obj/library.o: manager/library.cpp manager/library.h \
 		manager/transactionman.h \
 		core/transaction.h \
 		core/libitem.h \
+		core/config.h \
 		manager/personman.h \
 		core/person.h \
-		core/config.h \
 		core/artist.h \
 		core/borrower.h \
 		manager/libitemman.h
@@ -701,6 +703,7 @@ build/obj/transactionman.o: manager/transactionman.cpp core/transaction.h \
 		utils/returns.h \
 		core/libitem.h \
 		core/media.h \
+		core/config.h \
 		manager/transactionman.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/transactionman.o manager/transactionman.cpp
 
@@ -714,12 +717,14 @@ build/obj/personman.o: manager/personman.cpp core/person.h \
 
 build/obj/mediaman.o: manager/mediaman.cpp core/media.h \
 		utils/returns.h \
-		manager/mediaman.h
+		manager/mediaman.h \
+		core/config.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/mediaman.o manager/mediaman.cpp
 
 build/obj/libitemman.o: manager/libitemman.cpp core/libitem.h \
 		core/media.h \
 		utils/returns.h \
+		core/config.h \
 		manager/libitemman.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/obj/libitemman.o manager/libitemman.cpp
 
@@ -729,6 +734,7 @@ build/obj/libitemtablemodel.o: tablemodel/libitemtablemodel.cpp core/media.h \
 		core/text.h \
 		core/audio.h \
 		core/libitem.h \
+		core/config.h \
 		manager/libitemman.h \
 		manager/transactionman.h \
 		core/transaction.h \
@@ -736,7 +742,6 @@ build/obj/libitemtablemodel.o: tablemodel/libitemtablemodel.cpp core/media.h \
 		manager/mediaman.h \
 		manager/personman.h \
 		core/person.h \
-		core/config.h \
 		core/artist.h \
 		core/borrower.h \
 		utils/jsonschemautils.h
@@ -763,11 +768,11 @@ build/obj/transactiontablemodel.o: tablemodel/transactiontablemodel.cpp tablemod
 		utils/returns.h \
 		core/libitem.h \
 		core/media.h \
+		core/config.h \
 		manager/mediaman.h \
 		manager/libitemman.h \
 		manager/personman.h \
 		core/person.h \
-		core/config.h \
 		core/artist.h \
 		core/borrower.h \
 		utils/jsonschemautils.h
@@ -793,13 +798,13 @@ build/obj/mainw.o: ui/mainw.cpp tablemodel/custfiltproxmodel.h \
 		core/libitem.h \
 		core/media.h \
 		utils/returns.h \
+		core/config.h \
 		manager/libitemman.h \
 		manager/transactionman.h \
 		core/transaction.h \
 		manager/mediaman.h \
 		manager/personman.h \
 		core/person.h \
-		core/config.h \
 		core/artist.h \
 		core/borrower.h \
 		tablemodel/transactiontablemodel.h \
@@ -860,13 +865,13 @@ build/obj/run.o: run.cpp ui/mainw.h \
 		core/libitem.h \
 		core/media.h \
 		utils/returns.h \
+		core/config.h \
 		manager/libitemman.h \
 		manager/transactionman.h \
 		core/transaction.h \
 		manager/mediaman.h \
 		manager/personman.h \
 		core/person.h \
-		core/config.h \
 		core/artist.h \
 		core/borrower.h \
 		tablemodel/transactiontablemodel.h \
