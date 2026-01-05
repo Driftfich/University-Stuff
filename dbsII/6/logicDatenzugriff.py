@@ -99,7 +99,18 @@ def getAuftrag(p_mitnr: int) -> None:
     cursor = conn.cursor()
 
     try:
-        cursor.execute('SELECT AufNr, KunNr, AufDat, ErlDat, Dauer, Anfahrt, Beschreibung from Auftrag where MitID = ? AND AufDat >= GETDATE() AND AufDat < DATEADD(WEEK, 1, GETDATE()) ORDER BY AufDat DESC', [p_mitnr])
+        # DATEDIFF(WEEK, 0 bzw. 1.1.1900, GETDATE()) => Anzahl der Wochen seit 1.1.1900
+        # +1 => nächste Woche
+        # DATEADD(WEEK, DATEDIFF(WEEK, 0, GETDATE()) + 1, 0) => Datum der ersten Tag der nächsten Woche
+        # DATEADD(WEEK, DATEDIFF(WEEK, 0, GETDATE()) + 2, 0) => Datum des ersten Tages der übernächsten Woche
+        cursor.execute('''
+            SELECT AufNr, KunNr, AufDat, ErlDat, Dauer, Anfahrt, Beschreibung 
+            FROM Auftrag 
+            WHERE MitID = ? 
+                AND AufDat >= DATEADD(WEEK, DATEDIFF(WEEK, 0, GETDATE()) + 1, 0)
+                AND AufDat <  DATEADD(WEEK, DATEDIFF(WEEK, 0, GETDATE()) + 2, 0)
+            ORDER BY AufDat DESC
+        ''', [p_mitnr])
     except:
         print('Abfrage ist fehlerhaft')
         cursor.close()
