@@ -99,7 +99,7 @@ def getAuftrag(p_mitnr: int) -> None:
     cursor = conn.cursor()
 
     try:
-        cursor.execute('SELECT AufNr, KunNr, AufDat, ErlDat, Dauer, Anfahrt, Beschreibung from Auftrag where MitID = ? ORDER BY AufDat DESC', [p_mitnr])
+        cursor.execute('SELECT AufNr, KunNr, AufDat, ErlDat, Dauer, Anfahrt, Beschreibung from Auftrag where MitID = ? AND AufDat >= GETDATE() AND AufDat < DATEADD(WEEK, 1, GETDATE()) ORDER BY AufDat DESC', [p_mitnr])
     except:
         print('Abfrage ist fehlerhaft')
         cursor.close()
