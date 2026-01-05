@@ -1,6 +1,5 @@
 from dbConn import getConn
 from checker import handleInputInteger
-import numpy as np
 import pandas as pd
 
 def getNiederlassung() -> int|None:
