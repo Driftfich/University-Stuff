@@ -1,7 +1,7 @@
 
 from queue import Empty
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.engine import URL
 
 def sessionLoader():

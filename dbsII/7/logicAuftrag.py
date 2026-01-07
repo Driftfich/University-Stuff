@@ -1,8 +1,11 @@
 from dbConnect import sessionLoader
-from mapper import Mitarbeiter, Auftrag, Kunde
+from mapper import Mitarbeiter, Auftrag, Kunde, Ersatzteil, Montage
 from checker import handleInputInteger, handleInputDatum
+from logicErsatzteil import getErsatzteilForAuftrag
 import datetime
 from sqlalchemy import exc, or_
+from typing import List
+import pandas as pd
 
 def getAuftrag(p_mitnr):
     """ Definition der Funktion getMitarbeiter
@@ -172,5 +175,130 @@ def planenAuftrag():
         print('Keine neuen Aufträge vorhanden\n')
     session.close()
 
-def erledigenAuftrag() :
-    print('zu implementieren')
+def erledigenAuftrag():
+    """
+    1. Anzeigen geplanter Aufträge der letzten 20 Tage bis heute.
+    2. Eingabe der Auftragsnummer
+    3. Anzeigen der Auftragsdaten und Abfrage ob der Auftrag als erledigt markiert werden soll
+    5. Eingabe der Dauer und Anfahrt
+    4. Eingabe der Ersatzteile und deren Anzahl
+    6. Markierung des Auftrags als erledigt
+    """
+    session = sessionLoader()
+    try:
+        currDate: datetime.datetime = datetime.datetime.now()
+        AufList: List[Auftrag] = session.query(Auftrag).filter(
+            Auftrag.Auftragsdatum.between(currDate - datetime.timedelta(days=20), currDate),
+            Auftrag.MitId != None,
+            Auftrag.Dauer == None
+        ).all()
+
+        if not AufList:
+            print('Keine geplanten Aufträge vorhanden')
+            session.close()
+            return
+
+        # aufDf = pd.DataFrame(AufList, columns=pd.Index(['AufNr', 'MitId', 'KunNr', 'Auftragsdatum', 'Erledigungsdatum', 'Dauer', 'Anfahrt']))
+        df_data = []
+        for row in AufList:
+            df_data.append([
+                row.AufNr,
+                row.MitId,
+                row.KunNr,
+                row.Auftragsdatum,
+                row.Erledigungsdatum,
+                row.Dauer,
+                row.Anfahrt
+            ])
+        
+        aufDf = pd.DataFrame(df_data, columns=pd.Index(['AufNr', 'MitId', 'KunNr', 'Auftragsdatum', 'Erledigungsdatum', 'Dauer', 'Anfahrt']))
+
+        if aufDf.empty:
+            print('Keine geplanten Aufträge vorhanden')
+            session.close()
+            return
+        
+        print(aufDf.to_string(index=False))
+        aufNr = handleInputInteger('Eingabe der Auftragsnummer')
+        while aufNr not in aufDf['AufNr'].values:
+            aufNr = handleInputInteger('Eingabe der Auftragsnummer')
+
+        print("Folgenden Auftrag als erledigt markieren?\n")
+        print(aufDf[aufDf['AufNr'] == aufNr].to_string(index=False))
+        if 'j' in input('j/n: ').lower():
+
+            auftrag: Auftrag|None = session.query(Auftrag).get(aufNr)
+            if isinstance(auftrag, type(None)):
+                print(f'Auftrag {aufNr} existiert nicht in der Datenbank.')
+                session.rollback()
+                session.close()
+                return
+
+            print(f"Eingabe der Dauer und Anfahrt für Auftrag {aufNr}:")
+            dauer = handleInputInteger('Eingabe der Dauer')
+            anfahrt = handleInputInteger('Eingabe der Anfahrt')
+
+            # Ersatzteile des Auftrags abfragen
+            print(f"Ersatzteile des Auftrags {aufNr}:")
+            getErsatzteilForAuftrag(aufNr, session)
+
+            while True:
+                etid = input('Ersatzteilnummer [int] / break (q) zum Beenden / show (s) zum Anzeigen: ')
+                if 's' in etid:
+                    print(f"Ersatzteile des Auftrags {aufNr}:")
+                    getErsatzteilForAuftrag(aufNr, session)
+                    continue
+                if 'q' in etid or not etid.isnumeric():
+                    break
+                etid = int(etid)
+                anzahl: int = handleInputInteger(f'Eingabe der Anzahl für Ersatzteil {etid}')
+
+                # query Ersatzteil from database
+                ersatzteil: Ersatzteil|None = session.query(Ersatzteil).get(etid)
+                if isinstance(ersatzteil, type(None)):
+                    print(f"Ersatzteil {etid} existiert nicht in der Datenbank.")
+                    continue
+
+                if ersatzteil.EtAnzLager < anzahl:
+                    print(f"Nicht genügend Ersatzteile auf Lager. {ersatzteil.EtAnzLager} verfügbar.")
+                    continue
+
+                # update the ersatzteil
+                ersatzteil.EtAnzLager -= anzahl
+
+                if ersatzteil.EtAnzLager < 0:
+                    print(f"Nicht genügend Ersatzteile auf Lager. {ersatzteil.EtAnzLager} verfügbar.") 
+                    session.rollback()
+                    # continue
+                    return
+                
+                # create montage
+                existing_montage: Montage|None = session.query(Montage).filter_by(EtID=etid, AufNr=aufNr).first()
+
+                if existing_montage:
+                    existing_montage.Anzahl += anzahl
+                else:
+                    newMontage: Montage = Montage(etid, aufNr, anzahl)
+                    session.add(newMontage)
+                    
+                print(f"{anzahl}x {ersatzteil.EtBezeichnung} hinzugefügt.")
+                    
+            
+            auftrag.Erledigungsdatum = currDate
+            auftrag.Dauer = dauer
+            auftrag.Anfahrt = anfahrt
+
+            session.commit()
+            print(f'Auftrag {aufNr} erledigt')
+        else:
+            print('Auftrag nicht erledigt')
+
+        session.close()
+        return
+    except Exception as e:
+        print(f"Rolling back transaction due to Exception {e}") 
+        session.rollback()
+        return
+
+    finally:
+        session.close()

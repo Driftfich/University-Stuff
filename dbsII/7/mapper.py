@@ -1,4 +1,3 @@
-
 from sqlalchemy import Column, ForeignKey, Integer, String, Float, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -66,6 +65,7 @@ class Kunde(Base):
         # Ermitteln der nächsten Kundennummer
         session = sessionLoader()
         maxkunnr = session.query(max(Kunde.KunNr)).first()  # bisher größter Kundennummer
+        maxkunnr = maxkunnr if maxkunnr is not None else [0]
         self.KunNr = int(maxkunnr[0]) + 1                      # lesen des Wertes der Kundennummer plus 1
         session.close()
 
@@ -101,10 +101,45 @@ class Auftrag(Base):
         # Ermitteln der neuen Auftragsnummer
         session = sessionLoader()
         maxaufnr = session.query(max(Auftrag.AufNr)).first()  # ermitteln der bisher größten Auftragsnummer
+        maxaufnr = maxaufnr if maxaufnr is not None else [0]
         self.AufNr = int(maxaufnr[0]) + 1                        # lesen des Wertes der Auftragsnummer plus 1
         session.close()
 
         self.KunNr = kunnr
         self.Auftragsdatum = aufdat
 
+class Ersatzteil(Base):
+    """ Definition der Klasse "Ersatzteil"""
 
+    __tablename__ = 'Ersatzteil'
+    EtID = Column('EtID', String(5), primary_key=True, autoincrement=False)
+    EtBezeichnung = Column('EtBezeichnung', String(50))
+    EtPreis = Column('EtPreis', Float(precision=10, decimal_return_scale=4))
+    EtAnzLager = Column('EtAnzLager', Integer)
+    EtHersteller = Column('EtHersteller', String(30))
+
+    def __init__(self, etbezeichnung, etpreis, etanzlager, ethersteller):
+        # self.EtID = etid
+        self.EtBezeichnung = etbezeichnung
+        self.EtPreis = etpreis
+        self.EtAnzLager = etanzlager
+        self.EtHersteller = ethersteller
+
+        session = sessionLoader()
+        maxetid = session.query(max(Ersatzteil.EtID)).first()
+        maxetid = maxetid if maxetid is not None else [0]
+        self.EtID = str(int(maxetid[0]) + 1)
+        session.close()
+
+class Montage(Base):
+    """ Definition der Klasse "Montage"""
+
+    __tablename__ = 'Montage'
+    EtID = Column('EtID', String(5), ForeignKey(Ersatzteil.EtID), primary_key=True, autoincrement=False)
+    AufNr = Column('AufNr', Integer, ForeignKey(Auftrag.AufNr), primary_key=True, autoincrement=False)
+    Anzahl = Column('Anzahl', Integer)
+
+    def __init__(self, etid, aufnr, anzahl):
+        self.EtID = etid
+        self.AufNr = aufnr
+        self.Anzahl = anzahl
