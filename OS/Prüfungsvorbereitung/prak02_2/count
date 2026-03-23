@@ -1,6 +1,0 @@
-#!/bin/bash
-
-file=$1
-word=$2
-grep ".*\s$word\s.*" $file | wc -w
-exit 0

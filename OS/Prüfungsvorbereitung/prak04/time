@@ -1,8 +1,0 @@
-#!/bin/bash
-
-while test 1 -eq 1
-do
-    date
-    sleep 1s
-    clear
-done
