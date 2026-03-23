@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if test $# -lt 1
+then
+    echo "Error. Wrong parameter count. Need wcount word"
+    exit 1
+fi
+
+word=$1
+
+if test $(find ./ -type f -name 'bibel.txt' | wc -c) -lt 1
+then
+    wget http://www.informatik.htw-dresden.de/~robge/bs1/prak/bibel.txt
+fi
+
+grep -o "\s$word\s" bibel.txt | wc -w
+
+exit 0
