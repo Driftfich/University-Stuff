@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>Homepage</title>
-        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" href="test.css" />
     </head>
 
     <body>
@@ -46,6 +46,12 @@
                     <button>D</button>
                 </div>
 
+                <div id="Input_Output">
+                    <p id="Name_Output">Name: </p>
+                    <p id="Adresse_Output">Adresse: </p>
+                    <p id="Email_Output">Email: </p>
+                </div>
+
                 <form action="" method="post" accept-charset="UTF-8">
                     <label for="Name">Name: </label>
                     <input name="Name" type="text" required />
@@ -55,6 +61,15 @@
                     <input name="Email" type="email" />
                     <input type="submit" value="Absenden" />
                     <input type="reset" value="Zurücksetzen" />
+                    <!-- console log the input value on submit event-->
+                    <script>
+                        document.querySelector('form').addEventListener('submit', function(event) {
+                            event.preventDefault();
+                            document.getElementById('Name_Output').textContent = "Name: " + document.querySelector('input[name="Name"]').value;
+                            document.getElementById('Adresse_Output').textContent = "Adresse: " + document.querySelector('input[name="Adresse"]').value;
+                            document.getElementById('Email_Output').textContent = "Email: " + document.querySelector('input[name="Email"]').value;
+                        });
+                    </script>
                 </form>
 
                 <h3>Studenten</h3>
@@ -87,10 +102,10 @@
                     sea takimata sanctus est Lorem ipsum dolor sit amet.
                 </p>
 
-                <img
+                <!-- <img
                     src="https://upload.wikimedia.org/wikipedia/commons/e/ed/HTW_logo.svg"
                     alt="HTW Logo"
-                />
+                /> -->
 
                 <figure style="background-color: black">
                     <svg xmlns="http://www.w3.org/2000/svg">

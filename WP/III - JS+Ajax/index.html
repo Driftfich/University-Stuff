@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+</head>
+
+<script>
+    function getXhr() {
+        if (window.XMLHttpRequest) {
+            return new XMLHttpRequest();
+        }
+        else {
+            return new Error('XMLHttpRequest not supported');
+        }
+
+    }
+
+    function xhrHandler(callback) {
+        if (this.readyState != XMLHttpRequest.DONE) {
+            return;
+        }
+        if (this.status != 200) {
+            return;
+        }
+        callback(this.responseText);
+    }
+
+    function sendXhr(url, callback) {
+        const xhr = getXhr();
+
+        // must assign a function; xhrHandler(callback) runs immediately and returns undefined
+        xhr.onreadystatechange = function () {
+            xhrHandler.call(this, callback);
+        };
+
+        // send request
+        xhr.open('GET', url);
+        xhr.send();
+    }
+
+    function demoCallback(responseText) {
+        document.querySelectorAll('p')[2].textContent = responseText;
+    }
+</script>
+
+<body>
+
+    <p>Not pressed</p>
+
+    <p>Current Time: </p>
+
+    <p>Ajax Reponse: </p>
+
+    <script>
+        sendXhr('https://www.informatik.htw-dresden.de/~jvogt/it1/ajaxdemo/ajaxdemo.txt', demoCallback);
+    </script>
+
+    <button>Button</button>
+
+    <script>
+        document.querySelector('button').addEventListener('mousedown', function() {
+            document.querySelectorAll('p')[0].textContent = 'pressed';
+        })
+        document.querySelector('button').addEventListener('mouseup', function() {
+            document.querySelectorAll('p')[0].textContent = 'Not pressed';
+        })
+        // every 1000ms change
+        document.querySelectorAll('p')[1].textContent = new Date().toLocaleTimeString();
+        setInterval(function() {
+            document.querySelectorAll('p')[1].textContent = new Date().toLocaleTimeString();
+        }, 1000);
+    </script>
+
+    <footer>
+    
+    </footer>
+</body>
+
+
+</html>

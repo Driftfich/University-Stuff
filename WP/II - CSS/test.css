@@ -1,0 +1,33 @@
+body {background-color: #ffc039;}
+
+/* add image to header */
+header {background-color: #ff883965; min-height: 100px; border-radius: 1em;}
+footer {background: url('https://upload.wikimedia.org/wikipedia/commons/e/ed/HTW_logo.svg') no-repeat center center; 
+    background-size: contain; 
+    height: 100px;
+    border-radius: 1em;
+    background-color: #ff883965;
+}
+
+main {display: flex;}
+
+nav {order: 1; flex: 0 0 8em; background-color: #0cda95dc; margin: 0.2em; padding: 0.5em; border-radius: 1em;}
+nav ul {list-style-type: none; }
+nav ul li {display: inline;}
+nav ul li a {text-decoration: none;}
+nav ul li a:hover {
+    background-color: #ff883965;
+}
+
+article {order: 2; flex: 3 3 0%; margin: 0.2em; background-color: #da4d0cdc; padding: 0.5em; border-radius: 1em;}
+
+aside {order: 3; flex: 0 0 8em; margin: 0.2em; background-color: #dabb0cdc; padding: 0.5em; border-radius: 1em;}
+
+@media all and (max-width: 48em) {
+    main {flex-direction: column;}
+
+    main > * {order: 0;}
+}
+
+
+p:first-line {font-weight: bold;}
