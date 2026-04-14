@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <time.h>
 
 union semun {
     int val;
@@ -108,6 +109,9 @@ int main() {
 
     int status;
 
+    // take start time
+    time_t start = time(NULL);
+
     // test writer blocks all readers
     for (int i = 0; i < 10; i++) {
         pid_t pid = fork();
@@ -118,21 +122,79 @@ int main() {
                 sleep(5); // let readers wait for writer to finish
                 V(sharedSemkey);
                 exit(0);
-            } else if (i == 1) {
+            } else {
                 sleep(1); // Ensure writer gets first access
                 readerP(readerSemkey, sharedSemkey, rc);
                 printf("Reader %d read %d\n", i, *(int *)rc2);
                 readerV(readerSemkey, sharedSemkey, rc);
                 exit(0);
             }
-        } else {
-            wait(&status);
-            // close shared memory and semaphores
-            munmap(rc, sizeof(int));
-            munmap(rc2, sizeof(int));
-            remove_semaphore(readerSemkey);
-            remove_semaphore(sharedSemkey);
         }
     }
+    for (int i = 0; i < 10; i++) {
+        wait(NULL);
+    }
+    // take end time of first test
+    time_t endTest1 = time(NULL);
+    printf("If writer blocks all readers, time for first test should be around 5 seconds\n");
+    printf("Time for first test: %f seconds\n", ((double)(endTest1 - start)));
+
+    // test multiple readers can read at the same time
+    for (int i = 0; i < 10; i++) {
+        pid_t pid = fork();
+        if (pid == 0) {
+            readerP(readerSemkey, sharedSemkey, rc);
+            sleep(1); // If all readers can read simultaneously, they should finish after a bit more than 1 second, else they will finish after 10 seconds
+            printf("Reader %d read %d\n", i, *(int *)rc2);
+            readerV(readerSemkey, sharedSemkey, rc);
+            exit(0);
+        }
+    }
+
+    for (int i = 0; i < 10; i++) {
+        wait(NULL);
+    }
+    // take end time of second test
+    time_t endTest2 = time(NULL);
+    printf("If all readers read simultaneously, time for second test should be around 1 second, else it should be around 10 seconds\n");
+    printf("Time for second test: %f seconds\n", ((double)(endTest2 - endTest1)));
+
+    // test multiple readers block writer for a long time <> unfair solution/implementation of the reader/writer problem
+    for (int i = 0; i < 10; i++) {
+        pid_t pid = fork();
+        if (pid == 0) {
+            if (i != 0) {
+                readerP(readerSemkey, sharedSemkey, rc);
+                sleep(10); // readers will finish after 10 seconds
+                readerV(readerSemkey, sharedSemkey, rc);
+                exit(0);
+            } else {
+                sleep(1); // let readers first
+                P(sharedSemkey);
+                printf("Writer needed to wait for %f seconds in third test\n", ((double)(time(NULL) - endTest2 - 1)));
+                *(int *)rc2+=1;
+                V(sharedSemkey);
+                exit(0);
+            }
+        }
+    }
+    for (int i = 0; i < 10; i++) {
+        wait(NULL);
+    }
+
+    // take end time of third test
+    time_t endTest3 = time(NULL);
+    printf("Multiple readers block writer for a long time (10s in this case) which is a unfair soltuion to the reader/writer problem and therefore doesnt let the writer in after its 1s warmup\n");
+    printf("Time for third test: %f seconds\n", ((double)(endTest3 - endTest2)));
+
+    // close shared memory and semaphores
+    munmap(rc, sizeof(int));
+    munmap(rc2, sizeof(int));
+    remove_semaphore(readerSemkey);
+    remove_semaphore(sharedSemkey);
+
+    shm_unlink("/sharedRC1");
+    shm_unlink("/sharedRC2");
+
     return 0;
 }
