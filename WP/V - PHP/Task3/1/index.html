@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highscores</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #333; background-color: #f4f7f6; }
+        h1 { text-align: center; color: #2c3e50; }
+        section { background: #fff; margin-bottom: 25px; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; color: #34495e; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        form { display: grid; grid-template-columns: auto 1fr auto; gap: 15px; align-items: center; }
+        label { font-weight: bold; }
+        input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        button { padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+        button:hover { background-color: #2980b9; }
+        #resultContainer { background: #2c3e50; color: #ecf0f1; margin-top: 30px; padding: 20px; border-radius: 12px; min-height: 50px; }
+        #resultContainer h3 { margin-top: 0; border-bottom: 1px solid #555; padding-bottom: 10px; }
+        #result { font-family: 'Courier New', Courier, monospace; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; color: #333; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #f8f9fa; font-weight: bold; color: #2c3e50; }
+        tr:last-child td { border-bottom: none; }
+        .error { color: #e74c3c; font-weight: bold; }
+        .success { color: #2ecc71; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🏆 Highscore Manager</h1>
+
+    <section>
+        <h2>Add New Score</h2>
+        <form id="addScoreForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Player Name" required>
+            <label for="score">Score:</label>
+            <input type="number" id="score" name="score" placeholder="Score" required>
+            <div style="grid-column: span 3; text-align: right;">
+                <button type="submit">Add Score</button>
+            </div>
+        </form>
+    </section>
+
+    <section>
+        <h2>Delete Score</h2>
+        <form id="deleteScoreForm">
+            <label for="del_player">Player:</label>
+            <input type="text" id="del_player" name="player" placeholder="Player Name">
+            <label for="del_id">ID:</label>
+            <input type="number" id="del_id" name="id" placeholder="Score ID">
+            <div style="grid-column: span 3; text-align: right; margin-top: 5px;">
+                <small style="display:block; margin-bottom: 10px; color: #7f8c8d;">Provide either Player Name or Score ID</small>
+                <button type="submit" style="background-color: #e74c3c;">Delete Score</button>
+            </div>
+        </form>
+    </section>
+
+    <section style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div>
+            <h2>Total Player Score</h2>
+            <form id="totalScoreForm" style="display: flex; flex-direction: column; align-items: stretch;">
+                <label for="total_player">Player Name:</label>
+                <input type="text" id="total_player" name="player" placeholder="Player Name" required>
+                <button type="submit" style="margin-top: 10px; background-color: #f1c40f; color: #2c3e50;">Get Total</button>
+            </form>
+        </div>
+        <div>
+            <h2>Leaderboard</h2>
+            <form id="getScoresForm" style="display: flex; flex-direction: column; align-items: stretch;">
+                <label for="page">Page Number:</label>
+                <input type="number" id="page" name="page" value="1" min="1" required>
+                <button type="submit" style="margin-top: 10px; background-color: #2ecc71;">Load Scores</button>
+            </form>
+        </div>
+    </section>
+
+    <div id="resultContainer" style="display:none;">
+        <h3>Response Output</h3>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const resultDiv = document.getElementById('result');
+        const resultContainer = document.getElementById('resultContainer');
+
+
+        function getXhr() {
+            if (window.XMLHttpRequest) {
+                return new XMLHttpRequest();
+            } else {
+                return new Error('XMLHttpRequest not supported');
+            }
+        }
+
+        function xhrHandler(callback) {
+            if (this.readyState != XMLHttpRequest.DONE) {
+                return;
+            }
+            if (this.status != 200) {
+                return;
+            }
+            callback(this.responseText);
+        }
+
+        function sendXhr(url, method = 'GET', body = null, callback) {
+            const xhr = getXhr();
+
+            // must assign a function; xhrHandler(callback) runs immediately and returns undefined
+            xhr.onreadystatechange = function () {
+                xhrHandler.call(this, callback);
+            };
+
+            // send request
+            xhr.open(method, url);
+            if (body && method === 'POST') {
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify(body));
+            } else {
+                xhr.send();
+            }
+        }
+
+        function showResult(data, isError = false) {
+            resultContainer.style.display = 'block';
+            if (isError) {
+                resultDiv.innerHTML = `<p class="error">Error: ${data.error || 'Unknown error occurred'}</p>`;
+                return;
+            }
+
+            if (Array.isArray(data)) {
+                if (data.length === 0) {
+                    resultDiv.innerHTML = '<p>No records found for this query.</p>';
+                    return;
+                }
+                let html = '<table><thead><tr>';
+                Object.keys(data[0]).forEach(key => html += `<th>${key}</th>`);
+                html += '</tr></thead><tbody>';
+                data.forEach(row => {
+                    html += '<tr>';
+                    Object.values(row).forEach(val => html += `<td>${val}</td>`);
+                    html += '</tr>';
+                });
+                html += '</tbody></table>';
+                resultDiv.innerHTML = html;
+            } else if (typeof data === 'object' && data !== null) {
+                if (data.hasOwnProperty('SUM(score)')) {
+                    const total = data['SUM(score)'] || 0;
+                    resultDiv.innerHTML = `<p style="font-size: 1.5em; text-align: center;">Total Score: <strong>${total}</strong></p>`;
+                } else if (data === true) {
+                    resultDiv.innerHTML = '<p class="success">Operation successful!</p>';
+                } else {
+                    resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                }
+            } else {
+                resultDiv.innerHTML = `<p>${data}</p>`;
+            }
+            
+            // Scroll to result
+            resultContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handleRequest(url, method, body = null) {
+            sendXhr(url, method, body, (text) => { 
+                try {
+                    let data;
+                    try {
+                        data = JSON.parse(text);
+                    } catch (e) {
+                        showResult({ error: `Invalid JSON response: ${text.substring(0, 100)}${text.length > 100 ? '...' : ''}` }, true);
+                        return;
+                    }
+                    
+                    if (data.error) {
+                        showResult(data, true);
+                    } else {
+                        showResult(data);
+                    }
+                } catch (error) {
+                    showResult({ error: error.message }, true);
+                }
+            });
+        }
+
+        document.getElementById('addScoreForm').onsubmit = (e) => {
+            e.preventDefault();
+            handleRequest('highscore.php', 'POST', { name: document.getElementById('name').value, score: document.getElementById('score').value });
+        };
+
+        document.getElementById('deleteScoreForm').onsubmit = (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const params = new URLSearchParams();
+            // Only add non-empty values to query string
+            for (const [key, value] of formData.entries()) {
+                if (value) params.append(key, value);
+            }
+            console.log(`highscore.php?${params.toString()}`);
+            handleRequest(`highscore.php?${params.toString()}`, 'DELETE');
+        };
+
+        document.getElementById('totalScoreForm').onsubmit = (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const params = new URLSearchParams(formData).toString();
+            console.log(`highscore.php?${params}`);
+            handleRequest(`highscore.php?${params}`, 'GET');
+        };
+
+        document.getElementById('getScoresForm').onsubmit = (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const params = new URLSearchParams(formData).toString();
+            console.log(`highscore.php?${params}`);
+            handleRequest(`highscore.php?${params}`, 'GET');
+        };
+    </script>
+</body>
+</html>
