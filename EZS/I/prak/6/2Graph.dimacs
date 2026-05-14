@@ -1,0 +1,44 @@
+c Dimacs file for task 2 - Hyperperiod 12, Framesize 4
+
+p max 14 23
+
+n 1 s
+n 14 t
+
+c nodes from S to Jobs (2-10)
+c all 4 edges for T1(3,1)
+a 1 2 10
+a 1 3 10
+a 1 4 10
+a 1 5 10
+c all 3 edges for T2(4,1)
+a 1 6 10
+a 1 7 10
+a 1 8 10
+c all 2 edges for T3(6,2)
+a 1 9 24
+a 1 10 24
+
+c nodes from Jobs to Frames (11-22)
+c all edges from T1 to Frames
+a 2 11 10
+a 3 12 10
+a 4 13 10
+a 5 11 10
+
+c all edges from T2 to Frames
+a 6 11 10
+a 7 12 10
+a 8 13 10
+
+c all edges from T3 to Frames
+a 9 11 24
+a 9 12 24   
+
+a 10 12 24
+a 10 13 24
+
+c all edges from Frames to Sink
+a 11 14 40
+a 12 14 40
+a 13 14 40
