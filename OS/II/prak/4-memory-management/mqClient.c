@@ -15,7 +15,16 @@
 
 #include "mq.h"
 
-int main(int argc, char *argv[]) {
+void stdoutClientCallback(struct mq_msg *msgbuf, int rcvlength, enum direction direction) {
+    if (direction == IN) {
+        printf("Client received message from input message queue: %s\n", msgbuf->text);
+    } else {
+        printf("Client sent message to output message queue: %s\n", msgbuf->text);
+    }
+    return;
+}
+
+int clientProcess(void (*callback)(struct mq_msg *msgbuf, int rcvlength, enum direction direction)) {
     struct mq_msg *msgbuf = malloc(sizeof(struct mq_msg));
     if (!msgbuf) {
         fprintf(stderr, "Error: Failed to allocate memory for message buffer\n");
@@ -46,7 +55,8 @@ int main(int argc, char *argv[]) {
             exit(EXIT_FAILURE);
         }
 
-        printf("Client sent message to input message queue: %s\n", msgbuf->text);
+        // printf("Client sent message to input message queue: %s\n", msgbuf->text);
+        callback(msgbuf, strlen(msgbuf->text) + 1, IN);
 
         ret = msgrcv(outputQ, msgbuf, sizeof(msgbuf->text), 0, MSG_NOERROR);
         if (ret == -1) {
@@ -55,7 +65,8 @@ int main(int argc, char *argv[]) {
             exit(EXIT_FAILURE);
         }
 
-        printf("Client received message from output message queue: %s\n", msgbuf->text);
+        // printf("Client received message from output message queue: %s\n", msgbuf->text);
+        callback(msgbuf, ret, OUT);
     }
 
     free(msgbuf);

@@ -23,7 +23,16 @@ void sigintHandler(int signum) {
     return;
 }
 
-int main(int argc, char *argv[]) {
+void stdoutServerCallback(struct mq_msg *msgbuf, int rcvlength, enum direction direction) {
+    if (direction == IN) {
+        printf("Server received message from input message queue: %s\n", msgbuf->text);
+    } else {
+        printf("Server sent message to output message queue: %s\n", msgbuf->text);
+    }
+    return;
+}
+
+int serverProcess(void (*callback)(struct mq_msg *msgbuf, int rcvlength, enum direction direction)) {
     // allocate memory for message buffer
     struct mq_msg *msgbuf = malloc(sizeof(struct mq_msg));
     if (!msgbuf) {
@@ -65,7 +74,8 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        printf("Server received message from input message queue: %s\n", msgbuf->text);
+        // printf("Server received message from input message queue: %s\n", msgbuf->text);
+        callback(msgbuf, rcvlength, IN);
 
         ret = msgsnd(outputQ, msgbuf, rcvlength, 0);
         if (ret == -1) {
@@ -73,6 +83,8 @@ int main(int argc, char *argv[]) {
             free(msgbuf);
             exit(EXIT_FAILURE);
         }
+
+        callback(msgbuf, rcvlength, OUT);
     }
 
     ret = msgctl(inputQ, IPC_RMID, NULL);
