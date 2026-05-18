@@ -69,10 +69,40 @@ sbrk() vergr¨oßert werden. Entwickeln Sie ein kleines Testprogramm, mit dem Si
 Differenz zwischen voreingestellter und maximal m¨oglicher Datensegmentgr¨oße ermit-
 teln k¨onnen. Vergleichen Sie Ihre Ergebnisse f¨ur verschiedene Systeme!
 
+### Solution files: memdiff.c
+
 ## 4. Nutzen Sie mmap(), um ein einfaches Programm zum Kopieren von Dateien (analog
 dem Kommando cp) zu schreiben
+
+### Solution files: mycp.c
 
 ## 5. Zeigen/Demonstrieren Sie programmtechnisch, dass mmap() zur IPC eingesetzt wer-
 den kann, selbst wenn keine Datei beteiligt ist.
 
-## Task 6 and 7 still missing
+### Solution files: mmapIpc.c
+
+## 6. Wir wollen ein einfaches Prozesssystem implementieren, das Message Passing zur IPC nutzt.
+### a) Implementieren Sie einen Serverprozess, der aus einer Nachrichtenwarteschlage
+synchron Nachrichten entnimmt. Bei Empfang einer Nachricht soll der Server
+per fork() ein Kind erzeugen, das die Nachricht bearbeitet. Die Nachricht soll
+jeweils den Namen einer Datei enthalten, die der Server in ein bestimmtes Ver-
+zeichnis kopieren soll
+
+### Soltution files: mq.h, mqServer.c, cpyServer.c
+
+### b) Implementieren Sie einen Clientprozess, der die Nachrichtenwarteschlange mit
+Nachrichten füllen soll. Die Dateinamen sollen interaktiv eingelesen werden. Star-
+ten Sie dann drei Clientprozesse und leiten Sie stdin auf Dateien mit Listen von
+Namen um und überzeugen Sie sich, dass alle Dateien durch den Server kopiert
+werden.
+
+### Solution files: cpyClient.c, mqClient.c
+
+## 7 Versuchen Sie, einen Prozess maximal aus dem Speicher zu verdrängen
+
+### Strategy:
+- allocate large block of heap memory in write mode
+- create (multiple) child processes
+- father process waits for all children to finish
+- children processes should reference the memory block in write mode => repressing the father process from the memory
+- father reads out resident set size using mincore()
