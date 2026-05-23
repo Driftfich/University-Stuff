@@ -9,6 +9,7 @@ precision = 100
 model = cp_model.CpModel()
 
 half: int = int((length * precision) / 2)
+max_dist: int = int(length * precision)
 
 # variables
 s = model.new_int_var(-half, half, "s")
@@ -21,10 +22,14 @@ model.add(s != 0)
 model.add(m != 0)
 model.add(l != 0)
 
-# distance between all 1 * precision
-model.add_abs_equality(precision, m-s)
-model.add_abs_equality(precision, m-l)
-model.add_abs_equality(precision, l-s)
+def min_sep(model, a, b, name: str) -> None:
+    d = model.new_int_var(0, max_dist, name)
+    model.add_abs_equality(d, a - b)
+    model.add(d >= precision)
+
+min_sep(model, s, m, "dist_sm")
+min_sep(model, m, l, "dist_ml")
+min_sep(model, s, l, "dist_sl")
 
 model.add((s * 12) + (m * 30) + (l * 40) == 0)
 
@@ -33,9 +38,9 @@ status = solver.Solve(model)
 
 if status == cp_model.OPTIMAL or status == cp_model.FEASIBLE:
     print(f"Status: {solver.StatusName(status)}")
-    print(f"Solution: {solver.Value(s) / precision}")
-    print(f"Solution: {solver.Value(m) / precision}")
-    print(f"Solution: {solver.Value(l) / precision}")
+    print(f"Solution s: {solver.Value(s) / precision}")
+    print(f"Solution m: {solver.Value(m) / precision}")
+    print(f"Solution l: {solver.Value(l) / precision}")
 else:
     print(f"Status: {solver.StatusName(status)}")
     print("No solution found.")
